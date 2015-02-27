@@ -16,7 +16,7 @@ Please refer to INSTALL.
 * Maxime Lavigne (malavv) <duguigne@gmail.com>
 
 ## Licensing
-Please refer to LICENSE.
+Please refer to [LICENSE](LICENSE.md).
 
 ## Contacts
 * Issues and questions may be directed to the wiki page of the project.
