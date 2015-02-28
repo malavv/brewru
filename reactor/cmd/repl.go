@@ -16,6 +16,19 @@ type repl struct {
 	keyword2action map[string]*action
 	mode           string
 }
+type action struct {
+	keyword string
+	usage   string
+	fnc     func([]string)
+}
+
+func NewAction(keyword, usage string, fnc func([]string)) *action {
+	return &action{
+		keyword: keyword,
+		usage:   usage,
+		fnc:     fnc,
+	}
+}
 
 func NewRepl(actions []*action) *repl {
 	sort.Sort(ByKeyword(actions))
