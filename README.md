@@ -13,7 +13,8 @@ All documentation for the two components are available in docs/manual. There wil
 Please refer to INSTALL.
 
 ## Authors
-* Maxime Lavigne (malavv) <duguigne@gmail.com>
+4  Maxime Lavigne (malavv) <duguigne@gmail.com>
+` Generated using git shortlog -sne`
 
 ## Licensing
 Please refer to [LICENSE](LICENSE.md).
