@@ -4,26 +4,29 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 )
 
 var (
-	globalFnc = map[string]func([]string){
-		"exit":   exitFnc,
-		"help":   helpFnc,
-		"status": statusFnc,
-		"step":   stepFnc,
-	}
+	globalRepl = NewRepl([]*action{
+		NewAction("exit", "Exits the software", exitFnc),
+		NewAction("help", "Lists available commands", nil),
+		NewAction("status", "Summary information of the current.", statusFnc),
+		NewAction("step", "List, add, remove and change current step.", stepFnc),
+	})
+
 	current *recipe
 )
 
-func main() {
-	current = NewRecipe("Unnamed Recipe")
+type fnc struct {
+	keyword     string
+	description string
+	action      func([]string)
+}
 
+func addFake() {
 	if initial, found := current.GetStepByName("initial"); found {
 		initial.AddNextStep(NewStep("Bring to a boil", "t", "100", "C"))
 	}
@@ -36,33 +39,34 @@ func main() {
 	if initial, found := current.GetStepByName("C"); found {
 		initial.AddNextStep(NewStep("D", "t", "100", "C"))
 	}
-
-	flag.Parse()
-	menu()
-	repl()
 }
 
-func menu() {
+func main() {
+	// Functions refering back to the repl. In order to break dep. loop.
+	if action, found := globalRepl.GetAction("help"); found {
+		action.fnc = helpFnc
+	}
+
+	current = NewRecipe("Unnamed Recipe")
+	globalRepl.SetMode(current.initial.name)
+
+	addFake()
+
+	flag.Parse()
+
 	fmt.Println("        --- Brewru Reactor ---")
 	fmt.Println("This is an interactive session to the reactor.")
 	fmt.Println("Available commands :")
-	helpFnc(nil)
+	globalRepl.PrintUsage()
+
+	globalRepl.loop()
 }
 
-func handleGlobalCmd(cmds []string) {
-	fmt.Printf("Recognized and will handle cmd : %s\n", cmds)
-}
-func globalUsage() {
-	fmt.Println("    exit   Exits the software")
-	fmt.Println("    help   Lists available commands")
-	fmt.Println("    step   Step utilities")
-	fmt.Println("    status Summary information of the current.")
-}
 func exitFnc(cmd []string) {
 	os.Exit(0)
 }
 func helpFnc(cmd []string) {
-	globalUsage()
+	globalRepl.PrintUsage()
 }
 func statusFnc(cmd []string) {
 	current.Dashboard()
@@ -72,21 +76,6 @@ func stepFnc(param []string) {
 		if param[0] == "list" {
 			current.ListAllSteps()
 		}
-	}
-}
-
-func repl() {
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("> ")
-	for scanner.Scan() {
-		tokens := strings.Split(strings.ToLower(scanner.Text()), " ")
-		if _, found := globalFnc[tokens[0]]; found {
-			globalFnc[tokens[0]](tokens[1:])
-		} else {
-			fmt.Printf("Unrecognized function %s\n", tokens[0])
-			globalUsage()
-		}
-		fmt.Print("> ")
 	}
 }
 
