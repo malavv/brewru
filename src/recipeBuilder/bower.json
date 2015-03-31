@@ -1,0 +1,21 @@
+{
+  "name": "Recipe-Builder",
+  "version": "0.0.1",
+  "homepage": "https://github.com/malavv/brewru",
+  "authors": [
+    "Maxime Lavigne (malavv) <duguigne@gmail.com>"
+  ],
+  "description": "Brewru Recipe Builder/Viewer for the initial release.",
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "license": "Maxime Lavigne 2015",
+  "private": true,
+  "dependencies": {
+    "polymer": "~0.5.5"
+  },
+  "devDependencies": {
+    "core-elements": "Polymer/core-elements#~0.5.5"
+  }
+}

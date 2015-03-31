@@ -5,3 +5,7 @@ src/.gradle/
 src/.idea/
 src/bin/
 src/src.iml
+
+# Temporary Recipe Builder
+src/recipeBuilder/bower_components
+src/recipeBuilder/node_modules
