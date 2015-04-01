@@ -56,6 +56,7 @@
         	['ingredient', 'inventory'],
         	function(Ingredient, Inventory) {
           	self.inventory = new Inventory();
+            window.inventory = self.inventory;
 
           	var kg = 'brew:kilogram';
           	self.inventory.add(new Ingredient('brew:brewersSyrop', 2.4, kg));

@@ -5,269 +5,118 @@
 <polymer-element name="recipe-overview" vertical layout>
 	<template>
     <style>
-    .step {
-      text-align: center;
-      background-color: #ccc;
-      border-bottom: 1px solid black;
-    }
-    .name {
-      background-color: #333;
-      color: #ddd;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    h3 {
-      text-align: center;
-      background-color: #eee;
-      padding: 0;
-      margin: 0;
-    }
+      :host {
+      }
+      .recipeName {
+        background-color: #111;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 2em;
+        font-weight: bold;
+        color: #eee;
+      }
+      .reactor {
+        background-color: #444;
+        color: #ccc;
+      }
+      .name {
+        font-size: 20pt;
+        text-align: center;
+      }
+      .steps {
+        display: flex;
+        background-color: #eee;
+      }
+      .step {
+        color: #111;
+        padding: 2px 10px;
+        background-color: #ddd;
+        border: 1px solid #444;
+        margin: 2px;
+      }
     </style>
-
-		<h1>{{recipe.name}}</h1>
-    <div horizontal layout flex>
-      <div vertical layout>
-        <h2>Reactors</h2>
-        <core-list data="{{recipe.reactors}}" flex>
-          <template><div>{{model.id}}</div></template>
-        </core-list>
-        <h2>Composite Ingredients</h2>
-        <core-list data="{{recipe.composites}}" flex>
-          <template><div>{{model}}</div></template>
-        </core-list>
-      </div>
-      <div vertical layout flex>
-        <h2>Procedure</h2>
-        <h3>Mashing</h3>
-        <core-list data="{{recipe.procedure.mashing}}" flex>
-          <template>
-            <div class="step">
-              <div class="name">{{model.name}} &lt;{{model.id}}&gt;</div>
-              <div horizontal layout>
-                <div class="inputs" flex>
-                  <b>inputs</b>
-                  <ul>
-                  <template repeat="{{input in model.inputs}}">
-                    <li>{{input.container}} -> {{input.item}}({{input.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-                <div class="outputs" flex>
-                  <b>output</b>
-                  <ul>
-                  <template repeat="{{output in model.outputs}}">
-                    <li>this -> {{output.item}}({{output.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-              </div>
+		<div class="recipeName">{{recipe.name}}</div>
+    <div vertical layout flex>
+      <h2>Reactors</h2>
+      <core-list data="{{recipe.reactors}}" flex>
+        <template>
+          <div class="reactor" vertical layout flex>
+            <div class="name">{{model.id}}</div>
+            <div class="steps">
+              <template repeat="{{model | listToArray}}">
+                <div class="step">{{name}}</div>
+              </template>
             </div>
-          </template>
-        </core-list>
-        <h3>Boiling</h3>
-        <core-list data="{{recipe.procedure.boiling}}" flex>
-          <template>
-            <div class="step">
-              <div class="name">{{model.name}} &lt;{{model.id}}&gt;</div>
-              <div horizontal layout>
-                <div class="inputs" flex>
-                  <b>inputs</b>
-                  <ul>
-                  <template repeat="{{input in model.inputs}}">
-                    <li>
-                      {{input.container}} -> {{input.item}}({{input.type}})<br>
-                      {{input.qty.magnitude}} -- {{input.qty.unit}}
-                    </li>
-                  </template>
-                  </ul>
-                </div>
-                <div class="outputs" flex>
-                  <b>output</b>
-                  <ul>
-                  <template repeat="{{output in model.outputs}}">
-                    <li>this -> {{output.item}}({{output.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </template>
-        </core-list>
-        <h3>Fermenting</h3>
-        <core-list data="{{recipe.procedure.fermenting}}" flex>
-          <template>
-            <div class="step">
-              <div class="name">{{model.name}} &lt;{{model.id}}&gt;</div>
-              <div horizontal layout>
-                <div class="inputs" flex>
-                  <b>inputs</b>
-                  <ul>
-                  <template repeat="{{input in model.inputs}}">
-                    <li>{{input.container}} -> {{input.item}}({{input.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-                <div class="outputs" flex>
-                  <b>output</b>
-                  <ul>
-                  <template repeat="{{output in model.outputs}}">
-                    <li>this -> {{output.item}}({{output.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </template>
-        </core-list>
-        <h3>Packaging</h3>
-        <core-list data="{{recipe.procedure.packaging}}" flex>
-          <template>
-            <div class="step">
-              <div class="name">{{model.name}} &lt;{{model.id}}&gt;</div>
-              <div horizontal layout>
-                <div class="inputs" flex>
-                  <b>inputs</b>
-                  <ul>
-                  <template repeat="{{input in model.inputs}}">
-                    <li>{{input.container}} -> {{input.item}}({{input.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-                <div class="outputs" flex>
-                  <b>output</b>
-                  <ul>
-                  <template repeat="{{output in model.outputs}}">
-                    <li>this -> {{output.item}}({{output.type}})</li>
-                  </template>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </template>
-        </core-list>
-      </div>
+          </div>
+        </template>
+      </core-list>
     </div>
 
 	</template>
 	<script>
     Polymer({
       recipe: null,
+      steps: [],
+      listToArray: function(reactor) {
+        //console.log('reactorToStepList', reactor, reactor.getStepList());
+        if (reactor === undefined) { return []; }
+        console.log('reactorToStepList', reactor, reactor.getStepList());
+        return reactor.getStepList();
+      },
       ready: function() {
       	var self = this;
-        require(['recipe', 'step', 'procedure'], function(Recipe, Step, Procedure) {
+        require(
+          ['recipe', 'step', 'step/withWater', 'step/heating', 'quantity', 'step/addFermentable'],
+          function(Recipe, Step, WithWater, Heating, Qty, AddFermentable) {
+
+          var
+            store = window.inventory,
+            // Water
+            water = store.takeQty('anon:0', new Qty(23, Qty.si.l)),
+            // Brewer Syrop
+            brewerSyrop = store.takeQty('anon:1', new Qty(3.6, Qty.si.kg)),
+            // Crystal 120
+            crystal120 = store.takeQty('anon:2', new Qty(0.35, Qty.si.kg)),
+            // Crystal 60
+            crystal60 = store.takeQty('anon:3', new Qty(0.07, Qty.si.kg)),
+            // Pale Chocolate
+            paleChocolate = store.takeQty('anon:4', new Qty(0.13, Qty.si.kg)),
+            // Black Malt
+            blackMalt = store.takeQty('anon:5', new Qty(0.07, Qty.si.kg)),
+            // Flaked Rye
+            flakedRye = store.takeQty('anon:6', new Qty(0.3, Qty.si.kg)),
+            // Rolled Oats
+            rolledOats = store.takeQty('anon:7', new Qty(0.2, Qty.si.kg)),
+            // Steps
+            withWaterStep, heatingStep, addFermentableStep;
+
           self.recipe = new Recipe('TelePorter');
 
-          self.recipe.procedure.addStep(new Step(
-            'Add Water',
-            'recipe:addWater',
-            Procedure.type.boiling,
-            [
-              {
-                container: 'brew:inventory',
-                item: 'anon:0',
-                type: 'liquid',
-                qty: {
-                  magnitude: 23,
-                  unit: 'brew:liter'
-                }
-              }
-            ],
-            [
-              {
-                item: 'reactor:0',
-                type: 'reactor'
-              }
-            ]
-          ));
+          withWaterStep = WithWater
+            .create('Add Water')
+            .addInput(water)
+            .build();
+          self.recipe.addStep(withWaterStep);
 
-          self.recipe.procedure.addStep(new Step(
-            'Heat To Boil',
-            'recipe:heatToBoil',
-            Procedure.type.boiling,
-            // Define events here?
-            // Then set end on an event?
-            [
-              {
-                container: 'recipe:addWater',
-                item: 'reactor:0',
-                type: 'reactor'
-              }
-            ],
-            [
-              {
-                item: 'reactor:0',
-                type: 'reactor'
-              }
-            ]
-          ));
+          heatingStep = Heating
+            .create('Heat To Boil', withWaterStep.reactor.out[0])
+            .build(),
+          self.recipe.addStep(heatingStep);
 
-          self.recipe.procedure.addStep(new Step(
-            'Add Fermentables',
-            'recipe:addFermentables',
-            Procedure.type.boiling,
-            [
-              {
-                container: 'recipe:heatToBoil',
-                item: 'reactor:0',
-                type: 'reactor'
-              },
-              {
-                container: 'brew:inventory',
-                item: 'anon:1',
-                type: 'liquid',
-                qty: {
-                  magnitude: 3.6,
-                  unit: 'brew:kilogram'
-                }
-              },
-              {
-                container: 'brew:inventory',
-                item: 'anon:2',
-                type: 'solid',
-                qty: {
-                  magnitude: .35,
-                  unit: 'brew:kilogram'
-                }
-              },
-              {
-                container: 'brew:inventory',
-                item: 'anon:3',
-                type: 'solid',
-                qty: {
-                  magnitude: .07,
-                  unit: 'brew:kilogram'
-                }
-              },
-              {
-                container: 'brew:inventory',
-                item: 'anon:4',
-                type: 'solid',
-                qty: {
-                  magnitude: .13,
-                  unit: 'brew:kilogram'
-                }
-              },
-              {
-                container: 'brew:inventory',
-                item: 'anon:5',
-                type: 'solid',
-                qty: {
-                  magnitude: 0.07,
-                  unit: 'brew:kilogram'
-                }
-              }
-            ],
-            [
-              {
-                item: 'reactor:0',
-                type: 'reactor'
-              }
-            ]
-          ));
+          addFermentableStep = AddFermentable
+            .create('Add Fermentables', heatingStep.reactor.out[0])
+            .addInput(brewerSyrop)
+            .addInput(crystal120)
+            .addInput(crystal60)
+            .addInput(paleChocolate)
+            .addInput(blackMalt)
+            .build();
+          self.recipe.addStep(addFermentableStep);
 
+          // Traverse the graph
+          window.recipe = self.recipe;
+
+          self.steps = self.recipe.reactors[0].getStepList();
         });
       }
     });
