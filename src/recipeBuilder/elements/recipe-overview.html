@@ -2,124 +2,26 @@
 
 <link rel="import" href="../bower_components/core-list/core-list.html">
 
-<polymer-element name="recipe-overview" vertical layout>
-	<template>
-    <style>
-      :host {
-      }
-      .recipeName {
-        background-color: #111;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 2em;
-        font-weight: bold;
-        color: #eee;
-      }
-      .reactor {
-        background-color: #444;
-        color: #ccc;
-      }
-      .name {
-        font-size: 20pt;
-        text-align: center;
-      }
-      .steps {
-        display: flex;
-        background-color: #eee;
-      }
-      .step {
-        color: #111;
-        padding: 2px 10px;
-        background-color: #ddd;
-        border: 1px solid #444;
-        margin: 2px;
-      }
-    </style>
-		<div class="recipeName">{{recipe.name}}</div>
-    <div vertical layout flex>
-      <h2>Reactors</h2>
-      <core-list data="{{recipe.reactors}}" flex>
-        <template>
-          <div class="reactor" vertical layout flex>
-            <div class="name">{{model.id}}</div>
-            <div class="steps">
-              <template repeat="{{model | listToArray}}">
-                <div class="step">{{name}}</div>
-              </template>
-            </div>
-          </div>
-        </template>
-      </core-list>
-    </div>
+<link rel="import" href="recipe-graph.html">
+<link rel="import" href="recipe-reactor.html">
+<link rel="import" href="recipe-tools.html">
 
+<polymer-element name="recipe-overview" attributes="recipe" vertical layout>
+	<template>
+    <link rel="stylesheet" href="../css/recipe-overview.css">
+		<div class="recipeName">{{recipe.name}}</div>
+    <div horizontal layout flex>
+      <recipe-graph flex one></recipe-graph>
+      <recipe-reactor reactor={{reactor}} flex four></recipe-reactor>
+      <recipe-tools reactor={{reactor}} flex one></recipe-tools>
+    </div>
 	</template>
 	<script>
-    Polymer({
-      recipe: null,
-      steps: [],
-      listToArray: function(reactor) {
-        //console.log('reactorToStepList', reactor, reactor.getStepList());
-        if (reactor === undefined) { return []; }
-        console.log('reactorToStepList', reactor, reactor.getStepList());
-        return reactor.getStepList();
-      },
-      ready: function() {
-      	var self = this;
-        require(
-          ['recipe', 'step', 'step/withWater', 'step/heating', 'quantity', 'step/addFermentable'],
-          function(Recipe, Step, WithWater, Heating, Qty, AddFermentable) {
-
-          var
-            store = window.inventory,
-            // Water
-            water = store.takeQty('anon:0', new Qty(23, Qty.si.l)),
-            // Brewer Syrop
-            brewerSyrop = store.takeQty('anon:1', new Qty(3.6, Qty.si.kg)),
-            // Crystal 120
-            crystal120 = store.takeQty('anon:2', new Qty(0.35, Qty.si.kg)),
-            // Crystal 60
-            crystal60 = store.takeQty('anon:3', new Qty(0.07, Qty.si.kg)),
-            // Pale Chocolate
-            paleChocolate = store.takeQty('anon:4', new Qty(0.13, Qty.si.kg)),
-            // Black Malt
-            blackMalt = store.takeQty('anon:5', new Qty(0.07, Qty.si.kg)),
-            // Flaked Rye
-            flakedRye = store.takeQty('anon:6', new Qty(0.3, Qty.si.kg)),
-            // Rolled Oats
-            rolledOats = store.takeQty('anon:7', new Qty(0.2, Qty.si.kg)),
-            // Steps
-            withWaterStep, heatingStep, addFermentableStep;
-
-          self.recipe = new Recipe('TelePorter');
-
-          withWaterStep = WithWater
-            .create('Add Water')
-            .addInput(water)
-            .build();
-          self.recipe.addStep(withWaterStep);
-
-          heatingStep = Heating
-            .create('Heat To Boil', withWaterStep.reactor.out[0])
-            .build(),
-          self.recipe.addStep(heatingStep);
-
-          addFermentableStep = AddFermentable
-            .create('Add Fermentables', heatingStep.reactor.out[0])
-            .addInput(brewerSyrop)
-            .addInput(crystal120)
-            .addInput(crystal60)
-            .addInput(paleChocolate)
-            .addInput(blackMalt)
-            .build();
-          self.recipe.addStep(addFermentableStep);
-
-          // Traverse the graph
-          window.recipe = self.recipe;
-
-          self.steps = self.recipe.reactors[0].getStepList();
-        });
+    Polymer('recipe-overview', {
+      recipeChanged: function() {
+        this.reactor = this.recipe.reactors[0];
+        console.log("on recipe changed");
       }
     });
-
   </script>
 </polymer-element>

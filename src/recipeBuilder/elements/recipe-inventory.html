@@ -1,0 +1,46 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
+<polymer-element name="recipe-inventory" vertical layout>
+
+	<template>
+    <link rel="stylesheet" href="../css/recipe-tools.css">
+		<h1>Inventory</h1>
+    <core-list data="{{inventory.ingredients}}" flex>
+      <template>
+      	<div class="ingredient">
+      		<div class="id"><b>{{model.type}}</b> &lt;{{model.id}}&gt;</div>
+      		<div class="content"></div>
+      			{{model.magnitude}} - {{model.unit}}
+      	</div>
+     	</template>
+    </core-list>
+    <form>
+    	<button>test</button>
+    </form>
+	</template>
+	<script>
+    Polymer('recipe-inventory', {
+    	inventory: null,
+      ready: function() {
+      	var self = this;
+        require(
+        	['ingredient', 'inventory'],
+        	function(Ingredient, Inventory) {
+          	self.inventory = new Inventory();
+            window.inventory = self.inventory;
+
+          	var kg = 'brew:kilogram';
+          	self.inventory.add(new Ingredient('brew:brewersSyrop', 2.4, kg));
+          	self.inventory.add(new Ingredient('brew:crystal120', 0.16, kg));
+          	self.inventory.add(new Ingredient('brew:crystal60', 0.14, kg));
+          	self.inventory.add(new Ingredient('brew:PaleChocolate', 0.14, kg));
+          	self.inventory.add(new Ingredient('brew:BlackMalt', 0.14, kg));
+          	self.inventory.add(new Ingredient('brew:FlakedRye', 0.14, kg));
+          	self.inventory.add(new Ingredient('brew:RolledOat', 0.14, kg));
+        });
+      }
+    });
+  </script>
+</polymer-element>

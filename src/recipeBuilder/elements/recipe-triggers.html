@@ -1,0 +1,17 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="recipe-triggers" attributes="triggers" vertical layout>
+  <template>
+    <link rel="stylesheet" href="../css/recipe-triggers.css">
+    <div class="triggers" flex>
+   		<template repeat="{{trigger in triggers}}">
+    		<div class="trigger">{{trigger.name}}</div>
+  		</template>
+    </div>
+  </template>
+  <script>
+  Polymer('recipe-triggers', {
+    
+  });
+  </script>
+</polymer-element>

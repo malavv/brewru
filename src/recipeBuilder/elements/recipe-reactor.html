@@ -1,0 +1,15 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<polymer-element name="recipe-reactor" attributes="reactor" vertical layout>
+  <template>
+    <link rel="stylesheet" href="../css/recipe-reactor.css">
+    <div class="reactor-name">{{reactor.name}}&lt;{{reactor.id}}&gt;</div>
+    <div class="reactor-content" flex>Reactor Viewer Content</div>
+  </template>
+  <script>
+  Polymer('recipe-reactor', {
+  	reactorChanged: function() {
+  		console.log("on reactor changed", this.reactor);
+  	}
+  });
+  </script>
+</polymer-element>

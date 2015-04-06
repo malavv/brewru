@@ -1,29 +1,19 @@
 define(
-['list'],
-function(List) {
+['list', 'step'],
+function(List, Step) {
 
-	var id = 0;
+  var id = 0;
 
-  function Reactor(id, creator) {
+  function Reactor(id) {
   	this.id = id;
-    this.steps = (new List()).push(creator);
+    this.name = 'Anonymous';
+    this.steps = [
+    	new Step('start', null, null)
+    ];
   }
 
-  Reactor.createAnon = function(step) {
-  	return new Reactor('reactor:' + id++, step);
-  };
-
-  Reactor.prototype.pushStep = function(step) {
-    this.steps.push(step);
-  };
-
-  Reactor.prototype.getStepList = function() {
-    var steps = [];
-    for (var node = this.steps.begin; node.next !== null; node = node.next) {
-      steps.push(node.data);
-    }
-    steps.push(node.data);
-    return steps;
+  Reactor.createAnon = function() {
+  	return new Reactor('reactor:' + id++);
   };
 
   return Reactor;

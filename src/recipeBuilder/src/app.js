@@ -15,3 +15,9 @@ require(['underscore'], function(_) {
         interpolate: /\{\{(.+?)\}\}/g
     };
 })
+
+window.addEventListener('polymer-ready', function(e) {
+    require(['recipebuilder'], function(RecipeBuilder) {
+        new RecipeBuilder();
+    })
+});

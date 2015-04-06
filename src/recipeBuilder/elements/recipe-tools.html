@@ -1,0 +1,26 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
+
+<link rel="import" href="../elements/recipe-inventory.html">
+<link rel="import" href="../elements/recipe-triggers.html">
+
+<polymer-element name="recipe-tools" attributes="reactor" vertical layout>
+  <template>
+    <link rel="stylesheet" href="../css/recipe-tools.css">
+    <paper-tabs selected="{{selected}}">
+      <paper-tab>Inventory</paper-tab>
+      <paper-tab>Triggers</paper-tab>
+    </paper-tabs>
+    <core-pages flex selected="{{selected}}">
+      <recipe-inventory></recipe-inventory>
+      <recipe-triggers triggers="{{reactor.steps}}"></recipe-triggers>
+    </core-pages>
+  </template>
+  <script>
+  Polymer('recipe-tools', {
+    selected: 0
+  });
+  </script>
+</polymer-element>

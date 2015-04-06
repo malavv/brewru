@@ -1,0 +1,13 @@
+:host .reactor-name {
+  background-color: #ddd;  
+  text-align: center;
+  font-size: 1.5em;
+  border-bottom: 2px solid #ccc;
+  border-top: 2px solid blue;
+}
+
+:host .reactor-content {
+  background-color: #efefef;
+  text-align: center;
+  padding-top: 20%; 
+}

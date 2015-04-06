@@ -4,8 +4,9 @@ define(['reactor', 'step'], function(Reactor, Step) {
 
   function Recipe(name) {
     this.name = name;
-
-    this.reactors = [];
+    this.reactors = [
+      Reactor.createAnon()
+    ];
   }
 
   Recipe.prototype.addStep = function(step) {
