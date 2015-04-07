@@ -1,13 +1,23 @@
 define(
-['recipe'], 
-function(Recipe) {
+['ingredient', 'inventory', 'recipe'], 
+function(Ingredient, Inventory, Recipe) {
 
   function RecipeBuilder() {
-    var 
-      viewer = document.querySelector('recipe-overview'),
-      recipe = new Recipe('TelePorter');
+    this.inventory = new Inventory();
+    this.recipe = new Recipe();
 
-      viewer.recipe = recipe;
+    initInventory(this.inventory);
+  }
+
+  function initInventory(inventory) {
+    var kg = 'brew:kilogram';
+    inventory.add(new Ingredient('brew:brewersSyrop', 2.4, kg));
+    inventory.add(new Ingredient('brew:crystal120', 0.16, kg));
+    inventory.add(new Ingredient('brew:crystal60', 0.14, kg));
+    inventory.add(new Ingredient('brew:PaleChocolate', 0.14, kg));
+    inventory.add(new Ingredient('brew:BlackMalt', 0.14, kg));
+    inventory.add(new Ingredient('brew:FlakedRye', 0.14, kg));
+    inventory.add(new Ingredient('brew:RolledOat', 0.14, kg));
   }
 
   return RecipeBuilder;

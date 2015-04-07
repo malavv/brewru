@@ -1,11 +1,50 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<polymer-element name="recipe-graph" vertical layout>
+<polymer-element name="recipe-graph" attributes="recipe" vertical layout>
   <template>
     <link rel="stylesheet" href="../css/recipe-graph.css">
-    <div flex>Graph Content</div>
+    <svg flex></svg>
   </template>
   <script>
-  Polymer({
+  Polymer('recipe-graph', {
+  	recipeChanged: function() {
+  		if (this.recipe !== undefined)
+  			require(['d3'], this.drawReactors.bind(this));
+  	},
+  	drawReactors: function(d3) {
+		this.svg = d3.select(this.shadowRoot).select('svg');
+		var dataset = this.recipe.reactors;
+		var bbox = this.svg.node().getBoundingClientRect();
+		var width = bbox.width / dataset.length;
+		var height = bbox.height;
+		var halfWidth = width / 2.0;
+
+	    var reactorGroup = this.svg.selectAll('g')
+    		.data(dataset)
+    		.enter()
+    		.append('g')
+    		.attr("transform", function(d, i) {
+    			return 'translate(' + ((i * width) + halfWidth) + ', 30)';
+    		});
+
+    	// Draw Line
+    	reactorGroup
+    		.append("rect")
+    		.attr("x", -1.5)
+    		.attr('y', 0)
+    		.attr('width', 3)
+    		.attr('height', height);
+
+    	// Start
+    	this.drawStart(d3, reactorGroup);
+  	},
+  	drawStart: function(d3, group) {
+		group.append('circle')
+    		.attr('r', '10')
+    		.attr('fill', 'white')
+    		.attr('stroke', 'black');
+		group.append('circle')	
+    		.attr('r', '3');
+  	}
   });
   </script>
 </polymer-element>

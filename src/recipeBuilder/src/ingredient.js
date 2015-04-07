@@ -13,5 +13,19 @@ define([], function() {
   	return this.type + '('+this.magnitude+':'+this.unit+')';
   };
 
+  Ingredient.prototype.printQty = function() {
+    var unitSymbol = '';
+    switch(this.unit) {
+      case 'brew:kilogram':
+        unitSymbol = 'kg';
+        break;
+      case 'brew:liter':
+        unitSymbol = 'l';
+        break;
+    }
+
+    return this.magnitude + ' ' + unitSymbol;
+  }
+
   return Ingredient;
 });

@@ -5,7 +5,8 @@ requirejs.config({
         }
     },
     paths: {
-        underscore: '../bower_components/underscore/underscore'
+        underscore: '../bower_components/underscore/underscore',
+        d3: ['//d3js.org/d3.v3.min', '../lib/d3.v3.min']
     },
     baseUrl: 'src'
 });
@@ -15,9 +16,3 @@ require(['underscore'], function(_) {
         interpolate: /\{\{(.+?)\}\}/g
     };
 })
-
-window.addEventListener('polymer-ready', function(e) {
-    require(['recipebuilder'], function(RecipeBuilder) {
-        new RecipeBuilder();
-    })
-});

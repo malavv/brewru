@@ -1,26 +1,20 @@
 :host {
-				width: 250px;
-				background-color: black;
-				text-align: center;
-			}
+	text-align: center;
+}
 
-			h1 {
-				width: 100%;
-				padding: 0;
-				margin: 0;
-				background-color: gray;
-			}
-			button {
-				width: 100%;
-			}
-			.ingredient {
-				background-color: #ddd;
-				border-bottom: 1px solid gray;
-			}
-			.ingredient .id {
-				background-color: #333;
-				color: #eee;
-			}
-			.ingredient .content {
-				background-color: #333;
-			}
+.ingredient {
+	background-color: #ddd;
+	border-bottom: 1px solid gray;
+}
+
+h1 {
+}
+button {
+	width: 100%;
+}
+.ingredient {
+
+}
+.ingredient .id {
+
+}

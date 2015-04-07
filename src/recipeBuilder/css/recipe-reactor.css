@@ -7,7 +7,9 @@
 }
 
 :host .reactor-content {
-  background-color: #efefef;
-  text-align: center;
-  padding-top: 20%; 
-}
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	border-radius: inherit;
+	background-color: #f0f0f0;
+};

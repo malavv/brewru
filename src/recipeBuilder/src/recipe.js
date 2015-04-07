@@ -3,7 +3,7 @@ define(['reactor', 'step'], function(Reactor, Step) {
   var id = 0;
 
   function Recipe(name) {
-    this.name = name;
+    this.name = name || 'Anonymous';
     this.reactors = [
       Reactor.createAnon()
     ];
