@@ -2,21 +2,29 @@ define(
   [
     'base/concept',
     'base/units',
+    'base/key',
+    'shortcuts',
     'ingredient',
     'inventory',
-    'recipe'
+    'recipe',
+    'newStep'
   ],
-  function(Concept, Units, Ingredient, Inventory, Recipe) {
+  function(Concept, Units, Key, Shortcuts, Ingredient, Inventory, Recipe, NewStep) {
 
   function RecipeBuilder() {
     this.inventory = new Inventory();
     this.recipe = new Recipe();
+    this.shortcuts = new Shortcuts();
 
     initInventory(this.inventory);
+
+    this.shortcuts.add([Key.alt.s], 'NewStep');
+
+    var newStep = new NewStep();
+    window.bus.register(newStep, newStep.triggered, 'NewStep');
   }
 
   function initInventory(inventory) {
-    var kg = 'brew:kilogram';
     inventory.add(new Ingredient(new Concept('brew:brewersSyrop', 'Brewer\'s Syrup'), 2.4, Units.SI.Mass.kilogram));
     inventory.add(new Ingredient(new Concept('brew:crystal120', 'Crystal 120'), 0.16, Units.SI.Mass.kilogram));
     inventory.add(new Ingredient(new Concept('brew:crystal60', 'Crystal 60'), 0.14, Units.SI.Mass.kilogram));

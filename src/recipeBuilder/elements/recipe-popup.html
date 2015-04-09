@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
+<polymer-element name="recipe-popup" attributes="visible" vertical layout>
+  <template>
+    <link rel="stylesheet" href="../css/recipe-popup.css">
+    <core-list id="itemsList" data="{{items}}" selectionEnabled="true" selection="{{selection}}">
+      <template>
+          <div>{{index}} : {{model.name}}</div>
+      </template>
+    </core-list>
+  </template>
+  <script>
+  Polymer('recipe-popup', {
+    items: [],
+    internal: [],
+    selectionChanged: function(a, b, c) {
+      window.bus.broadcast('popup-answer', b);
+      this.visible = false;
+    },
+    ready: function() {
+      require(['base/bus'], this.onReady.bind(this));
+    },
+    onReady: function() {
+      window.bus.register(this, this.commandReceived, 'selectionDialog');
+      window.bus.register(this, this.cancelDialog, 'cancelDialog');
+    },
+    commandReceived: function(data) {
+      console.log('commandReceived', data);
+      this.items = data;
+      this.visible = true;
+    },
+    cancelDialog: function(data) {
+      console.log('cancelDialog', null);
+      this.visible = false;
+    },
+    itemsChanged: function(oldValue, newValue) {
+      this.internal = [];
+      newValue.forEach(function(elem, idx) {
+        this.internal.push({
+          index: idx,
+          selected: false,
+          model: elem
+        });
+      }, this);
+      this.$.itemsList.style.height = (newValue.length * 30) + "px";
+      this.$.itemsList.style.width = "300px";
+    }
+  });
+  </script>
+</polymer-element>

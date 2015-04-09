@@ -1,10 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<link rel="import" href="../bower_components/core-list/core-list.html">
-
 <link rel="import" href="recipe-graph.html">
 <link rel="import" href="recipe-reactor.html">
 <link rel="import" href="recipe-tools.html">
+<link rel="import" href="recipe-popup.html">
 
 <polymer-element name="recipe-overview" vertical layout>
 	<template>
@@ -15,9 +14,12 @@
       <recipe-reactor reactor={{reactor}} flex four></recipe-reactor>
       <recipe-tools reactor={{reactor}} inventory={{inventory}} flex one></recipe-tools>
     </div>
+    <recipe-popup visible={{popupVisible}} hidden?={{!popupVisible}} id="popup">
+    </recipe-popup>
 	</template>
 	<script>
     Polymer('recipe-overview', {
+      popupVisible: false,
       recipeChanged: function() {
         this.reactor = this.recipe.reactors[0];
       },
