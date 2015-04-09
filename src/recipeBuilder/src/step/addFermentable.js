@@ -20,7 +20,7 @@ function(Step) {
         build: function(input) { return new AddFermentable(name, inputs, outputs, reactor); }
       };
     return bld;
-  }
+  };
 
   AddFermentable.prototype = Step.prototype;
 

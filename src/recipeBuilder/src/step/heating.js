@@ -20,7 +20,7 @@ define(['step'], function(Step) {
         build: function(input) { return new Heating(name, inputs, outputs, reactor); }
       };
     return bld;
-  }
+  };
 
   Heating.prototype = Step.prototype;
 

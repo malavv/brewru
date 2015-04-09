@@ -1,8 +1,14 @@
-define(['ingredient'], function(Ingredient) {
+define(
+  [
+    'base/concept',
+    'base/units',
+    'ingredient'
+  ],
+  function(Concept, Units, Ingredient) {
 
   function Inventory() {
     this.ingredients = [
-      new Ingredient('brew:tapWater', Infinity , 'brew:liter')
+      new Ingredient(new Concept('brew:tapWater', 'Tap Water'), Infinity , Units.SI.Volume.liter)
     ];
   }
 
@@ -25,6 +31,6 @@ define(['ingredient'], function(Ingredient) {
       id: tmp[0].id,
       qty: qty
     };
-  }
+  };
   return Inventory;
 });

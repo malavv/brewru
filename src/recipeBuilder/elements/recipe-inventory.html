@@ -9,7 +9,7 @@
     <core-list data="{{inventory.ingredients}}" flex>
       <template>
       	<div class="ingredient">
-      		<div class="id"><b>{{model.type}}</b> &lt;{{model | showQty}}&gt;</div>
+      		<div class="id"><b>{{model.concept.name}}</b> &lt;{{model | showQty}}&gt;</div>
      	</template>
     </core-list>
     <form>
@@ -19,8 +19,7 @@
 	<script>
     Polymer('recipe-inventory', {
       showQty: function(val) {
-        if (val === undefined) 
-          return 'N/A';
+        if (val === undefined) return 'N/A';
         return val.printQty();
       }
     });

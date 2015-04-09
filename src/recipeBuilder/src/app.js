@@ -15,4 +15,4 @@ require(['underscore'], function(_) {
     _.templateSettings = {
         interpolate: /\{\{(.+?)\}\}/g
     };
-})
+});

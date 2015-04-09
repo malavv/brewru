@@ -1,31 +1,24 @@
-define([], function() {
+define(
+  [
+  'base/concept',
+  'base/units',
+  'underscore'
+  ],
+  function(Concept, Units) {
 
-	var id = 0;
-
-  function Ingredient(type, magnitude, unit) {
+  function Ingredient(concept, magnitude, unit) {
+    this.concept = concept instanceof Concept ? concept : new Concept();
     this.magnitude = magnitude;
-    this.unit = unit;
-    this.type = type;
-    this.id = 'anon:' + id++;
+    this.unit = Units.knows(unit) ? unit : new Concept();
   }
 
   Ingredient.prototype.toString = function() {
-  	return this.type + '('+this.magnitude+':'+this.unit+')';
+    return _.template('{{concept.id}}({{magnitude}}{{unit}})')(this);
   };
 
   Ingredient.prototype.printQty = function() {
-    var unitSymbol = '';
-    switch(this.unit) {
-      case 'brew:kilogram':
-        unitSymbol = 'kg';
-        break;
-      case 'brew:liter':
-        unitSymbol = 'l';
-        break;
-    }
-
-    return this.magnitude + ' ' + unitSymbol;
-  }
+    return this.magnitude + ' ' + this.unit.name;
+  };
 
   return Ingredient;
 });

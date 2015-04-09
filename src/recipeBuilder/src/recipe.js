@@ -28,7 +28,7 @@ define(['reactor', 'step'], function(Reactor, Step) {
       case Step.reactorUse.destroy: break;
       case Step.reactorUse.unknown: break;
     }
-  }
+  };
 
   Recipe.prototype.addReactor = function(reactor) {
     if (!(reactor instanceof Reactor)) {

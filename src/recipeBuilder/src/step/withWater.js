@@ -18,7 +18,7 @@ define(['step'], function(Step) {
         build: function(input) { return new WithWater(name, inputs, outputs); }
       };
     return bld;
-  }
+  };
 
   WithWater.prototype = Step.prototype;
 
