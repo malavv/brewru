@@ -3,7 +3,6 @@
 <link rel="import" href="recipe-graph.html">
 <link rel="import" href="recipe-reactor.html">
 <link rel="import" href="recipe-tools.html">
-<link rel="import" href="recipe-popup.html">
 <link rel="import" href="app-shortcuts.html">
 <link rel="import" href="app-menu.html">
 
@@ -16,14 +15,11 @@
       <recipe-reactor reactor={{reactor}} flex four></recipe-reactor>
       <recipe-tools reactor={{reactor}} inventory={{inventory}} flex one></recipe-tools>
     </div>
-    <recipe-popup visible={{popupVisible}} hidden?={{!popupVisible}} id="popup">
-    </recipe-popup>
     <app-shortcuts id="shortcuts" isHidden={{isShortcutHidden}} hidden?={{isShortcutHidden}}></app-shortcuts>
     <app-menu isHidden={{isMenuHidden}} hidden?={{isMenuHidden}}></app-menu>
 	</template>
 	<script>
     Polymer('recipe-overview', {
-      popupVisible: false,
       recipeChanged: function() {
         this.reactor = this.recipe.reactors[0];
       },
