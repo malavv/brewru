@@ -1,6 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="app-shortcuts" on-keyup="{{filter}}" attributes="isHidden" horizontal center-justified layout>
+<polymer-element
+    name="app-shortcuts"
+    attributes="isHidden"
+    horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-shortcuts.css">
     <div class="key-container">
@@ -34,6 +37,11 @@
         binding: 'shift+6',
         name: 'Toggle Visibility of Shortcuts',
         intent: 'Shortcuts'
+      },
+      {
+        binding: 'alt+A',
+        name: 'Test AskMenu',
+        intent: 'AskMenu'
       }
     ],
     shortcutsMap: {},

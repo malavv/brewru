@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element
+    name="app-menu"
+    attributes="isHidden"
+    on-keypress={{keypress}}
+    horizontal center-justified layout>
+  <template>
+    <link rel="stylesheet" href="../css/app-menu.css">
+    <div class="container">
+      <template repeat="{{item, idx in menuItems}}" >
+        <div horizontal layout>
+          <div class="idx">{{idx | itoc}}</div>
+          <div class="message">{{item.name}}</div>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+  var
+    codes = '0123456789abcdefghijklmnopqrstuvqxyz';
+
+  Polymer('app-menu', {
+    isHidden: true,
+    menuItems: [],
+    itoc: function(i) {
+      return codes[i];
+    },
+    ready: function() {
+      var self = this;
+      require(['base/bus'], function(bus) {
+        window.bus.register(self, self.askMenu, 'AskMenu');
+      });
+    },
+    askMenu: function(data) {
+      this.menuItems = data;
+      this.isHidden = false;
+      window.addEventListener('keypress', this, true);
+    },
+    handleEvent: function(e) {
+      var
+        key = String.fromCharCode(event.keyCode || event.which),
+        idx = codes.indexOf(key)
+
+      if (idx === -1) {
+        // not in codes
+        return;
+      }
+
+      if (idx >= this.menuItems.length) {
+        // Outside possibilities
+        return;
+      }
+      window.bus.broadcast('AnswerMenu', {selected: this.menuItems[idx], array: this.menuItems});
+      window.removeEventListener('keypress', this, true);
+      this.isHidden = true;
+    }
+  });
+  </script>
+</polymer-element>

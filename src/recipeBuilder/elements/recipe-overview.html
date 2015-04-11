@@ -5,6 +5,7 @@
 <link rel="import" href="recipe-tools.html">
 <link rel="import" href="recipe-popup.html">
 <link rel="import" href="app-shortcuts.html">
+<link rel="import" href="app-menu.html">
 
 <polymer-element name="recipe-overview" vertical layout>
 	<template>
@@ -18,6 +19,7 @@
     <recipe-popup visible={{popupVisible}} hidden?={{!popupVisible}} id="popup">
     </recipe-popup>
     <app-shortcuts id="shortcuts" isHidden={{isShortcutHidden}} hidden?={{isShortcutHidden}}></app-shortcuts>
+    <app-menu isHidden={{isMenuHidden}} hidden?={{isMenuHidden}}></app-menu>
 	</template>
 	<script>
     Polymer('recipe-overview', {
