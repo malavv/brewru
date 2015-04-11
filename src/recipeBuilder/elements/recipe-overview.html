@@ -4,6 +4,7 @@
 <link rel="import" href="recipe-reactor.html">
 <link rel="import" href="recipe-tools.html">
 <link rel="import" href="recipe-popup.html">
+<link rel="import" href="app-shortcuts.html">
 
 <polymer-element name="recipe-overview" vertical layout>
 	<template>
@@ -16,6 +17,7 @@
     </div>
     <recipe-popup visible={{popupVisible}} hidden?={{!popupVisible}} id="popup">
     </recipe-popup>
+    <app-shortcuts id="shortcuts" isHidden={{isShortcutHidden}} hidden?={{isShortcutHidden}}></app-shortcuts>
 	</template>
 	<script>
     Polymer('recipe-overview', {
@@ -25,12 +27,13 @@
       },
       ready: function() {
         require(['recipebuilder'], this.initRecipeBuilder.bind(this))
+        window.addEventListener('keyup', this.$.shortcuts.keypress.bind(this.$.shortcuts), true);
       },
       initRecipeBuilder: function(RecipeBuilder) {
         this.builder = new RecipeBuilder();
         this.inventory = this.builder.inventory;
         this.recipe = this.builder.recipe;
-      }
+      },
     });
   </script>
 </polymer-element>

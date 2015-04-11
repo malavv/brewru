@@ -1,14 +1,14 @@
 define(
   [
-    'base/concept',
+    'entities',
     'base/units',
     'ingredient'
   ],
-  function(Concept, Units, Ingredient) {
+  function(Entities, Units, Ingredient) {
 
   function Inventory() {
     this.ingredients = [
-      new Ingredient(new Concept('brew:tapWater', 'Tap Water'), Infinity , Units.SI.Volume.liter)
+      new Ingredient(Entities.tapWater, Infinity , Units.SI.Volume.liter)
     ];
   }
 
@@ -27,7 +27,7 @@ define(
       return null;
     }
     return {
-      from: 'brew:inventory',
+      from: Entities.inventory,
       id: tmp[0].id,
       qty: qty
     };

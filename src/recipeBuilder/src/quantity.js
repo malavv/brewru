@@ -1,6 +1,6 @@
 define(
-[],
-function() {
+	['entities'],
+	function(Entities) {
 
   function Quantity(magnitude, unit) {
     this.magnitude = magnitude;
@@ -8,8 +8,8 @@ function() {
   }
 
   Quantity.si = {
-    kg: 'unit:kilogram',
-    l: 'unit:liter',
+    kg: Entities.kg,
+    l: Entities.liter,
   };
 
   return Quantity;

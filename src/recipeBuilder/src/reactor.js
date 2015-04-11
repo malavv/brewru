@@ -1,6 +1,8 @@
 define(
-['list', 'step'],
-function(List, Step) {
+  [
+    'step'
+  ],
+  function(Step) {
 
   var id = 0;
 
@@ -12,9 +14,9 @@ function(List, Step) {
     ];
   }
 
-  Reactor.createAnon = function() {
-  	return new Reactor('reactor:' + id++);
+  return {
+    createAnon: function() {
+      return new Reactor('reactor:' + id++);
+    }
   };
-
-  return Reactor;
 });

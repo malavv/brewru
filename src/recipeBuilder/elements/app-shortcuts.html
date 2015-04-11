@@ -1,0 +1,59 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="app-shortcuts" on-keyup="{{filter}}" attributes="isHidden" horizontal center-justified layout>
+  <template>
+    <link rel="stylesheet" href="../css/app-shortcuts.css">
+    <div class="key-container">
+      <template repeat="{{shortcut in shortcuts}}" >
+        <div class="key-shortcut" horizontal layout>
+          <div class="key-binding">{{shortcut.binding}}</div>
+          <div class="key-description">{{shortcut.name}}</div>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+  function keyToBinding(keyEvent) {
+    var keyBinding = [];
+    if (keyEvent.altKey) keyBinding.push('alt');
+    if (keyEvent.ctrlKey) keyBinding.push('ctrl');
+    if (keyEvent.shiftKey) keyBinding.push('shift');
+    keyBinding.push(String.fromCharCode(event.keyCode || event.which));
+    return keyBinding.join('+');
+  }
+
+  Polymer('app-shortcuts', {
+    isHidden: true,
+    shortcuts: [
+      {
+        binding: 'alt+S',
+        name: 'Create new step',
+        intent: 'CreateStep'
+      },
+      {
+        binding: 'shift+6',
+        name: 'Toggle Visibility of Shortcuts',
+        intent: 'Shortcuts'
+      }
+    ],
+    shortcutsMap: {},
+    ready: function() {
+      this.shortcuts.forEach(function(shortcut) {
+        this.shortcutsMap[shortcut.binding] = shortcut;
+      }, this);
+      var self = this;
+      require(['base/bus'], function(bus) {
+        window.bus.register(self, self.toggleVisibility, 'Shortcuts');
+      });
+    },
+    keypress: function(e, detail, sender) {
+      var shortcut = this.shortcutsMap[keyToBinding(e)];
+      if (shortcut) window.bus.broadcast(shortcut.intent);
+    },
+    toggleVisibility: function() {
+      this.isHidden = !this.isHidden;
+      console.log('app-shortcuts - toggleVisibility');
+    }
+  });
+  </script>
+</polymer-element>

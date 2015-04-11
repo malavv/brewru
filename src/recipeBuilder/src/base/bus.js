@@ -12,6 +12,7 @@ define(
 
   function EventBus() {
     this.handlers = [];
+    this.debug = false;
   }
 
   EventBus.prototype.broadcast = function(type, data) {
@@ -21,6 +22,7 @@ define(
     this.handlers
       .filter(handlesType(type))
       .forEach(function(handler) { handler.callback.call(handler.obj, data); }, this);
+    if (this.debug) console.info('EventBus', type, data);
   };
 
   EventBus.prototype.register = function(obj, callback, types) {

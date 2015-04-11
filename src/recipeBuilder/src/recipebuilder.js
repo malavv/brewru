@@ -1,37 +1,30 @@
 define(
   [
-    'base/concept',
-    'base/units',
     'base/key',
-    'shortcuts',
+    'base/units',
+    'entities',
     'ingredient',
     'inventory',
-    'recipe',
-    'newStep'
+    'recipe'
   ],
-  function(Concept, Units, Key, Shortcuts, Ingredient, Inventory, Recipe, NewStep) {
+  function(Key, Units, Entities, Ingredient, Inventory, Recipe) {
 
   function RecipeBuilder() {
     this.inventory = new Inventory();
     this.recipe = new Recipe();
-    this.shortcuts = new Shortcuts();
 
+    // Add fake or basic items
     initInventory(this.inventory);
-
-    this.shortcuts.add([Key.alt.s], 'NewStep');
-
-    var newStep = new NewStep();
-    window.bus.register(newStep, newStep.triggered, 'NewStep');
   }
 
   function initInventory(inventory) {
-    inventory.add(new Ingredient(new Concept('brew:brewersSyrop', 'Brewer\'s Syrup'), 2.4, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(new Concept('brew:crystal120', 'Crystal 120'), 0.16, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(new Concept('brew:crystal60', 'Crystal 60'), 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(new Concept('brew:PaleChocolate', 'Pale Chocolate'), 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(new Concept('brew:BlackMalt', 'Black Malt'), 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(new Concept('brew:FlakedRye', 'Flaked Rye'), 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(new Concept('brew:RolledOat', 'Rolled Oat'), 0.14, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.syrup, 2.4, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.c120, 0.16, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.c60, 0.14, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.paleChoco, 0.14, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.blackMalt, 0.14, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.flakedRye, 0.14, Units.SI.Mass.kilogram));
+    inventory.add(new Ingredient(Entities.rolledOat, 0.14, Units.SI.Mass.kilogram));
   }
 
   return RecipeBuilder;
