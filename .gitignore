@@ -6,6 +6,8 @@ src/.idea/
 src/bin/
 src/src.iml
 
-# Temporary Recipe Builder
+# Recipe Builder
 src/recipeBuilder/bower_components
 src/recipeBuilder/node_modules
+src/recipeBuilder/css
+src/recipeBuilder/.sass-cache

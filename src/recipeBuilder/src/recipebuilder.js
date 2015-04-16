@@ -16,7 +16,6 @@ define(
     // Add fake or basic items
     initInventory(this.inventory);
 
-
     // Test new step
     window.bus.broadcast('AskMenu', [
       {name: 'Add Ingredient'},

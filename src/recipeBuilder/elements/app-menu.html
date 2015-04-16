@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/app-menu.css">
     <div class="container">
       <template repeat="{{item, idx in menuItems}}" >
-        <div horizontal layout>
+        <div class="choice" horizontal layout>
           <div class="idx">{{idx | itoc}}</div>
           <div class="message">{{item.name}}</div>
         </div>
