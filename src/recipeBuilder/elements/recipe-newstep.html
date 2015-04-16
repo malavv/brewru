@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="recipe-newstep" attributes="triggers" hidden>
+  <script>
+  Polymer('recipe-newstep', {
+    isChoosing: false,
+    steps: [
+      {name: 'Add Ingredient'},
+      {name: 'Heating'},
+      {name: 'Splitting'},
+      {name: 'Merging'},
+      {name: 'Create Ingredient'},
+      {name: 'Ferment'}
+    ],
+
+
+    ready: function() {
+      require(['base/bus'], this.onReady.bind(this));
+    },
+    onReady: function(bus) {
+      window.bus.register(this, this.createStepEvt, 'CreateStep');
+      window.bus.register(this, this.stepSelected, 'AnswerMenu');
+    },
+    createStepEvt: function(data) {
+      if (this.isChoosing) return;
+      this.isChoosing = true;
+      window.bus.broadcast('AskMenu', this.steps);
+    },
+    stepSelected: function(data) {
+      console.log('Test back from menu, answer :', data);
+      this.isChoosing = false;
+    }
+  });
+  </script>
+</polymer-element>

@@ -3,6 +3,7 @@
 <link rel="import" href="recipe-graph.html">
 <link rel="import" href="recipe-reactor.html">
 <link rel="import" href="recipe-tools.html">
+<link rel="import" href="recipe-newstep.html">
 <link rel="import" href="app-shortcuts.html">
 <link rel="import" href="app-menu.html">
 
@@ -17,6 +18,7 @@
     </div>
     <app-shortcuts id="shortcuts" isHidden={{isShortcutHidden}} hidden?={{isShortcutHidden}}></app-shortcuts>
     <app-menu isHidden={{isMenuHidden}} hidden?={{isMenuHidden}}></app-menu>
+    <recipe-newstep></recipe-newstep>
 	</template>
 	<script>
     Polymer('recipe-overview', {
