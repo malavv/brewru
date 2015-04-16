@@ -1,41 +1,85 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="recipe-newstep" attributes="triggers" hidden>
+<polymer-element name="recipe-newstep" attributes="builder" hidden>
   <script>
+  var Menu;
+
+  function TmpStep(name) {
+    this.name = name;
+  }
+
+  function StepBuilder(step) {
+    this.step = step;
+    this.ingredient;
+    this.timing;
+
+  }
+
+  TmpStep.prototype.toString = function() {
+    return this.name;
+  };
+
   Polymer('recipe-newstep', {
     isChoosing: false,
     steps: [
-      {name: 'Add Ingredient'},
-      {name: 'Heating'},
-      {name: 'Splitting'},
-      {name: 'Merging'},
-      {name: 'Create Ingredient'},
-      {name: 'Ferment'}
+      new TmpStep('Add Ingredient'),
+      new TmpStep('Heating'),
+      new TmpStep('Splitting'),
+      new TmpStep('Merging'),
+      new TmpStep('Create Ingredient'),
+      new TmpStep('Ferment')
     ],
 
     ready: function() {
-      require(['base/bus'], this.onReady.bind(this));
+      require(['base/bus', 'menu'], this.onReady.bind(this));
     },
-    onReady: function(bus) {
-      window.bus.register(this, this.createStepEvt, 'CreateStep');
-      window.bus.register(this, this.stepSelected, 'AnswerMenu');
+    onReady: function(bus, menu) {
+      Menu = menu;
+      window.bus.register(this, 'CreateStep');
     },
-    createStepEvt: function(data) {
+    onCreateStep: function(data) {
       if (this.isChoosing) return;
       this.isChoosing = true;
-      window.bus.broadcast('AskMenu', this.steps);
+      Menu.ask(this.steps).then(this.onAnswerMenu.bind(this));
     },
-    stepSelected: function(data) {
+    onAnswerMenu: function(data) {
       switch (data.selected.name) {
         case 'Add Ingredient':
           this.onAddingIngredient();
           break;
       }
-      console.log('Test back from menu, answer :', data);
       this.isChoosing = false;
     },
     onAddingIngredient: function() {
-      console.log('Add Ingredient : stepSelected');
+      Menu.ask(this.builder.ingredients.listAllIngredients())
+        .then(this.onChosenIngredient.bind(this, new StepBuilder('Add Ingredient')));
+    },
+    onChosenIngredient: function(stepBld, ingredient) {
+      stepBld.ingredient = ingredient.selected;
+      Menu.ask(['After', 'OnTrigger']).then(this.onChooseStep.bind(this, stepBld));
+    },
+    onChooseStep: function(stepBld, timing) {
+      stepBld.timing = timing.selected;
+      var steps = [];
+      this.builder.recipe.reactors.forEach(function(reactor) {
+        reactor.steps.forEach(function(step) {
+          steps.push({
+            reactor: reactor,
+            step: step,
+            toString: function() {
+              return this.reactor.name + ' - ' + this.step.name;
+            }
+          });
+        });
+      });
+
+      Menu.ask(steps).then(this.onStepChosen.bind(this, stepBld));
+    },
+    onStepChosen: function(stepBld, step) {
+      stepBld.qty = prompt("Enter quantity");
+      step.selected.reactor.addAfter(
+        step.selected.step, stepBld
+      );
     }
   });
   </script>

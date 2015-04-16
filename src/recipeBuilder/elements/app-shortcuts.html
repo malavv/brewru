@@ -36,7 +36,10 @@
     },
     onReady: function(bus, Key) {
       this.shortcuts.forEach(function(s) { this.map[s.binding] = s; }, this);
-      window.bus.register(this, this.toggleVisibility, 'Shortcuts');
+      window.bus.register(this, 'Shortcuts');
+    },
+    onShortcuts: function(data) {
+      this.isHidden = !this.isHidden;
     },
     keypress: function(Key, e, detail, sender) {
       var
@@ -44,9 +47,6 @@
         shortcut = this.map[key.toString()];
 
       if (shortcut) window.bus.broadcast(shortcut.intent);
-    },
-    toggleVisibility: function() {
-      this.isHidden = !this.isHidden;
     }
   });
   </script>

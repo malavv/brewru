@@ -19,6 +19,10 @@ define(
     this.inventory.push(ingredient);
   };
 
+  Ingredients.prototype.listAllIngredients = function() {
+    return [].concat(this.inventory).concat(this.reactors.map(function(r) { return r.ingredients; }));
+  };
+
   Ingredients.prototype.getFromInventory = function(id) {
     return this.inventory.filter(function(i) { return i.id === id; });
   };

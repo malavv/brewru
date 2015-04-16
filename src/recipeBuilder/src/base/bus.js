@@ -4,9 +4,8 @@ define(
 
   window.bus = new EventBus();
 
-  function Handler(obj, callback, types) {
+  function Handler(obj, types) {
     this.obj = obj;
-    this.callback = callback;
     this.types = Array.isArray(types) ? types : [types];
   }
 
@@ -21,22 +20,20 @@ define(
 
     this.handlers
       .filter(handlesType(type))
-      .forEach(function(handler) { handler.callback.call(handler.obj, data); }, this);
+      .forEach(function(h) {
+        h.obj['on' + type].call(h.obj, data);
+      }, this);
     if (this.debug) console.info('EventBus', type, data);
   };
 
-  EventBus.prototype.register = function(obj, callback, types) {
-    if (!(obj instanceof Object)) {
-      console.error('[\'Event Bus\']Invalid handler');
+  EventBus.prototype.register = function(obj, types) {
+    if (obj instanceof Object) {
+      this.types = Array.isArray(types) ? types : [types];
+      this.handlers.push(new Handler(obj, types));
       return;
     }
-    if (!(callback instanceof Function)) {
-      console.error('[\'Event Bus\']Invalid handler');
-      return;
-    }
-    this.types = Array.isArray(types) ? types : [types];
-    this.handlers.push(new Handler(obj, callback, types));
-  };
+    console.error('[\'Event Bus\']Invalid handler');
+  }
 
   function handlesType(type) {
     return function(handler) {

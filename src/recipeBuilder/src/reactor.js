@@ -14,6 +14,13 @@ define(
     ];
   }
 
+  Reactor.prototype.addAfter = function(lhs, newObj) {
+    if (newObj.timing === 'After') {
+      var idx = this.steps.indexOf(lhs);
+      this.steps.splice(idx + 1, 0, new Step('Anonymous', null, null));
+    }
+  };
+
   return {
     createAnon: function() {
       return new Reactor('reactor:' + id++);

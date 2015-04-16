@@ -11,7 +11,7 @@
       <template repeat="{{item, idx in menuItems}}" >
         <div class="choice" horizontal layout>
           <div class="idx">{{idx | itoc}}</div>
-          <div class="message">{{item.name}}</div>
+          <div class="message">{{item}}</div>
         </div>
       </template>
     </div>
@@ -23,16 +23,13 @@
   Polymer('app-menu', {
     isHidden: true,
     menuItems: [],
-    itoc: function(i) {
-      return codes[i];
+
+    itoc: function(i) { return codes[i]; },
+    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
+    onReady: function() {
+      window.bus.register(this, 'AskMenu');
     },
-    ready: function() {
-      var self = this;
-      require(['base/bus'], function(bus) {
-        window.bus.register(self, self.askMenu, 'AskMenu');
-      });
-    },
-    askMenu: function(data) {
+    onAskMenu: function(data) {
       this.menuItems = data;
       this.isHidden = false;
       window.addEventListener('keypress', this, true);
@@ -42,15 +39,9 @@
         key = String.fromCharCode(event.keyCode || event.which),
         idx = codes.indexOf(key)
 
-      if (idx === -1) {
-        // not in codes
-        return;
-      }
+      if (idx === -1) return; // not in codes
+      if (idx >= this.menuItems.length) return; // Outside possibilities
 
-      if (idx >= this.menuItems.length) {
-        // Outside possibilities
-        return;
-      }
       window.bus.broadcast('AnswerMenu', {selected: this.menuItems[idx], array: this.menuItems});
       window.removeEventListener('keypress', this, true);
       this.isHidden = true;
