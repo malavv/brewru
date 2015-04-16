@@ -6,11 +6,12 @@
 <link rel="import" href="recipe-newstep.html">
 <link rel="import" href="app-shortcuts.html">
 <link rel="import" href="app-menu.html">
+<link rel="import" href="widget-text.html">
 
 <polymer-element name="recipe-overview" vertical layout>
 	<template>
     <link rel="stylesheet" href="../css/recipe-overview.css">
-		<div class="recipeName">{{recipe.name}}</div>
+    <widget-text class="recipeName" text={{recipe.name}}></widget-text>
     <div horizontal layout flex>
       <recipe-graph recipe={{recipe}} flex one></recipe-graph>
       <recipe-reactor reactor={{reactor}} flex four></recipe-reactor>
@@ -21,19 +22,24 @@
     <recipe-newstep></recipe-newstep>
 	</template>
 	<script>
+    var Key;
     Polymer('recipe-overview', {
       recipeChanged: function() {
         this.reactor = this.recipe.reactors[0];
       },
       ready: function() {
-        require(['recipebuilder'], this.initRecipeBuilder.bind(this))
-        window.addEventListener('keyup', this.$.shortcuts.keypress.bind(this.$.shortcuts), true);
+        require(['recipebuilder', 'base/key'], this.onReady.bind(this))
+      },
+      onReady: function(RecipeBuilder, key) {
+        Key = key;
+        this.initRecipeBuilder(RecipeBuilder);
+        window.addEventListener('keyup', this.$.shortcuts.keypress.bind(this.$.shortcuts, Key), true);
       },
       initRecipeBuilder: function(RecipeBuilder) {
         this.builder = new RecipeBuilder();
         this.inventory = this.builder.inventory;
         this.recipe = this.builder.recipe;
-      },
+      }
     });
   </script>
 </polymer-element>

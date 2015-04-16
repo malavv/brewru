@@ -1,8 +1,14 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="widget-text.html">
+
 <polymer-element name="recipe-reactor" attributes="reactor" vertical layout>
   <template>
     <link rel="stylesheet" href="../css/recipe-reactor.css">
-    <div class="reactor-name">{{reactor.name}}&lt;{{reactor.id}}&gt;</div>
+    <div class="reactor-name">
+      <widget-text text="{{reactor.name}}"></widget-text>
+      &lt;{{reactor.id}}&gt;
+    </div>
     <div class="reactor-content" flex>Reactor Viewer Content</div>
   </template>
   <script>

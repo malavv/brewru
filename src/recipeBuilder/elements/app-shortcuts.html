@@ -16,15 +16,6 @@
     </div>
   </template>
   <script>
-  function keyToBinding(keyEvent) {
-    var keyBinding = [];
-    if (keyEvent.altKey) keyBinding.push('alt');
-    if (keyEvent.ctrlKey) keyBinding.push('ctrl');
-    if (keyEvent.shiftKey) keyBinding.push('shift');
-    keyBinding.push(String.fromCharCode(event.keyCode || event.which));
-    return keyBinding.join('+');
-  }
-
   Polymer('app-shortcuts', {
     isHidden: true,
     shortcuts: [
@@ -39,18 +30,19 @@
         intent: 'Shortcuts'
       }
     ],
-    shortcutsMap: {},
+    map: {},
     ready: function() {
-      this.shortcuts.forEach(function(shortcut) {
-        this.shortcutsMap[shortcut.binding] = shortcut;
-      }, this);
-      var self = this;
-      require(['base/bus'], function(bus) {
-        window.bus.register(self, self.toggleVisibility, 'Shortcuts');
-      });
+      require(['base/bus', 'base/key'], this.onReady.bind(this));
     },
-    keypress: function(e, detail, sender) {
-      var shortcut = this.shortcutsMap[keyToBinding(e)];
+    onReady: function(bus, Key) {
+      this.shortcuts.forEach(function(s) { this.map[s.binding] = s; }, this);
+      window.bus.register(this, this.toggleVisibility, 'Shortcuts');
+    },
+    keypress: function(Key, e, detail, sender) {
+      var
+        key = Key.fromEvent(e),
+        shortcut = this.map[key.toString()];
+
       if (shortcut) window.bus.broadcast(shortcut.intent);
     },
     toggleVisibility: function() {

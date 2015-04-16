@@ -2,26 +2,35 @@ define(
 	[],
 	function() {
 
-  function Key(details) {
-    this.alt = details.alt;
-    this.ctrl = details.ctrl;
-    this.code = details.code;
+  function code2char(code) {
+    switch(code) {
+      case 13: return 'enter';
+      default: return 'unknown';
+    }
   }
 
-  Key.prototype.isEvent = function(evt) {
-    if (!(evt instanceof KeyboardEvent)) {
-      console.error('! valid keyboard event to compare');
-      return;
-    }
-    return evt.altKey === this.alt &&
-      evt.ctrlKey === this.ctrl &&
-      evt.keyCode === this.code;
+  function keyToBinding(keyEvent) {
+    var keyBinding = [];
+    if (keyEvent.altKey) keyBinding.push('alt');
+    if (keyEvent.ctrlKey) keyBinding.push('ctrl');
+    if (keyEvent.shiftKey) keyBinding.push('shift');
+
+    var str = String.fromCharCode(event.keyCode || event.which);
+    keyBinding.push(str.match(/\w/) ? str : code2char(str.charCodeAt(0)));
+    return keyBinding.join('+');
+  }
+
+  function Key(event) {
+    this.event = event;
+  }
+
+  Key.fromEvent = function(event) {
+    return new Key(event);
   };
 
-  Key.alt = {
-    s: new Key({alt: true, ctrl: false, code: 83})
+  Key.prototype.toString = function() {
+    return keyToBinding(this.event);
   };
-  Key.none = new Key({alt: false, ctrl: false, code: -1});
 
   return Key;
 });

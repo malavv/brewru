@@ -15,25 +15,6 @@ define(
 
     // Add fake or basic items
     initInventory(this.inventory);
-/*
-    // Test new step
-    window.bus.broadcast('AskMenu', [
-      {name: 'Add Ingredient'},
-      {name: 'Heating'},
-      {name: 'Splitting'},
-      {name: 'Merging'},
-      {name: 'Create Ingredient'},
-      {name: 'Ferment'}
-    ]);
-
-    var stepHandler = {
-      call: function(data) {
-        console.log('Test back from menu, answer :', data);
-      }
-    };
-
-    window.bus.register(stepHandler, stepHandler.call, 'AnswerMenu');
-    */
   }
 
   function initInventory(inventory) {
