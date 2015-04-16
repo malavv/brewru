@@ -3,18 +3,18 @@
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
 
-<link rel="import" href="../elements/recipe-inventory.html">
+<link rel="import" href="../elements/recipe-ingredients.html">
 <link rel="import" href="../elements/recipe-triggers.html">
 
 <polymer-element name="recipe-tools" attributes="reactor inventory" vertical layout>
   <template>
     <link rel="stylesheet" href="../css/recipe-tools.css">
     <paper-tabs selected="{{selected}}">
-      <paper-tab>Inventory</paper-tab>
+      <paper-tab>Ingredients</paper-tab>
       <paper-tab>Triggers</paper-tab>
     </paper-tabs>
     <core-pages flex selected="{{selected}}">
-      <recipe-inventory inventory={{inventory}}></recipe-inventory>
+      <recipe-ingredients ingredients={{inventory}}></recipe-ingredients>
       <recipe-triggers triggers="{{reactor.steps}}"></recipe-triggers>
     </core-pages>
   </template>

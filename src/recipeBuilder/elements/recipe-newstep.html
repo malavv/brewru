@@ -13,7 +13,6 @@
       {name: 'Ferment'}
     ],
 
-
     ready: function() {
       require(['base/bus'], this.onReady.bind(this));
     },
@@ -27,8 +26,16 @@
       window.bus.broadcast('AskMenu', this.steps);
     },
     stepSelected: function(data) {
+      switch (data.selected.name) {
+        case 'Add Ingredient':
+          this.onAddingIngredient();
+          break;
+      }
       console.log('Test back from menu, answer :', data);
       this.isChoosing = false;
+    },
+    onAddingIngredient: function() {
+      console.log('Add Ingredient : stepSelected');
     }
   });
   </script>

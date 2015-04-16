@@ -4,13 +4,13 @@ define(
     'base/units',
     'entities',
     'ingredient',
-    'inventory',
+    'ingredients',
     'recipe'
   ],
-  function(Key, Units, Entities, Ingredient, Inventory, Recipe) {
+  function(Key, Units, Entities, Ingredient, Ingredients, Recipe) {
 
   function RecipeBuilder() {
-    this.inventory = new Inventory();
+    this.inventory = new Ingredients();
     this.recipe = new Recipe();
 
     // Add fake or basic items
@@ -18,13 +18,13 @@ define(
   }
 
   function initInventory(inventory) {
-    inventory.add(new Ingredient(Entities.syrup, 2.4, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(Entities.c120, 0.16, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(Entities.c60, 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(Entities.paleChoco, 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(Entities.blackMalt, 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(Entities.flakedRye, 0.14, Units.SI.Mass.kilogram));
-    inventory.add(new Ingredient(Entities.rolledOat, 0.14, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.syrup, 2.4, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.c120, 0.16, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.c60, 0.14, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.paleChoco, 0.14, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.blackMalt, 0.14, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.flakedRye, 0.14, Units.SI.Mass.kilogram));
+    inventory.addToInventory(new Ingredient(Entities.rolledOat, 0.14, Units.SI.Mass.kilogram));
   }
 
   return RecipeBuilder;

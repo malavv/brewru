@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
+<polymer-element name="recipe-ingredients" attributes="ingredients" vertical layout>
+	<template>
+    <link rel="stylesheet" href="../css/recipe-ingredients.css">
+    <core-list data="{{data}}" groups="{{groups}}" flex>
+      <template>
+        <div divider class="section">{{groupModel.name}}</div>
+      	<div class="ingredient"><b>{{model.concept.name}}</b>&lt;{{model | showQty}}&gt;</div>
+     	</template>
+    </core-list>
+	</template>
+	<script>
+    Polymer('recipe-ingredients', {
+      data: [],
+      groups: [],
+
+      ingredientsChanged: function(a, b) {
+        b.inventory.forEach(function(item) { this.data.push(item); }, this);
+        this.groups.push({
+          length: b.inventory.length,
+          data: {name: 'Inventory'}
+        });
+        b.reactors.forEach(function(reactor) {
+          reactor.ingredients.forEach(function(item) { this.data.push(item); }, this);
+          this.groups.push({
+            length: reactor.ingredients.length,
+            data: { name: reactor.name }
+          });
+        }, this);
+      },
+      showQty: function(val) {
+        if (val === undefined) return 'N/A';
+        return val.printQty();
+      }
+    });
+  </script>
+</polymer-element>
