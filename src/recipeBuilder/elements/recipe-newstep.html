@@ -2,46 +2,86 @@
 
 <polymer-element name="recipe-newstep" attributes="builder" hidden>
   <script>
-  var Menu;
+  var
+    Menu,
+    Steps = [
+      {name: 'Add Ingredient', toString: byName},
+      {name: 'Heating', toString: byName},
+      {name: 'Splitting', toString: byName},
+      {name: 'Merging', toString: byName},
+      {name: 'Create Ingredient', toString: byName},
+      {name: 'Ferment', toString: byName}
+    ];
 
-  function TmpStep(name) {
-    this.name = name;
+  function byName() {
+    return this.name;
   }
+
+  function StepState() {
+    this.name = null;
+    this.ingredient = null;
+    this.type = null;
+  };
 
   function StepBuilder(step) {
     this.step = step;
     this.ingredient;
     this.timing;
-
+    this.qty;
   }
 
-  TmpStep.prototype.toString = function() {
-    return this.name;
-  };
+  function registerType(state, data) {
+    state.type = data.selected.name;
+    return state;
+  }
+  function registerName(state, data) {
+    state.name = data.value;
+    return state;
+  }
+  function registerIngredient(state, data) {
+    state.ingredient = data.ingredient;
+    state.qty = {value: data.value, unit: data.unit};
+    return state;
+  }
 
   Polymer('recipe-newstep', {
     isChoosing: false,
-    steps: [
-      new TmpStep('Add Ingredient'),
-      new TmpStep('Heating'),
-      new TmpStep('Splitting'),
-      new TmpStep('Merging'),
-      new TmpStep('Create Ingredient'),
-      new TmpStep('Ferment')
-    ],
 
     ready: function() {
-      require(['base/bus', 'menu'], this.onReady.bind(this));
+      require(['base/bus'], this.onReady.bind(this));
     },
-    onReady: function(bus, menu) {
-      Menu = menu;
+    onReady: function(bus) {
       window.bus.register(this, 'CreateStep');
     },
     onCreateStep: function(data) {
       if (this.isChoosing) return;
       this.isChoosing = true;
-      Menu.ask(this.steps).then(this.onAnswerMenu.bind(this));
+      this.onStateMachine(new StepState());
     },
+
+    onStateMachine: function(state) {
+      if (state.type === null) return this.askType(state);
+      if (state.name === null) return this.askName(state);
+      if (state.ingredient === null) return this.askIngredient(state);
+      console.log('Needs a next step, here is the current state : ', state);
+    },
+
+    askType: function(state) {
+      bus.evt2promise('AskMenu', Steps, 'AnswerMenu')
+        .then(registerType.bind(this, state))
+        .then(this.onStateMachine.bind(this));
+    },
+    askName: function(state) {
+      bus.evt2promise('AskText', 'Task Name', 'AnswerText')
+        .then(registerName.bind(this, state))
+        .then(this.onStateMachine.bind(this));
+    },
+    askIngredient: function(state) {
+      bus.evt2promise('AskIngredient', this.builder.ingredients.listAllIngredients(), 'AnswerIngredient')
+        .then(registerIngredient.bind(this, state))
+        .then(this.onStateMachine.bind(this));
+    },
+
     onAnswerMenu: function(data) {
       switch (data.selected.name) {
         case 'Add Ingredient':

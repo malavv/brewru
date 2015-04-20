@@ -1,0 +1,36 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<polymer-element
+    name="app-text"
+    attributes="isHidden"
+    horizontal center-justified layout>
+  <template>
+    <link rel="stylesheet" href="../css/app-text.css">
+    <div class="container" horizontal layout>
+      <paper-input id="value" label="{{description}}" committedValue="{{value}}" flex></paper-input>
+    </div>
+  </template>
+  <script>
+  Polymer('app-text', {
+    isHidden: true,
+    description: '',
+    value: '',
+
+    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
+    onReady: function() { window.bus.register(this, 'AskText'); },
+    onAskText: function(data) {
+      this.description = data;
+      this.isHidden = false;
+      // I have no idea why I need to do this, but straight calling focus is an uther failure.
+      var self = this;
+      window.setTimeout(function() { self.$.value.focus(); }, 0);
+    },
+    valueChanged: function(oldValue, newValue) {
+      this.isHidden = true;
+      window.bus.broadcast('AnswerText', {description: this.description, value: this.value});
+    }
+  });
+  </script>
+</polymer-element>

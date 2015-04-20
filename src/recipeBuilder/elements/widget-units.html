@@ -1,0 +1,68 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element
+    name="widget-units"
+    attributes="unit"
+    vertical center-justified layout
+    on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
+  <template>
+    <link rel="stylesheet" href="../css/widget-units.css">
+    <div class="container">
+      <div class="title">{{title}}</div>
+
+      <div class="system us" hidden?={{!isExpanded}} on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
+        <div class="name">US Cust.</div>
+        <ul>
+          <li on-tap={{onChoice}}>oz : ounce</li>
+          <li on-tap={{onChoice}}>st : stone</li>
+          <li on-tap={{onChoice}}>qr : quarter</li>
+          <li on-tap={{onChoice}}>t : ton</li>
+        </ul>
+      </div>
+
+      <div class="system si" hidden?={{!isExpanded}} on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
+        <div class="name">SI</div>
+        <ul>
+          <li on-tap={{onChoice}}>mm</li>
+          <li on-tap={{onChoice}}>meter</li>
+          <li on-tap={{onChoice}}>liter</li>
+          <li on-tap={{onChoice}}>g</li>
+          <li on-tap={{onChoice}}>kg</li>
+        </ul>
+      </div>
+    </div>
+
+  </template>
+  <script>
+  Polymer('widget-units', {
+    isExpanded: false,
+    ref: 0,
+
+    unit: '',
+    title: 'Units',
+
+    ready: function() {},
+    onHoverIn: function() {
+      this.isExpanded = true;
+      this.ref += 1;
+    },
+    onHoverOut: function() {
+      var self = this;
+      window.setTimeout(function() {
+        self.ref = self.ref > 0 ? self.ref - 1 : 0;
+        if (self.ref === 0)
+          self.isExpanded = false;
+      }, 100)
+    },
+    onChoice: function(a, b, c) {
+      this.unit = c.innerText;
+      this.isExpanded = false;
+      this.ref = 0;
+    },
+    unitChanged: function(oldValue, newValue) {
+      if (newValue !== '') this.title = newValue;
+      else this.title = 'Units';
+    }
+  });
+  </script>
+</polymer-element>

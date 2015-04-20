@@ -14,6 +14,16 @@ define(
     this.debug = false;
   }
 
+  EventBus.prototype.evt2promise = function(broadcastEvt, broadcastData, answerType) {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      var obj = {};
+      obj['on' + answerType] = function(data) { resolve(data); };
+      self.broadcast(broadcastEvt, broadcastData);
+      self.register(obj, answerType);
+    });
+  };
+
   EventBus.prototype.broadcast = function(type, data) {
     type = type || 'unknown';
     data = data || null;
@@ -33,7 +43,7 @@ define(
       return;
     }
     console.error('[\'Event Bus\']Invalid handler');
-  }
+  };
 
   function handlesType(type) {
     return function(handler) {

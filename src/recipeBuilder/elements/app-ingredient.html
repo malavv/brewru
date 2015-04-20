@@ -1,0 +1,62 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
+<link rel="import" href="widget-units.html">
+
+<polymer-element
+    name="app-ingredient"
+    attributes="isHidden"
+    horizontal center-justified layout>
+  <template>
+    <link rel="stylesheet" href="../css/app-ingredient.css">
+    <div class="container" vertical layout>
+      <core-list data="{{ingredients}}" selection="{{selection}}">
+        <template>
+          <div class="choice {{ {selected: selected} | tokenList }}" horizontal layout>
+            <div class="idx">{{index | itoc}}</div>
+            <div class="message">{{model}}</div>
+          </div>
+        </template>
+      </core-list>
+      <div horizontal layout>
+        <paper-input id="value" label="Quantity" committedValue="{{value}}" flex></paper-input>
+        <widget-units unit="{{unit}}"></widget-units>
+      </div>
+    </div>
+  </template>
+  <script>
+  var
+    codes = '0123456789abcdefghijklmnopqrstuvqxyz';
+
+  Polymer('app-ingredient', {
+    isHidden: true,
+    ingredients: [],
+    ingredient: null,
+    value: '',
+    unit: '',
+    selection: null,
+
+    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
+    onReady: function() { window.bus.register(this, 'AskIngredient'); },
+    onAskIngredient: function(data) {
+      this.ingredients = data;
+      this.isHidden = false;
+    },
+    valueChanged: function(oldValue, newValue) {
+      this.isHidden = true;
+      window.bus.broadcast('AnswerIngredient', {ingredient: this.ingredient, value: this.value, unit: this.unit});
+    },
+    itoc: function(i) { return codes[i]; },
+    selectionChanged: function(oldValue, newValue) {
+      if (oldValue !== undefined && oldValue.selected !== undefined) {
+        oldValue.selected = undefined;
+      }
+      if (newValue !== undefined)
+        newValue.selected = undefined;
+      this.ingredient = newValue;
+    }
+  });
+  </script>
+</polymer-element>
