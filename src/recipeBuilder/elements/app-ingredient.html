@@ -8,10 +8,11 @@
 <polymer-element
     name="app-ingredient"
     attributes="isHidden"
-    horizontal center-justified layout>
+    horizontal center-justified layout
+    >
   <template>
     <link rel="stylesheet" href="../css/app-ingredient.css">
-    <div class="container" vertical layout>
+    <div class="container" vertical layout hidden?={{test}}>
       <core-list data="{{ingredients}}" selection="{{selection}}">
         <template>
           <div class="choice {{ {selected: selected} | tokenList }}" horizontal layout>
@@ -27,46 +28,55 @@
     </div>
   </template>
   <script>
-  var
-    codes = '0123456789abcdefghijklmnopqrstuvqxyz';
-
   Polymer('app-ingredient', {
+    // Event Bus
     busEvt: {
       receive: 'AskIngredient',
       send: 'AnswerIngredient'
     },
-
-
-    isHidden: true,
+    // Control
+    selection: null,
+    // Input
     ingredients: [],
+    // Results
     ingredient: null,
     value: '',
     unit: '',
-    selection: null,
 
-    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
-    onReady: function() { window.bus.register(this, 'AskIngredient'); },
+    ready: function() {
+      var self = this;
+      require(['base/bus'], function() {
+        window.bus.register(self, self.busEvt.receive);
+        self.setVisible(false);
+      }
+      );
+    },
     onAskIngredient: function(data) {
       this.ingredients = data;
-      this.isHidden = false;
+      this.setVisible(true);
     },
     valueChanged: function(oldValue, newValue) {
-      this.isHidden = true;
-      window.bus.broadcast('AnswerIngredient', {ingredient: this.ingredient, value: this.value, unit: this.unit});
+      var results = this.getResults();
+      if (!this.isValid(results)) return;
+      window.bus.broadcast(this.busEvt.send, results);
+      this.reset();
+      this.setVisible(false);
     },
-    itoc: function(i) { return codes[i]; },
     selectionChanged: function(oldValue, newValue) {
       if (oldValue !== undefined && oldValue.selected !== undefined) {
-        oldValue.selected = undefined;
+        delete oldValue.selected;
       }
       if (newValue !== undefined)
         newValue.selected = undefined;
       this.ingredient = newValue;
     },
-    isValid: function() {
-      return this.ingredient !== null && this.value !== '' && this.unit !== '';
+    isValid: function(result) {
+      result = result || this;
+      return result.ingredient !== null && result.value !== '' && result.unit !== '';
     },
     getResults: function() {
+      if (this.ingredient !== null)
+        delete this.ingredient.selected;
       return {
         ingredient: this.ingredient,
         value: this.value,
@@ -74,7 +84,20 @@
       };
     },
     sendResults: function() {
-      window.bus.broadcast(busEvt.send, this.getResults());
+      window.bus.broadcast(this.busEvt.send, this.getResults());
+      this.reset();
+    },
+    setVisible: function(isVisible) {
+      this.hidden = !isVisible;
+    },
+    reset: function() {
+      this.selection = undefined;
+      // Input
+      this.ingredients = [];
+      // Results
+      this.ingredient = null;
+      this.value = '';
+      this.unit = '';
     }
   });
   </script>
