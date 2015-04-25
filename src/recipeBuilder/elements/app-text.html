@@ -4,7 +4,6 @@
 
 <polymer-element
     name="app-text"
-    attributes="isHidden"
     horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-text.css">
@@ -14,22 +13,45 @@
   </template>
   <script>
   Polymer('app-text', {
-    isHidden: true,
+    // events
+    evtReceive: 'AskText',
+    evtSend: 'AnswerText',
+    // control
     description: '',
+    // value
     value: '',
 
     ready: function() { require(['base/bus'], this.onReady.bind(this)); },
-    onReady: function() { window.bus.register(this, 'AskText'); },
+    onReady: function() {
+      window.bus.register(this, this.evtReceive);
+      this.setVisible(false);
+    },
     onAskText: function(data) {
       this.description = data;
-      this.isHidden = false;
+      this.setVisible(true);
       // I have no idea why I need to do this, but straight calling focus is an uther failure.
       var self = this;
       window.setTimeout(function() { self.$.value.focus(); }, 0);
     },
     valueChanged: function(oldValue, newValue) {
-      this.isHidden = true;
-      window.bus.broadcast('AnswerText', {description: this.description, value: this.value});
+      if (newValue === undefined) return;
+      window.bus.broadcast(this.evtSend, this.getResults());
+      this.reset();
+      this.setVisible(false);
+    },
+    getResults: function() {
+      return {
+        description: this.description,
+        value: this.committedValue
+      };
+    },
+    setVisible: function(isVisible) {
+      this.hidden = !isVisible;
+    },
+    reset: function() {
+      this.description = '';
+      this.value = '';
+      this.$.value.value = '';
     }
   });
   </script>
