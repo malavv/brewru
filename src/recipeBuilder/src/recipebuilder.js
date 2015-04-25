@@ -6,9 +6,10 @@ define(
     'entities',
     'ingredient',
     'ingredients',
-    'recipe'
+    'recipe',
+    'step'
   ],
-  function(Bus, Key, Units, Entities, Ingredient, Ingredients, Recipe) {
+  function(Bus, Key, Units, Entities, Ingredient, Ingredients, Recipe, Step) {
 
   function RecipeBuilder() {
     this.ingredients = new Ingredients();
@@ -17,10 +18,16 @@ define(
     // Add fake or basic items
     initInventory(this.ingredients);
 
+    // Fake first item
+    this.recipe.reactors[0].steps.push(new Step('Add Water', [
+      new Ingredient(Entities.tapWater, Infinity , Units.SI.Volume.liter)
+      ], null));
+
     window.bus.register(this, 'NewStepCreated');
   }
 
   RecipeBuilder.prototype.onNewStepCreated = function(a, b, c) {
+    this.recipe.reactors[0].steps.push(new Step(a.name, [a.ingredient], null));
     console.log('RecipeBuilder', 'onNewStepCreated', a, b, c);
   };
 
