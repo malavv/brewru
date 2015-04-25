@@ -8,16 +8,17 @@
 
   .container {
     width: 400px;
+    height: 500px;
     background-color: #dcdcdc;
-
-    .choice {
+    
+    .item {
       border: 1px solid #aaa;
       .idx {
         width: 70px;
         font-weight: bold;
         text-align: center;
       }
-      .message {}
+      .value {}
     }
   }
 }

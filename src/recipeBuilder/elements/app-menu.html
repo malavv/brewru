@@ -1,37 +1,40 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
 <polymer-element
     name="app-menu"
-    attributes="isHidden"
     horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-menu.css">
-    <div class="container">
-      <template repeat="{{item, idx in menuItems}}" >
-        <div class="choice" horizontal layout>
-          <div class="idx">{{idx | itoc}}</div>
-          <div class="message">{{item}}</div>
-        </div>
-      </template>
+    <div id="test" class="container" vertical layout>
+      <core-list data="{{items}}" selection="{{selection}}" flex>
+        <template>
+          <div class="item {{ {selected: selected} | tokenList }}" horizontal layout>
+            <div class="idx">{{index | toSingleCharIdx}}</div>
+            <div class="value">{{model}}</div>
+          </div>
+        </template>
+      </core-list>
     </div>
   </template>
   <script>
-  var
-    codes = '0123456789abcdefghijklmnopqrstuvqxyz';
-
   Polymer('app-menu', {
-    isHidden: true,
-    menuItems: [],
+    evt: {
+      send: 'AskMenu',
+      receive: 'AnswerMenu'
+    },
+    items: [],
+    selection: undefined,
 
-    itoc: function(i) { return codes[i]; },
     ready: function() { require(['base/bus'], this.onReady.bind(this)); },
     onReady: function() {
-      window.bus.register(this, 'AskMenu');
+      window.bus.register(this, this.evt.send);
+      this.setVisible(false);
     },
     onAskMenu: function(data) {
-      this.menuItems = data;
-      this.isHidden = false;
-      window.addEventListener('keypress', this, true);
+      this.items = data;
+      this.setVisible(true);
     },
     handleEvent: function(e) {
       var
@@ -39,12 +42,23 @@
         idx = codes.indexOf(key)
 
       if (idx === -1) return; // not in codes
-      if (idx >= this.menuItems.length) return; // Outside possibilities
+      if (idx >= this.items.length) return; // Outside possibilities
 
-      window.bus.broadcast('AnswerMenu', {selected: this.menuItems[idx], array: this.menuItems});
-      window.removeEventListener('keypress', this, true);
-      this.isHidden = true;
-    }
+      window.bus.broadcast(this.evt.receive, {selected: this.selection, array: this.items});
+      this.setVisible(false);
+    },
+
+    selectionChanged: function(o, n) {
+      console.log('selectionChanged', o, n);
+    },
+
+    setVisible: function(isVisible) {
+      this.hidden = !isVisible;
+      if (isVisible)
+        window.addEventListener('keypress', this, true);
+      else
+        window.removeEventListener('keypress', this, true);
+    },
   });
   </script>
 </polymer-element>
