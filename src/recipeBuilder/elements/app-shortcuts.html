@@ -17,7 +17,7 @@
   </template>
   <script>
   Polymer('app-shortcuts', {
-    isHidden: true,
+    busEvt: 'Shortcuts',
     shortcuts: [
       {
         binding: 'alt+S',
@@ -30,24 +30,32 @@
         intent: 'Shortcuts'
       }
     ],
+    // Control
     map: {},
-    ready: function() {
-      require(['base/bus', 'base/key'], this.onReady.bind(this));
-    },
+    isVisible: false,
+    isDebug: true,
+
+    ready: function() { require(['base/bus', 'base/key'], this.onReady.bind(this)); },
     onReady: function(bus, Key) {
       this.shortcuts.forEach(function(s) { this.map[s.binding] = s; }, this);
-      window.bus.register(this, 'Shortcuts');
+      window.bus.register(this, this.busEvt);
+      this.setVisible(false);
     },
     onShortcuts: function(data) {
-      this.isHidden = !this.isHidden;
+      this.isVisible = !this.isVisible;
+      this.setVisible(this.isVisible);
     },
     keypress: function(Key, e, detail, sender) {
       var
         key = Key.fromEvent(e),
         shortcut = this.map[key.toString()];
-
+      if (shortcut === undefined) return;
+      if (this.isDebug) console.log('keypress', key, shortcut)
       if (shortcut) window.bus.broadcast(shortcut.intent);
-    }
+    },
+    setVisible: function(isVisible) {
+      this.hidden = !isVisible;
+    },
   });
   </script>
 </polymer-element>
