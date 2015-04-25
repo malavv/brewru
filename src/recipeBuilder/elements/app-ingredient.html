@@ -23,7 +23,7 @@
       </core-list>
       <div horizontal layout>
         <paper-input id="value" label="Quantity" committedValue="{{value}}" flex></paper-input>
-        <widget-units unit="{{unit}}"></widget-units>
+        <widget-units unit="{{unit}}" on-unit-selected="{{onUnitSelected}}"></widget-units>
       </div>
     </div>
   </template>
@@ -35,50 +35,44 @@
       send: 'AnswerIngredient'
     },
     // Control
-    selection: null,
+    selection: undefined,
     // Input
     ingredients: [],
     // Results
-    ingredient: null,
     value: '',
     unit: '',
 
-    ready: function() {
-      var self = this;
-      require(['base/bus'], function() {
-        window.bus.register(self, self.busEvt.receive);
-        self.setVisible(false);
-      }
-      );
+    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
+    onReady: function() {
+      window.bus.register(this, this.busEvt.receive);
+      this.setVisible(false);
     },
+
     onAskIngredient: function(data) {
       this.ingredients = data;
       this.setVisible(true);
     },
-    valueChanged: function(oldValue, newValue) {
+
+    valueChanged: function() { this.onStateChanged() },
+    selectionChanged: function() { this.onStateChanged(); },
+    onUnitSelected: function(e) { this.onStateChanged(); },
+    onStateChanged: function() {
       var results = this.getResults();
       if (!this.isValid(results)) return;
       window.bus.broadcast(this.busEvt.send, results);
       this.reset();
       this.setVisible(false);
     },
-    selectionChanged: function(oldValue, newValue) {
-      if (oldValue !== undefined && oldValue.selected !== undefined) {
-        delete oldValue.selected;
-      }
-      if (newValue !== undefined)
-        newValue.selected = undefined;
-      this.ingredient = newValue;
-    },
+
     isValid: function(result) {
       result = result || this;
-      return result.ingredient !== null && result.value !== '' && result.unit !== '';
+      return result.ingredient !== undefined && result.value !== '' && result.unit !== '';
     },
     getResults: function() {
-      if (this.ingredient !== null)
-        delete this.ingredient.selected;
+      if (this.selection !== undefined)
+        delete this.selection.selected;
       return {
-        ingredient: this.ingredient,
+        ingredient: this.selection,
         value: this.value,
         unit: this.unit
       };
@@ -95,9 +89,9 @@
       // Input
       this.ingredients = [];
       // Results
-      this.ingredient = null;
       this.value = '';
       this.unit = '';
+      this.$.value.value = '';
     }
   });
   </script>

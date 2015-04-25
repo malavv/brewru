@@ -55,6 +55,8 @@
       }, 100)
     },
     onChoice: function(a, b, c) {
+      this.fire('unit-selected', {unit: this.unit});
+
       this.unit = c.innerText;
       this.isExpanded = false;
       this.ref = 0;

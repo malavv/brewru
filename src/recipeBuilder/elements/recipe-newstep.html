@@ -46,6 +46,7 @@
 
   Polymer('recipe-newstep', {
     busEvt: 'CreateStep',
+    evtSend: 'NewStepCreated',
     isChoosing: false,
 
     ready: function() { require(['base/bus'], this.onReady.bind(this)); },
@@ -63,26 +64,22 @@
 
     // State Machine
     onStateMachine: function(state) {
-      console.log('onStateMachine');
       if (state.type === null) return this.askType(state);
       if (state.name === null) return this.askName(state);
       if (state.ingredient === null) return this.askIngredient(state);
-      console.log('Needs a next step, here is the current state : ', state);
       return state;
     },
 
     beginBuilder: function() {
-      console.log('beginBuilder');
       this.isChoosing = true;
       return Promise.resolve(new StepState());
     },
     endBuilder: function(state) {
-      console.log('endBuilder');
       this.isChoosing = false;
       return state;
     },
     sendResult: function(state) {
-      console.log('sendResult', state);
+      window.bus.broadcast(this.evtSend, state);
       return state;
     },
 
@@ -92,19 +89,16 @@
 
     // Dialogs
     askType: function(state) {
-      console.log('askType');
       return bus.evt2promise('AskMenu', Steps, 'AnswerMenu')
         .then(registerType.bind(this, state))
         .then(this.onStateMachine.bind(this));
     },
     askName: function(state) {
-      console.log('askName');
       return bus.evt2promise('AskText', 'Task Name', 'AnswerText')
         .then(registerName.bind(this, state))
         .then(this.onStateMachine.bind(this));
     },
     askIngredient: function(state) {
-      console.log('askIngredient');
       return bus.evt2promise('AskIngredient', this.builder.ingredients.listAllIngredients(), 'AnswerIngredient')
         .then(registerIngredient.bind(this, state))
         .then(this.onStateMachine.bind(this));

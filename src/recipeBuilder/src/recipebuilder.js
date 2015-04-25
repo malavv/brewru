@@ -1,5 +1,6 @@
 define(
   [
+    'base/bus',
     'base/key',
     'base/units',
     'entities',
@@ -7,7 +8,7 @@ define(
     'ingredients',
     'recipe'
   ],
-  function(Key, Units, Entities, Ingredient, Ingredients, Recipe) {
+  function(Bus, Key, Units, Entities, Ingredient, Ingredients, Recipe) {
 
   function RecipeBuilder() {
     this.ingredients = new Ingredients();
@@ -15,7 +16,13 @@ define(
 
     // Add fake or basic items
     initInventory(this.ingredients);
+
+    window.bus.register(this, 'NewStepCreated');
   }
+
+  RecipeBuilder.prototype.onNewStepCreated = function(a, b, c) {
+    console.log('RecipeBuilder', 'onNewStepCreated', a, b, c);
+  };
 
   function initInventory(ingredients) {
     ingredients.addToInventory(new Ingredient(Entities.syrup, 2.4, Units.SI.Mass.kilogram));
