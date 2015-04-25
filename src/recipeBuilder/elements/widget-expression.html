@@ -1,0 +1,11 @@
+<script>
+  var
+    codes = '0123456789abcdefghijklmnopqrstuvqxyz';
+
+	PolymerExpressions.prototype.toSingleCharIdx = function(input) {
+		if (window.isNaN(input)) return '-';
+		if (input < 0) return '-';
+		if (input >= codes.length) return '-';
+		return codes[input];
+  }
+</script>

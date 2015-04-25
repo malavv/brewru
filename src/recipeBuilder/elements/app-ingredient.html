@@ -15,7 +15,7 @@
       <core-list data="{{ingredients}}" selection="{{selection}}">
         <template>
           <div class="choice {{ {selected: selected} | tokenList }}" horizontal layout>
-            <div class="idx">{{index | itoc}}</div>
+            <div class="idx">{{index | toSingleCharIdx}}</div>
             <div class="message">{{model}}</div>
           </div>
         </template>
@@ -31,6 +31,12 @@
     codes = '0123456789abcdefghijklmnopqrstuvqxyz';
 
   Polymer('app-ingredient', {
+    busEvt: {
+      receive: 'AskIngredient',
+      send: 'AnswerIngredient'
+    },
+
+
     isHidden: true,
     ingredients: [],
     ingredient: null,
@@ -56,6 +62,19 @@
       if (newValue !== undefined)
         newValue.selected = undefined;
       this.ingredient = newValue;
+    },
+    isValid: function() {
+      return this.ingredient !== null && this.value !== '' && this.unit !== '';
+    },
+    getResults: function() {
+      return {
+        ingredient: this.ingredient,
+        value: this.value,
+        unit: this.unit
+      };
+    },
+    sendResults: function() {
+      window.bus.broadcast(busEvt.send, this.getResults());
     }
   });
   </script>
