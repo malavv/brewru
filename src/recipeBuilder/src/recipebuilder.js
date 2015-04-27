@@ -13,7 +13,7 @@ define(
 
   function RecipeBuilder() {
     this.ingredients = new Ingredients();
-    this.recipe = new Recipe();
+    this.recipe = new Recipe(undefined, this.ingredients);
 
     // Add fake or basic items
     initInventory(this.ingredients);

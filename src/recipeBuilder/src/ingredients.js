@@ -27,6 +27,16 @@ define(
     return this.inventory.filter(function(i) { return i.id === id; });
   };
 
+  Ingredients.prototype.addSrc = function(reactor) {
+    if (this.reactors.every(function(s) { return s.id !== reactor.id; })) {
+      this.reactors.push({
+        id: reactor.id,
+        name: reactor.name,
+        ingredients: []
+      });
+    }
+  };
+
   Ingredients.prototype.takeQty = function(id, qty) {
     var tmp = this.get(id);
     if (tmp.length <= 0) {

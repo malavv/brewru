@@ -24,6 +24,9 @@ define(
   return {
     createAnon: function() {
       return new Reactor('reactor:' + id++);
+    },
+    isReactor: function(o) {
+      return o.id !== undefined && o.name !== undefined && o.steps !== undefined && Array.isArray(o.steps);
     }
   };
 });
