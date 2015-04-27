@@ -25,7 +25,8 @@ define(
   }
 
   RecipeBuilder.prototype.onNewStepCreated = function(a, b, c) {
-    this.recipe.reactors[0].steps.push(new Step(a.name, [a.ingredient], null));
+    this.recipe.reactors[0].steps.push(new Step(a.name, 'Add Ingredient'));
+    window.bus.broadcast('RecipeChanged');
     console.log('RecipeBuilder', 'onNewStepCreated', a, b, c);
   };
 

@@ -1,18 +1,17 @@
 define(
   [
+    'base/bus',
     'entities',
     'base/units',
     'ingredient'
   ],
-  function(Entities, Units, Ingredient) {
+  function(Bus, Entities, Units, Ingredient) {
 
   function Ingredients() {
     this.inventory = [
       new Ingredient(Entities.tapWater, Infinity , Units.SI.Volume.liter)
     ];
-    this.reactors = [
-      // {name: 'test', ingredients: []}
-    ];
+    this.reactors = [];
   }
 
   Ingredients.prototype.addToInventory = function(ingredient) {

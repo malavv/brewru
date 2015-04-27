@@ -8,7 +8,7 @@
   <template>
     <link rel="stylesheet" href="../css/app-menu.css">
     <div id="test" class="container" vertical layout>
-      <core-list data="{{items}}" selection="{{selection}}" flex>
+      <core-list id="list" data="{{items}}" selection="{{selection}}" flex>
         <template>
           <div class="item {{ {selected: selected} | tokenList }}" horizontal layout>
             <div class="idx">{{index | toSingleCharIdx}}</div>
@@ -43,6 +43,8 @@
 
       if (idx === -1) return; // not in codes
       if (idx >= this.items.length) return; // Outside possibilities
+
+      this.$.list.selectItem(idx);
 
       window.bus.broadcast(this.evt.receive, {selected: this.selection, array: this.items});
       this.setVisible(false);

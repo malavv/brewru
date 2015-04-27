@@ -1,8 +1,9 @@
 define(
   [
+    'base/bus',
     'step'
   ],
-  function(Step) {
+  function(Bus, Step) {
 
   var id = 0;
 
