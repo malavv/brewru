@@ -10,7 +10,7 @@ define(
   	this.id = id;
     this.name = 'Anonymous';
     this.steps = [
-    	new Step('start', null, null)
+    	new Step('start', 'start')
     ];
   }
 

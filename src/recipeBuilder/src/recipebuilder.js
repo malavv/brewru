@@ -19,9 +19,7 @@ define(
     initInventory(this.ingredients);
 
     // Fake first item
-    this.recipe.reactors[0].steps.push(new Step('Add Water', [
-      new Ingredient(Entities.tapWater, Infinity , Units.SI.Volume.liter)
-      ], null));
+    this.recipe.reactors[0].steps.push(new Step('Add Water', 'Add Ingredient'));
 
     window.bus.register(this, 'NewStepCreated');
   }

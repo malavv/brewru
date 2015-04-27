@@ -11,12 +11,12 @@
   			require(['d3'], this.drawReactors.bind(this));
   	},
   	drawReactors: function(d3) {
-		this.svg = d3.select(this.shadowRoot).select('svg');
-		var dataset = this.recipe.reactors;
-		var bbox = this.svg.node().getBoundingClientRect();
-		var width = bbox.width / dataset.length;
-		var height = bbox.height;
-		var halfWidth = width / 2.0;
+  		this.svg = d3.select(this.shadowRoot).select('svg');
+  		var dataset = this.recipe.reactors;
+  		var bbox = this.svg.node().getBoundingClientRect();
+  		var width = bbox.width / dataset.length;
+  		var height = bbox.height;
+  		var halfWidth = width / 2.0;
 
 	    var reactorGroup = this.svg.selectAll('g')
     		.data(dataset)
@@ -36,15 +36,39 @@
 
     	// Start
     	this.drawStart(d3, reactorGroup);
+      this.recipe.reactors.forEach(this.drawSteps.bind(this, d3, reactorGroup), this);
   	},
   	drawStart: function(d3, group) {
-		group.append('circle')
-    		.attr('r', '10')
-    		.attr('fill', 'white')
-    		.attr('stroke', 'black');
-		group.append('circle')	
-    		.attr('r', '3');
-  	}
+  		group.append('circle')
+      		.attr('r', '10')
+      		.attr('fill', 'white')
+      		.attr('stroke', 'black');
+  		group.append('circle')
+      		.attr('r', '3');
+  	},
+    drawSteps: function(d3, g, reactor) {
+      reactor.steps.forEach(this.drawStep.bind(this, g, 80), this);
+    },
+    drawStep: function(g, offset, step, index) {
+      switch(step.type) {
+        case 'start':
+          break;
+        case 'Add Ingredient':
+          g.append('circle')
+            .attr('r', '10')
+            .attr('cy', index * offset)
+            .attr('fill', 'white')
+            .attr('stroke', 'black');
+          g.append('text')
+            .attr("x", -5)
+            .attr("y", (index * offset) + 5)
+            .text('+');
+          break;
+        default:
+          console.log('Unrecognized Step Type', step);
+          break;
+      }
+    }
   });
   </script>
 </polymer-element>
