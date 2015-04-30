@@ -5,7 +5,7 @@ define(
     'base/units',
     'entities',
     'ingredient',
-    'ingredients',
+    'ingredientMngr',
     'recipe',
     'step'
   ],

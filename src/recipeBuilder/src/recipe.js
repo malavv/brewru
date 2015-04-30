@@ -1,10 +1,12 @@
-define(
-  [
-    'reactor',
-    'step'
-  ],
-  function(Reactor, Step) {
+define([
+  'reactor',
+  'step'
+], function(Reactor, Step) {
 
+  /**
+   * Main object describing the new recipe.
+   * @constructor
+   */
   function Recipe(name, ingredients) {
     this.name = name || 'Anonymous';
     // This is not own by this object but a reference to the ing. depot.
