@@ -56,7 +56,8 @@
     },
     /** On cancel received. */
     onCancel: function() {
-      this.$.overlay.close();
+      if (this.$.overlay.opened)
+        this.$.overlay.close();
     },
     /** Main closing exit point. */
     onOverlayClosed: function() {

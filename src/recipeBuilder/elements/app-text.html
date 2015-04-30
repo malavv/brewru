@@ -1,43 +1,53 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 
 <polymer-element
     name="app-text"
     horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-text.css">
-    <div class="container" horizontal layout>
-      <paper-input id="value" label="{{description}}" committedValue="{{value}}" flex></paper-input>
-    </div>
+
+    <core-overlay id="overlay" on-core-overlay-close-completed="{{onOverlayClosed}}">
+      <paper-input id="value" label="{{description}}" value="{{value}}" committedValue="{{committed}}" flex>
+      </paper-input>
+    </core-overlay>
   </template>
   <script>
+  (function() {
   Polymer('app-text', {
-    // events
-    evtReceive: 'AskText',
+    busRequest: 'AskText',
+    busCancel: 'Cancel',
+
     evtSend: 'AnswerText',
-    // control
+
     description: '',
-    // value
-    value: '',
+    wasCanceled: true,
 
     ready: function() { require(['base/bus'], this.onReady.bind(this)); },
     onReady: function() {
-      window.bus.register(this, this.evtReceive);
-      this.setVisible(false);
+      window.bus.register(this, [this.busRequest, this.busCancel]);
     },
+
     onAskText: function(data) {
       this.description = data;
-      this.setVisible(true);
-      // I have no idea why I need to do this, but straight calling focus is an uther failure.
-      var self = this;
-      window.setTimeout(function() { self.$.value.focus(); }, 0);
+      this.value = '';
+      this.open();
     },
-    valueChanged: function(oldValue, newValue) {
-      if (newValue === undefined) return;
-      window.bus.broadcast(this.evtSend, this.getResults());
-      this.reset();
-      this.setVisible(false);
+    committedChanged: function(oldV, newV) {
+      if (newV === "") return;
+      this.wasCanceled = false;
+      this.$.overlay.close();
+    },
+    /** On cancel received. */
+    onCancel: function() {
+      if (this.$.overlay.opened)
+        this.$.overlay.close();
+    },
+    /** Main closing exit point. */
+    onOverlayClosed: function() {
+      this.close();
     },
     getResults: function() {
       return {
@@ -45,14 +55,20 @@
         value: this.value
       };
     },
-    setVisible: function(isVisible) {
-      this.hidden = !isVisible;
-    },
+
     reset: function() {
       this.description = '';
       this.value = '';
-      this.$.value.value = '';
+      this.wasCanceled = true;
+    },
+    open: function () {
+      this.$.overlay.open();
+    },
+    close: function () {
+      window.bus.broadcast(this.evtSend, this.wasCanceled ? null : this.getResults());
+      this.reset();
     }
   });
+  })()
   </script>
 </polymer-element>

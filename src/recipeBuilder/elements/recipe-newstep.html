@@ -31,10 +31,12 @@
   }
 
   function registerType(state, data) {
+    if (data === null) return Promise.reject();
     state.type = data.name;
     return state;
   }
   function registerName(state, data) {
+    if (data === null) return Promise.reject();
     state.name = data.value;
     return state;
   }

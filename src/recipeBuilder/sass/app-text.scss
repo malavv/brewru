@@ -1,20 +1,8 @@
 :host {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  align-items: center;
 
-  .container {
-    width: 400px;
-    background-color: #dcdcdc;
-
-    .description {
-      font-weight: bold;
-    }
-    #value {
-
+  core-overlay#overlay {
+    paper-input#value {
+      background-color: #fff;
     }
   }
 }
