@@ -31,7 +31,7 @@
   }
 
   function registerType(state, data) {
-    state.type = data.selected.name;
+    state.type = data.name;
     return state;
   }
   function registerName(state, data) {
@@ -39,6 +39,7 @@
     return state;
   }
   function registerIngredient(state, data) {
+    if (data === null) return Promise.reject();
     state.ingredient = data.ingredient;
     state.qty = {value: data.value, unit: data.unit};
     return state;
@@ -55,11 +56,13 @@
     // Begin step
     onCreateStep: function(data) {
       if (this.isChoosing) return;
-
       this.beginBuilder()
         .then(this.onStateMachine.bind(this))
         .then(this.endBuilder.bind(this))
-        .then(this.sendResult.bind(this));
+        .then(this.sendResult.bind(this))
+        .catch(function() {
+          // If there was an error, just catch so nothing crashes.
+        });
     },
 
     // State Machine
@@ -91,7 +94,10 @@
     askType: function(state) {
       return bus.evt2promise('AskMenu', Steps, 'AnswerMenu')
         .then(registerType.bind(this, state))
-        .then(this.onStateMachine.bind(this));
+        .then(this.onStateMachine.bind(this))
+        .catch(function() {
+          // If there was an error, just catch so nothing crashes.
+        });
     },
     askName: function(state) {
       return bus.evt2promise('AskText', 'Task Name', 'AnswerText')

@@ -5,6 +5,7 @@ define(
   function code2char(code) {
     switch(code) {
       case 13: return 'enter';
+      case 27: return 'esc';
       default: return 'unknown';
     }
   }

@@ -1,66 +1,93 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 
 <polymer-element
     name="app-menu"
     horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-menu.css">
-    <div id="test" class="container" vertical layout>
-      <core-list id="list" data="{{items}}" selection="{{selection}}" flex>
+    <core-overlay id="overlay" on-core-overlay-close-completed="{{onOverlayClosed}}">
+      <core-list id="list" data="{{items}}" selection="{{selection}}" height="30" flex>
         <template>
-          <div class="item {{ {selected: selected} | tokenList }}" horizontal layout>
+          <div class="item {{ {selected: selected} | tokenList }}" horizontal layout center>
             <div class="idx">{{index | toSingleCharIdx}}</div>
             <div class="value">{{model}}</div>
           </div>
         </template>
       </core-list>
-    </div>
+    </core-overlay>
   </template>
   <script>
+  (function() {
+    var Codes = null;
+
+  /**
+   * Enables Pop-Up selection from a list of items.
+   *
+   *  Two selection interfaces are available.
+   *    - Select by pressing the index of the item.
+   *    - Clicking on the item.
+   *  Can be canceled using the 'cancel' bus event.
+   *  Result:
+   *    On closing the menu without a selection, it will send a bus event
+   *    with a null item.
+   */
   Polymer('app-menu', {
-    evt: {
-      send: 'AskMenu',
-      receive: 'AnswerMenu'
-    },
+    busRequest: 'AskMenu',
+    busCancel: 'Cancel',
+    busResult: 'AnswerMenu',
     items: [],
     selection: undefined,
 
-    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
-    onReady: function() {
-      window.bus.register(this, this.evt.send);
-      this.setVisible(false);
+    ready: function() { require(['base/bus', 'base/codes'], this.onReady.bind(this)); },
+    onReady: function(Bus, codes) {
+      window.bus.register(this, [this.busRequest, this.busCancel]);
+      this.hidden = true;
+      Codes = codes;
     },
+
+    /** On request made. */
     onAskMenu: function(data) {
       this.items = data;
-      this.setVisible(true);
+      this.resize();
+      this.open();
     },
+    /** On cancel received. */
+    onCancel: function() {
+      this.$.overlay.close();
+    },
+    /** Main closing exit point. */
+    onOverlayClosed: function() {
+      this.close();
+    },
+
     handleEvent: function(e) {
-      var
-        key = String.fromCharCode(event.keyCode || event.which),
-        idx = codes.indexOf(key)
-
-      if (idx === -1) return; // not in codes
-      if (idx >= this.items.length) return; // Outside possibilities
-
+      var idx = Codes.c2i(String.fromCharCode(event.keyCode || event.which));
+      if (idx < 0 || idx >= this.items.length) return;
       this.$.list.selectItem(idx);
-
-      window.bus.broadcast(this.evt.receive, {selected: this.selection, array: this.items});
-      this.setVisible(false);
     },
-
     selectionChanged: function(o, n) {
-      console.log('selectionChanged', o, n);
+      if (n === undefined) return;
+      this.onOverlayClosed();
     },
 
-    setVisible: function(isVisible) {
-      this.hidden = !isVisible;
-      if (isVisible)
-        window.addEventListener('keypress', this, true);
-      else
-        window.removeEventListener('keypress', this, true);
+    resize: function() {
+      this.$.list.style.height = (this.items.length * this.$.list.height) + 'px';
     },
+    close: function() {
+      this.hidden = true;
+      this.items = [];
+      window.removeEventListener('keypress', this, false);
+      window.bus.broadcast(this.busResult, this.selection);
+    },
+    open: function() {
+      this.hidden = false;
+      window.addEventListener('keypress', this, false);
+      this.$.overlay.open();
+    }
   });
+  })();
   </script>
 </polymer-element>
