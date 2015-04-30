@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="widget-units.html">
+
+<polymer-element
+    name="widget-quantity"
+    attributes="quantity"
+    horizontal layout center>
+  <template>
+    <link rel="stylesheet" href="../css/widget-quantity.css">
+
+    <div flex>amount :</div>
+    <input class="amount" is="core-input" type="number" value="{{value}}" committedValue="{{quantity.magnitude}}">
+    </input>
+    <widget-units unit="{{quantity.unit}}">
+    </widget-units>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+  Polymer('widget-quantity', {
+    value: 0,
+
+    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
+    onReady: function() {}
+  });
+  })();
+  </script>
+</polymer-element>

@@ -107,7 +107,7 @@
         .then(this.onStateMachine.bind(this));
     },
     askIngredient: function(state) {
-      return bus.evt2promise('AskIngredient', this.builder.ingredients.listAllIngredients(), 'AnswerIngredient')
+      return bus.evt2promise('AskIngredient', this.builder.inventory.stocks, 'AnswerIngredient')
         .then(registerIngredient.bind(this, state))
         .then(this.onStateMachine.bind(this));
     },

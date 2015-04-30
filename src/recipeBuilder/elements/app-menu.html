@@ -3,20 +3,16 @@
 <link rel="import" href="../bower_components/core-list/core-list.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 
+<link rel="import" href="widget-list.html">
+
 <polymer-element
     name="app-menu"
     horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-menu.css">
     <core-overlay id="overlay" on-core-overlay-close-completed="{{onOverlayClosed}}">
-      <core-list id="list" data="{{items}}" selection="{{selection}}" height="30" flex>
-        <template>
-          <div class="item {{ {selected: selected} | tokenList }}" horizontal layout center>
-            <div class="idx">{{index | toSingleCharIdx}}</div>
-            <div class="value">{{model}}</div>
-          </div>
-        </template>
-      </core-list>
+      <widget-list id="list" data="{{items}}" selection="{{selection}}">
+      </widget-list>
     </core-overlay>
   </template>
   <script>
@@ -51,7 +47,6 @@
     /** On request made. */
     onAskMenu: function(data) {
       this.items = data;
-      this.resize();
       this.open();
     },
     /** On cancel received. */
@@ -71,12 +66,9 @@
     },
     selectionChanged: function(o, n) {
       if (n === undefined) return;
-      this.onOverlayClosed();
+      this.$.overlay.close();
     },
 
-    resize: function() {
-      this.$.list.style.height = (this.items.length * this.$.list.height) + 'px';
-    },
     close: function() {
       this.hidden = true;
       this.items = [];

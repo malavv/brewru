@@ -1,0 +1,13 @@
+:host {
+  div {
+    text-align: right;
+    padding-right: 10px;
+  }
+  input[is=core-input].amount {
+    width: 60px;
+    background-color: #fff;
+  }
+  widget-units {
+    padding: 0px 5px;
+  }
+}

@@ -1,29 +1,22 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 
 <link rel="import" href="widget-units.html">
+<link rel="import" href="widget-quantity.html">
+<link rel="import" href="widget-list.html">
 
 <polymer-element
     name="app-ingredient"
-    horizontal center-justified layout
-    >
+    horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-ingredient.css">
+
     <div class="container" vertical layout hidden?={{test}}>
-      <core-list data="{{ingredients}}" selection="{{selection}}">
-        <template>
-          <div class="choice {{ {selected: selected} | tokenList }}" horizontal layout>
-            <div class="idx">{{index | toSingleCharIdx}}</div>
-            <div class="message">{{model}}</div>
-          </div>
-        </template>
-      </core-list>
-      <div horizontal layout>
-        <paper-input id="value" label="Quantity" committedValue="{{value}}" flex></paper-input>
-        <widget-units unit="{{unit}}" on-unit-selected="{{onUnitSelected}}"></widget-units>
-      </div>
+      <widget-list id="list" data="{{ingredients}}" selection="{{selection}}">
+      </widget-list>
+      <widget-quantity quantity="{{quantity}}"></widget-quantity>
     </div>
   </template>
   <script>
@@ -36,14 +29,12 @@
     // Control
     selection: undefined,
     // Input
-    ingredients: [],
-    // Results
-    value: '',
-    unit: '',
+    ingredients: ["1", "2", "3", "4"],
 
-    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
-    onReady: function() {
+    ready: function() { require(['base/bus', 'base/quantity'], this.onReady.bind(this)); },
+    onReady: function(Bus, Quantity) {
       window.bus.register(this, this.busEvt.receive);
+      this.quantity = new Quantity();
       this.setVisible(false);
     },
 
