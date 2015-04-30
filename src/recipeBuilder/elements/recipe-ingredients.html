@@ -8,7 +8,7 @@
     <core-list data="{{data}}" groups="{{groups}}" flex>
       <template>
         <div divider class="section">{{groupModel.name}}</div>
-      	<div class="ingredient"><b>{{model.concept.name}}</b>&lt;{{model | showQty}}&gt;</div>
+      	<div class="ingredient"><b>{{model.concept.name}}</b>&lt;{{model.quantity}}&gt;</div>
      	</template>
     </core-list>
 	</template>
@@ -33,10 +33,6 @@
             data: { name: reactor.name }
           });
         }, this);
-      },
-      showQty: function(val) {
-        if (val === undefined) return 'N/A';
-        return val.printQty();
       }
     });
   </script>

@@ -7,6 +7,7 @@ define(
 
   function Units() {}
 
+  Units.unknown = new Concept('internal:unknownUnit', 'N/A');
   Units.SI = {};
   Units.SI.Mass = {
     kilogram: new Concept('brew:kilogram', 'kg')

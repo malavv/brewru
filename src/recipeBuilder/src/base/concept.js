@@ -13,5 +13,9 @@ define(
     return new Concept('anon:' + idx++, name);
   };
 
+  Concept.prototype.toString = function() {
+    return this.name;
+  };
+
   return Concept;
 });

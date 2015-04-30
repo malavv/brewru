@@ -1,15 +1,16 @@
 define(
   [
     'base/bus',
+    'base/quantity',
     'entities',
     'base/units',
     'ingredient'
   ],
-  function(Bus, Entities, Units, Ingredient) {
+  function(Bus, Quantity, Entities, Units, Ingredient) {
 
   function Ingredients() {
     this.inventory = [
-      new Ingredient(Entities.tapWater, Infinity , Units.SI.Volume.liter)
+      new Ingredient(Entities.tapWater, new Quantity(Infinity , Units.SI.Volume.liter))
     ];
     this.reactors = [];
   }
