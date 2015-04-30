@@ -6,7 +6,7 @@
 <link rel="import" href="../elements/recipe-ingredients.html">
 <link rel="import" href="../elements/recipe-triggers.html">
 
-<polymer-element name="recipe-tools" attributes="reactor inventory" vertical layout>
+<polymer-element name="recipe-tools" attributes="reactor inventory recipe" vertical layout>
   <template>
     <link rel="stylesheet" href="../css/recipe-tools.css">
     <paper-tabs selected="{{selected}}">
@@ -14,7 +14,7 @@
       <paper-tab>Triggers</paper-tab>
     </paper-tabs>
     <core-pages flex selected="{{selected}}">
-      <recipe-ingredients ingredients={{inventory}}></recipe-ingredients>
+      <recipe-ingredients inventory={{inventory}} recipe={{recipe}}></recipe-ingredients>
       <recipe-triggers triggers="{{reactor.steps}}"></recipe-triggers>
     </core-pages>
   </template>

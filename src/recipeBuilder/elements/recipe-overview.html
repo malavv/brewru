@@ -19,7 +19,11 @@
     <div horizontal layout flex>
       <recipe-graph recipe={{builder.recipe}} flex one></recipe-graph>
       <recipe-reactor reactor={{current}} flex four></recipe-reactor>
-      <recipe-tools reactor={{current}} inventory={{builder.ingredients}} flex one></recipe-tools>
+      <recipe-tools
+        reactor={{current}}
+        inventory={{builder.inventory}}
+        recipe={{builder.recipe}}
+        flex one></recipe-tools>
     </div>
     <app-shortcuts id="shortcuts"></app-shortcuts>
     <app-menu isHidden={{isMenuHidden}} hidden?={{isMenuHidden}}></app-menu>

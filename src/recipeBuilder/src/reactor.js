@@ -1,18 +1,33 @@
 define(
   [
     'base/bus',
-    'step'
+    'step',
+    'ingredientSrc'
   ],
-  function(Bus, Step) {
+  function(Bus, Step, IngredientSrc) {
 
   var id = 0;
 
   function Reactor(id) {
+    var name = 'Anonymous';
   	this.id = id;
-    this.name = 'Anonymous';
+    this.src = new IngredientSrc(this.name, this.id);
     this.steps = [
     	new Step('start', 'start')
     ];
+
+    Object.defineProperty(this, 'name', {
+      enumerable: false,
+      get: function() {
+        console.log('[Reactor] get name()');
+        return name;
+      },
+      set: function(newVal) {
+        console.log('[Reactor] set name()');
+        name = newVal;
+        this.src.name = newVal;
+      }
+    });
   }
 
   Reactor.prototype.addAfter = function(lhs, newObj) {

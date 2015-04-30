@@ -6,18 +6,17 @@ define(
     'base/units',
     'entities',
     'ingredient',
+    'ingredientSrc',
     'ingredientMngr',
     'recipe',
     'step'
   ],
-  function(Bus, Key, Qty, Units, Entities, Ingredient, Ingredients, Recipe, Step) {
+  function(Bus, Key, Qty, Units, Entities, Ingredient, IngredientSrc, Ingredients, Recipe, Step) {
 
   function RecipeBuilder() {
+    this.inventory = this.fetchInventory();
     this.ingredients = new Ingredients();
     this.recipe = new Recipe(undefined, this.ingredients);
-
-    // Add fake or basic items
-    initInventory(this.ingredients);
 
     // Fake first item
     this.recipe.reactors[0].steps.push(new Step('Add Water', 'Add Ingredient'));
@@ -31,15 +30,19 @@ define(
     console.log('RecipeBuilder', 'onNewStepCreated', a, b, c);
   };
 
-  function initInventory(ingredients) {
-    ingredients.addToInventory(new Ingredient(Entities.syrup, new Qty(2.4, Units.SI.Mass.kilogram)));
-    ingredients.addToInventory(new Ingredient(Entities.c120, new Qty(0.16, Units.SI.Mass.kilogram)));
-    ingredients.addToInventory(new Ingredient(Entities.c60, new Qty(0.14, Units.SI.Mass.kilogram)));
-    ingredients.addToInventory(new Ingredient(Entities.paleChoco, new Qty(0.14, Units.SI.Mass.kilogram)));
-    ingredients.addToInventory(new Ingredient(Entities.blackMalt, new Qty(0.14, Units.SI.Mass.kilogram)));
-    ingredients.addToInventory(new Ingredient(Entities.flakedRye, new Qty(0.14, Units.SI.Mass.kilogram)));
-    ingredients.addToInventory(new Ingredient(Entities.rolledOat, new Qty(0.14, Units.SI.Mass.kilogram)));
-  }
+  RecipeBuilder.prototype.fetchInventory = function() {
+    return (new IngredientSrc('Inventory', Entities.inventory)).addAll([
+      new Ingredient(Entities.tapWater, new Qty(Infinity, Units.SI.Volume.liter)),
+      new Ingredient(Entities.syrup, new Qty(2.4, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.syrup, new Qty(2.4, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.c120, new Qty(0.16, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.c60, new Qty(0.14, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.paleChoco, new Qty(0.14, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.blackMalt, new Qty(0.14, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.flakedRye, new Qty(0.14, Units.SI.Mass.kilogram)),
+      new Ingredient(Entities.rolledOat, new Qty(0.14, Units.SI.Mass.kilogram))
+    ]);
+  };
 
   return RecipeBuilder;
 });

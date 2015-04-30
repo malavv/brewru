@@ -9,9 +9,7 @@ define(
   function(Bus, Quantity, Entities, Units, Ingredient) {
 
   function Ingredients() {
-    this.inventory = [
-      new Ingredient(Entities.tapWater, new Quantity(Infinity , Units.SI.Volume.liter))
-    ];
+    this.inventory = [];
     this.reactors = [];
   }
 

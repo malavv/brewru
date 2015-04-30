@@ -18,15 +18,24 @@
     },
     onTap: function() {
       if (this.isEditMode) return false
-      this.isEditMode = true;
+      this.onEnterEditMode();
       return false;
     },
     onKey: function(e) {
       var
         key = Key.fromEvent(e).toString();
       if (key !== 'enter') return false;
-      this.isEditMode = false;
+      this.onExitEditMode();
       return false;
+    },
+    onEnterEditMode: function() {
+      console.log('onEnterEditMode');
+      this.isEditMode = true;
+    },
+    onExitEditMode: function() {
+      console.log('onExitEditMode');
+      this.isEditMode = false;
+      this.fire('changed');
     }
 	});
 	</script>
