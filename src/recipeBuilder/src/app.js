@@ -16,3 +16,25 @@ require(['underscore'], function(_) {
         interpolate: /\{\{(.+?)\}\}/g
     };
 });
+
+Object.watchedProperty = function(obj, property, value) {
+  if (typeof(property) !== "string") {
+   console.warn('[Object] watchedProperty : Invalid property name');
+   return;
+  }
+  var
+    internalAttr = '_' + property,
+    changedAttr = property + 'Changed';
+  obj[internalAttr] = value;
+  Object.defineProperty(obj, property, {
+    enumerable: false,
+    get: function() { return obj[internalAttr]; },
+    set: function(newVal) {
+      var
+        old = obj[internalAttr],
+        changed = obj[changedAttr];
+      obj[internalAttr] = newVal;
+      if (changed instanceof Function) changed.call(obj, old, newVal);
+    }
+  });
+};

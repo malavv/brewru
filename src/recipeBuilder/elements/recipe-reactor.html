@@ -6,16 +6,13 @@
   <template>
     <link rel="stylesheet" href="../css/recipe-reactor.css">
     <div class="reactor-name">
-      <widget-text text="{{reactor.name}}" on-changed="{{reactorNameChanged}}"></widget-text>
+      <widget-text text="{{reactor.name}}"></widget-text>
       &lt;{{reactor.id}}&gt;
     </div>
     <div class="reactor-content" flex>Reactor Viewer Content</div>
   </template>
   <script>
   Polymer('recipe-reactor', {
-  	reactorNameChanged: function() {
-      console.log('reactorNameChanged');
-    }
   });
   </script>
 </polymer-element>

@@ -29,13 +29,10 @@
       return false;
     },
     onEnterEditMode: function() {
-      console.log('onEnterEditMode');
       this.isEditMode = true;
     },
     onExitEditMode: function() {
-      console.log('onExitEditMode');
       this.isEditMode = false;
-      this.fire('changed');
     }
 	});
 	</script>
