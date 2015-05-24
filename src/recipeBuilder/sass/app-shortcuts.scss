@@ -6,17 +6,21 @@
   left: 0;
   align-items: center;
 
-  .key-container {
-    width: 400px;
-    background-color: #dcdcdc;
-  }
-  .key-shortcut {
-    text-align: center;
-  }
-  .key-binding {
-    width: 70px;
-    font-weight: bold;
-  }
-  .key-description {
+  core-overlay#overlay {
+    background-color: #444;
+    color: #ddd;
+    div.title {
+      text-align: center;
+      font-size: 1.3em;
+    }
+    div.key {
+      padding: 10px;
+      div.shortcut {
+        text-align: center;
+        width: 70px;
+        font-weight: bold;
+      }
+      div.text {}
+    }
   }
 }

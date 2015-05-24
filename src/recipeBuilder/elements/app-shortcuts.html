@@ -1,66 +1,51 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+
 <polymer-element
     name="app-shortcuts"
-    attributes="isHidden"
     horizontal center-justified layout>
   <template>
     <link rel="stylesheet" href="../css/app-shortcuts.css">
-    <div class="key-container">
-      <template repeat="{{shortcut in shortcuts}}" >
-        <div class="key-shortcut" horizontal layout>
-          <div class="key-binding">{{shortcut.binding}}</div>
-          <div class="key-description">{{shortcut.name}}</div>
+
+    <core-overlay id="overlay">
+      <div class="title">Keyboard Shortcuts</div>
+      <template repeat="{{shortcut in listed}}">
+        <div class="key" horizontal layout>
+          <div class="shortcut">{{shortcut.binding}}</div>
+          <div class="text">{{shortcut.name}}</div>
         </div>
       </template>
-    </div>
+    </core-overlay>
   </template>
   <script>
-  Polymer('app-shortcuts', {
-    busEvt: 'Shortcuts',
-    shortcuts: [
-      {
-        binding: 'alt+S',
-        name: 'Create new step',
-        intent: 'CreateStep'
-      },
-      {
-        binding: 'shift+6',
-        name: 'Toggle Visibility of Shortcuts',
-        intent: 'Shortcuts'
-      },
-      {
-        binding: 'esc',
-        name: 'Cancel current action.',
-        intent: 'Cancel'
-      }
-    ],
-    // Control
-    map: {},
-    isVisible: false,
-    isDebug: false,
+  'use strict';
 
-    ready: function() { require(['base/bus', 'base/key'], this.onReady.bind(this)); },
-    onReady: function(bus, Key) {
-      this.shortcuts.forEach(function(s) { this.map[s.binding] = s; }, this);
-      window.bus.register(this, this.busEvt);
-      this.setVisible(false);
+  var tmp;
+  Polymer('app-shortcuts', {
+    evt: 'Shortcuts',
+    listed: [],
+    ready: function() {
+      require(['base/bus', 'base/key', 'shortcuts'], this.onReady.bind(this));
+    },
+    onReady: function(bus, Key, Shortcuts) {
+      tmp = { bus: bus, Key: Key, Shortcuts: Shortcuts };
+      this.listed = Shortcuts.all;
+      console.log('onReady', Shortcuts);
+      window.bus.register(this, this.evt);
+      this.$.overlay.close();
     },
     onShortcuts: function(data) {
-      this.isVisible = !this.isVisible;
-      this.setVisible(this.isVisible);
+      this.$.overlay.open();
     },
     keypress: function(Key, e, detail, sender) {
       var
         key = Key.fromEvent(e),
-        shortcut = this.map[key.toString()];
+        shortcut = tmp.Shortcuts.map[key.toString()];
       if (shortcut === undefined) return;
       if (this.isDebug) console.log('keypress', key, shortcut)
       if (shortcut) window.bus.broadcast(shortcut.intent);
-    },
-    setVisible: function(isVisible) {
-      this.hidden = !isVisible;
-    },
+    }
   });
   </script>
 </polymer-element>
