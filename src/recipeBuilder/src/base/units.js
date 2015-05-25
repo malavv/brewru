@@ -1,26 +1,39 @@
 // This is not the right way, just a quick fix to go forward.
-define(
-  [
+define([
   'base/concept'
-  ],
-  function(Concept) {
+],
+function(Concept) {
+  return {
+    unknown: new Concept('internal:unknownUnit', 'N/A'),
+    SI: {
+      Mass: {
+        kilogram: new Concept('brew:kilogram', 'kg'),
+        gram: new Concept('brew:gram', 'g')
+      },
+      Volume: {
+        liter: new Concept('brew:liter', 'l')
+      },
+      Length: {
+        meter: new Concept('brew:meter', 'm')
+      }
+    },
+    USCust: {
+      Mass: {
+        ounce: new Concept('brew:ounce', 'oz'),
+        pound: new Concept('brew:pound', 'lb')
+      },
+      Volume: {
+        quart: new Concept('brew:quart', 'qt')
+      },
+      Length: {
+        inch: new Concept('brew:inch', 'in')
+      }
+    },
 
-  function Units() {}
-
-  Units.unknown = new Concept('internal:unknownUnit', 'N/A');
-  Units.SI = {};
-  Units.SI.Mass = {
-    kilogram: new Concept('brew:kilogram', 'kg')
-  };
-  Units.SI.Volume = {
-    liter: new Concept('brew:liter', 'l')
-  };
-
-  Units.knows = function(concept) {
-    if (Units.SI.Mass.kilogram === concept) return true;
-    if (Units.SI.Volume.liter === concept) return true;
-    return false;
-  };
-
-  return Units;
+    knows: function(concept) {
+      if (this.SI.Mass.kilogram === concept) return true;
+      if (this.SI.Volume.liter === concept) return true;
+      return false;
+    }
+  }
 });

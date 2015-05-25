@@ -25,25 +25,33 @@
         recipe={{builder.recipe}}
         flex one></recipe-tools>
     </div>
+
+    <!-- Shortcut Helper -->
     <app-shortcuts id="shortcuts"></app-shortcuts>
-    <app-menu isHidden={{isMenuHidden}} hidden?={{isMenuHidden}}></app-menu>
+
+    <!-- Wizard Windows -->
+    <app-menu></app-menu>
     <app-text></app-text>
     <app-ingredient></app-ingredient>
+
+    <!-- Step Builder Object -->
     <recipe-newstep builder={{builder}}></recipe-newstep>
 	</template>
 	<script>
-    Polymer('recipe-overview', {
-      ready: function() {
-        require(['recipebuilder', 'base/key'], this.onReady.bind(this))
-      },
-      onReady: function(RecipeBuilder, key) {
-        this.initRecipeBuilder(RecipeBuilder);
-        window.addEventListener('keyup', this.$.shortcuts.keypress.bind(this.$.shortcuts, key), true);
-      },
-      initRecipeBuilder: function(RecipeBuilder) {
-        this.builder = new RecipeBuilder();
-        this.current = this.builder.recipe.reactors[0];
+    Polymer.require('recipe-overview',
+      ['recipebuilder', 'base/key'],
+      function(RecipeBuilder, key) {
+        return {
+          ready: function() {
+            this.initRecipeBuilder(RecipeBuilder);
+            window.addEventListener('keyup', this.$.shortcuts.keypress.bind(this.$.shortcuts, key), true);
+          },
+          initRecipeBuilder: function(RecipeBuilder) {
+            this.builder = new RecipeBuilder();
+            this.current = this.builder.recipe.reactors[0];
+          }
+        }
       }
-    });
+    );
   </script>
 </polymer-element>

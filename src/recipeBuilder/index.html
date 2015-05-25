@@ -5,14 +5,7 @@
 
   <script data-main="src/app.js" src="lib/require.js"></script>
   <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-  <script>
-  console.log('stuff');
-  Polymer.require = function(tag, deps, func) {
-    require(deps, function() {
-      Polymer(tag, func.apply(this, arguments));
-    });
-  };
-  </script>
+
   <link rel="import" href="elements/recipe-overview.html">
 </head>
 <body fullbleed horizontal layout unresolved>

@@ -13,76 +13,66 @@
   <template>
     <link rel="stylesheet" href="../css/app-ingredient.css">
 
-    <div class="container" vertical layout hidden?={{test}}>
-      <widget-list id="list" data="{{ingredients}}" selection="{{selection}}">
-      </widget-list>
+    <core-overlay id="overlay" vertical layout>
+      <widget-list id="list" data="{{ingredients}}" selection="{{ingredient}}"></widget-list>
       <widget-quantity quantity="{{quantity}}"></widget-quantity>
-    </div>
+    </core-overlay>
   </template>
   <script>
-  Polymer('app-ingredient', {
-    // Event Bus
-    busEvt: {
-      receive: 'AskIngredient',
-      send: 'AnswerIngredient'
-    },
-    // Control
-    selection: undefined,
-    // Input
-    ingredients: ["1", "2", "3", "4"],
-
-    ready: function() { require(['base/bus', 'base/quantity'], this.onReady.bind(this)); },
-    onReady: function(Bus, Quantity) {
-      window.bus.register(this, this.busEvt.receive);
-      this.quantity = new Quantity();
-      this.setVisible(false);
-    },
-
-    onAskIngredient: function(data) {
-      this.ingredients = data;
-      this.setVisible(true);
-    },
-
-    valueChanged: function() { this.onStateChanged() },
-    selectionChanged: function() { this.onStateChanged(); },
-    onUnitSelected: function(e) { this.onStateChanged(); },
-    onStateChanged: function() {
-      var results = this.getResults();
-      if (!this.isValid(results)) return;
-      window.bus.broadcast(this.busEvt.send, results);
-      this.reset();
-      this.setVisible(false);
-    },
-
-    isValid: function(result) {
-      result = result || this;
-      return result.ingredient !== undefined && result.value !== '' && result.unit !== '';
-    },
-    getResults: function() {
-      if (this.selection !== undefined)
-        delete this.selection.selected;
+  Polymer.require('app-ingredient',
+    ['base/bus', 'base/quantity'],
+    function(Bus, Quantity) {
       return {
-        ingredient: this.selection,
-        value: this.value,
-        unit: this.unit
+        // Event Bus
+        busEvt: {
+          receive: 'AskIngredient',
+          send: 'AnswerIngredient'
+        },
+        ingredients: [],
+
+        ingredient: undefined,
+        quantity: undefined,
+
+        ready: function() {
+          window.bus.register(this, this.busEvt.receive);
+          this.$.overlay.close();
+        },
+
+        onAskIngredient: function(data) {
+          this.ingredients = data;
+          this.$.overlay.open();
+        },
+
+        ingredientChanged: function() { this.onStateChanged(); },
+        quantityChanged: function() { this.onStateChanged(); },
+        onStateChanged: function() {
+          var results = this.getResults();
+          if (!this.isValid(results)) return;
+          window.bus.broadcast(this.busEvt.send, results);
+          this.$.overlay.close();
+          this.reset();
+        },
+
+        isValid: function(result) {
+          result = result || this;
+          return result.ingredient !== undefined && result.quantity !== undefined;
+        },
+        getResults: function() {
+          return {
+            ingredient: this.ingredient,
+            quantity: this.quantity
+          };
+        },
+        sendResults: function() {
+          window.bus.broadcast(this.busEvt.send, this.getResults());
+          this.reset();
+        },
+        reset: function() {
+          this.ingredients = [];
+          this.ingredient = undefined;
+          this.quantity = undefined;
+        }
       };
-    },
-    sendResults: function() {
-      window.bus.broadcast(this.busEvt.send, this.getResults());
-      this.reset();
-    },
-    setVisible: function(isVisible) {
-      this.hidden = !isVisible;
-    },
-    reset: function() {
-      this.selection = undefined;
-      // Input
-      this.ingredients = [];
-      // Results
-      this.value = '';
-      this.unit = '';
-      this.$.value.value = '';
-    }
   });
   </script>
 </polymer-element>

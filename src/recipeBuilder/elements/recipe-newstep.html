@@ -43,7 +43,7 @@
   function registerIngredient(state, data) {
     if (data === null) return Promise.reject();
     state.ingredient = data.ingredient;
-    state.qty = {value: data.value, unit: data.unit};
+    state.qty = data.quantity;
     return state;
   }
 

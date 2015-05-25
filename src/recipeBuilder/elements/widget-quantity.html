@@ -10,20 +10,29 @@
     <link rel="stylesheet" href="../css/widget-quantity.css">
 
     <div flex>amount :</div>
-    <input class="amount" is="core-input" type="number" value="{{value}}" committedValue="{{quantity.magnitude}}">
-    </input>
-    <widget-units unit="{{quantity.unit}}">
-    </widget-units>
+    <input is="core-input" type="number" value="{{val}}" committedValue="{{commited}}"></input>
+    <widget-units unit="{{unit}}"></widget-units>
   </template>
   <script>
-  (function() {
-    'use strict';
-  Polymer('widget-quantity', {
-    value: 0,
+  Polymer.require('widget-quantity',
+    ['base/bus', 'base/quantity', 'base/units'],
+    function(bus, Quantity, Units) {
+      return {
+        val: 0,
+        commited: 0,
+        unit: undefined,
+        quantity: undefined,
 
-    ready: function() { require(['base/bus'], this.onReady.bind(this)); },
-    onReady: function() {}
+        commitedChanged: function(oldVal, newVal) { this.check(); },
+        unitChanged: function(oldVal, newVal) { this.check(); },
+        isValid: function() {
+          return this.unit !== undefined && this.commited !== 0 && this.unit !== Units.unknown;
+        },
+        check: function() {
+          if (!this.isValid()) return;
+          this.quantity = new Quantity(this.commited, this.unit);
+        }
+      };
   });
-  })();
   </script>
 </polymer-element>
