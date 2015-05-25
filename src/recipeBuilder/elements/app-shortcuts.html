@@ -1,6 +1,4 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-
-<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="polymer-require.html">
 
 <polymer-element
     name="app-shortcuts"
@@ -19,33 +17,30 @@
     </core-overlay>
   </template>
   <script>
-  'use strict';
+  Polymer.require('app-shortcuts',
+    ['base/bus', 'base/key', 'shortcuts'],
+    function(bus, Key, Shortcuts) {
+      return {
+        evt: 'Shortcuts',
+        listed: [],
 
-  var tmp;
-  Polymer('app-shortcuts', {
-    evt: 'Shortcuts',
-    listed: [],
-    ready: function() {
-      require(['base/bus', 'base/key', 'shortcuts'], this.onReady.bind(this));
-    },
-    onReady: function(bus, Key, Shortcuts) {
-      tmp = { bus: bus, Key: Key, Shortcuts: Shortcuts };
-      this.listed = Shortcuts.all;
-      console.log('onReady', Shortcuts);
-      window.bus.register(this, this.evt);
-      this.$.overlay.close();
-    },
-    onShortcuts: function(data) {
-      this.$.overlay.open();
-    },
-    keypress: function(Key, e, detail, sender) {
-      var
-        key = Key.fromEvent(e),
-        shortcut = tmp.Shortcuts.map[key.toString()];
-      if (shortcut === undefined) return;
-      if (this.isDebug) console.log('keypress', key, shortcut)
-      if (shortcut) window.bus.broadcast(shortcut.intent);
-    }
+        ready: function() {
+          this.listed = Shortcuts.all;
+          window.bus.register(this, this.evt);
+          this.$.overlay.close();
+        },
+        onShortcuts: function(data) {
+          this.$.overlay.open();
+        },
+        keypress: function(Key, e, detail, sender) {
+          var
+            key = Key.fromEvent(e),
+            shortcut = Shortcuts.map[key.toString()];
+          if (shortcut === undefined) return;
+          if (this.isDebug) console.log('keypress', key, shortcut)
+          if (shortcut) window.bus.broadcast(shortcut.intent);
+        }
+      };
   });
   </script>
 </polymer-element>
