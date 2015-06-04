@@ -4,8 +4,9 @@ var sass = require('gulp-sass');
 var ts = require('gulp-typescript');
 var tslint = require('gulp-tslint');
 var sourcemaps = require('gulp-sourcemaps');
+var typedoc = require('gulp-typedoc');
 
-gulp.task('default', ['watch', 'sass', 'typescript', 'base', 'html']);
+gulp.task('default', ['watch', 'sass', 'typescript', 'base', 'html', 'typedoc']);
 
 // Compile Our Sass
 gulp.task('sass', function() {
@@ -40,4 +41,14 @@ gulp.task('watch', function() {
     gulp.watch('elem/**/*.ts', ['typescript']);
     gulp.watch('elem/**/*.html', ['html']);
     gulp.watch('src/**/*.ts', ['base']);
+});
+
+gulp.task('typedoc', function() {
+    return gulp
+        .src(['src/**/*.ts', 'elem/**/*.ts'])
+        .pipe(typedoc({ 
+            out: 'doc', 
+            target: 'es5',
+            includeDeclarations: true
+        }));
 });
