@@ -11,3 +11,8 @@ src/recipeBuilder/bower_components
 src/recipeBuilder/node_modules
 src/recipeBuilder/css
 src/recipeBuilder/.sass-cache
+
+# Builder
+src/builder/app/cmpts/
+src/builder/node_modules/
+src/builder/app/elem/
