@@ -17,3 +17,4 @@ src/builder/app/cmpts/
 src/builder/node_modules/
 src/builder/app/elem/
 src/builder/doc
+src/builder/app/lib/base.js
