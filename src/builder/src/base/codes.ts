@@ -1,23 +1,20 @@
-/**
- * The Codes class contains static helper to con
- */
  interface BaseConvert {
-   int2base(idx:number);
-   base2int(base:string);
+   int2base(idx:number) : string;
+   base2int(base:string) : number;
  }
 
-class Codes extends BaseConvert {
+class Codes implements BaseConvert {
   private codes:string = '0123456789abcdefghijklmnopqrstuvwxyz';
   private max:number = this.codes.length;
   private errorCode:string = '-';
   private errorIdx:number = -1;
 
   int2base(idx:number) {
-    if (isNaN(i) || i < 0 || i >= max) return this.errorCode;
-    return this.codes[i];
+    if (isNaN(idx) || idx < 0 || idx >= this.max) return this.errorCode;
+    return this.codes[idx];
   }
   base2int(base:string) {
-    if (typeof(c) !== 'string') return this.errorIdx;
+    if (typeof(base) !== 'string') return this.errorIdx;
     return this.codes.indexOf(base);
   }
 }

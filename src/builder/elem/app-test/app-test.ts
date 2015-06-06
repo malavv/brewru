@@ -1,8 +1,9 @@
 /// <reference path="../../src/base.ts" />
 /// <reference path="../../src/base/eventBus.ts" />
 /// <reference path="../../src/base/messageType.ts" />
+/// <reference path="../../src/base/keyboard.ts" />
 
-var Polymer = Polymer || {}
+var Polymer:Function = Polymer || function () {}
 
 class AppTest {
   name: string;
@@ -10,12 +11,13 @@ class AppTest {
 
   ready() {
     this.bus = new EventBus();
-    
-    this.bus.suscribe(this, [MessageType.unknown]);
+    this.bus.suscribe(
+      MessageType.unknown,
+      this.onUnknown,
+      this
+    );
     this.bus.publish(MessageType.unknown, 'No Data');
     this.welcome();
-    var hw = new HelloWorld();
-    hw.welcome();
   }
   
   onUnknown() {

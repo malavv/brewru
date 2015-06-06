@@ -1,8 +1,17 @@
 /// <reference path="messageType.ts" />
 
+interface HandlerFunc {
+	(data: any): void;
+}
+
+class Suscriber {
+	obj: Object;
+	fn: HandlerFunc;
+	type: MessageType;
+}
+
 class EventBus {
-	private byEventType: { [type:number]: Array<Object> } = {};
-	private allSuscribers: Array<Object> = [];
+	private byType: { [type:number]: Array<Suscriber> } = {};
 	
 	/**
 	 * When true the bus will log all events on the console.
@@ -15,8 +24,8 @@ class EventBus {
 	 * @param data Any relevant data.
 	 */
 	publish(type: MessageType, data: any) {
-		(this.byEventType[type.id] || [])
-			.forEach((handler) => { this.trigger(handler, type, data); });
+		(this.byType[type.id] || [])
+			.forEach((handler) => { this.trigger(handler, data); });
 		this.log(type, data);
 	}
 	
@@ -25,29 +34,19 @@ class EventBus {
 	 * @param handler Object that will handle the message.
 	 * @param types Types of message to register to.
 	 */
-	suscribe(handler: Object, types: Array<MessageType>) {
-		if (this.isKnown(handler)) {
-			console.warn('[EventBus] Registering a known handler');
-		}
-		this.allSuscribers.push(handler);
-		types.forEach((type:MessageType) => {
-			this.byEventType[type.id] = this.byEventType[type.id] || [];
-			this.byEventType[type.id].push(handler);
+	suscribe(type: MessageType, callback: HandlerFunc, optThis: Object) {
+		this.byType[type.id] = this.byType[type.id] || [];
+		this.byType[type.id].push({
+			obj: optThis || Window,
+			fn: callback,
+			type: type
 		});
 	}
 	
-	/**
-	 * Is the handler known of the EventBus.
-	 */
-	isKnown(handler: Object) {
-		return this.allSuscribers.some((s) => { return s === handler; });
-	}
-	
 	private log(type: MessageType, data: any) {
-		console.log('[EventBus]', type, data);
+		if (this.isLogging) console.log('[EventBus]', type, data);
 	}
-	private trigger(handler: Object, type: MessageType, data: any) {
-		var prop = 'on' + type.name; 
-		handler[prop].call(handler, data);
+	private trigger(handler: Suscriber, data: any) {
+		handler.fn.call(handler.obj, data);
 	}
 }
