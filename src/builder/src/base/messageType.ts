@@ -8,4 +8,6 @@ class MessageType {
 	}
 	
 	static unknown:MessageType = new MessageType('Unknown', 0);
+	static NewStepCreated:MessageType = new MessageType('NewStepCreated', 1);
+	static RecipeChanged:MessageType = new MessageType('RecipeChanged', 2);
 };

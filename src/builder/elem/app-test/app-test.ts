@@ -1,4 +1,3 @@
-/// <reference path="../../src/base.ts" />
 /// <reference path="../../src/base/eventBus.ts" />
 /// <reference path="../../src/base/messageType.ts" />
 /// <reference path="../../src/base/keyboard.ts" />

@@ -10,16 +10,12 @@ class Unit {
 	dimension: Dimension;
 	system: System;
 	
-	//'brew:litre', 'kg', 0, 1, Dimension.Mass
-	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dimension) {
+	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dimension, system:System) {
 		this.concept = concept;
 		this.symbol = symbol;
 		this.offset = offset;
 		this.multiplier = multiplier;
 		this.dimension = dim;
-	}
-	
-	setSystem(system:System) {
 		this.system = system;
 	}
 }

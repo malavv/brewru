@@ -1,12 +1,13 @@
 interface ConceptRef {
   isAnon: boolean;
+  id: string;
   name(): string;
 }
 
 class OntoRef implements ConceptRef {
   private static nextAnonId = 0;
   private _name:string;
-  private id:string;
+  id: string;
   isAnon: boolean;
   
   constructor(id:string, name:string) {

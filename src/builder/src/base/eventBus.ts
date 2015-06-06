@@ -23,7 +23,7 @@ class EventBus {
 	 * @param type Type of the event from EventType
 	 * @param data Any relevant data.
 	 */
-	publish(type: MessageType, data: any) {
+	publish(type: MessageType, data?: any) {
 		(this.byType[type.id] || [])
 			.forEach((handler) => { this.trigger(handler, data); });
 		this.log(type, data);
@@ -50,3 +50,5 @@ class EventBus {
 		handler.fn.call(handler.obj, data);
 	}
 }
+
+var bus = new EventBus();
