@@ -1,0 +1,26 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../../cmpts/core-list/core-list.html">
+
+<polymer-element name="recipe-ingredients" attributes="inventory recipe" vertical layout>
+  <template>
+    <link rel="stylesheet" href="recipe-ingredients.css">
+    <div class="section">{{inventory.name}}</div>
+    <core-list data="{{inventory.stocks}}" flex>
+      <template>
+        <div class="ingredient"><b>{{model.concept.name}}</b>&lt;{{model.quantity}}&gt;</div>
+      </template>
+    </core-list>
+    <template repeat="{{reactor in recipe.reactors}}">
+      <div class="section">{{reactor.src.name}}</div>
+      <core-list data="{{reactor.src}}" flex>
+        <template>
+          <div class="ingredient"><b>{{model.concept.name}}</b>&lt;{{model.quantity}}&gt;</div>
+        </template>
+      </core-list>
+    </template>
+  </template>
+  <script src="recipe-ingredients.js"></script>
+</polymer-element>

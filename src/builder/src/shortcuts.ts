@@ -1,14 +1,14 @@
 class Shortcut {
 	binding: string;
 	name: string;
-	intent: string;
+	intent: MessageType;
 }
 
 class Shortcuts {
-	all: Array<Shortcut>;
-	map: { [map: string]: Shortcut; };
+	public all: Array<Shortcut> = [];
+	public map: { [map: string]: Shortcut; } = {}
 	
-	add(binding: string, name: string, intent: string) {
+	add(binding: string, name: string, intent: MessageType) {
 	    var newShortcut:Shortcut = {
 	      binding: binding,
 	      name: name,
@@ -19,8 +19,8 @@ class Shortcuts {
 	    return this;
 	}
 	
-	static default: Shortcuts = new Shortcuts()
-	    .add('alt+S', 'Create new step', 'CreateStep')
-	    .add('shift+6', 'Toggle Visibility of Shortcuts', 'Shortcuts')
-	    .add('esc', 'Cancel current action.', 'Cancel');
+	public static default: Shortcuts = new Shortcuts()
+	    .add('alt+S', 'Create new step', MessageType.CreateStep)
+	    .add('shift+6', 'Toggle Visibility of Shortcuts', MessageType.ShowShortcuts)
+	    .add('esc', 'Cancel current action.', MessageType.Cancel);
 }

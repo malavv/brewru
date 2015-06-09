@@ -5,9 +5,10 @@ class Reactor {
 	static nextIdx:number = 0;
 	id: number;
 	src: IngredientSrc;
-	steps: Array<Step>;
+	steps: Array<Step> = [];
 	
 	constructor(id: number = 0) {
+		this.id = id;
 		this.steps.push(new Step('start', 'start'));
 	}
 	

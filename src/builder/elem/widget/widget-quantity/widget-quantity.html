@@ -1,0 +1,19 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../widget/widget-units/widget-units.html">
+
+<polymer-element
+    name="widget-quantity"
+    attributes="quantity"
+    horizontal layout center>
+  <template>
+    <link rel="stylesheet" href="widget-quantity.css">
+
+    <div flex>amount :</div>
+    <input is="core-input" type="number" value="{{val}}" committedValue="{{commited}}"></input>
+    <widget-units unit="{{unit}}"></widget-units>
+  </template>
+  <script src="widget-quantity.js"></script>
+</polymer-element>

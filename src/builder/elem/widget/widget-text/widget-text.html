@@ -1,0 +1,11 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<polymer-element name="widget-text" attributes="text" on-tap={{onTap}}>
+  <template>
+      <input hidden?={{!isEditMode}} id="input" type="text" value={{text}} on-keypress={{onKey}}/>
+    <template if="{{!isEditMode}}">
+      {{text}}
+    </template>
+  </template>
+  <script src="widget-text.js"></script>
+</polymer-element>

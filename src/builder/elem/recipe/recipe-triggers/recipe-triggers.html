@@ -1,0 +1,15 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<polymer-element name="recipe-triggers" attributes="triggers" vertical layout>
+  <template>
+    <link rel="stylesheet" href="recipe-triggers.css">
+    <div class="triggers" flex>
+   		<template repeat="{{trigger in triggers}}">
+    		<div class="trigger">{{trigger.name}}</div>
+  		</template>
+    </div>
+  </template>
+  <script src="recipe-triggers.js"></script>
+</polymer-element>

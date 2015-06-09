@@ -1,0 +1,17 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../widget/widget-text/widget-text.html">
+
+<polymer-element name="recipe-reactor" attributes="reactor" vertical layout>
+  <template>
+    <link rel="stylesheet" href="recipe-reactor.css">
+    <div class="reactor-name">
+      <widget-text text="{{reactor.name}}"></widget-text>
+      &lt;{{reactor.id}}&gt;
+    </div>
+    <div class="reactor-content" flex>Reactor Viewer Content</div>
+  </template>
+  <script src="recipe-reactor.js"></script>
+</polymer-element>

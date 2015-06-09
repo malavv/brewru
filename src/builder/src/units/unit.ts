@@ -1,6 +1,5 @@
 /// <reference path="../base/conceptRef.ts" />
 /// <reference path="dimension.ts" />
-/// <reference path="system.ts" />
 
 class Unit {
 	concept: ConceptRef;
@@ -18,4 +17,6 @@ class Unit {
 		this.dimension = dim;
 		this.system = system;
 	}
+	
+	public static Unknown = new Unit(OntoRef.createAnon('unknownUnit'), '', 0, 0, undefined, undefined);
 }

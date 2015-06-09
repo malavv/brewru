@@ -1,0 +1,42 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<polymer-element
+    name="widget-units"
+    attributes="unit"
+    vertical center-justified layout
+    on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
+  <template>
+    <link rel="stylesheet" href="widget-units.css">
+    <div class="container">
+      <div class="title">{{title}}</div>
+
+      <div class="system us"
+          hidden?={{!isExpanded}}
+          on-mouseover='{{onHoverIn}}'
+          on-mouseout='{{onHoverOut}}'>
+        <div class="name">US Cust.</div>
+        <ul>
+          <template repeat="{{unit, idx in USCust}}">
+            <li on-tap={{onChoice}} data-system="USCust" data-unit={{idx}}>{{unit}}</li>
+          </template>
+        </ul>
+      </div>
+
+      <div class="system si"
+          hidden?={{!isExpanded}}
+          on-mouseover='{{onHoverIn}}'
+          on-mouseout='{{onHoverOut}}'>
+        <div class="name">SI</div>
+        <ul>
+          <template repeat="{{unit, idx in SI}}">
+            <li on-tap={{onChoice}} data-system="SI" data-unit={{idx}}>{{unit}}</li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
+  </template>
+  <script src="widget-units.js"></script>
+</polymer-element>

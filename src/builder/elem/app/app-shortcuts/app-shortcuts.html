@@ -1,0 +1,24 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+
+<polymer-element
+    name="app-shortcuts"
+    horizontal center-justified layout>
+  <template>
+    <link rel="stylesheet" href="app-shortcuts.css">
+
+    <core-overlay id="overlay">
+      <div class="title">Keyboard Shortcuts</div>
+      <template repeat="{{shortcut in listed.all}}">
+        <div class="key" horizontal layout>
+          <div class="shortcut">{{shortcut.binding}}</div>
+          <div class="text">{{shortcut.name}}</div>
+        </div>
+      </template>
+    </core-overlay>
+  </template>
+  <script src="app-shortcuts.js"></script>
+</polymer-element>

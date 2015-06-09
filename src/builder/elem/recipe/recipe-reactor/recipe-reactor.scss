@@ -1,0 +1,15 @@
+:host .reactor-name {
+  background-color: #ddd;  
+  text-align: center;
+  font-size: 1.5em;
+  border-bottom: 2px solid #ccc;
+  border-top: 2px solid blue;
+}
+
+:host .reactor-content {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	border-radius: inherit;
+	background-color: #f0f0f0;
+};

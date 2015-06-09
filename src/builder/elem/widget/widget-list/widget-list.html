@@ -1,0 +1,25 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../../cmpts/core-list/core-list.html">
+<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+
+<polymer-element
+    name="widget-list"
+    attributes="data selection"
+    vertical layout>
+  <template>
+    <link rel="stylesheet" href="widget-list.css">
+
+    <core-list id="list" data="{{data}}" selection="{{selection}}" height="30" flex>
+      <template>
+        <div class="item {{ {selected: selected} | tokenList }}" horizontal layout center>
+          <div class="idx">{{index | toSingleCharIdx}}</div>
+          <div class="value">{{model}}</div>
+        </div>
+      </template>
+    </core-list>
+  </template>
+  <script src="widget-list.js"></script>
+</polymer-element>

@@ -43,6 +43,16 @@ class EventBus {
 		});
 	}
 	
+	/**
+	 * Publish a message and waits for an answer. 
+	 */
+	publishAndWaitFor(waitForType: MessageType, publishType: MessageType, data?: any) {
+		return new Promise((resolve, reject) => {
+			this.suscribe(waitForType, (data) => { Promise.resolve(data); }, this);
+			this.publish(publishType, data);
+		});
+	}
+	
 	private log(type: MessageType, data: any) {
 		if (this.isLogging) console.log('[EventBus]', type, data);
 	}

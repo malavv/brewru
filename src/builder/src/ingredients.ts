@@ -1,4 +1,5 @@
 /// <reference path="ingredient.ts" />
+/// <reference path="reactor.ts" />
 /// <reference path="base/conceptRef.ts" />
 
 class Ingredients {

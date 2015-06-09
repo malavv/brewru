@@ -1,6 +1,6 @@
 class Keyboard {
 	private event: KeyboardEvent;
-	private binding: string;
+	binding: string;
 	
 	constructor(event:KeyboardEvent) {
 		this.event = event;
@@ -8,7 +8,7 @@ class Keyboard {
 	}
 	
 	toString(): string {
-		return Keyboard.getKeyBinding(this.event); 
+		return this.binding;
 	}
 	
 	static fromEvt(event:KeyboardEvent): Keyboard {
@@ -20,7 +20,7 @@ class Keyboard {
     	if (event.ctrlKey) binding += 'ctrl';
 		if (event.metaKey) binding += 'meta';
     	if (event.shiftKey) binding += 'shift';
-		binding += this.getCodeName(event.which);
+		binding += '+' + this.getCodeName(event.which);
 		return binding;
 	}
 	static getCodeName(code:number) : string {
@@ -29,7 +29,7 @@ class Keyboard {
 			case 13: return 'enter';
 			case 27: return 'esq';
 			default:
-				console.warn('[Keyboard]getCodeName: Unknown Code Name');
+				console.warn('[Keyboard]getCodeName: Unknown Code Name :', code);
 				return 'unknwon';
 		}
 	}

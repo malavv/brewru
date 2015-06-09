@@ -2,9 +2,10 @@
 
 class Recipe {
 	name: string;
-	reactors: Array<Reactor>
+	reactors: Array<Reactor> = []
 	
 	constructor(name: string = 'Anonymous', reactors: Array<Reactor> = []) {
+		this.name = name;
 		this.addReactor(Reactor.createAnon());
 	}
 	
