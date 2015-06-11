@@ -30,6 +30,7 @@ class AppMenu {
   }
   /** On request made. */
   onAskMenu(data) {
+    console.log('AppMenu', data)
     this.items = data;
     this.open();
   }

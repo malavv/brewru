@@ -7,14 +7,13 @@
 
 var Polymer:Function = Polymer || function () {}
 
-  var
-    Menu;
+class StepState {
+  name: string;
+  ingredient: Ingredient;
+  type: string;
+}
 
-  function StepState() {
-    this.name = null;
-    this.ingredient = null;
-    this.type = null;
-  };
+var Menu;
 
   function StepBuilder(step) {
     this.step = step;
@@ -56,6 +55,7 @@ class RecipeNewstep {
   }
   
   onCreateStep(data) {
+    console.log('recipe-newstep : onCreateStep')
     if (this.isChoosing) return;
     this.beginBuilder()
       .then(this.onStateMachine.bind(this))
@@ -82,6 +82,9 @@ class RecipeNewstep {
   }
   
   onStateMachine(state) {
+    state.type = state.type || null;
+    state.name = state.name || null;
+    state.ingredient = state.ingredient || null;
     if (state.type === null) return this.askType(state);
     if (state.name === null) return this.askName(state);
     if (state.ingredient === null) return this.askIngredient(state);
@@ -93,7 +96,8 @@ class RecipeNewstep {
   }
   
   askType(state) {
-    return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, Steps)
+    console.log('asktype')
+    return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, RecipeNewstep.Steps)
       .then(registerType.bind(this, state))
       .then(this.onStateMachine.bind(this))
       .catch(function() {

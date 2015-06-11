@@ -10,9 +10,9 @@
 /// <reference path="units/system.ts" />
 
 class RecipeBuilder {
-	inventory: IngredientSrc;
-	ingredients: Ingredients;
-	recipe: Recipe;
+	inventory: IngredientSrc = null;
+	ingredients: Ingredients = null;
+	recipe: Recipe = null;
 	
 	constructor() {
 		this.inventory = this.fetchInventory();

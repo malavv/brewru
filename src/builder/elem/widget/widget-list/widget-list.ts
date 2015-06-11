@@ -12,8 +12,9 @@ class WidgetList {
   /** On request made. */
   dataChanged(oldV, newV) { this.resize(); }
   handleEvent(event:KeyboardEvent) {
-    var codes = new Codes();
-    var idx = codes.base2int(String.fromCharCode(event.which));
+    var 
+      codes = new Codes(),
+      idx = codes.base2int(String.fromCharCode(event.which));
     if (idx < 0 || idx >= this.data.length) return;
     this.$.list.selectItem(idx);
   }

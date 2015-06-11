@@ -1,4 +1,5 @@
 /// <reference path="messageType.ts" />
+/// <reference path="../promise.d.ts" />
 
 interface HandlerFunc {
 	(data: any): void;
