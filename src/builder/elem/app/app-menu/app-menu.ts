@@ -44,28 +44,22 @@ class AppMenu {
   onOverlayClosed() {
     this.close();
   }
-
-  handleEvent(event:KeyboardEvent) {
-    var codes = new Codes();
-    var idx = codes.base2int(String.fromCharCode(event.which));
-    if (idx < 0 || idx >= this.items.length) return;
-    this.$.list.selectItem(idx);
-  }
+  
   selectionChanged(o, n) {
     if (n === undefined) return;
     this.$.overlay.close();
   }
 
   close() {
+    this.$.list.looseFocus();
     this.hidden = true;
     this.items = [];
-    window.removeEventListener('keypress', this, false);
     bus.publish(MessageType.AnswerMenu, this.selection);
   }
   
   open() {
+    this.$.list.grabFocus();
     this.hidden = false;
-    window.addEventListener('keypress', this, false);
     this.$.overlay.open();
   }
 }  
