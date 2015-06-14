@@ -2,19 +2,17 @@
 
 <link rel="import" href="../../../cmpts/core-input/core-input.html">
 
-<polymer-element name="widget-text" attributes="text" on-tap={{onTap}}>
+<polymer-element name="widget-text" attributes="text" on-tap={{onTap}} horizontal layout>
   <template>
     <link rel="stylesheet" href="widget-text.css">
-    <input
-      id="editor" 
-      is="core-input"
-      type="text"
-      value={{text}}
-      hidden?={{!isEditMode}}
-      committedvalue="{{commitedVal}}"
+    
+    <input id="editor" 
+      is="core-input" type="text" hidden?="{{!isEditMode}}"
+      value="{{text}}" committedvalue="{{commitedVal}}"
+      flex
       />
     <template if="{{!isEditMode}}">
-      {{text}}
+      <span flex>{{text}}<span>
     </template>
   </template>
   <script src="widget-text.js"></script>
