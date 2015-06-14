@@ -27,6 +27,7 @@ class Keyboard {
 		if (code >= 33 && code <= 126) return String.fromCharCode(code);
 		switch (code) {
 			case 13: return 'enter';
+			case 16: return 'shift'; /** Shift only */
 			case 27: return 'esq';
 			default:
 				console.warn('[Keyboard]getCodeName: Unknown Code Name :', code);

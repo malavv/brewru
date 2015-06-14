@@ -20,11 +20,21 @@ class AppShortcuts {
   }
 
   keypress(event:KeyboardEvent) {
-    var
-      key = Keyboard.fromEvt(event),
-      shortcut = this.listed.map[key.toString()];      
-    if (shortcut === undefined) return;
-    if (shortcut) bus.publish(shortcut.intent);
+    var key = Keyboard.fromEvt(event);
+    
+    if (this.isIgnoredSource(event)) return;
+    if (!this.listed.hasKey(key)) return;
+    bus.publish(this.listed.get(key).intent);
+  }
+  
+  private isIgnoredSource(event) : boolean {
+    switch(event.path[0].tagName) {
+      case 'INPUT': return true;
+      case 'BODY': return false;
+      default:
+        console.log('AppShortcuts[isIgnoredSource]<default>', event.path[0].tagName);
+      return false;
+    }
   }
 }  
 
