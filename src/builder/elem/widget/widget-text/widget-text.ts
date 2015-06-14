@@ -1,29 +1,22 @@
-/// <reference path="../../../src/base/keyboard.ts" />
-
 var Polymer:Function = Polymer || function () {}
 
 class WidgetText {
-  $: any;
+  $:any;
   isEditMode: boolean = false;
-  
-  ready() {}
+  commitedVal: string;
   
   onTap() {
-      if (this.isEditMode) 
-        return false;
-      this.isEditMode = true
+      this.isEditMode = true;
+
       window.setTimeout(() => {
-        this.$.input.focus();
-        this.$.input.select();
+        this.$.editor.focus();
+        this.$.editor.select();  
       });
       return false;
   }
   
-  onKey(e:KeyboardEvent) {
-      if (Keyboard.fromEvt(e).binding !== 'enter') 
-        return false;
-      this.isEditMode = false;
-      return false;
+  commitedValChanged() {
+    this.isEditMode = false;    
   }
 }
 

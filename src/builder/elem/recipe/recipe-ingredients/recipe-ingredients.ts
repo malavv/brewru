@@ -12,7 +12,7 @@ class RecipeIngredients {
   }
   
   ingredientsChanged(a, b) {
-    b.inventory.forEach(item -> this.data.push(item));
+    b.inventory.forEach(item => this.data.push(item));
     this.groups.push({
       length: b.inventory.length,
       data: {name: 'Inventory'}
