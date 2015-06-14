@@ -17,7 +17,7 @@ class AppIngredient {
     bus.suscribe(MessageType.AskIngredient, this.onAskIngredient, this);
   }
   
-  onAskIngredient(data) {
+  onAskIngredient(data:Array<Ingredient>) {
     this.ingredients = data;
     this.$.overlay.open();
   }
@@ -32,11 +32,11 @@ class AppIngredient {
     this.reset();
   }
 
-  isValid(result) {
+  isValid(result:{ingredient:Ingredient; quantity:Quantity}) {
     result = result || this;
     return result.ingredient !== undefined && result.quantity !== undefined;
   }
-  getResults() {
+  getResults() : {ingredient:Ingredient; quantity:Quantity} {
     return {
       ingredient: this.ingredient,
       quantity: this.quantity

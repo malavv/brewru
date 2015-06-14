@@ -1,4 +1,4 @@
-enum Dimension {
+enum Dim {
 	Length,
 	Mass,
 	Volume

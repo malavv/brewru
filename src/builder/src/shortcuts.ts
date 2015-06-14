@@ -27,7 +27,7 @@ class Shortcuts {
 	public hasKey(key:Keyboard) : boolean {
 		return this.map[key.toString()] !== undefined;
 	}
-	public get(key:Keyboard) : boolean {
+	public get(key:Keyboard) : Shortcut {
 		return this.map[key.toString()];
 	}
 	

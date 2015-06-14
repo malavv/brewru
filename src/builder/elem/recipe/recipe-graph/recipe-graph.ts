@@ -5,26 +5,25 @@
 var Polymer:Function = Polymer || function () {}
 
 class RecipeGraph {
-  
   recipe: Recipe;
-  svg: ID3Selection;
+  svg:any;
   shadowRoot: any;
-  
+
   ready() {
     bus.suscribe(MessageType.RecipeChanged, this.onRecipeChanged, this);
   }
-  
-  onRecipeChanged(data) {
+
+  onRecipeChanged() {
     this.recipeChanged();
     console.log('onRecipeChanged');
   }
-  
+
   recipeChanged() {
 		if (this.recipe === undefined) return;
 	  this.drawReactors.bind(this);
 	}
-  
-  drawReactors(d3) {
+
+  drawReactors(d3:any) {
 		this.svg = d3.select(this.shadowRoot).select('svg');
     this.svg.selectAll("*").remove();
 		var dataset = this.recipe.reactors;
@@ -37,7 +36,7 @@ class RecipeGraph {
   		.data(dataset)
   		.enter()
   		.append('g')
-  		.attr("transform", function(d, i) {
+  		.attr("transform", function(d:any, i:any) {
   			return 'translate(' + ((i * width) + halfWidth) + ', 30)';
   		});
 
@@ -50,10 +49,10 @@ class RecipeGraph {
   		.attr('height', height);
 
   	// Start
-  	this.drawStart(d3, reactorGroup);
+  	this.drawStart(reactorGroup);
     this.recipe.reactors.forEach(this.drawSteps.bind(this, d3, reactorGroup), this);
 	}
-	drawStart(d3, group) {
+	drawStart(group:any) {
 		group.append('circle')
     		.attr('r', '10')
     		.attr('fill', 'white')
@@ -61,10 +60,10 @@ class RecipeGraph {
 		group.append('circle')
     		.attr('r', '3');
 	}
-  drawSteps(d3, g, reactor) {
+  drawSteps(d3:any, g:any, reactor:any) {
     reactor.steps.forEach(this.drawStep.bind(this, g, 80), this);
   }
-  drawStep(g, offset, step, index) {
+  drawStep(g:any, offset:any, step:any, index:any) {
     switch(step.type) {
       case 'start':
         break;

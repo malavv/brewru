@@ -21,13 +21,13 @@ class AppShortcuts {
 
   keypress(event:KeyboardEvent) {
     var key = Keyboard.fromEvt(event);
-    
+
     if (this.isIgnoredSource(event)) return;
     if (!this.listed.hasKey(key)) return;
     bus.publish(this.listed.get(key).intent);
   }
-  
-  private isIgnoredSource(event) : boolean {
+
+  private isIgnoredSource(event:any) : boolean {
     switch(event.path[0].tagName) {
       case 'INPUT': return true;
       case 'BODY': return false;
@@ -36,6 +36,6 @@ class AppShortcuts {
       return false;
     }
   }
-}  
+}
 
 Polymer(AppShortcuts.prototype);

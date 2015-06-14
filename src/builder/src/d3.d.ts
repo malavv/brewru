@@ -34,7 +34,7 @@ interface ID3Base extends ID3Selectors {
     };
     html: (url: string, callback: (response: DocumentFragment) => void) => void;
     csv: {
-        (url: string, callback: (response: any[]) => void);
+        (url: string, callback: (response: any[]) => void): any;
         parse(string: string): any[];
         parseRows(string: string, accessor: (row: any[], index: number) => any): any;
         format(rows: any[]): string;

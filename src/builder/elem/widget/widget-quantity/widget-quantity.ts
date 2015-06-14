@@ -4,15 +4,15 @@
 var Polymer:Function = Polymer || function () {}
 
 class WidgetQuantity {
-  val= 0;
-  commited= 0;
-  unit= undefined;
-  quantity= undefined;
+  val:number = 0;
+  commited:number = 0;
+  unit:Unit = undefined;
+  quantity:Quantity = undefined;
   
   ready() {}
   
-  commitedChanged(oldVal, newVal) { this.check(); }
-  unitChanged(oldVal, newVal) { this.check(); }
+  commitedChanged(oldVal:number, newVal:number) { this.check(); }
+  unitChanged(oldVal:Unit, newVal:Unit) { this.check(); }
   isValid() {
     return this.unit !== undefined && this.commited !== 0 && this.unit !== Unit.Unknown;
   }

@@ -3,31 +3,32 @@
 
 var Polymer:Function = Polymer || function () {}
 
-class WidgetUnits {  
+class WidgetUnits {
   USCust:Array<Unit>;
   SI:Array<Unit>;
   isExpanded:boolean = false;
   ref:number = 0;
   unit:Unit = undefined;
   title:string = 'Units';
-  
+
   ready() {
     this.USCust = [];
     this.SI = [];
-    Object.keys(UsCust.Mass).forEach(v => this.USCust.push(UsCust.Mass[v]));
-    Object.keys(UsCust.Volume).forEach(v => this.USCust.push(UsCust.Volume[v]));
-    Object.keys(UsCust.Length).forEach(v => this.USCust.push(UsCust.Length[v]));
-    
-    Object.keys(SI.Mass).forEach(v => this.SI.push(SI.Mass[v]));
-    Object.keys(SI.Volume).forEach(v => this.SI.push(SI.Volume[v]));
-    Object.keys(SI.Length).forEach(v => this.SI.push(SI.Length[v]));
+
+    UsCust.dim(Dim.Mass).forEach(u => this.USCust.push(u));
+    UsCust.dim(Dim.Volume).forEach(u => this.USCust.push(u));
+    UsCust.dim(Dim.Length).forEach(u => this.USCust.push(u));
+
+    SI.dim(Dim.Mass).forEach(u => this.SI.push(u));
+    SI.dim(Dim.Volume).forEach(u => this.SI.push(u));
+    SI.dim(Dim.Length).forEach(u => this.SI.push(u));
   }
-  
+
   onHoverIn() {
     this.isExpanded = true;
     this.ref += 1;
   }
-  
+
   onHoverOut() {
     var self = this;
     window.setTimeout(function() {
@@ -36,15 +37,26 @@ class WidgetUnits {
         self.isExpanded = false;
     }, 100)
   }
-  
-  onChoice(a, b, c) {
-    this.unit = this[c.dataset.system][c.dataset.unit];
+
+  onChoice(a:any, b:any, c:any) {
+    this.unit = this.getUnit(c.dataset.system, c.dataset.unit);
     this.isExpanded = false;
     this.ref = 0;
   }
-  
-  unitChanged(oldValue, newValue) {
-    if (newValue !== '') this.title = newValue;
+
+  getUnit(system:string, unit:number) : Unit {
+    console.log('getUnit', system, unit);
+    switch(system) {
+      case 'USCust':
+        return this.USCust[unit];
+      case 'SI':
+        return this.SI[unit];
+    }
+  }
+
+  unitChanged(oldValue:Unit, newValue:Unit) {
+    console.log('[WidgetUnits]unitChanged');
+    if (newValue !== undefined) this.title = newValue.concept.name;
     else this.title = 'Units';
   }
 }

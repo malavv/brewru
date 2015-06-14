@@ -15,11 +15,8 @@ var Polymer:Function = Polymer || function () {}
  *    with a null item.
  */
 class AppMenu {
-  busRequest = 'AskMenu';
-  busCancel = 'Cancel';
-  busResult = 'AnswerMenu';
-  items = [];
-  selection = undefined;
+  items:Array<Object> = [];
+  selection:Object = undefined;
   hidden:boolean;
   $:any;
   
@@ -29,7 +26,7 @@ class AppMenu {
     this.hidden = true;
   }
   /** On request made. */
-  onAskMenu(data) {
+  onAskMenu(data:Array<Object>) {
     console.log('AppMenu', data)
     this.items = data;
     this.open();
@@ -45,8 +42,8 @@ class AppMenu {
     this.close();
   }
   
-  selectionChanged(o, n) {
-    if (n === undefined) return;
+  selectionChanged(oldVal:Object, newVal:Object) {
+    if (newVal === undefined) return;
     this.$.overlay.close();
   }
 

@@ -3,30 +3,30 @@
 var Polymer:Function = Polymer || function () {}
 
 class AppText {
-  busRequest= 'AskText';
-  busCancel= 'Cancel';
-  evtSend= 'AnswerText';
-  description= '';
-  wasCanceled= true;
   $:any;
-  value:any;
+  description:string = '';
+  wasCanceled:boolean = true;
+  value:string;
   
   ready() {
     bus.suscribe(MessageType.AskText, this.onAskText, this);
     bus.suscribe(MessageType.Cancel, this.onCancel, this);
   }
+  
   /** On cancel received. */  
   onCancel() {
     if (this.$.overlay.opened)
       this.$.overlay.close();
   }
-  onAskText(data) {
+  
+  onAskText(data:string) {
     this.description = data;
     this.value = '';
     this.open();
   }
-  committedChanged(oldV, newV) {
-    if (newV === "") return;
+  
+  committedChanged(oldVal:string, newVal:string) {
+    if (newVal === "") return;
     this.wasCanceled = false;
     this.$.overlay.close();
   }
@@ -34,7 +34,7 @@ class AppText {
   onOverlayClosed() {
     this.close();
   }
-  getResults() {
+  getResults() : {description:string; value:string} {
     return {
       description: this.description,
       value: this.value
@@ -46,9 +46,11 @@ class AppText {
     this.value = '';
     this.wasCanceled = true;
   }
+
   open() {
     this.$.overlay.open();
   }
+  
   close() {
     bus.publish(MessageType.AnswerText, this.wasCanceled ? null : this.getResults());
     this.reset();

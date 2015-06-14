@@ -6,10 +6,10 @@ class Unit {
 	symbol:string;
 	offset:number;
 	multiplier:number;
-	dimension: Dimension;
+	dimension: Dim;
 	system: System;
-	
-	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dimension, system:System) {
+
+	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dim, system:System) {
 		this.concept = concept;
 		this.symbol = symbol;
 		this.offset = offset;
@@ -17,6 +17,6 @@ class Unit {
 		this.dimension = dim;
 		this.system = system;
 	}
-	
+
 	public static Unknown = new Unit(OntoRef.createAnon('unknownUnit'), '', 0, 0, undefined, undefined);
 }
