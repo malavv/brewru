@@ -27,7 +27,6 @@ class AppMenu {
   }
   /** On request made. */
   onAskMenu(data:Array<Object>) {
-    console.log('AppMenu', data)
     this.items = data;
     this.open();
   }

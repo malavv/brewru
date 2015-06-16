@@ -4,13 +4,19 @@
 
 <link rel="import" href="../../widget/widget-text/widget-text.html">
 
+<link rel="import" href="../../widget/widget-quantity/widget-quantity.html">
+
 <polymer-element name="recipe-reactor" attributes="reactor" vertical layout>
   <template>
     <link rel="stylesheet" href="recipe-reactor.css">
     <div class="name" horizontal center-justified layout>
       <widget-text text="{{reactor.name}}"></widget-text>#{{reactor.id}}
     </div>
-    <div flex>Reactor Viewer Content</div>
+    <div flex vertical layout>
+      Reactor Viewer Content
+      <input value={{quantity}}></input>
+      <widget-quantity quantity="{{quantity}}"></widget-quantity>
+    </div>
   </template>
   <script src="recipe-reactor.js"></script>
 </polymer-element>

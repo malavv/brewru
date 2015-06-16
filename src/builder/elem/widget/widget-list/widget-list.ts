@@ -11,10 +11,11 @@ class WidgetList {
   ready() {}
 
   grabFocus() {
-    window.addEventListener('keypress', this.handleEvent, false);
+    window.addEventListener('keypress', this, false);
   }
+  
   looseFocus() {
-  window.removeEventListener('keypress', this.handleEvent, false);
+    window.removeEventListener('keypress', this, false);
   }
 
   /** On request made. */

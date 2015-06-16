@@ -49,7 +49,7 @@ class EventBus {
 	 */
 	publishAndWaitFor(waitForType: MessageType, publishType: MessageType, data?: any) {
 		return new Promise((resolve, reject) => {
-			this.suscribe(waitForType, (data) => { Promise.resolve(data); }, this);
+			this.suscribe(waitForType, (data) => { resolve(data); }, this);
 			this.publish(publishType, data);
 		});
 	}

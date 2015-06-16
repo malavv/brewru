@@ -6,14 +6,18 @@ var Polymer:Function = Polymer || function () {}
 class WidgetUnits {
   USCust:Array<Unit>;
   SI:Array<Unit>;
-  isExpanded:boolean = false;
-  ref:number = 0;
-  unit:Unit = undefined;
-  title:string = 'Units';
+  isExpanded:boolean;
+  ref:number;
+  unit:Unit;
+  title:string;
 
   ready() {
     this.USCust = [];
     this.SI = [];
+    this.title = 'n/a';
+    this.unit = undefined;
+    this.ref = 0;
+    this.isExpanded = false;
 
     UsCust.dim(Dim.Mass).forEach(u => this.USCust.push(u));
     UsCust.dim(Dim.Volume).forEach(u => this.USCust.push(u));
@@ -37,6 +41,12 @@ class WidgetUnits {
         self.isExpanded = false;
     }, 100)
   }
+  
+  toTitle(input?:Unit) : string {
+    console.log('stuff');
+    if (input === null || input === undefined) return 'n/a';
+    return input.toString();    
+  }
 
   onChoice(a:any, b:any, c:any) {
     this.unit = this.getUnit(c.dataset.system, c.dataset.unit);
@@ -56,8 +66,10 @@ class WidgetUnits {
 
   unitChanged(oldValue:Unit, newValue:Unit) {
     console.log('[WidgetUnits]unitChanged');
-    if (newValue !== undefined) this.title = newValue.concept.name;
-    else this.title = 'Units';
+    //if (newValue !== undefined)
+      //this.title = newValue.concept.name;
+    //else 
+      //this.title = 'Units';
   }
 }
 

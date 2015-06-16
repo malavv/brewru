@@ -27,7 +27,9 @@ class StepBuilder {
 var Menu:any;
 
 function registerType(state:StepState, data:any) : Promise<StepState> {
-  if (data === null) return Promise.reject("");
+  console.log('[NewStep]registerType');
+  if (data === null || data === undefined) 
+    return Promise.reject("");
   state.type = data.name;
   return Promise.resolve(state);
 }
@@ -103,7 +105,7 @@ class RecipeNewstep {
     return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, RecipeNewstep.Steps)
       .then(registerType.bind(this, state))
       .then(this.onStateMachine.bind(this))
-      .catch(function() {
+      .catch(function(e) {
         // If there was an error, just catch so nothing crashes.
         return Promise.resolve();
       });

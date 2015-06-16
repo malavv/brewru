@@ -17,6 +17,10 @@ class Unit {
 		this.dimension = dim;
 		this.system = system;
 	}
+	
+	toString() : string {
+		return this.concept + '(' + this.symbol + ')';
+	}
 
 	public static Unknown = new Unit(OntoRef.createAnon('unknownUnit'), '', 0, 0, undefined, undefined);
 }
