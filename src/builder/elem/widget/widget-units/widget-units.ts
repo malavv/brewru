@@ -43,9 +43,8 @@ class WidgetUnits {
   }
   
   toTitle(input?:Unit) : string {
-    console.log('stuff');
     if (input === null || input === undefined) return 'n/a';
-    return input.toString();    
+    return input.symbol;    
   }
 
   onChoice(a:any, b:any, c:any) {
