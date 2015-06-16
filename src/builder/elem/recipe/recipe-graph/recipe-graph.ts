@@ -15,15 +15,14 @@ class RecipeGraph {
 
   onRecipeChanged() {
     this.recipeChanged();
-    console.log('onRecipeChanged');
   }
 
   recipeChanged() {
 		if (this.recipe === undefined) return;
-	  this.drawReactors.bind(this);
+	  this.drawReactors();
 	}
 
-  drawReactors(d3:any) {
+  drawReactors() {
 		this.svg = d3.select(this.shadowRoot).select('svg');
     this.svg.selectAll("*").remove();
 		var dataset = this.recipe.reactors;

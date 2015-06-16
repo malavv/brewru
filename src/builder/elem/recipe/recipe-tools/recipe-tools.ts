@@ -5,9 +5,6 @@ class RecipeTools {
   ready() {
     this.selected = 0;
   }
-  selectedChanged(oldVal, newVal) {
-    console.log('Recipe: selectedchanged:', oldVal, newVal);
-  }
 }
 
 Polymer(RecipeTools.prototype);
