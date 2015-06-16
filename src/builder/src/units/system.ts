@@ -2,6 +2,23 @@
 /// <reference path="unit.ts" />
 /// <reference path="../base/conceptRef.ts" />
 
+class SystemImpl {
+  private units: Array<Unit> = [];
+
+  constructor(units: Array<Unit>) {
+    this.units = units;
+    return this;
+  }
+
+  sym(symbol:string) : Unit {
+    return this.units.filter(u => u.symbol === symbol)[0];
+  }
+
+  dim(dim: Dim) : Array<Unit> {
+    return this.units.filter(u => u.dimension === dim);
+  }
+}
+
 var
   SI: SystemImpl,
   UsCust: SystemImpl,
@@ -24,19 +41,3 @@ UsCust = new SystemImpl([
 
 Imperial = new SystemImpl([]);
 
-class SystemImpl {
-  private units: Array<Unit> = [];
-
-  constructor(units: Array<Unit>) {
-    this.units = units;
-    return this;
-  }
-
-  sym(symbol:string) : Unit {
-    return this.units.filter(u => u.symbol === symbol)[0];
-  }
-
-  dim(dim: Dim) : Array<Unit> {
-    return this.units.filter(u => u.dimension === dim);
-  }
-}

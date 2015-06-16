@@ -8,17 +8,24 @@
 <link rel="import" href="../../recipe/recipe-ingredients/recipe-ingredients.html">
 <link rel="import" href="../../recipe/recipe-triggers/recipe-triggers.html">
 
-<polymer-element name="recipe-tools" attributes="reactor inventory recipe" vertical layout>
+<polymer-element 
+  name="recipe-tools" 
+  attributes="reactor inventory recipe" 
+  vertical layout>
+  
   <template>
     <link rel="stylesheet" href="recipe-tools.css">
+    
     <paper-tabs selected="{{selected}}">
       <paper-tab>Ingredients</paper-tab>
       <paper-tab>Triggers</paper-tab>
     </paper-tabs>
+    
     <core-pages flex selected="{{selected}}">
       <recipe-ingredients inventory={{inventory}} recipe={{recipe}}></recipe-ingredients>
       <recipe-triggers triggers="{{reactor.steps}}"></recipe-triggers>
     </core-pages>
   </template>
+  
   <script src="recipe-tools.js"></script>
 </polymer-element>
