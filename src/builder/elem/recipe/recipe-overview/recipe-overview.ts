@@ -10,6 +10,7 @@ class RecipeOverview {
   
   ready() {
     document.addEventListener('keyup', this.$.shortcuts.keypress.bind(this.$.shortcuts), false);
+    console.log('Recipe Overview');
     this.builder = new RecipeBuilder();
     this.current = this.builder.recipe.reactors[0];
   }

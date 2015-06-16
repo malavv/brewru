@@ -7,11 +7,10 @@
 <polymer-element name="recipe-reactor" attributes="reactor" vertical layout>
   <template>
     <link rel="stylesheet" href="recipe-reactor.css">
-    <div class="reactor-name">
-      <widget-text text="{{reactor.name}}"></widget-text>
-      &lt;{{reactor.id}}&gt;
+    <div class="name" horizontal center-justified layout>
+      <widget-text text="{{reactor.name}}"></widget-text>#{{reactor.id}}
     </div>
-    <div class="reactor-content" flex>Reactor Viewer Content</div>
+    <div flex>Reactor Viewer Content</div>
   </template>
   <script src="recipe-reactor.js"></script>
 </polymer-element>
