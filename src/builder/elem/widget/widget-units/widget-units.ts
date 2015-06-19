@@ -54,7 +54,6 @@ class WidgetUnits {
   }
 
   getUnit(system:string, unit:number) : Unit {
-    console.log('getUnit', system, unit);
     switch(system) {
       case 'USCust':
         return this.USCust[unit];
@@ -64,7 +63,6 @@ class WidgetUnits {
   }
 
   unitChanged(oldValue:Unit, newValue:Unit) {
-    console.log('[WidgetUnits]unitChanged');
     //if (newValue !== undefined)
       //this.title = newValue.concept.name;
     //else 
