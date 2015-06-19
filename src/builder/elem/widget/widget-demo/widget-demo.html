@@ -1,0 +1,24 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<polymer-element
+    name="widget-demo"
+    attributes=""
+    vertical layout>
+  <template>
+    <link rel="stylesheet" href="widget-demo.css">
+
+    <paper-tabs selected={{test}}>
+      <paper-tab>Widget-Text</paper-tab>
+      <paper-tab>Widget-Quantity</paper-tab>
+    </paper-tabs>
+
+    <core-pages selected={{test}} >
+      <div>Widget-Text</div>
+      <div>Widget-Quantity</div>
+    </core-pages>
+
+  </template>
+  <script src="widget-demo.js"></script>
+</polymer-element>
