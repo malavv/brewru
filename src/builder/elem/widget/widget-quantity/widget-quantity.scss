@@ -1,13 +1,13 @@
 :host {
-  div {
-    text-align: right;
-    padding-right: 10px;
-  }
-  input[is=core-input] {
-    width: 60px;
-    background-color: #fff;
-  }
-  widget-units {
-    padding: 0px 5px;
-  }
+	#test {
+		background-color: #f4f4f4;
+		border: 1px solid #ccc;
+		width: 7em;
+	}
+	widget-units {
+		margin-left: -50px;
+			  -moz-user-select: none;
+	  -webkit-user-select: none;
+	  -ms-user-select: none;
+	}
 }

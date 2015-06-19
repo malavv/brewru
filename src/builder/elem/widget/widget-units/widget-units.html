@@ -12,28 +12,30 @@
     <div class="container">
       <div class="title">{{unit | toTitle}}</div>
 
-      <div class="system us"
-          hidden?={{!isExpanded}}
-          on-mouseover='{{onHoverIn}}'
-          on-mouseout='{{onHoverOut}}'>
-        <div class="name">US Cust.</div>
-        <ul>
-          <template repeat="{{unit, idx in USCust}}">
-            <li on-tap={{onChoice}} data-system="USCust" data-unit={{idx}}>{{unit}}</li>
-          </template>
-        </ul>
-      </div>
-
-      <div class="system si"
-          hidden?={{!isExpanded}}
-          on-mouseover='{{onHoverIn}}'
-          on-mouseout='{{onHoverOut}}'>
-        <div class="name">SI</div>
-        <ul>
-          <template repeat="{{unit, idx in SI}}">
-            <li on-tap={{onChoice}} data-system="SI" data-unit={{idx}}>{{unit}}</li>
-          </template>
-        </ul>
+      <div class="systems">
+        <div class="system us"
+            hidden?={{!isExpanded}}
+            on-mouseover='{{onHoverIn}}'
+            on-mouseout='{{onHoverOut}}'>
+          <div class="name">US Cust.</div>
+          <ul>
+            <template repeat="{{unit, idx in USCust}}">
+              <li on-tap={{onChoice}} data-system="USCust" data-unit={{idx}}>{{unit}}</li>
+            </template>
+          </ul>
+        </div>
+    
+        <div class="system si"
+            hidden?={{!isExpanded}}
+            on-mouseover='{{onHoverIn}}'
+            on-mouseout='{{onHoverOut}}'>
+          <div class="name">SI</div>
+          <ul>
+            <template repeat="{{unit, idx in SI}}">
+              <li on-tap={{onChoice}} data-system="SI" data-unit={{idx}}>{{unit}}</li>
+            </template>
+          </ul>
+        </div>
       </div>
     </div>
 
