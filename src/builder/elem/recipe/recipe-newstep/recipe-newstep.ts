@@ -12,6 +12,10 @@ class StepState {
   ingredient: Ingredient
   qty: Quantity;
   type: string;
+  
+  constructor() {
+    console.info("StepState[New Step Factory]");
+  }
 }
 
 class StepBuilder {
@@ -27,7 +31,6 @@ class StepBuilder {
 var Menu:any;
 
 function registerType(state:StepState, data:any) : Promise<StepState> {
-  console.log('[NewStep]registerType');
   if (data === null || data === undefined) 
     return Promise.reject("");
   state.type = data.name;
@@ -61,7 +64,6 @@ class RecipeNewstep {
   }
   
   onCreateStep(data:any) {
-    console.log('recipe-newstep : onCreateStep')
     if (this.isChoosing) return;
     this.beginBuilder()
       .then(this.onStateMachine.bind(this))
@@ -69,6 +71,7 @@ class RecipeNewstep {
       .then(this.sendResult.bind(this))
       .catch(function() {
         // If there was an error, just catch so nothing crashes.
+        console.info("StepState[Cancel Step Factory]");
       });
   }
   

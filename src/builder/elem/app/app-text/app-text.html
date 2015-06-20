@@ -12,8 +12,8 @@
   <template>
     <link rel="stylesheet" href="app-text.css">
 
-    <core-overlay id="overlay" on-core-overlay-close-completed="{{onOverlayClosed}}">
-      <paper-input id="value" label="{{description}}" value="{{value}}" committedValue="{{committed}}" flex>
+    <core-overlay id="overlay" on-core-overlay-close-completed="{{onCancel}}">
+      <paper-input id="value" label="{{description}}" value="{{value}}" committedValue="{{committed}}" flex autofocus>
       </paper-input>
     </core-overlay>
   </template>

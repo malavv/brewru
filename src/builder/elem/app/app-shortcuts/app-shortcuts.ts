@@ -31,6 +31,8 @@ class AppShortcuts {
     switch(event.path[0].tagName) {
       case 'INPUT': return true;
       case 'BODY': return false;
+      // The main popup wizard screen
+      case 'CORE-OVERLAY': return false;
       default:
         console.log('AppShortcuts[isIgnoredSource]<default>', event.path[0].tagName);
       return false;
