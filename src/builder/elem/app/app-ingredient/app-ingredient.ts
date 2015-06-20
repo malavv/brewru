@@ -14,38 +14,45 @@ class AppIngredient {
   quantity: Quantity;
   
   ready() {
-    bus.suscribe(MessageType.AskIngredient, this.onAskIngredient, this);
+    // Wizard for the selection of ingredient.
+    bus.suscribe(MessageType.AskIngredient, this.initAndShow, this);
+    // Cancel shuts down gracefully the wizard.
+    bus.suscribe(MessageType.Cancel, this.cancel, this);
+    
+    this.reset();
   }
   
-  onAskIngredient(data:Array<Ingredient>) {
+  cancel() {
+    if (this.$.overlay.opened) this.$.overlay.close();
+    bus.publish(MessageType.AnswerText, {
+      ingredient: null,
+      quantity: null
+    });
+  }
+  
+  initAndShow(data:Array<Ingredient>) {
+    this.reset();
+    this.$.quan.reset();
     this.ingredients = data;
     this.$.overlay.open();
   }
   
-  ingredientChanged() { this.onStateChanged(); }
-  quantityChanged() { this.onStateChanged(); }
+  ingredientChanged() { 
+    this.onStateChanged(); 
+  }
+  quantityChanged() {
+    this.onStateChanged(); 
+  }
   onStateChanged() {
-    var results = this.getResults();
-    if (!this.isValid(results)) return;
-    bus.publish(MessageType.AnswerIngredient, results);
-    this.$.overlay.close();
-    this.reset();
-  }
-
-  isValid(result:{ingredient:Ingredient; quantity:Quantity}) {
-    result = result || this;
-    return result.ingredient !== undefined && result.quantity !== undefined;
-  }
-  getResults() : {ingredient:Ingredient; quantity:Quantity} {
-    return {
+    if (this.ingredient === undefined) return;
+    if (this.quantity === undefined) return;
+    bus.publish(MessageType.AnswerIngredient, {
       ingredient: this.ingredient,
       quantity: this.quantity
-    };
+    });
+    this.$.overlay.close();
   }
-  sendResults() {
-    bus.publish(MessageType.AnswerIngredient, this.getResults());
-    this.reset();
-  }
+  
   reset() {
     this.ingredients = [];
     this.ingredient = undefined;

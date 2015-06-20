@@ -9,8 +9,6 @@ class WidgetQuantity {
   unit:Unit = undefined;
   quantity:Quantity = undefined;
   
-  ready() {}
-  
   commitedChanged(oldVal:number, newVal:number) { this.check(); }
   unitChanged(oldVal:Unit, newVal:Unit) { this.check(); }
   isValid() {
@@ -19,6 +17,13 @@ class WidgetQuantity {
   check() {
     if (!this.isValid()) return;
     this.quantity = new Quantity(this.commited, this.unit);
+  }
+  
+  public reset() {
+    this.val = 0;
+    this.commited = 0;
+    this.unit = undefined;
+    this.quantity = undefined;
   }
 }
 

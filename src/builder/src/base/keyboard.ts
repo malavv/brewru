@@ -26,6 +26,7 @@ class Keyboard {
 	static getCodeName(code:number) : string {
 		if (code >= 33 && code <= 126) return String.fromCharCode(code);
 		switch (code) {
+			case  8: return 'backspace';
 			case 13: return 'enter';
 			case 16: return 'shift'; /** Shift only */
 			case 18: return 'shift'; /** Alt   only */

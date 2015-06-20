@@ -12,6 +12,6 @@ class Step {
 	toString() : string {
 		//return _.template('{{constructor.name}}<{{reactor.use}}>[{{inputs.length}}->{{name}}({{id}})->{{outputs.length}}]')(this);
 		
-		return 'temporary';
+		return this.name;
 	}
 }

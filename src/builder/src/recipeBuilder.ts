@@ -32,7 +32,7 @@ class RecipeBuilder {
 	onNewStepCreated(a:any) {
 	    this.recipe.reactors[0].steps.push(new Step(a.name, 'Add Ingredient'));
 	    bus.publish(MessageType.RecipeChanged);
-		console.log('RecipeBuilder', 'onNewStepCreated', a);
+		console.log('StepState[Finish]', a);
 	}
 
 	fetchInventory() : IngredientSrc {
