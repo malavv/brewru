@@ -36,7 +36,9 @@ SI = new SystemImpl([
 ]);
 
 UsCust = new SystemImpl([
-    new Unit(new OntoRef('brew:inch', 'inch'), 'in', 0, 1, Dim.Length, System.UsCust)
+    new Unit(new OntoRef('brew:inch', 'inch'), 'in', 0, 1, Dim.Length, System.UsCust),
+    new Unit(new OntoRef('brew:pint', 'pint'), 'pt', 0, 1, Dim.Volume, System.UsCust),
+    new Unit(new OntoRef('brew:cup', 'cup'), 'cup', 0, 1, Dim.Volume, System.UsCust)
 ]);
 
 Imperial = new SystemImpl([]);
