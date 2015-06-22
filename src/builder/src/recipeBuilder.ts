@@ -7,6 +7,7 @@
 /// <reference path="base/eventBus.ts" />
 /// <reference path="base/messageType.ts" />
 /// <reference path="base/quantity.ts" />
+/// <reference path="step/stepState.ts" />
 /// <reference path="units/system.ts" />
 
 class RecipeBuilder {
@@ -19,9 +20,6 @@ class RecipeBuilder {
 	    this.ingredients = new Ingredients();
 	    this.recipe = new Recipe(undefined);
 
-	    // Fake first item
-	    this.recipe.reactors[0].steps.push(new Step('Add Water', 'Add Ingredient'));
-
 		bus.suscribe(
 	      MessageType.NewStepCreated,
 	      this.onNewStepCreated,
@@ -29,8 +27,8 @@ class RecipeBuilder {
 	    );
 	}
 
-	onNewStepCreated(a:any) {
-	    this.recipe.reactors[0].steps.push(new Step(a.name, 'Add Ingredient'));
+	onNewStepCreated(a:StepState) {
+	    this.recipe.reactors[0].steps.push(new Step(a.name, a.type));
 	    bus.publish(MessageType.RecipeChanged);
 		console.log('StepState[Finish]', a);
 	}

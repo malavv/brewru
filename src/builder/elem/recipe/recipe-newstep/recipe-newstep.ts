@@ -1,22 +1,13 @@
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/recipeBuilder.ts" />
+/// <reference path="../../../src/step/stepState.ts" />
+/// <reference path="../../../src/step.ts" />
 
 /// <reference path="../../../src/base/Keyboard.ts" />
 /// <reference path="../../../src/shortcuts.ts" />
 /// <reference path="../../../src/promise.d.ts" />
 
 var Polymer:Function = Polymer || function () {}
-
-class StepState {
-  name: string;
-  ingredient: Ingredient
-  qty: Quantity;
-  type: string;
-  
-  constructor() {
-    console.info("StepState[New Step Factory]");
-  }
-}
 
 class StepBuilder {
   constructor(step:any) {
@@ -30,37 +21,33 @@ class StepBuilder {
 
 var Menu:any;
 
-function registerType(state:StepState, data:any) : Promise<StepState> {
-  if (data === null || data === undefined) 
+function registerType(state:StepState, type?:ConceptRef) : Promise<StepState> {
+  if (type === null || type === undefined) 
     return Promise.reject("");
-  state.type = data.name;
+  state.type = type;
   return Promise.resolve(state);
 }
-function registerName(state:StepState, data:any) : Promise<StepState> {
-  if (data === null) return Promise.reject("");
+
+function registerName(state:StepState, data:{description: string; value: string}) : Promise<StepState> {
+  if (data.value === null)  return Promise.reject("");
   state.name = data.value;
   return Promise.resolve(state);
 }
-function registerIngredient(state:StepState, data:any) : Promise<StepState> {
-  if (data === null) return Promise.reject("");
+function registerIngredient(state:StepState, data:{ingredient?: Ingredient; quantity?: Quantity}) : Promise<StepState> {
+  if (data.ingredient === null || data.quantity === null)
+    return Promise.reject("");
   state.ingredient = data.ingredient;
   state.qty = data.quantity;
   return Promise.resolve(state);
 }
   
 class RecipeNewstep {
-  private static Steps:Array<Step> = [
-      new Step('Add Ingredient', null),
-      new Step('Heating', null),
-      new Step('Splitting', null),
-      new Step('Merging', null),
-      new Step('Create Ingredient', null),
-      new Step('Ferment', null)
-    ];
-  isChoosing:boolean = false;
+  isChoosing: boolean;
   builder: RecipeBuilder;
+  
   ready() {
     bus.suscribe(MessageType.CreateStep, this.onCreateStep, this);
+    this.isChoosing = false;
   }
   
   onCreateStep(data:any) {
@@ -69,12 +56,24 @@ class RecipeNewstep {
       .then(this.onStateMachine.bind(this))
       .then(this.endBuilder.bind(this))
       .then(this.sendResult.bind(this))
-      .catch(function() {
+      .catch(() => {
         // If there was an error, just catch so nothing crashes.
+        this.isChoosing = false;
         console.info("StepState[Cancel Step Factory]");
       });
   }
   
+  onStateMachine(state:StepState) : Promise<StepState> {
+    state.type = state.type || null;
+    state.name = state.name || null;
+    state.ingredient = state.ingredient || null;
+    if (state.type === null) return this.askType(state);
+    if (state.name === null) return this.askName(state);
+    if (state.ingredient === null) return this.askIngredient(state);
+    return Promise.resolve(state);
+  }
+  
+    
   beginBuilder() : Promise<StepState> {
     this.isChoosing = true;
     return Promise.resolve(new StepState());
@@ -90,28 +89,10 @@ class RecipeNewstep {
     return state;
   }
   
-  onStateMachine(state:StepState) : Promise<StepState> {
-    state.type = state.type || null;
-    state.name = state.name || null;
-    state.ingredient = state.ingredient || null;
-    if (state.type === null) return this.askType(state);
-    if (state.name === null) return this.askName(state);
-    if (state.ingredient === null) return this.askIngredient(state);
-    return Promise.resolve(state);
-  }
-  
-  onBegin() {
-    this.isChoosing = true;
-  }
-  
   askType(state:StepState) : Promise<StepState> {
-    return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, RecipeNewstep.Steps)
+    return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, Step.Type.All)
       .then(registerType.bind(this, state))
-      .then(this.onStateMachine.bind(this))
-      .catch(function(e) {
-        // If there was an error, just catch so nothing crashes.
-        return Promise.resolve();
-      });
+      .then(this.onStateMachine.bind(this));
   }
   askName(state:StepState) : Promise<StepState> {
     return bus.publishAndWaitFor(MessageType.AnswerText, MessageType.AskText, 'Task Name')

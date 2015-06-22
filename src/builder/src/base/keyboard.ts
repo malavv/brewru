@@ -31,6 +31,7 @@ class Keyboard {
 			case 16: return 'shift'; /** Shift only */
 			case 18: return 'shift'; /** Alt   only */
 			case 27: return 'esq';
+			case 32: return 'space';
 			default:
 				console.warn('[Keyboard]getCodeName: Unknown Code Name :', code);
 				return 'unknwon';

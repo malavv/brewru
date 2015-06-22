@@ -15,7 +15,7 @@
   <template>
     <link rel="stylesheet" href="app-ingredient.css">
 
-    <core-overlay id="overlay" on-core-overlay-close-completed="{{onCancel}}" vertical layout>
+    <core-overlay id="overlay" on-core-overlay-close-completed="{{cancel}}" vertical layout>
       <widget-list id="list" data="{{ingredients}}" selection="{{ingredient}}"></widget-list>
       <widget-quantity id="quan" quantity="{{quantity}}"></widget-quantity>
     </core-overlay>

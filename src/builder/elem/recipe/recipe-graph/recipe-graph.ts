@@ -62,11 +62,11 @@ class RecipeGraph {
   drawSteps(d3:any, g:any, reactor:any) {
     reactor.steps.forEach(this.drawStep.bind(this, g, 80), this);
   }
-  drawStep(g:any, offset:any, step:any, index:any) {
-    switch(step.type) {
-      case 'start':
+  drawStep(g:any, offset:any, step:Step, index:any) {
+    switch(step.type.id) {
+      case Step.Type.start.id:
         break;
-      case 'Add Ingredient':
+      case Step.Type.addIngredient.id:
         g.append('circle')
           .attr('r', '10')
           .attr('cy', index * offset)

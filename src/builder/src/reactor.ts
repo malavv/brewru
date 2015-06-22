@@ -12,7 +12,7 @@ class Reactor {
 	constructor(id: number = 0, name: string = 'Anonymous') {
 		this.id = id;
 		this.name = name;
-		this.steps.push(new Step('start', 'start'));
+		this.steps.push(new Step('start', Step.Type.start));
 	}
 	
 	public addAfter(lhs: any, newObj: any) {

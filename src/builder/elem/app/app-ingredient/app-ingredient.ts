@@ -24,7 +24,7 @@ class AppIngredient {
   
   cancel() {
     if (this.$.overlay.opened) this.$.overlay.close();
-    bus.publish(MessageType.AnswerText, {
+    bus.publish(MessageType.AnswerIngredient, {
       ingredient: null,
       quantity: null
     });
