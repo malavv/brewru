@@ -1,3 +1,6 @@
+/// <reference path="../../../src/ingredients.ts" />
+/// <reference path="../../../src/ingredient.ts" />
+
 var Polymer:Function = Polymer || function () {}
 
 class RecipeIngredients {
@@ -7,9 +10,7 @@ class RecipeIngredients {
 
   ready() {}
 
-  recipeChanged() {
-    console.log(this.recipe);
-  }
+  recipeChanged() {}
 
   ingredientsChanged(a:Ingredients, b:Ingredients) {
     b.inventory.forEach(item => this.data.push(item));

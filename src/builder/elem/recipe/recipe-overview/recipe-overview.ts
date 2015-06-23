@@ -1,6 +1,8 @@
 /// <reference path="../../../src/recipeBuilder.ts" />
 /// <reference path="../../../src/reactor.ts" />
 
+/// <reference path="../../../src/step/wizard.ts" />
+
 var Polymer:Function = Polymer || function () {}
 
 class RecipeOverview {
