@@ -7,28 +7,27 @@ class WidgetList {
   private selection:any;
   private $:any;
   private style:any;
-
-  ready() {}
-
-  grabFocus() {
-    window.addEventListener('keypress', this, false);
+  private handle: EventListener = (evt: Event) => {
+    this.handleKey(<KeyboardEvent>evt);
   }
+
+  /** Used with loose focus to enable keyboard selection. */
+  public grabFocus() { window.addEventListener('keypress', this.handle, false); }
+  /** Used with grab focus to enable keyboard selection. */
+  public looseFocus() { window.removeEventListener('keypress', this.handle, false); }
   
-  looseFocus() {
-    window.removeEventListener('keypress', this, false);
+  private handleKey(evt: KeyboardEvent) : void {
+    var
+      codes = new Codes(),
+      idx = codes.base2int(String.fromCharCode(evt.which));
+    if (idx < 0 || idx >= this.data.length) return;
+    this.$.list.selectItem(idx);
+    evt.preventDefault();
   }
 
   /** On request made. */
   private dataChanged(oldVal:any, newVal:any) { this.resize(); }
 
-  public handleEvent(event:Event) : void {
-    var
-      codes = new Codes(),
-      idx = codes.base2int(String.fromCharCode((<KeyboardEvent>event).which));
-    if (idx < 0 || idx >= this.data.length) return;
-    this.$.list.selectItem(idx);
-    event.preventDefault();
-  }
   private resize() {
     this.style.height = (this.data.length * this.$.list.height) + 'px';
   }
