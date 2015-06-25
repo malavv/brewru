@@ -6,6 +6,7 @@
 <link rel="import" href="../../app/app-menu/app-menu.html">
 <link rel="import" href="../../app/app-shortcuts/app-shortcuts.html">
 <link rel="import" href="../../app/app-text/app-text.html">
+<link rel="import" href="../../app/app-quantity/app-quantity.html">
 
 <link rel="import" href="../../recipe/recipe-graph/recipe-graph.html">
 <link rel="import" href="../../recipe/recipe-newstep/recipe-newstep.html">
@@ -31,10 +32,15 @@
     <!-- Shortcut Helper -->
     <app-shortcuts id="shortcuts"></app-shortcuts>
 
-    <!-- Wizard Windows -->
+    <!-- 
+      Wizard Windows
+      
+      All of this could be loaded dynamically. 
+      -->
     <app-menu></app-menu>
     <app-text></app-text>
     <app-ingredient></app-ingredient>
+    <app-quantity></app-quantity>
 
     <!-- Step Builder Object -->
     <recipe-newstep builder={{builder}}></recipe-newstep>

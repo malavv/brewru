@@ -10,6 +10,9 @@ class WidgetUnits {
   ref:number;
   unit:Unit;
   title:string;
+  allowed: Array<Dim>;
+  
+  systems: Array<SystemImpl>;
 
   ready() {
     this.USCust = [];
@@ -18,16 +21,15 @@ class WidgetUnits {
     this.unit = undefined;
     this.ref = 0;
     this.isExpanded = false;
-
-    UsCust.dim(Dim.Mass).forEach(u => this.USCust.push(u));
-    UsCust.dim(Dim.Volume).forEach(u => this.USCust.push(u));
-    UsCust.dim(Dim.Length).forEach(u => this.USCust.push(u));
-
-    SI.dim(Dim.Mass).forEach(u => this.SI.push(u));
-    SI.dim(Dim.Volume).forEach(u => this.SI.push(u));
-    SI.dim(Dim.Length).forEach(u => this.SI.push(u));
+    
+    this.systems = UnitSystem.all();
+    this.allowed = Dim.all();
   }
-
+  
+  listUnits(system:SystemImpl, dim: Dim) {
+    return system.dim(dim);
+  }
+  
   onHoverIn() {
     this.isExpanded = true;
     this.ref += 1;
@@ -47,26 +49,11 @@ class WidgetUnits {
     return input.symbol;    
   }
 
-  onChoice(a:any, b:any, c:any) {
-    this.unit = this.getUnit(c.dataset.system, c.dataset.unit);
+  onChoice(evt: Event, idx: number, node: HTMLLIElement) {
+    this.unit = UnitSystem.getUnit((<{[name:string]: string}>node.dataset)['unit']);
+    
     this.isExpanded = false;
     this.ref = 0;
-  }
-
-  getUnit(system:string, unit:number) : Unit {
-    switch(system) {
-      case 'USCust':
-        return this.USCust[unit];
-      case 'SI':
-        return this.SI[unit];
-    }
-  }
-
-  unitChanged(oldValue:Unit, newValue:Unit) {
-    //if (newValue !== undefined)
-      //this.title = newValue.concept.name;
-    //else 
-      //this.title = 'Units';
   }
 }
 

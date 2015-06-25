@@ -8,15 +8,22 @@ class WidgetQuantity {
   commited:number = 0;
   unit:Unit = undefined;
   quantity:Quantity = undefined;
+  allowed: Array<Dim> = [];
   
   commitedChanged(oldVal:number, newVal:number) { this.check(); }
   unitChanged(oldVal:Unit, newVal:Unit) { this.check(); }
+  
   isValid() {
     return this.unit !== undefined && this.commited !== 0 && this.unit !== Unit.Unknown;
   }
+  
   check() {
     if (!this.isValid()) return;
     this.quantity = new Quantity(this.commited, this.unit);
+  }
+  
+  public restrictDimensions(dimensions: Array<Dim>) {
+    this.allowed = dimensions;
   }
   
   public reset() {

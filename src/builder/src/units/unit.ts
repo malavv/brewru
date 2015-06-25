@@ -7,9 +7,9 @@ class Unit {
 	offset:number;
 	multiplier:number;
 	dimension: Dim;
-	system: System;
+	system: UnitSystem;
 
-	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dim, system:System) {
+	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dim, system:UnitSystem) {
 		this.concept = concept;
 		this.symbol = symbol;
 		this.offset = offset;

@@ -17,7 +17,7 @@ class AppText {
   
   ready() {
     // Ask is the message leading to this wizard being shown
-    bus.suscribe(MessageType.AskText, this.initAndShow, this);
+    bus.suscribe(MessageType.AskText, this.focus, this);
     // Cancel shuts down gracefully the wizard.
     bus.suscribe(MessageType.Cancel, this.cancel, this);
     
@@ -34,9 +34,9 @@ class AppText {
   }
   
   /** Handle initialization of the wizard. */
-  initAndShow(data:string) {
+  focus(data:{ description: string }) {
     this.reset();
-    this.description = data;
+    this.description = data.description;
     this.$.overlay.open();
   }
   

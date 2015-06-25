@@ -4,7 +4,7 @@
 
 <polymer-element
     name="widget-units"
-    attributes="unit"
+    attributes="unit allowed"
     vertical center-justified layout
     on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
   <template>
@@ -12,30 +12,22 @@
     <div class="container">
       <div class="title">{{unit | toTitle}}</div>
 
-      <div class="systems">
-        <div class="system us"
-            hidden?={{!isExpanded}}
-            on-mouseover='{{onHoverIn}}'
-            on-mouseout='{{onHoverOut}}'>
-          <div class="name">US Cust.</div>
-          <ul>
-            <template repeat="{{unit, idx in USCust}}">
-              <li on-tap={{onChoice}} data-system="USCust" data-unit={{idx}}>{{unit}}</li>
-            </template>
-          </ul>
-        </div>
-    
-        <div class="system si"
-            hidden?={{!isExpanded}}
-            on-mouseover='{{onHoverIn}}'
-            on-mouseout='{{onHoverOut}}'>
-          <div class="name">SI</div>
-          <ul>
-            <template repeat="{{unit, idx in SI}}">
-              <li on-tap={{onChoice}} data-system="SI" data-unit={{idx}}>{{unit}}</li>
-            </template>
-          </ul>
-        </div>
+      <div class="systems" 
+        hidden?={{!isExpanded}}
+        on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'
+        >
+        <template repeat="{{system, idx in systems}}">
+          <div class="system">
+            <div class="name">{{system.name}}</div>
+            <ul>
+              <template repeat="{{dim in allowed}}">
+                <template repeat="{{unit in listUnits(system, dim)}}">
+                    <li on-tap={{onChoice}} data-unit={{unit.concept.id}} data-test={{unit.concept}}>{{unit}}</li>
+                </template>
+              </template>
+            </ul>
+          </div>
+        </template>
       </div>
     </div>
 

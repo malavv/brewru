@@ -1,18 +1,24 @@
 /// <reference path="../../src/promise.d.ts" />
 /// <reference path="../../src/base/conceptRef.ts" />
+/// <reference path="../../src/base/eventBus.ts" />
+/// <reference path="../../src/base/messageType.ts" />
+/// <reference path="../../src/ingredient.ts" />
 /// <reference path="stepFactory.ts" />
 
 enum WizardInfo {
   ingredient,
-  name  
+  name,
+  quantity
 }
 
 class WizardConfig {
   prop: string;
   info: WizardInfo;
-  constructor(prop: string, info: WizardInfo) {
+  data: any;
+  constructor(prop: string, info: WizardInfo, data: any) {
     this.prop = prop;
     this.info = info;
+    this.data = data;
   }
 }
 
@@ -40,18 +46,29 @@ class Wizard {
             .then(Wizard.registerData.bind(this, factory.data, config.prop));
         case WizardInfo.name:
           return sequence
-            .then(Wizard.askName.bind(this, 'Task Name'))
+            .then(Wizard.askName.bind(this, config.data))
+            .then(Wizard.registerData.bind(this, factory.data, config.prop));
+        case WizardInfo.quantity:
+          return sequence
+            .then(Wizard.askQuantity.bind(this, config.data))
             .then(Wizard.registerData.bind(this, factory.data, config.prop));
         default:
-          console.warn('Wizard<query>');
+          console.warn('Wizard<query> : Unknown widget type : ', config.info);
           return sequence;
       }
     }, Promise.resolve()).then(() => { return Promise.resolve(factory); });
   }
   
-  static askName(desc: String) : Promise<String> {
-    return bus.publishAndWaitFor(MessageType.AnswerText, MessageType.AskText, 'Task Name')
+  static askName(config:{ description: String }) : Promise<String> {
+    return bus.publishAndWaitFor(MessageType.AnswerText, MessageType.AskText, config)
       .then((data:{description: string; value: string}) => {
+        if (data.value === null)  return Promise.reject("");
+        return Promise.resolve(data.value);
+      });
+  }
+  static askQuantity(config:{ description: String; allowed: Array<Dim> }) : Promise<String> {
+    return bus.publishAndWaitFor(MessageType.AnswerQuantity, MessageType.AskQuantity, config)
+      .then((data: {description: string; value: Quantity}) => {
         if (data.value === null)  return Promise.reject("");
         return Promise.resolve(data.value);
       });

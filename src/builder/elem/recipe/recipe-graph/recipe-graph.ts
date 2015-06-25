@@ -48,16 +48,16 @@ class RecipeGraph {
   		.attr('height', height);
 
   	// Start
-  	this.drawStart(reactorGroup);
+  	//this.drawStart(reactorGroup);
     this.recipe.reactors.forEach(this.drawSteps.bind(this, d3, reactorGroup), this);
 	}
 	drawStart(group:any) {
-		group.append('circle')
-    		.attr('r', '10')
-    		.attr('fill', 'white')
-    		.attr('stroke', 'black');
-		group.append('circle')
-    		.attr('r', '3');
+      	// g.append('circle')
+      	// 	.attr('r', '10')
+      	// 	.attr('fill', 'white')
+      	// 	.attr('stroke', 'black');
+		    // g.append('circle')
+    		//   .attr('r', '3');
 	}
   drawSteps(d3:any, g:any, reactor:any) {
     reactor.steps.forEach(this.drawStep.bind(this, g, 80), this);
@@ -65,6 +65,15 @@ class RecipeGraph {
   drawStep(g:any, offset:any, step:Step, index:any) {
     switch(step.type.id) {
       case Step.Type.start.id:
+      	g.append('circle')
+      		.attr('r', '10')
+      		.attr('fill', 'white')
+      		.attr('stroke', 'black');
+        g.append('text')
+          .attr("x", -8)
+          .attr("y",  7)
+          .attr("font-size", "1.2em")
+          .text('\u2605');
         break;
       case Step.Type.addIngredient.id:
         g.append('circle')
@@ -75,7 +84,18 @@ class RecipeGraph {
         g.append('text')
           .attr("x", -5)
           .attr("y", (index * offset) + 5)
-          .text('+');
+          .text('\u2726');
+        break;
+      case Step.Type.heating.id:
+        g.append('circle')
+          .attr('r', '10')
+          .attr('cy', index * offset)
+          .attr('fill', 'white')
+          .attr('stroke', 'black');
+        g.append('text')
+          .attr("x", -8)
+          .attr("y", (index * offset) + 5)
+          .text('\ud83d\udd25');
         break;
       default:
         console.log('Unrecognized Step Type', step);

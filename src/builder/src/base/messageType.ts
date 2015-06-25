@@ -19,4 +19,6 @@ class MessageType {
 	static AnswerMenu:MessageType = new MessageType('AnswerMenu', 9);
 	static AskText:MessageType = new MessageType('AskText', 10);
 	static AnswerText:MessageType = new MessageType('AnswerText', 11);
+	static AskQuantity:MessageType = new MessageType('AskQuantity', 12);
+	static AnswerQuantity:MessageType = new MessageType('AnswerQuantity', 13);
 };
