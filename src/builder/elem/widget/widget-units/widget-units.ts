@@ -1,7 +1,6 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/units/system.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class WidgetUnits {
   USCust:Array<Unit>;
@@ -57,4 +56,6 @@ class WidgetUnits {
   }
 }
 
-Polymer(WidgetUnits.prototype);
+if (!Polymer.getRegisteredPrototype('widget-units')) {
+  Polymer('widget-units', WidgetUnits.prototype);
+}

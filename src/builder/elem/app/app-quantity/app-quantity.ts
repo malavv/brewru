@@ -1,27 +1,26 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 
-var Polymer:Function = Polymer || function () {}
-
 class AppQuantity {
   $:any;
-  
+
   description: string;
   quantity: Quantity;
-  
+
   quantityChanged() {
     if (this.quantity === undefined) return;
-    bus.publish(MessageType.AnswerIngredient, { qty: this.quantity });
+    bus.publish(MessageType.AnswerQuantity, { qty: this.quantity });
     this.$.overlay.close();
   }
-  
+
   ready() {
     bus.suscribe(MessageType.AskQuantity, this.focus, this);
     bus.suscribe(MessageType.Cancel, this.cancel, this);
     this.$.qty.restrictDimensions([Dim.Length]);
     this.reset();
   }
-  
+
   focus(config: {allowed: Dim[]; description: string}) : void {
     this.reset();
     this.$.qty.reset();
@@ -29,15 +28,26 @@ class AppQuantity {
     this.$.qty.restrictDimensions(config.allowed);
     this.$.overlay.open();
   }
-  
+
   cancel() : void {
     if (this.$.overlay.opened) this.$.overlay.close();
     bus.publish(MessageType.AnswerQuantity, { qty: null });
   }
-  
+
   reset() {
     this.quantity = undefined;
   }
+
+  public static ask(config:{ description: String; allowed: Array<Dim> }) : Promise<Quantity> {
+    return bus.publishAndWaitFor(MessageType.AnswerQuantity, MessageType.AskQuantity, config)
+      .then(AppQuantity.isChoiceValid);
+  }
+
+  private static isChoiceValid(data: { qty: Quantity }) {
+    return data.qty !== undefined ? Promise.resolve(data.qty) : Promise.reject('');
+  }
 }
 
-Polymer(AppQuantity.prototype);
+if (!Polymer.getRegisteredPrototype('app-quantity')) {
+  Polymer('app-quantity', AppQuantity.prototype);
+}

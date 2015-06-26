@@ -1,4 +1,4 @@
-var Polymer:Function = Polymer || function () {}
+/// <reference path="../../../src/base/polymer.d.ts" />
 
 class RecipeTools {
   selected: number;
@@ -7,4 +7,6 @@ class RecipeTools {
   }
 }
 
-Polymer(RecipeTools.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-tools')) {
+  Polymer('recipe-tools', RecipeTools.prototype);
+}

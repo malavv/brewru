@@ -2,9 +2,10 @@
 /// <reference path="wizard.ts" />
 
 interface IStepFactory {
-  info: Array<WizardConfig>;
   data: { [key: string]: any; };
-  
-  build(): Step;
+
+  next(): WizardConfig;
+
+  build(): Step[];
   isComplete(): boolean;
 }

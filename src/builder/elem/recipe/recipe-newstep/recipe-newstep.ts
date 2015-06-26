@@ -1,3 +1,4 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/recipeBuilder.ts" />
 /// <reference path="../../../src/step/wizard.ts" />
@@ -5,8 +6,6 @@
 /// <reference path="../../../src/step.ts" />
 
 /// <reference path="../../../src/promise.d.ts" />
-
-var Polymer:Function = Polymer || function () {}
   
 class RecipeNewstep {
   isChoosing: boolean;
@@ -27,7 +26,7 @@ class RecipeNewstep {
        console.info("No step type chosen.");
     })
     
-    var step: Promise<Step>;
+    var step: Promise<Step[]>;
     step = factory.then(Wizard.query.bind(this, this.builder.inventory.stocks))
       .then((stepFactory: IStepFactory) => { return stepFactory.build(); }) // How to do better?
     step.catch((e: Error) => {
@@ -35,12 +34,14 @@ class RecipeNewstep {
        console.info("Wizard issue, Wizard Canceled, or Step building failure");
     })
     
-    step.then((step: Step) => {
-      bus.publish(MessageType.NewStepCreated, step);
+    step.then((step: Step[]) => {
+      step.forEach((s:Step) => {
+        bus.publish(MessageType.NewStepCreated, s);
+      })
     });
   }  
 }  
 
-
-
-Polymer(RecipeNewstep.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-newstep')) {
+  Polymer('recipe-newstep', RecipeNewstep.prototype);
+}

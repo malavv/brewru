@@ -1,8 +1,7 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/shortcuts.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/Keyboard.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class AppShortcuts {
   evt:string = 'Shortcuts';
@@ -40,4 +39,6 @@ class AppShortcuts {
   }
 }
 
-Polymer(AppShortcuts.prototype);
+if (!Polymer.getRegisteredPrototype('app-shortcuts')) {
+  Polymer('app-shortcuts', AppShortcuts.prototype);
+}

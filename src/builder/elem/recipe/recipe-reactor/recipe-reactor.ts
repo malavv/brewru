@@ -1,4 +1,4 @@
-var Polymer:Function = Polymer || function () {}
+/// <reference path="../../../src/base/polymer.d.ts" />
 
 class RecipeReactor {
   reactor: any;
@@ -6,4 +6,6 @@ class RecipeReactor {
   ready() {}
 }
 
-Polymer(RecipeReactor.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-reactor')) {
+  Polymer('recipe-reactor', RecipeReactor.prototype);
+}

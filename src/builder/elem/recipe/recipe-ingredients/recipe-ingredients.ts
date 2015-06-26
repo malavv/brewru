@@ -1,7 +1,6 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/ingredients.ts" />
 /// <reference path="../../../src/ingredient.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class RecipeIngredients {
   data:Array<Ingredient> ;
@@ -28,4 +27,6 @@ class RecipeIngredients {
   }
 }
 
-Polymer(RecipeIngredients.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-ingredients')) {
+  Polymer('recipe-ingredients', RecipeIngredients.prototype);
+}

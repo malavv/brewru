@@ -1,7 +1,6 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/codes.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 /**
  * Enables Pop-Up selection from a list of items.
@@ -19,7 +18,7 @@ class AppMenu {
   selection:Object = undefined;
   hidden:boolean;
   $:any;
-  
+
   ready() {
     bus.suscribe(MessageType.AskMenu, this.onAskMenu, this);
     bus.suscribe(MessageType.Cancel, this.onCancel, this);
@@ -35,12 +34,12 @@ class AppMenu {
     if (this.$.overlay.opened)
       this.$.overlay.close();
   }
-  
+
   /** Main closing exit point. */
   onOverlayClosed() {
     this.close();
   }
-  
+
   selectionChanged(oldVal:Object, newVal:Object) {
     if (newVal === undefined) return;
     this.$.overlay.close();
@@ -52,12 +51,23 @@ class AppMenu {
     this.items = [];
     bus.publish(MessageType.AnswerMenu, this.selection);
   }
-  
+
   open() {
     this.$.list.grabFocus();
     this.hidden = false;
     this.$.overlay.open();
   }
-}  
 
-Polymer(AppMenu.prototype);
+  public static ask(data: Array<Object>) : Promise<ConceptRef> {
+    return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, data)
+      .then(AppMenu.isChoiceValid);
+  }
+
+  private static isChoiceValid(type?:ConceptRef) {
+    return type !== undefined ? Promise.resolve(type) : Promise.reject('');
+  }
+}
+
+if (!Polymer.getRegisteredPrototype('app-menu')) {
+  Polymer('app-menu', AppMenu.prototype);
+}

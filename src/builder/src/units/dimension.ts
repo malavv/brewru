@@ -8,6 +8,7 @@ class Dim {
 	public static Mass = new Dim();
 	public static Temperature = new Dim();
 	public static Volume = new Dim();
+	public static Temporal = new Dim();
 	
 	public static all() { return [Dim.Length, Dim.Mass, Dim.Temperature, Dim.Volume]; }
 }

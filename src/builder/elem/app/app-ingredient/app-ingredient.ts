@@ -1,13 +1,13 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/messageType.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/ingredients.ts" />
 
-var Polymer:Function = Polymer || function () {}
-
 class AppIngredient {
   $:any;
   
+  ingredientSrc: IngredientSrc;
   ingredients: Array<Ingredient>;
   
   ingredient: Ingredient;
@@ -30,10 +30,10 @@ class AppIngredient {
     });
   }
   
-  initAndShow(data:Array<Ingredient>) {
+  initAndShow() {
     this.reset();
+    this.ingredients = this.ingredientSrc.stocks;
     this.$.quan.reset();
-    this.ingredients = data;
     this.$.overlay.open();
   }
   
@@ -58,6 +58,18 @@ class AppIngredient {
     this.ingredient = undefined;
     this.quantity = undefined;
   }
+  
+  public static ask() : Promise<{ingredient: Ingredient; quantity: Quantity}> {
+    return bus.publishAndWaitFor(MessageType.AnswerIngredient, MessageType.AskIngredient, null)
+      .then(AppIngredient.isChoiceValid);
+  }
+
+  private static isChoiceValid(data: {ingredient: Ingredient; quantity: Quantity}) {
+    return (data.ingredient !== null && data.quantity !== null)
+      ? Promise.resolve(data) : Promise.reject('');
+  }
 }
 
-Polymer(AppIngredient.prototype);
+if (!Polymer.getRegisteredPrototype('app-ingredient')) {
+  Polymer('app-ingredient', AppIngredient.prototype);
+}

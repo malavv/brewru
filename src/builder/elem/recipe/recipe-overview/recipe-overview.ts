@@ -1,9 +1,8 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/recipeBuilder.ts" />
 /// <reference path="../../../src/reactor.ts" />
 
 /// <reference path="../../../src/step/wizard.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class RecipeOverview {
   builder: RecipeBuilder;
@@ -17,4 +16,6 @@ class RecipeOverview {
   }
 }
 
-Polymer(RecipeOverview.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-overview')) {
+  Polymer('recipe-overview', RecipeOverview.prototype);
+}

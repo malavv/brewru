@@ -1,4 +1,4 @@
-var Polymer:Function = Polymer || function () {}
+/// <reference path="../../../src/base/polymer.d.ts" />
 
 class WidgetText {
   $:any;
@@ -20,4 +20,6 @@ class WidgetText {
   }
 }
 
-Polymer(WidgetText.prototype);
+if (!Polymer.getRegisteredPrototype('widget-text')) {
+  Polymer('widget-text', WidgetText.prototype);
+}

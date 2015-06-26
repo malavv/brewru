@@ -1,7 +1,9 @@
-var Polymer:Function = Polymer || function () {}
+/// <reference path="../../../src/base/polymer.d.ts" />
 
 class RecipeTriggers {
   ready() {}
 }
 
-Polymer(RecipeTriggers.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-triggers')) {
+  Polymer('recipe-triggers', RecipeTriggers.prototype);
+}

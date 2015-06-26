@@ -1,8 +1,7 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/d3.d.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class RecipeGraph {
   recipe: Recipe;
@@ -104,4 +103,6 @@ class RecipeGraph {
   }
 }
 
-Polymer(RecipeGraph.prototype);
+if (!Polymer.getRegisteredPrototype('recipe-graph')) {
+  Polymer('recipe-graph', RecipeGraph.prototype);
+}

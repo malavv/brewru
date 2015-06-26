@@ -3,8 +3,8 @@
 /// <reference path="base/conceptRef.ts" />
 
 class Ingredients {
-	inventory: Array<Ingredient>;
-	reactors: Array<Reactor>;
+	inventory: Array<Ingredient> = [];
+	reactors: Array<Reactor> = [];
 	
 	listAllIngredients() {
 		return [].concat(this.inventory).concat(this.reactors.map((r) => { return r.src; }));

@@ -1,6 +1,5 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/codes.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class WidgetList {
   private data:Array<any> = [];
@@ -33,4 +32,6 @@ class WidgetList {
   }
 }
 
-Polymer(WidgetList.prototype);
+if (!Polymer.getRegisteredPrototype('widget-list')) {
+  Polymer('widget-list', WidgetList.prototype);
+}

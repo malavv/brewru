@@ -1,6 +1,6 @@
-/// <reference path="../../../src/base/codes.ts" />
+/// <reference path="../../../src/base/polymer.d.ts" />
 
-var Polymer:Function = Polymer || function () {}
+/// <reference path="../../../src/base/codes.ts" />
 
 class WidgetDemo {
   selected: number;
@@ -19,4 +19,6 @@ class WidgetDemo {
   }
 }
 
-Polymer(WidgetDemo.prototype);
+if (!Polymer.getRegisteredPrototype('widget-demo')) {
+  Polymer('widget-demo', WidgetDemo.prototype);
+}

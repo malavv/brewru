@@ -1,7 +1,6 @@
+/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/units/unit.ts" />
-
-var Polymer:Function = Polymer || function () {}
 
 class WidgetQuantity {
   val:number = 0;
@@ -34,4 +33,6 @@ class WidgetQuantity {
   }
 }
 
-Polymer(WidgetQuantity.prototype);
+if (!Polymer.getRegisteredPrototype('widget-quantity')) {
+  Polymer('widget-quantity', WidgetQuantity.prototype);
+}
