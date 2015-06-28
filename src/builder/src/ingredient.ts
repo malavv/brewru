@@ -4,7 +4,8 @@ enum IngredientType {
 	Fermentables,
 	Hops,
 	Yeasts,
-	Miscellaneous
+	Miscellaneous,
+	Dynamic
 }
 
 class Ingredient {
@@ -17,6 +18,6 @@ class Ingredient {
 	}
 
 	toString() {
-		return this.concept.id;
+		return this.concept.name;
 	}
 }

@@ -30,9 +30,10 @@ class AppIngredient {
     });
   }
   
-  initAndShow() {
+  initAndShow(type: IngredientType) {
+    console.info('[app-ingredient]<initAndShow> : ', type);
     this.reset();
-    this.ingredients = this.ingredientSrc.stocks;
+    this.ingredients = this.ingredientSrc.stocks.filter((i:Ingredient) => { return i.type === type; });
     this.$.quan.reset();
     this.$.overlay.open();
   }
@@ -59,8 +60,8 @@ class AppIngredient {
     this.quantity = undefined;
   }
   
-  public static ask() : Promise<{ingredient: Ingredient; quantity: Quantity}> {
-    return bus.publishAndWaitFor(MessageType.AnswerIngredient, MessageType.AskIngredient, null)
+  public static ask(type: IngredientType) : Promise<{ingredient: Ingredient; quantity: Quantity}> {
+    return bus.publishAndWaitFor(MessageType.AnswerIngredient, MessageType.AskIngredient, type)
       .then(AppIngredient.isChoiceValid);
   }
 

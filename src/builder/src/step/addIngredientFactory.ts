@@ -17,8 +17,22 @@ class AddIngredientFactory implements IStepFactory {
         return new WizardConfig('name', AppText.ask, { description: 'Ingredient Step Name' });
       case 1:
         this.state = 2;
-        return new WizardConfig('qty', AppIngredient.ask, {});
-      default: return undefined;
+        return new WizardConfig('menu', AppMenu.ask, ["dynamic", "fermentables", "hops", "yeast", "miscellaneous"]);
+      case 2:
+        this.state = 3;
+        return new WizardConfig('qty', AppIngredient.ask, this.name2type(this.data['menu']));
+      default: 
+        return undefined;
+    }
+  }
+  
+  name2type(name: string) : IngredientType {
+    switch (this.data['menu']) {
+      case 'dynamic': return IngredientType.Dynamic;
+      case 'fermentables': return IngredientType.Fermentables;
+      case 'hops': return IngredientType.Hops;
+      case 'yeast': return IngredientType.Yeasts;
+      case 'miscellaneous': return IngredientType.Miscellaneous;
     }
   }
 

@@ -70,9 +70,7 @@ class RecipeIngredients {
     });
   }
   
-  recipeChanged() {
-    console.log('recipe')
-  }
+  recipeChanged() {}
 }
 
 if (!Polymer.getRegisteredPrototype('recipe-ingredients')) {
