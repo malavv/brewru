@@ -1,16 +1,22 @@
 /// <reference path="base/conceptRef.ts" />
-/// <reference path="base/quantity.ts" />
+
+enum IngredientType {
+	Fermentables,
+	Hops,
+	Yeasts,
+	Miscellaneous
+}
 
 class Ingredient {
 	concept: ConceptRef;
-	quantity: Quantity;
-	
-	constructor(concept: ConceptRef, quantity: Quantity) {
+	type: IngredientType;
+
+	constructor(concept: ConceptRef, type: IngredientType) {
 		this.concept = concept;
-		this.quantity = quantity;
+		this.type = type;
 	}
-	
+
 	toString() {
-		return this.concept.id + this.quantity;
+		return this.concept.id;
 	}
 }

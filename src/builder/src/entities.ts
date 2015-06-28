@@ -12,4 +12,9 @@ class Entities {
     static blackMalt: ConceptRef = new OntoRef('brew:BlackMalt', 'Black Malt');
     static flakedRye: ConceptRef = new OntoRef('brew:FlakedRye', 'Flaked Rye');
     static rolledOat: ConceptRef = new OntoRef('brew:RolledOat', 'Rolled Oat');
+    
+    static yeastNutrient: ConceptRef = new OntoRef('brew:yeastNutrient', 'Yeast Nutrient');
+    
+    static w2112: ConceptRef = new OntoRef('brew:w2112', 'Wyeast California Lager');
+    
 }

@@ -37,15 +37,17 @@ class RecipeBuilder {
 		var src = new IngredientSrc(Entities.inventory);
 
 		return src.addAll([
-	    	new Ingredient(Entities.tapWater, new Quantity(Infinity, SI.sym('l'))),
-	      	new Ingredient(Entities.syrup, new Quantity(2.4, SI.sym('kg'))),
-	      	new Ingredient(Entities.syrup, new Quantity(2.4, SI.sym('kg'))),
-	      	new Ingredient(Entities.c120, new Quantity(0.16, SI.sym('kg'))),
-	      	new Ingredient(Entities.c60, new Quantity(0.14, SI.sym('kg'))),
-	      	new Ingredient(Entities.paleChoco, new Quantity(0.14, SI.sym('kg'))),
-	      	new Ingredient(Entities.blackMalt, new Quantity(0.14, SI.sym('kg'))),
-	      	new Ingredient(Entities.flakedRye, new Quantity(0.14, SI.sym('kg'))),
-	      	new Ingredient(Entities.rolledOat, new Quantity(0.14, SI.sym('kg')))
+	      	new Ingredient(Entities.syrup, IngredientType.Fermentables),
+	      	new Ingredient(Entities.c120, IngredientType.Fermentables),
+	      	new Ingredient(Entities.c60, IngredientType.Fermentables),
+	      	new Ingredient(Entities.paleChoco, IngredientType.Fermentables),
+	      	new Ingredient(Entities.blackMalt, IngredientType.Fermentables),
+	      	new Ingredient(Entities.flakedRye, IngredientType.Fermentables),
+	      	new Ingredient(Entities.rolledOat, IngredientType.Fermentables),
+			  
+			new Ingredient(Entities.yeastNutrient, IngredientType.Miscellaneous),
+			
+			new Ingredient(Entities.w2112, IngredientType.Yeasts),
 	    ]);
 	}
 }

@@ -2,16 +2,31 @@
   text-align: center;
 
   .section {
-    padding: 10px 0;
+    padding: 3px 0;
     font-size: 1.5em;
     font-weight: bold;
-    background-color: #ccccff;
+    background-color: #dedede;
   }
-  core-list {
-
-    .ingredient {
-      background-color: #ddd;
-      border-bottom: 1px solid gray;
+  .ingredient {
+    background-color: #fafafa;
+    border-bottom: 1px solid gray;
+    cursor: pointer;
+    
+    -moz-user-select: -moz-none;
+	  -khtml-user-select: none;
+	  -webkit-user-select: none;
+	  -o-user-select: none;
+	  user-select: none;
+    
+    &:hover {
+      background-color: #ededed;
     }
   }
+  .unselectable {
+	  -moz-user-select: -moz-none;
+	  -khtml-user-select: none;
+	  -webkit-user-select: none;
+	  -o-user-select: none;
+	  user-select: none;
+	}
 }
