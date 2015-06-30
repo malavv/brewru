@@ -1,6 +1,13 @@
 /// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/codes.ts" />
+/// <reference path="../../../src/errors.ts" />
+
+class AppMenuWrapper {
+  val: string;
+  toString() : string { return this.val; }
+  constructor(val:string) { this.val = val; }
+}
 
 /**
  * Enables Pop-Up selection from a list of items.
@@ -49,7 +56,7 @@ class AppMenu {
     this.$.list.looseFocus();
     this.hidden = true;
     this.items = [];
-    bus.publish(MessageType.AnswerMenu, this.selection);
+    bus.publish(MessageType.AnswerMenu, AppMenu.unwrap(this.selection));
   }
 
   open() {
@@ -59,12 +66,25 @@ class AppMenu {
   }
 
   public static ask(data: Array<Object>) : Promise<ConceptRef> {
+    if (data === undefined) 
+      return undefined;
+    if (data.length === 0)
+      return Promise.resolve();
+    if (typeof(data[0]) === 'string')
+      data = AppMenu.wrap(<string[]>data);
     return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, data)
       .then(AppMenu.isChoiceValid);
   }
-
+  
+  private static unwrap(data: Object) : Object {
+    return data instanceof AppMenuWrapper ? data.val : data;
+  }
+  private static wrap(data: Array<string>) : Object[] {
+    return data.map(s => new AppMenuWrapper(s));
+  }
+  
   private static isChoiceValid(type?:ConceptRef) {
-    return type !== undefined ? Promise.resolve(type) : Promise.reject('');
+    return type !== undefined ? Promise.resolve(type) : Promise.reject(new CancelError());
   }
 }
 

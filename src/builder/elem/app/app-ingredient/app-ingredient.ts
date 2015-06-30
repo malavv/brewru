@@ -31,7 +31,6 @@ class AppIngredient {
   }
   
   initAndShow(type: IngredientType) {
-    console.info('[app-ingredient]<initAndShow> : ', type);
     this.reset();
     this.ingredients = this.ingredientSrc.stocks.filter((i:Ingredient) => { return i.type === type; });
     this.$.quan.reset();

@@ -4,6 +4,7 @@
 /// <reference path="../../../src/step/wizard.ts" />
 /// <reference path="../../../src/step/stepFactory.ts" />
 /// <reference path="../../../src/step.ts" />
+/// <reference path="../../../src/errors.ts" />
 
 /// <reference path="../../../src/promise.d.ts" />
   
@@ -19,25 +20,21 @@ class RecipeNewstep {
   onCreateStep(data:any) {
     if (this.isChoosing) return;
     
-    var factory: Promise<StepFactory>;
-    factory = Wizard.askStepType().then(StepFactory.create);
-    factory.catch((e: Error) => {
-       this.isChoosing = false;
-       console.info("No step type chosen.");
-    })
-    
-    var step: Promise<Step[]>;
-    step = factory.then(Wizard.query.bind(this, this.builder.inventory.stocks))
+    Wizard.askStepType()
+      .then(StepFactory.create)
+      .then(Wizard.query.bind(this, this.builder.inventory.stocks))
       .then((stepFactory: IStepFactory) => { return stepFactory.build(); }) // How to do better?
-    step.catch((e: Error) => {
+      .then((step: Step[]) => {
+        step.forEach((s:Step) => {
+          bus.publish(MessageType.NewStepCreated, s);
+        })
+      }).catch((e: Error) => {
        this.isChoosing = false;
-       console.info("Wizard issue, Wizard Canceled, or Step building failure");
-    })
-    
-    step.then((step: Step[]) => {
-      step.forEach((s:Step) => {
-        bus.publish(MessageType.NewStepCreated, s);
-      })
+       if (e instanceof CancelError) {
+         console.info('Wizard Canceled');
+       } else {
+         console.error("Wizard issue, or Step building failure", e);
+       }       
     });
   }  
 }  
