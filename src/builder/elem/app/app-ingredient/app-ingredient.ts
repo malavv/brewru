@@ -3,11 +3,15 @@
 /// <reference path="../../../src/base/messageType.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/ingredients.ts" />
+/// <reference path="../../../src/errors.ts" />
+/// <reference path="../../../src/recipe.ts" />
 
 class AppIngredient {
   $:any;
   
   ingredientSrc: IngredientSrc;
+  recipe: Recipe;
+  
   ingredients: Array<Ingredient>;
   
   ingredient: Ingredient;
@@ -24,25 +28,22 @@ class AppIngredient {
   
   cancel() {
     if (this.$.overlay.opened) this.$.overlay.close();
-    bus.publish(MessageType.AnswerIngredient, {
-      ingredient: null,
-      quantity: null
-    });
+    bus.publish(MessageType.AnswerIngredient, { ingredient: null, quantity: null });
   }
   
   initAndShow(type: IngredientType) {
     this.reset();
-    this.ingredients = this.ingredientSrc.stocks.filter((i:Ingredient) => { return i.type === type; });
+    if (type === IngredientType.Dynamic) {
+      this.ingredients = this.recipe.listDynamicIngredients();
+    } else {
+      this.ingredients = this.ingredientSrc.stocks.filter(i => i.type === type);
+    }    
     this.$.quan.reset();
     this.$.overlay.open();
   }
   
-  ingredientChanged() { 
-    this.onStateChanged(); 
-  }
-  quantityChanged() {
-    this.onStateChanged(); 
-  }
+  ingredientChanged() { this.onStateChanged(); }
+  quantityChanged() { this.onStateChanged(); }
   onStateChanged() {
     if (this.ingredient === undefined) return;
     if (this.quantity === undefined) return;
@@ -66,7 +67,7 @@ class AppIngredient {
 
   private static isChoiceValid(data: {ingredient: Ingredient; quantity: Quantity}) {
     return (data.ingredient !== null && data.quantity !== null)
-      ? Promise.resolve(data) : Promise.reject('');
+      ? Promise.resolve(data) : Promise.reject(new CancelError());
   }
 }
 
