@@ -1,9 +1,0 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-
-<script>
-  Polymer.require = function(tag, deps, func) {
-    require(deps, function() {
-      Polymer(tag, func.apply(this, arguments));
-    });
-  };
-</script>
