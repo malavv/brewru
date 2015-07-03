@@ -1,6 +1,10 @@
 *.sublime-project
 *.sublime-workspace
 
+.idea/
+src/builder/builder.iml
+
+
 src/.gradle/
 src/.idea/
 src/bin/
