@@ -2,6 +2,7 @@
 /// <reference path="../../../src/base/codes.ts" />
 
 class WidgetList {
+  private static codes:base.BaseConvert = new base.KeyboardBase();
   private data:Array<any> = [];
   private selection:any;
   private $:any;
@@ -17,8 +18,7 @@ class WidgetList {
   
   private handleKey(evt: KeyboardEvent) : void {
     var
-      codes = new Codes(),
-      idx = codes.base2int(String.fromCharCode(evt.which));
+        idx = WidgetList.codes.toIdx(String.fromCharCode(evt.which));
     if (idx < 0 || idx >= this.data.length) return;
     this.$.list.selectItem(idx);
     evt.preventDefault();
@@ -29,6 +29,10 @@ class WidgetList {
 
   private resize() {
     this.style.height = (this.data.length * this.$.list.height) + 'px';
+  }
+
+  toBase(idx:number):string {
+    return WidgetList.codes.toCode(idx);
   }
 }
 

@@ -11,6 +11,7 @@
     "gulp-typescript": "^2.7.6"
   },
   "dependencies": {
+    "gulp-clean": "^0.3.1",
     "lodash": "^3.6.0"
   }
 }

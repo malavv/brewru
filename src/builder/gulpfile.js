@@ -1,54 +1,73 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var sass = require('gulp-sass');
-var ts = require('gulp-typescript');
-var tslint = require('gulp-tslint');
-var sourcemaps = require('gulp-sourcemaps');
-var typedoc = require('gulp-typedoc');
+var
+    clean = require('gulp-clean'),
+    concat = require('gulp-concat'),
+    gulp = require('gulp'),
+    sass = require('gulp-sass'),
+    ts = require('gulp-typescript'),
+    typedoc = require('gulp-typedoc');
 
-gulp.task('default', ['watch', 'sass', 'typescript', 'base', 'html', 'typedoc']);
+/* This default task is the one always run. Keep long items outside. */
+gulp.task('default', [
+  'html',
+  'sass',
+  'ts-base',
+  'ts-elem'
+]);
 
-// Compile Our Sass
-gulp.task('sass', function() {
-    return gulp.src('elem/**/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('app/elem'));
+/* Cleans output directories. */
+gulp.task('clean', function () {
+  return gulp.src('app/elem')
+      .pipe(clean());
 });
 
-gulp.task('typescript', function() {
-  return gulp.src('elem/**/*.ts')
-    .pipe(ts({noImplicitAny: true}))
-    .js
-    .pipe(gulp.dest('app/elem'));
-});
-gulp.task('base', function() {
-  return gulp.src('src/**/*.ts')
-    .pipe(ts({
-      noImplicitAny: true,
-      out: 'base.js'
-    }))
-    .js
-    .pipe(gulp.dest('app/lib/'));
-});
-gulp.task('html', function() {
+/* Copies directly HTML to the app/ directory. */
+gulp.task('html', function () {
   return gulp.src('elem/**/*.html')
-    .pipe(gulp.dest('app/elem'));
+      .pipe(gulp.dest('app/elem'));
 });
 
-// Watch Files For Changes
-gulp.task('watch', function() {
-    gulp.watch('elem/**/*.scss', ['sass']);
-    gulp.watch('elem/**/*.ts', ['typescript']);
-    gulp.watch('elem/**/*.html', ['html']);
-    gulp.watch('src/**/*.ts', ['base']);
+/* Compiles the SCSS items inside the elem/ tree and puts the output in the app/ tree. */
+gulp.task('sass', function () {
+  return gulp.src('elem/**/*.scss')
+      .pipe(sass())
+      .pipe(gulp.dest('app/elem'));
 });
 
-gulp.task('typedoc', function() {
-    return gulp
-        .src(['src/**/*.ts', 'elem/**/*.ts'])
-        .pipe(typedoc({ 
-            out: 'doc', 
-            target: 'es5',
-            includeDeclarations: true
-        }));
+/* Compiles the brewru library and puts it as base.js, to be a library to the polymer elements. */
+gulp.task('ts-base', function () {
+  return gulp.src('src/**/*.ts')
+      .pipe(ts({
+        noImplicitAny: true,
+        out: 'base.js'
+      }))
+      .js
+      .pipe(gulp.dest('app/lib/'));
 });
+
+/* Compiles the polymer elements that will use the brewru library to implement the recipe builder functionalities. */
+gulp.task('ts-elem', function () {
+  return gulp.src('elem/**/*.ts')
+      .pipe(ts({noImplicitAny: true}))
+      .js
+      .pipe(gulp.dest('app/elem'));
+});
+
+/* Generates documentation for Typescript. */
+gulp.task('typedoc', function () {
+  return gulp
+      .src(['src/**/*.ts', 'elem/**/*.ts'])
+      .pipe(typedoc({
+        out: 'doc',
+        target: 'es5',
+        includeDeclarations: true
+      }));
+});
+
+/* Watches certain files and activate processing if needed. */
+gulp.task('watch', function () {
+  gulp.watch('elem/**/*.html', ['html']);
+  gulp.watch('elem/**/*.scss', ['sass']);
+  gulp.watch('src/**/*.ts', ['ts-base']);
+  gulp.watch('elem/**/*.ts', ['ts-elem']);
+});
+
