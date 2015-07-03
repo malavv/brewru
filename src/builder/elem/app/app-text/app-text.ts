@@ -57,16 +57,4 @@ class AppText {
     this.value = '';
     this.wasCanceled = true;
   }
-
-  public static ask(data:{ description: string }) : Promise<string> {
-    return bus.publishAndWaitFor(MessageType.AnswerText, MessageType.AskText, data)
-      .then(AppText.isChoiceValid);
-  }
-
-  private static isChoiceValid(result:{description: string; value?: string; }) {
-    return result.value !== undefined ? Promise.resolve(result.value) : Promise.reject('');
-  }
-}
-if (!Polymer.getRegisteredPrototype('app-text')) {
-  Polymer('app-text', AppText.prototype);
 }

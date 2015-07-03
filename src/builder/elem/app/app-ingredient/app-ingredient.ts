@@ -59,18 +59,4 @@ class AppIngredient {
     this.ingredient = undefined;
     this.quantity = undefined;
   }
-  
-  public static ask(type: IngredientType) : Promise<{ingredient: Ingredient; quantity: Quantity}> {
-    return bus.publishAndWaitFor(MessageType.AnswerIngredient, MessageType.AskIngredient, type)
-      .then(AppIngredient.isChoiceValid);
-  }
-
-  private static isChoiceValid(data: {ingredient: Ingredient; quantity: Quantity}) {
-    return (data.ingredient !== null && data.quantity !== null)
-      ? Promise.resolve(data) : Promise.reject(new CancelError());
-  }
-}
-
-if (!Polymer.getRegisteredPrototype('app-ingredient')) {
-  Polymer('app-ingredient', AppIngredient.prototype);
 }

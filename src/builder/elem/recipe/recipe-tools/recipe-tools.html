@@ -5,24 +5,24 @@
 <link rel="import" href="../../../cmpts/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../../cmpts/core-pages/core-pages.html">
 
-<link rel="import" href="../../recipe/recipe-ingredients/recipe-ingredients.html">
 <link rel="import" href="../../recipe/recipe-triggers/recipe-triggers.html">
+<link rel="import" href="../../recipe/recipe-graph/recipe-graph.html">
 
 <polymer-element 
-  name="recipe-tools" 
-  attributes="reactor inventory recipe" 
+  name="recipe-tools"
+  attributes="reactor recipe"
   vertical layout>
   
   <template>
     <link rel="stylesheet" href="recipe-tools.css">
     
     <paper-tabs selected="{{selected}}">
-      <paper-tab>Ingredients</paper-tab>
+      <paper-tab>Graph</paper-tab>
       <paper-tab>Triggers</paper-tab>
     </paper-tabs>
     
     <core-pages flex selected="{{selected}}">
-      <recipe-ingredients inventory={{inventory}} recipe={{recipe}}></recipe-ingredients>
+      <recipe-graph recipe={{recipe}}></recipe-graph>
       <recipe-triggers triggers="{{reactor.steps}}"></recipe-triggers>
     </core-pages>
   </template>

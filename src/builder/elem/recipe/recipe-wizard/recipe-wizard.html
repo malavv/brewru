@@ -1,0 +1,22 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../app/app-ingredient/app-ingredient.html">
+<link rel="import" href="../../app/app-menu/app-menu.html">
+<link rel="import" href="../../app/app-quantity/app-quantity.html">
+<link rel="import" href="../../app/app-text/app-text.html">
+
+<polymer-element name="recipe-wizard"
+                 attributes="inventory recipe">
+
+  <template>
+    <app-menu></app-menu>
+    <app-text></app-text>
+    <app-ingredient recipe="{{recipe}}" ingredientSrc="{{inventory}}"></app-ingredient>
+    <app-quantity></app-quantity>
+  </template>
+
+  <script src="recipe-wizard.js"></script>
+  <script>Polymer('recipe-wizard', RecipeWizard.prototype);</script>
+</polymer-element>

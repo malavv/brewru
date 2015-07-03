@@ -1,0 +1,26 @@
+<link rel="import" href="../../../cmpts/polymer/polymer.html">
+
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../../elem/app/app-shortcuts/app-shortcuts.html">
+<link rel="import" href="../../../elem/recipe/recipe-ingredients/recipe-ingredients.html">
+<link rel="import" href="../../../elem/recipe/recipe-newstep/recipe-newstep.html">
+<link rel="import" href="../../../elem/recipe/recipe-overview/recipe-overview.html">
+<link rel="import" href="../../../elem/recipe/recipe-wizard/recipe-wizard.html">
+
+<polymer-element name="recipe-builder" horizontal layout>
+  <template>
+    <!-- Keyboard shortcut Manager linked to the PubSub. -->
+    <app-shortcuts></app-shortcuts>
+
+    <recipe-overview recipe="{{builder.recipe}}" flex></recipe-overview>
+    <recipe-ingredients inventory={{builder.inventory}} recipe={{builder.recipe}}></recipe-ingredients>
+
+    <!-- Manages the recipe building process. -->
+    <recipe-newstep builder="{{builder}}"></recipe-newstep>
+    <recipe-wizard inventory="{{builder.inventory}}" recipe="{{builder.recipe}}"></recipe-wizard>
+  </template>
+
+  <script src="recipe-builder.js"></script>
+  <script>Polymer('recipe-builder', RecipeBld.prototype);</script>
+</polymer-element>

@@ -1,44 +1,40 @@
-/// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/shortcuts.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/Keyboard.ts" />
+/// <reference path="../../../src/base/messageType.ts" />
 
 class AppShortcuts {
-  evt:string = 'Shortcuts';
-  listed:Shortcuts;
-  $:any;
+
+  public static shortcuts:Shortcuts = new Shortcuts()
+      .add('alt+S', MessageType.CreateStep, 'Create new step')
+      .add('shift+6', MessageType.ShowShortcuts, 'Toggle Visibility of Shortcuts')
+      .add('esc', MessageType.Cancel, 'Cancel current action.');
+
+  private listed:Shortcuts;
+  private $:any;
 
   ready() {
-    this.listed = Shortcuts.default;
+    window.addEventListener('keyup', (e:KeyboardEvent) => {
+      this.onKeyUp(e);
+    }, false);
+    this.listed = AppShortcuts.shortcuts;
     bus.suscribe(MessageType.ShowShortcuts, this.onShowShortcuts, this);
     this.$.overlay.close();
   }
 
-  onShowShortcuts() {
+  /** Only need to show when requested. Is closed automatically by core-overlay. */
+  private onShowShortcuts() {
     this.$.overlay.open();
   }
 
-  keypress(event:KeyboardEvent) {
+  /**
+   * On all key in the application (Using key-up to also get none aphabetic keys.)
+   * @param event Keyboard event of the pressed key.
+   */
+  private onKeyUp(event:KeyboardEvent) {
     var key = Keyboard.fromEvt(event);
 
-    if (this.isIgnoredSource(event)) return;
     if (!this.listed.hasKey(key)) return;
     bus.publish(this.listed.get(key).intent);
   }
-
-  private isIgnoredSource(event:any) : boolean {
-    switch(event.path[0].tagName) {
-      case 'INPUT': return true;
-      case 'BODY': return false;
-      // The main popup wizard screen
-      case 'CORE-OVERLAY': return false;
-      default:
-        console.log('AppShortcuts[isIgnoredSource]<default>', event.path[0].tagName);
-      return false;
-    }
-  }
-}
-
-if (!Polymer.getRegisteredPrototype('app-shortcuts')) {
-  Polymer('app-shortcuts', AppShortcuts.prototype);
 }

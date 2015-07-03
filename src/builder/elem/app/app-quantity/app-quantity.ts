@@ -37,17 +37,4 @@ class AppQuantity {
   reset() {
     this.quantity = undefined;
   }
-
-  public static ask(config:{ description: String; allowed: Array<Dim> }) : Promise<Quantity> {
-    return bus.publishAndWaitFor(MessageType.AnswerQuantity, MessageType.AskQuantity, config)
-      .then(AppQuantity.isChoiceValid);
-  }
-
-  private static isChoiceValid(data: { qty: Quantity }) {
-    return data.qty !== undefined ? Promise.resolve(data.qty) : Promise.reject('');
-  }
-}
-
-if (!Polymer.getRegisteredPrototype('app-quantity')) {
-  Polymer('app-quantity', AppQuantity.prototype);
 }

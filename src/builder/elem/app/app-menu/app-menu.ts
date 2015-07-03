@@ -64,30 +64,8 @@ class AppMenu {
     this.hidden = false;
     this.$.overlay.open();
   }
-
-  public static ask(data: Array<Object>) : Promise<ConceptRef> {
-    if (data === undefined) 
-      return undefined;
-    if (data.length === 0)
-      return Promise.resolve();
-    if (typeof(data[0]) === 'string')
-      data = AppMenu.wrap(<string[]>data);
-    return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, data)
-      .then(AppMenu.isChoiceValid);
-  }
   
   private static unwrap(data: Object) : Object {
     return data instanceof AppMenuWrapper ? data.val : data;
   }
-  private static wrap(data: Array<string>) : Object[] {
-    return data.map(s => new AppMenuWrapper(s));
-  }
-  
-  private static isChoiceValid(type?:ConceptRef) {
-    return type !== undefined ? Promise.resolve(type) : Promise.reject(new CancelError());
-  }
-}
-
-if (!Polymer.getRegisteredPrototype('app-menu')) {
-  Polymer('app-menu', AppMenu.prototype);
 }
