@@ -7,8 +7,16 @@
 /// <reference path="../../../src/promise.d.ts" />
   
 class RecipeNewstep {
+  is:string = 'recipe-newstep';
   isChoosing: boolean;
   builder: RecipeBuilder;
+  
+  properties:any = {
+    builder: {
+      type: RecipeBuilder,
+      value: null
+    }
+  };
   
   ready() {
     bus.suscribe(MessageType.CreateStep, this.onCreateStep, this);

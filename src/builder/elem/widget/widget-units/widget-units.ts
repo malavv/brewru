@@ -3,26 +3,34 @@
 /// <reference path="../../../src/units/system.ts" />
 
 class WidgetUnits {
+  is:string = 'widget-units';
   USCust:Array<Unit>;
   SI:Array<Unit>;
   isExpanded:boolean;
   ref:number;
-  unit:Unit;
   title:string;
-  allowed: Array<Dim>;
   
   systems: Array<SystemImpl>;
+  
+  properties:any = {
+    unit: {
+      type: Unit,
+      value: undefined
+    },
+    allowed: {
+      type: Array,
+      value: Dim.all()
+    }
+  }
 
   ready() {
     this.USCust = [];
     this.SI = [];
     this.title = 'n/a';
-    this.unit = undefined;
     this.ref = 0;
     this.isExpanded = false;
     
     this.systems = UnitSystem.all();
-    this.allowed = Dim.all();
   }
   
   listUnits(system:SystemImpl, dim: Dim) {
@@ -49,13 +57,9 @@ class WidgetUnits {
   }
 
   onChoice(evt: Event, idx: number, node: HTMLLIElement) {
-    this.unit = UnitSystem.getUnit((<{[name:string]: string}>node.dataset)['unit']);
+    this.properties.unit = UnitSystem.getUnit((<{[name:string]: string}>node.dataset)['unit']);
     
     this.isExpanded = false;
     this.ref = 0;
   }
-}
-
-if (!Polymer.getRegisteredPrototype('widget-units')) {
-  Polymer('widget-units', WidgetUnits.prototype);
 }

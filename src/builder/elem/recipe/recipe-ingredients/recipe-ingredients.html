@@ -1,8 +1,19 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
-<script src="../../../lib/base.js"></script>
-<link rel="import" href="../../../cmpts/core-list/core-list.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
-<polymer-element name="recipe-ingredients" attributes="inventory recipe" vertical layout>
+<script src="../../../lib/base.js"></script>
+
+<link rel="import" href="../../../cmpts/iron-list/iron-list.html">
+
+
+<dom-module id="recipe-ingredients">
+  
+  <style>
+    :host {
+        @apply(--layout-vertical);
+    }
+  </style>
+  
   <template>
     <link rel="stylesheet" href="recipe-ingredients.css">
     
@@ -12,29 +23,31 @@
     </template>
     
     <div class="section">Dynamic</div>
-    <core-list data="{{dynamic}}" flex>
+    <iron-list data="{{dynamic}}" flex>
       <template bind ref="ingredient"></template>
-    </core-list>
+    </iron-list>
     
     <div class="section">Fermentables</div>
-    <core-list data="{{fermentables}}" flex>
+    <iron-list data="{{fermentables}}" flex>
       <template bind ref="ingredient"></template>
-    </core-list>
+    </iron-list>
     
     <div class="section">Hops</div>
-    <core-list data="{{hops}}" flex>
+    <iron-list data="{{hops}}" flex>
       <template bind ref="ingredient"></template>
-    </core-list>
+    </iron-list>
     
     <div class="section">Yeasts</div>
-    <core-list data="{{yeasts}}" flex>
+    <iron-list data="{{yeasts}}" flex>
       <template bind ref="ingredient"></template>
-    </core-list>
+    </iron-list>
     
     <div class="section">Miscellaneous</div>
-    <core-list data="{{miscellaneous}}" flex>
+    <iron-list data="{{miscellaneous}}" flex>
       <template bind ref="ingredient"></template>
-    </core-list>
+    </iron-list>
   </template>
+  
   <script src="recipe-ingredients.js"></script>
-</polymer-element>
+  <script>Polymer(RecipeIngredients.prototype);</script>
+</dom-module>

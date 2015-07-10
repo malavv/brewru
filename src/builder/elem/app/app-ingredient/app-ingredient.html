@@ -1,28 +1,32 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
-<link rel="import" href="../../../cmpts/core-list/core-list.html">
-<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+<link rel="import" href="../../../cmpts/iron-overlay-behavior/iron-overlay-behavior.html">
 
 <link rel="import" href="../../widget/widget-units/widget-units.html">
 <link rel="import" href="../../widget/widget-quantity/widget-quantity.html">
 <link rel="import" href="../../widget/widget-list/widget-list.html">
 
-<polymer-element
-    name="app-ingredient"
-    attributes="ingredientSrc recipe"
-    horizontal center-justified layout>
+<dom-module id="app-ingredient">
+  
+  <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+    }
+  </style>
   <template>
     <link rel="stylesheet" href="app-ingredient.css">
 
-    <core-overlay id="overlay" on-core-overlay-close-completed="{{cancel}}" vertical layout>
+    <div id="overlay" on-iron-overlay-close-completed="{{cancel}}" vertical layout>
       <widget-list id="list" data="{{ingredients}}" selection="{{ingredient}}"></widget-list>
       <widget-quantity id="quan" quantity="{{quantity}}"></widget-quantity>
-    </core-overlay>
+    </div>
   </template>
   <script src="app-ingredient.js"></script>
   <script>
-    Polymer('app-ingredient', AppIngredient.prototype);
+    Polymer(AppIngredient.prototype);
   </script>
-</polymer-element>
+</dom-module>

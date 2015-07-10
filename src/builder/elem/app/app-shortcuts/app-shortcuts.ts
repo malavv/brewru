@@ -4,6 +4,12 @@
 /// <reference path="../../../src/base/messageType.ts" />
 
 class AppShortcuts {
+  public is:string = 'app-shortcuts';
+  public opened:boolean = false;
+  
+  public behaviors:any = [
+    Polymer.IronOverlayBehavior
+  ];
 
   public static shortcuts:Shortcuts = new Shortcuts()
       .add('alt+S', MessageType.CreateStep, 'Create new step')
@@ -19,12 +25,11 @@ class AppShortcuts {
     }, false);
     this.listed = AppShortcuts.shortcuts;
     bus.suscribe(MessageType.ShowShortcuts, this.onShowShortcuts, this);
-    this.$.overlay.close();
   }
 
   /** Only need to show when requested. Is closed automatically by core-overlay. */
   private onShowShortcuts() {
-    this.$.overlay.open();
+    this.opened = true;
   }
 
   /**

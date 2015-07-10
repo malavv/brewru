@@ -1,5 +1,8 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
 
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
+
+
 <script src="../../../lib/base.js"></script>
 
 <link rel="import" href="../../../elem/app/app-shortcuts/app-shortcuts.html">
@@ -8,7 +11,14 @@
 <link rel="import" href="../../../elem/recipe/recipe-overview/recipe-overview.html">
 <link rel="import" href="../../../elem/recipe/recipe-wizard/recipe-wizard.html">
 
-<polymer-element name="recipe-builder" horizontal layout>
+<dom-module id="recipe-builder">
+
+  <style>
+    :host {
+      @apply(--layout-horizontal);
+    }
+  </style>
+
   <template>
     <!-- Keyboard shortcut Manager linked to the PubSub. -->
     <app-shortcuts></app-shortcuts>
@@ -22,5 +32,5 @@
   </template>
 
   <script src="recipe-builder.js"></script>
-  <script>Polymer('recipe-builder', RecipeBld.prototype);</script>
-</polymer-element>
+  <script>Polymer(RecipeBld.prototype);</script>
+</dom-module>

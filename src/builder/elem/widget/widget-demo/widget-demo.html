@@ -2,7 +2,7 @@
 
 <script src="../../../lib/base.js"></script>
 
-<link rel="import" href="../../../cmpts/core-pages/core-pages.html">
+<link rel="import" href="../../../cmpts/iron-pages/iron-pages.html">
 <link rel="import" href="../../../cmpts/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../../elem/widget/widget-text/widget-text.html">
 <link rel="import" href="../../../elem/widget/widget-quantity/widget-quantity.html">
@@ -21,7 +21,7 @@
       <paper-tab>Widget-List</paper-tab>
     </paper-tabs>
 
-    <core-pages selected={{selected}} flex>
+    <iron-pages selected={{selected}} flex>
       <div>
         <div horizontal layout>
           <span class="label" flex>Name:</span><div class="value" flex>Widget-Text</div>
@@ -76,8 +76,9 @@
           <span class="label" flex>Selection:</span><div class="value" flex>{{exampleSelection}}</div>
         </div>
       </div>
-    </core-pages>
+    </iron-pages>
 
   </template>
   <script src="widget-demo.js"></script>
+  <script>Polymer(WidgetDemo.prototype);</script>
 </polymer-element>

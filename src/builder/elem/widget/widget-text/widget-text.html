@@ -1,14 +1,21 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
-<link rel="import" href="../../../cmpts/core-input/core-input.html">
+<link rel="import" href="../../../cmpts/iron-input/iron-input.html">
 
-<polymer-element name="widget-text" attributes="text" 
-    on-tap={{onTap}} horizontal layout>
+<dom-module id="widget-text" on-tap="{{onTap}}">
+
+  <style>
+    :host {
+      @apply(--layout-horizontal);
+    }
+  </style>
+    
   <template>
     <link rel="stylesheet" href="widget-text.css">
     
     <input id="editor" 
-      is="core-input" type="text" hidden?="{{!isEditMode}}"
+      is="iron-input" type="text" hidden?="{{!isEditMode}}"
       value="{{text}}" committedvalue="{{commitedVal}}"
       flex
       />
@@ -17,5 +24,5 @@
     </template>
   </template>
   <script src="widget-text.js"></script>
-</polymer-element>
-
+  <script>Polymer(WidgetText.prototype);</script>
+</dom-module>

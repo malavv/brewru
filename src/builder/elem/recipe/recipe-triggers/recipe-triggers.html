@@ -1,8 +1,15 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
-<polymer-element name="recipe-triggers" attributes="triggers" vertical layout>
+<dom-module id="recipe-triggers">
+  <style>
+    :host {
+        @apply(--layout-vertical);
+    }
+  </style>
+  
   <template>
     <link rel="stylesheet" href="recipe-triggers.css">
     <div class="triggers" flex>
@@ -12,4 +19,5 @@
     </div>
   </template>
   <script src="recipe-triggers.js"></script>
-</polymer-element>
+  <script>Polymer(RecipeTriggers.prototype);</script>
+</dom-module>

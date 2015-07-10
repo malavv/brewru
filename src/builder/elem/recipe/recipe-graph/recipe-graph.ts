@@ -4,9 +4,16 @@
 /// <reference path="../../../src/d3.d.ts" />
 
 class RecipeGraph {
-  recipe: Recipe;
+  is:string = 'recipe-graph';
   svg:any;
   shadowRoot: any;
+
+  properties:any = {
+    recipe: {
+      type: Recipe,
+      value: undefined
+    }
+  }
 
   ready() {
     bus.suscribe(MessageType.RecipeChanged, this.onRecipeChanged, this);
@@ -17,14 +24,14 @@ class RecipeGraph {
   }
 
   recipeChanged() {
-		if (this.recipe === undefined) return;
+		if (this.properties.recipe === undefined) return;
 	  this.drawReactors();
 	}
 
   drawReactors() {
 		this.svg = d3.select(this.shadowRoot).select('svg');
     this.svg.selectAll("*").remove();
-		var dataset = this.recipe.reactors;
+		var dataset = this.properties.recipe.reactors;
 		var bbox = this.svg.node().getBoundingClientRect();
 		var width = bbox.width / dataset.length;
 		var height = bbox.height;
@@ -48,7 +55,7 @@ class RecipeGraph {
 
   	// Start
   	//this.drawStart(reactorGroup);
-    this.recipe.reactors.forEach(this.drawSteps.bind(this, d3, reactorGroup), this);
+    this.properties.recipe.reactors.forEach(this.drawSteps.bind(this, d3, reactorGroup), this);
 	}
 	drawStart(group:any) {
       	// g.append('circle')
@@ -101,8 +108,4 @@ class RecipeGraph {
         break;
     }
   }
-}
-
-if (!Polymer.getRegisteredPrototype('recipe-graph')) {
-  Polymer('recipe-graph', RecipeGraph.prototype);
 }

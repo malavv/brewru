@@ -20,14 +20,24 @@ class InventoryMatchedIngredients {
 }
 
 class RecipeIngredients {
-  inventory: IngredientSrc;
-  recipe: Recipe;
+  public is:string = 'recipe-ingredients';
   
   dynamic: InventoryMatchedIngredients[];
   fermentables: InventoryMatchedIngredients[];
   hops: InventoryMatchedIngredients[];
   yeasts: InventoryMatchedIngredients[];
   miscellaneous: InventoryMatchedIngredients[];
+
+  properties:any = {
+    inventory: {
+      type: IngredientSrc,
+      value: null
+    },
+    recipe: {
+      type: Recipe,
+      value: null
+    }
+  };
 
   ready() {
     var 
@@ -49,7 +59,7 @@ class RecipeIngredients {
     this.yeasts = [];
     this.miscellaneous = [];
     
-    this.inventory.stocks.forEach((i:Ingredient) => {
+    this.properties.inventory.stocks.forEach((i:Ingredient) => {
       switch (i.type) {
         case IngredientType.Fermentables:
           this.fermentables.push(new InventoryMatchedIngredients(i, []));     
@@ -71,8 +81,4 @@ class RecipeIngredients {
   }
   
   recipeChanged() {}
-}
-
-if (!Polymer.getRegisteredPrototype('recipe-ingredients')) {
-  Polymer('recipe-ingredients', RecipeIngredients.prototype);
 }

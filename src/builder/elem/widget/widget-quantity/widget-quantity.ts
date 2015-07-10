@@ -3,11 +3,18 @@
 /// <reference path="../../../src/units/unit.ts" />
 
 class WidgetQuantity {
+  is:string = 'widget-quantity';
   val:number = 0;
   commited:number = 0;
   unit:Unit = undefined;
-  quantity:Quantity = undefined;
   allowed: Array<Dim> = [];
+  
+  properties:any = {
+    quantity: {
+      type: Quantity,
+      value: undefined
+    }
+  }
   
   commitedChanged(oldVal:number, newVal:number) { this.check(); }
   unitChanged(oldVal:Unit, newVal:Unit) { this.check(); }
@@ -18,7 +25,7 @@ class WidgetQuantity {
   
   check() {
     if (!this.isValid()) return;
-    this.quantity = new Quantity(this.commited, this.unit);
+    this.properties.quantity = new Quantity(this.commited, this.unit);
   }
   
   public restrictDimensions(dimensions: Array<Dim>) {
@@ -29,10 +36,6 @@ class WidgetQuantity {
     this.val = 0;
     this.commited = 0;
     this.unit = undefined;
-    this.quantity = undefined;
+    this.properties.quantity = undefined;
   }
-}
-
-if (!Polymer.getRegisteredPrototype('widget-quantity')) {
-  Polymer('widget-quantity', WidgetQuantity.prototype);
 }

@@ -1,5 +1,11 @@
 class HeatingFactory implements IStepFactory {
+  is:string = 'recipe-wizard';
   private state:number = 0;
+
+  properties:any = {
+    inventory: {type:IngredientSrc, value: undefined},
+    recipe: {type:Recipe, value: undefined},
+  }
 
   data:{ [key: string]: any; } = {};
 

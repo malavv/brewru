@@ -1,9 +1,18 @@
 /// <reference path="../../../src/base/polymer.d.ts" />
 
 class WidgetText {
+  is:string = 'widget-text';
+  
   $:any;
   isEditMode: boolean = false;
   commitedVal: string;
+  
+  properties:any = {
+    text: {
+      type: String,
+      value: ""
+    }
+  };
   
   onTap() {
       this.isEditMode = true;
@@ -18,8 +27,4 @@ class WidgetText {
   commitedValChanged() {
     this.isEditMode = false;    
   }
-}
-
-if (!Polymer.getRegisteredPrototype('widget-text')) {
-  Polymer('widget-text', WidgetText.prototype);
 }

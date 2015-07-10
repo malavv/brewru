@@ -7,15 +7,18 @@
 /// <reference path="../../../src/recipe.ts" />
 
 class AppIngredient {
+  is:string = 'app-ingredient';
   $:any;
-  
-  ingredientSrc: IngredientSrc;
-  recipe: Recipe;
   
   ingredients: Array<Ingredient>;
   
   ingredient: Ingredient;
   quantity: Quantity;
+  
+  properties:any = {
+    ingredientSrc: {type: IngredientSrc, value: undefined},
+    recipe: {type: Recipe, value: undefined}
+  }
   
   ready() {
     // Wizard for the selection of ingredient.
@@ -34,9 +37,9 @@ class AppIngredient {
   initAndShow(type: IngredientType) {
     this.reset();
     if (type === IngredientType.Dynamic) {
-      this.ingredients = this.recipe.listDynamicIngredients();
+      this.ingredients = this.properties.recipe.listDynamicIngredients();
     } else {
-      this.ingredients = this.ingredientSrc.stocks.filter(i => i.type === type);
+      this.ingredients = this.properties.ingredientSrc.stocks.filter(i => i.type === type);
     }    
     this.$.quan.reset();
     this.$.overlay.open();

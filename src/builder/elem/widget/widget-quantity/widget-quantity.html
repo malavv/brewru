@@ -1,13 +1,16 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
 <link rel="import" href="../../widget/widget-units/widget-units.html">
 
-<polymer-element
-    name="widget-quantity"
-    attributes="quantity"
-    horizontal layout center>
+<dom-module id="widget-quantity">
+  <style>
+    :host {
+        @apply(--layout-horizontal);
+    }
+  </style>
   <template>
     <link rel="stylesheet" href="widget-quantity.css">
 
@@ -15,4 +18,5 @@
     <widget-units class="unselectable" unit="{{unit}}" allowed="{{allowed}}"></widget-units>
   </template>
   <script src="widget-quantity.js"></script>
-</polymer-element>
+  <script>Polymer(WidgetQuantity.prototype);</script>
+</dom-module>

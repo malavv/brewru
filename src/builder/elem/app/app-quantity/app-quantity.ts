@@ -3,6 +3,7 @@
 /// <reference path="../../../src/base/quantity.ts" />
 
 class AppQuantity {
+  is:string = 'app-quantity';
   $:any;
 
   description: string;

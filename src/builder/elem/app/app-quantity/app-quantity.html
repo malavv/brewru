@@ -1,21 +1,26 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
-<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+<link rel="import" href="../../../cmpts/iron-overlay-behavior/iron-overlay-behavior.html">
 <link rel="import" href="../../widget/widget-quantity/widget-quantity.html">
 
-<polymer-element
-    name="app-quantity"
-    horizontal center-justified layout>
+<dom-module id="app-quantity">
+  <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+    }
+  </style>
   <template>
     <link rel="stylesheet" href="app-quantity.css">
 
-    <core-overlay id="overlay" on-core-overlay-close-completed="{{cancel}}" vertical layout>
+    <div id="overlay" on-iron-overlay-close-completed="{{cancel}}" vertical layout>
       {{description}}
       <widget-quantity id="qty" quantity="{{quantity}}"></widget-quantity>
-    </core-overlay>
+    </div>
   </template>
   <script src="app-quantity.js"></script>
-  <script>Polymer('app-quantity', AppQuantity.prototype);</script>
-</polymer-element>
+  <script>Polymer(AppQuantity.prototype);</script>
+</dom-module>

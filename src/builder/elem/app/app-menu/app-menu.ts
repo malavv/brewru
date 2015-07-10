@@ -21,6 +21,7 @@ class AppMenuWrapper {
  *    with a null item.
  */
 class AppMenu {
+  is:string = 'app-menu';
   items:Array<Object> = [];
   selection:Object = undefined;
   hidden:boolean;

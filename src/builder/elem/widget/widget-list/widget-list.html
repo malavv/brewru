@@ -1,24 +1,28 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
-<link rel="import" href="../../../cmpts/core-list/core-list.html">
+<link rel="import" href="../../../cmpts/iron-list/iron-list.html">
 
-<polymer-element
-    name="widget-list"
-    attributes="data selection"
-    vertical layout>
+<dom-module id="widget-list">
+  <style>
+    :host {
+        @apply(--layout-vertical);
+    }
+  </style>
   <template>
     <link rel="stylesheet" href="widget-list.css">
 
-    <core-list id="list" data="{{data}}" selection="{{selection}}" height="30" flex>
+    <iron-list id="list" data="data" selection="selection" height="30" flex>
       <template>
         <div class="item {{ {selected: selected} | tokenList }}" horizontal layout center>
             <div class="idx">{{index | toBase}}</div>
           <div class="value">{{model}}</div>
         </div>
       </template>
-    </core-list>
+    </iron-list>
   </template>
   <script src="widget-list.js"></script>
-</polymer-element
+  <script>Polymer(WidgetList.prototype);</script>
+</dom-module>

@@ -10,6 +10,7 @@
  * null on cancel or contains the answer if user gave one.
  */
 class AppText {
+  is:string = 'app-text';
   static isRegistered: boolean = false;
   $:any;
   description:string;

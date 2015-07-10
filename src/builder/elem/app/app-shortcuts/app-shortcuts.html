@@ -1,16 +1,24 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
 
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
+
+
 <script src="../../../lib/base.js"></script>
 
-<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+<link rel="import" href="../../../cmpts/iron-overlay-behavior/iron-overlay-behavior.html">
 
-<polymer-element
-    name="app-shortcuts"
-    horizontal center-justified layout>
+<dom-module id="app-shortcuts">
+  
+  <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+    }
+  </style>
+  <link rel="stylesheet" href="app-shortcuts.css">
+    
   <template>
-    <link rel="stylesheet" href="app-shortcuts.css">
-
-    <core-overlay id="overlay">
+    <div id="overlay">
       <div class="title">Keyboard Shortcuts</div>
       <template repeat="{{shortcut in listed.all}}">
         <div class="key" horizontal layout>
@@ -18,8 +26,10 @@
           <div class="text">{{shortcut.name}}</div>
         </div>
       </template>
-    </core-overlay>
+    </div>
   </template>
+  
   <script src="app-shortcuts.js"></script>
-  <script>Polymer('app-shortcuts', AppShortcuts.prototype);</script>
-</polymer-element>
+  <script>Polymer(AppShortcuts.prototype);</script>
+  
+</dom-module>

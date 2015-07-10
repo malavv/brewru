@@ -7,8 +7,7 @@
 <link rel="import" href="../../app/app-quantity/app-quantity.html">
 <link rel="import" href="../../app/app-text/app-text.html">
 
-<polymer-element name="recipe-wizard"
-                 attributes="inventory recipe">
+<dom-module id="recipe-wizard">
 
   <template>
     <app-menu></app-menu>
@@ -18,5 +17,5 @@
   </template>
 
   <script src="recipe-wizard.js"></script>
-  <script>Polymer('recipe-wizard', RecipeWizard.prototype);</script>
-</polymer-element>
+  <script>Polymer(RecipeWizard.prototype);</script>
+</dom-module>

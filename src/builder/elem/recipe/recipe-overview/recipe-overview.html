@@ -1,13 +1,19 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
 <link rel="import" href="../../recipe/recipe-reactor/recipe-reactor.html">
 <link rel="import" href="../../recipe/recipe-tools/recipe-tools.html">
 
-<polymer-element name="recipe-overview"
-                 attributes="recipe"
-                 vertical layout>
+<dom-module id="recipe-overview">
+  
+  <style>
+    :host {
+        @apply(--layout-vertical);
+    }
+  </style>
+  
 	<template>
     <link rel="stylesheet" href="recipe-overview.css">
 
@@ -23,5 +29,5 @@
 	</template>
 
   <script src="recipe-overview.js"></script>
-  <script>Polymer('recipe-overview', RecipeOverview.prototype);</script>
-</polymer-element>
+  <script>Polymer(RecipeOverview.prototype);</script>
+</dom-module>

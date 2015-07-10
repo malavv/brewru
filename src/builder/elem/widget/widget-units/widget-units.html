@@ -1,14 +1,19 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
-<polymer-element
-    name="widget-units"
-    attributes="unit allowed"
-    vertical center-justified layout
-    on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
+<dom-module id="widget-units" on-mouseover='{{onHoverIn}}' on-mouseout='{{onHoverOut}}'>
+  <style>
+    :host {
+      @apply(--layout-vertical);
+      @apply(--layout-center-justified);
+    }
+  </style>
+  <link rel="stylesheet" href="widget-units.css">  
+
   <template>
-    <link rel="stylesheet" href="widget-units.css">
+
     <div class="container">
       <div class="title">{{unit | toTitle}}</div>
 
@@ -33,4 +38,7 @@
 
   </template>
   <script src="widget-units.js"></script>
+  <script>
+    Polymer(WidgetUnits.prototype);
+  </script>
 </polymer-element>

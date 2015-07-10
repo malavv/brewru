@@ -1,23 +1,27 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 
 <script src="../../../lib/base.js"></script>
 
-<link rel="import" href="../../../cmpts/core-list/core-list.html">
-<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+<link rel="import" href="../../../cmpts/iron-overlay-behavior/iron-overlay-behavior.html">
 
 <link rel="import" href="../../widget/widget-list/widget-list.html">
 
-<polymer-element
-    name="app-menu"
-    horizontal center-justified layout>
+<dom-module id="app-menu">
+  <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+    }
+  </style>
   <template>
     <link rel="stylesheet" href="app-menu.css">
 
-    <core-overlay id="overlay" on-core-overlay-close-completed="{{onOverlayClosed}}">
+    <div id="overlay" on-iron-overlay-close-completed="{{onOverlayClosed}}">
       <widget-list id="list" data="{{items}}" selection="{{selection}}">
       </widget-list>
-    </core-overlay>
+    </div>
   </template>
   <script src="app-menu.js"></script>
-  <script>Polymer('app-menu', AppMenu.prototype);</script>
-</polymer-element>
+  <script>Polymer(AppMenu.prototype);</script>
+</dom-module>

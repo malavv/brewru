@@ -1,22 +1,27 @@
 <link rel="import" href="../../../cmpts/polymer/polymer.html">
-
+<link rel="import" href="../../../cmpts/iron-flex-layout/iron-flex-layout.html">
 <script src="../../../lib/base.js"></script>
 
 
 <link rel="import" href="../../../cmpts/paper-input/paper-input.html">
-<link rel="import" href="../../../cmpts/core-overlay/core-overlay.html">
+<link rel="import" href="../../../cmpts/iron-overlay-behavior/iron-overlay-behavior.html">
 
-<polymer-element
-    name="app-text"
-    horizontal center-justified layout>
+<dom-module id="app-text">
+  <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+    }
+  </style>
   <template>
     <link rel="stylesheet" href="app-text.css">
 
-    <core-overlay id="overlay" on-core-overlay-close-completed="{{cancel}}">
+    <div id="overlay" on-iron-overlay-close-completed="{{cancel}}">
       <paper-input id="value" label="{{description}}" value="{{value}}" committedValue="{{committed}}" flex autofocus>
       </paper-input>
-    </core-overlay>
+    </div>
   </template>
   <script src="app-text.js"></script>
-  <script>Polymer('app-text', AppText.prototype);</script>
+  <script>Polymer(AppText.prototype);</script>
 </polymer-element>
+</dom-module>

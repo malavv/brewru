@@ -3,6 +3,7 @@
 /// <reference path="../../../src/base/codes.ts" />
 
 class WidgetDemo {
+  is:string = 'widget-demo';
   selected: number;
   exampleText: string;
   
@@ -17,8 +18,4 @@ class WidgetDemo {
       {name: "2", toString: function() {return this.name;}}
     ];
   }
-}
-
-if (!Polymer.getRegisteredPrototype('widget-demo')) {
-  Polymer('widget-demo', WidgetDemo.prototype);
 }
