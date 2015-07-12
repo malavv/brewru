@@ -1,0 +1,15 @@
+<dom-module id="widget-text">
+
+  <style>:host { @apply(--layout-horizontal); }</style>
+  <link rel="stylesheet" href="widget-text.css">
+  
+  <template>
+    <iron-pages selected="{{selected}}" class="flex">
+      <input id="editor" type="text" is="iron-input" bind-value="{{value}}" on-blur="onBlur" on-focus="onFocus" />
+      <span class="flex">{{value}}<span>
+    </iron-pages>
+  </template>
+  
+  <script src="widget-text.js"></script>
+  <script>Polymer(WidgetText.prototype)</script>
+</dom-module>

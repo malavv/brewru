@@ -1,0 +1,25 @@
+<dom-module id="recipe-builder">
+  <!--<script src="recipe-builder.js"></script>
+  <script>Polymer(RecipeBld.prototype);</script>-->
+  <script>
+  Polymer({
+    is: 'recipe-builder',
+  
+    properties: {
+      builder: {
+        type: RecipeBuilder,
+        notify: true,
+        observer: 'builderChanged'
+      }
+    },
+    
+    ready: function() {
+      this.builder = new RecipeBuilder();
+    },
+    
+    builderChanged: function(oldValue, newValue) {
+      console.log('builderChanged', oldValue, newValue);
+    }    
+  });
+  </script>
+</dom-module>

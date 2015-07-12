@@ -4,8 +4,6 @@
  * This will need to be reviewed with specific sub-classes.
  */
 class Step {
-	static Type = StepType;
-	
 	id: string;
 	name: string;
 	type: ConceptRef

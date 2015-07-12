@@ -1,0 +1,78 @@
+<dom-module id="widget-demo">
+  <style>
+    :host {
+        @apply(--layout-vertical);
+    }
+  </style>
+  <link rel="stylesheet" href="widget-demo.css">
+      
+  <template>
+
+
+    <paper-tabs selected={{selected}}>
+      <paper-tab>Widget-Text</paper-tab>
+      <paper-tab>Widget-Quantity</paper-tab>
+      <paper-tab>Widget-List</paper-tab>
+    </paper-tabs>
+
+    <iron-pages selected={{selected}} flex>
+      <div>
+        <div horizontal layout>
+          <span class="label" flex>Name:</span><div class="value" flex>Widget-Text</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Quick Description:</span><div class="value" flex>An editable label</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Quick Usage:</span><div class="value" flex>&lt;widget-text text=&quot;{{'\{{binding}\}'}}&quot;&gt;&lt;/widget-text&gt;</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Example:</span><div class="value" flex><widget-text valuetext="{{exampleText}}"></widget-text></div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Value:</span><div class="value" flex>{{exampleText}}</div>
+        </div>
+      </div>
+      <div>
+        <div horizontal layout>
+          <span class="label" flex>Name:</span><div class="value" flex>Widget-Quantity</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Quick Description:</span><div class="value" flex>An quantity chooser</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Quick Usage:</span><div class="value" flex>&lt;widget-quantity quantity=&quot;{{'\{{binding}\}'}}&quot;&gt;&lt;/widget-quantity&gt;</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Example:</span><div class="value" flex><widget-quantity quantity="{{exampleQty}}"></widget-quantity></div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Value:</span><div class="value" flex>{{exampleQty}}</div>
+        </div>
+      </div>
+      <div>
+        <div horizontal layout>
+          <span class="label" flex>Name:</span><div class="value" flex>Widget-List</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Quick Description:</span><div class="value" flex>An list chooser</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Quick Usage:</span><div class="value" flex>placeholder</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Example:</span><div class="value" flex><widget-list data="{{exampleList}}" selection="{{exampleSelection}}"></widget-list></div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>List:</span><div class="value" flex>{{exampleList}}</div>
+        </div>
+        <div horizontal layout>
+          <span class="label" flex>Selection:</span><div class="value" flex>{{exampleSelection}}</div>
+        </div>
+      </div>
+    </iron-pages>
+
+  </template>
+  <script src="widget-demo.js"></script>
+  <script>Polymer(WidgetDemo.prototype);</script>
+</dom-module>

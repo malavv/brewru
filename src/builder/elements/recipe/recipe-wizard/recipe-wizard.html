@@ -1,0 +1,12 @@
+<dom-module id="recipe-wizard">
+
+  <template>
+    <app-menu></app-menu>
+    <app-text></app-text>
+    <app-ingredient recipe="{{recipe}}" ingredientSrc="{{inventory}}"></app-ingredient>
+    <app-quantity></app-quantity>
+  </template>
+
+  <script src="recipe-wizard.js"></script>
+  <script>Polymer(RecipeWizard.prototype);</script>
+</dom-module>

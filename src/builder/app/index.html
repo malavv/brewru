@@ -1,14 +1,41 @@
 <!doctype html>
-<html>
+<html lang="en-US">
   
   <head>
     <title>Recipe Viewer</title>
-    <script src="cmpts/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <link rel="import" href="elem/recipe/recipe-builder/recipe-builder.html">
+    
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="application-name" content="Brewru - Recipe Builder">
+    
+    <!-- Base library for Polymer -->
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    
+    <!-- Base Brewru Library -->
+    <script src="lib/base.js"></script>
+    
+    <!-- Polymer elements import. (For vulcanization reason.) -->
+    <link rel="import" href="elements/elements.html">
   </head>
   
-  <body fullbleed vertical layout>
-    <recipe-builder flex></recipe-builder>
+  <body class="fullbleed layout horizontal" unresolved>
+    <template is="dom-bind" id="app">
+      <!-- Keyboard shortcut Manager linked to the PubSub. -->
+      <app-shortcuts hidden></app-shortcuts>
+  
+      <recipe-overview recipe="{{builder.recipe}}" class="flex-3"></recipe-overview>
+      <recipe-ingredients inventory={{builder.inventory}} recipe={{builder.recipe}} class="flex-1"></recipe-ingredients>
+  
+      <!-- Manages the recipe building process. -->
+      <recipe-newstep builder="{{builder}}" hidden></recipe-newstep>
+      <recipe-wizard inventory="{{builder.inventory}}" recipe="{{builder.recipe}}" hidden></recipe-wizard>
+      
+      <!--Manages the builder information-->
+      <recipe-builder builder="{{builder}}" hidden></recipe-builder>
+    </template>
+    
+    <script src="lib/app.js"></script>
   </body>
 
 </html>

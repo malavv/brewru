@@ -4,21 +4,14 @@
 .idea/
 src/builder/builder.iml
 
-
 src/.gradle/
 src/.idea/
 src/bin/
 src/src.iml
 
-# Recipe Builder
-src/recipeBuilder/bower_components
-src/recipeBuilder/node_modules
-src/recipeBuilder/css
-src/recipeBuilder/.sass-cache
-
 # Builder
-src/builder/app/cmpts/
+src/builder/app/bower_components/
 src/builder/node_modules/
-src/builder/app/elem/
+src/builder/app/elements/
 src/builder/doc
 src/builder/app/lib/base.js

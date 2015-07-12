@@ -1,0 +1,22 @@
+<dom-module id="recipe-overview">
+  
+  <style>:host { @apply(--layout-vertical); }</style>
+  <link rel="stylesheet" href="recipe-overview.css">
+  
+	<template>
+    <widget-text class="recipeName" value="{{recipe.name}}"></widget-text>
+    <div class="flex layout horizontal">
+      <recipe-tools
+          reactor={{current}}
+          inventory={{builder.inventory}}
+          recipe={{recipe}}
+          class="flex-1"></recipe-tools>
+      <recipe-reactor reactor={{current}} class="flex-4"></recipe-reactor>
+    </div>
+	</template>
+
+  <script src="recipe-overview.js"></script>
+  <script>
+    Polymer(RecipeOverview.prototype);
+  </script>
+</dom-module>
