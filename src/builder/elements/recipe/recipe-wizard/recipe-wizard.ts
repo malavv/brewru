@@ -1,4 +1,4 @@
-/// <reference path="../../../src/promise.d.ts" />
+/// <reference path="../../../src/defs/es6-promise/es6-promise.d.ts" />
 
 class HeatingFactory implements IStepFactory {
   is:string = 'recipe-wizard';

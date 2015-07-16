@@ -1,7 +1,7 @@
 /// <reference path="../../../src/base/polymer.d.ts" />
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
-/// <reference path="../../../src/d3.d.ts" />
+/// <reference path="../../../src/defs/d3/d3.d.ts" />
 
 class RecipeGraph {
   is:string = 'recipe-graph';

@@ -41,7 +41,7 @@ class WidgetText {
     this.commited = this.value;
     this.selected = 1;
   }
-  valueChanged(oldV, newV) {
+  valueChanged(oldV:any, newV:any) {
     console.log('valueChanged', oldV, newV);
   }
 }
