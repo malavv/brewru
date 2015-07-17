@@ -25,7 +25,7 @@
       <app-shortcuts hidden></app-shortcuts>
   
       <recipe-overview recipe="{{builder.recipe}}" class="flex-3"></recipe-overview>
-      <recipe-ingredients inventory={{builder.inventory}} recipe={{builder.recipe}} class="flex-1"></recipe-ingredients>
+      <recipe-ingredients inventory="{{builder.inventory}}" recipe="{{builder.recipe}}" class="flex-1"></recipe-ingredients>
   
       <!-- Manages the recipe building process. -->
       <recipe-newstep builder="{{builder}}" hidden></recipe-newstep>

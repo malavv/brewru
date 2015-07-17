@@ -20,26 +20,14 @@ class InventoryMatchedIngredients {
   }
 }
 
-class RecipeIngredients {
-  public is:string = 'recipe-ingredients';
-  
+class RecipeIngredients extends Polymer.DomModule {  
   dynamic: InventoryMatchedIngredients[];
   fermentables: InventoryMatchedIngredients[];
   hops: InventoryMatchedIngredients[];
   yeasts: InventoryMatchedIngredients[];
   miscellaneous: InventoryMatchedIngredients[];
-
-  properties:any = {
-    inventory: {
-      type: IngredientSrc,
-      value: null
-    },
-    recipe: {
-      type: Recipe,
-      value: null
-    }
-  };
-
+  inventory: IngredientSrc;
+  
   ready() {
     var 
       tapWater: Ingredient = new Ingredient(OntoRef.createAnon("tap water"), null),
@@ -60,7 +48,7 @@ class RecipeIngredients {
     this.yeasts = [];
     this.miscellaneous = [];
     
-    this.properties.inventory.stocks.forEach((i:Ingredient) => {
+    this.inventory.stocks.forEach((i:Ingredient) => {
       switch (i.type) {
         case IngredientType.Fermentables:
           this.fermentables.push(new InventoryMatchedIngredients(i, []));     
@@ -79,7 +67,37 @@ class RecipeIngredients {
           break;
       }
     });
+    console.log('verify');
   }
   
   recipeChanged() {}
+}
+
+RecipeIngredients.prototype.is = 'recipe-ingredients';
+
+RecipeIngredients.prototype.listeners = {}
+
+RecipeIngredients.prototype.properties = {
+  inventory: {
+    type: IngredientSrc,
+    value: null,
+    observer: 'inventoryChanged'
+  },
+  recipe: {
+    type: Recipe,
+    value: null,
+    observer: 'recipeChanged'
+  },
+  dynamic: {
+    type: Array,
+    value: []
+  },
+  fermentables: Array,
+  hops: Array,
+  yeasts: Array,
+  miscellaneous: Array,
+  test: {
+    Array,
+    value: [{a:1}, {a:2}, {a:3}]
+  }
 }

@@ -41,7 +41,6 @@ class RecipeGraph extends Polymer.DomModule {
     this.size.width = bbox.width;
     this.size.height = bbox.height - this.vMargin * 2;
     this.reactorWidth = bbox.width / this.recipe.reactors.length;
-    console.log('onResize {width:',this.size.width,', height:', this.size.height,', reactorWidth:', this.reactorWidth,'}');
     // Remove old
     this.svg.selectAll("*").remove();
     // Redraw
