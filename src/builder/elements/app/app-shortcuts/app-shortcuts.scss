@@ -1,19 +1,14 @@
-:host {
-  core-overlay#overlay {
-    background-color: #444;
-    color: #ddd;
-    div.title {
-      text-align: center;
-      font-size: 1.3em;
-    }
-    div.key {
-      padding: 10px;
-      div.shortcut {
-        text-align: center;
-        width: 70px;
-        font-weight: bold;
-      }
-      div.text {}
-    }
-  }
+div.title {
+  text-align: center;
+  font-size: 1.3em;
 }
+div.key {
+  padding: 10px;
+  div.shortcut {
+    text-align: center;
+    width: 70px;
+    font-weight: bold;
+  }
+  div.text {}
+}
+

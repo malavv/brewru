@@ -5,14 +5,7 @@
 /// <reference path="../../../src/base/Keyboard.ts" />
 /// <reference path="../../../src/base/messageType.ts" />
 
-class AppShortcuts {
-  public is:string = 'app-shortcuts';
-  public opened:boolean = false;
-  
-  public behaviors:any = [
-    Polymer.IronOverlayBehavior
-  ];
-
+class AppShortcuts extends Polymer.DomModule {
   public static shortcuts:Shortcuts = new Shortcuts()
       .add('alt+S', MessageType.CreateStep, 'Create new step')
       .add('shift+6', MessageType.ShowShortcuts, 'Toggle Visibility of Shortcuts')
@@ -22,6 +15,7 @@ class AppShortcuts {
   private $:any;
 
   ready() {
+    this.opened = false;
     window.addEventListener('keyup', (e:KeyboardEvent) => {
       this.onKeyUp(e);
     }, false);
@@ -32,6 +26,7 @@ class AppShortcuts {
   /** Only need to show when requested. Is closed automatically by core-overlay. */
   private onShowShortcuts() {
     this.opened = true;
+    console.log('onShowShortcuts');
   }
 
   /**
@@ -39,9 +34,23 @@ class AppShortcuts {
    * @param event Keyboard event of the pressed key.
    */
   private onKeyUp(event:KeyboardEvent) {
+    
     var key = Keyboard.fromEvt(event);
 
     if (!this.listed.hasKey(key)) return;
     bus.publish(this.listed.get(key).intent);
   }
 }
+
+AppShortcuts.prototype.is = 'app-shortcuts';
+
+AppShortcuts.prototype.properties = {
+  triggers: {
+    type: Object,
+    value: undefined
+  }
+}
+
+AppShortcuts.prototype.behaviors = [
+  Polymer.IronOverlayBehavior
+];

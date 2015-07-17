@@ -1,25 +1,26 @@
 <dom-module id="app-shortcuts" hidden$=true>
-  
 
   <link rel="stylesheet" href="app-shortcuts.css">
   <style>
     :host {
-        @apply(--layout-horizontal);
-        @apply(--layout-invisible);
+        @apply(--layout-vertical);
         @apply(--layout-center-justified);
+        background-color: #444;
+        color: #ddd;
+    }
+    .key {
+      @apply(--layout-horizontal);
     }
   </style>
   
   <template>
-    <div id="overlay">
-      <div class="title">Keyboard Shortcuts</div>
-      <template repeat="{{shortcut in listed.all}}">
-        <div class="key" horizontal layout>
-          <div class="shortcut">{{shortcut.binding}}</div>
-          <div class="text">{{shortcut.name}}</div>
-        </div>
-      </template>
-    </div>
+    <div class="title">Keyboard Shortcuts</div>
+    <template is="dom-repeat" items="[[listed.all]]" as="shortcut">
+      <div class="key">
+        <div class="shortcut">{{shortcut.binding}}</div>
+        <div class="text">{{shortcut.description}}</div>
+      </div>
+    </template>
   </template>
   
   <script src="app-shortcuts.js"></script>
