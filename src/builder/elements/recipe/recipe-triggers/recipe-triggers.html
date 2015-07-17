@@ -8,9 +8,9 @@
   <template>
     <link rel="stylesheet" href="recipe-triggers.css">
     <div class="triggers" flex>
-   		<template repeat="{{trigger in triggers}}">
-    		<div class="trigger">{{trigger.name}}</div>
-  		</template>
+      <template is="dom-repeat" items="[[triggers]]" as="trigger">
+        <div class="trigger">{{trigger.name}}</div>
+      </template>
     </div>
   </template>
   <script src="recipe-triggers.js"></script>

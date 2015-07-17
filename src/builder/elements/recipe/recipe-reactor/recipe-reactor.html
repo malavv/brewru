@@ -4,14 +4,19 @@
     :host {
         @apply(--layout-vertical);
     }
+    .name {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+    }
   </style>
   
   <template>
     <link rel="stylesheet" href="recipe-reactor.css">
-    <div class="name" horizontal center-justified layout>
-      <widget-text text="{{reactor.name}}"></widget-text>#{{reactor.id}}
+    <div class="name">
+      <widget-text value="{{reactor.name}}"></widget-text>
+      #<span>{{reactor.id}}</span>
     </div>
-    <div flex vertical layout>            
+    <div vertical layout class="flex">            
     </div>
   </template>
   <script src="recipe-reactor.js"></script>
