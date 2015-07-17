@@ -1,111 +1,155 @@
-/// <reference path="../../../src/base/polymer.d.ts" />
+/// <reference path="../../../src/defs/d3/d3.d.ts" />
+/// <reference path="../../../src/defs/polymer/polymer.ts" />
+
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
-/// <reference path="../../../src/defs/d3/d3.d.ts" />
 
-class RecipeGraph {
-  is:string = 'recipe-graph';
+
+class RecipeGraph extends Polymer.DomModule {
+  recipe:Recipe;
   svg:any;
-  shadowRoot: any;
+  size:{width:number; height:number};
+  reactorWidth:number;
+  nodeOffset:number;
+  vMargin:number;
 
-  properties:any = {
-    recipe: {
-      type: Recipe,
-      value: undefined
-    }
-  }
-
+  // Lifecycles
   ready() {
-    bus.suscribe(MessageType.RecipeChanged, this.onRecipeChanged, this);
+    this.nodeOffset = 80;
+    this.vMargin = 30;
+    this.size = {width:-1, height:-1}
+    bus.suscribe(MessageType.RecipeChanged, this.recipeChanged, this);
   }
-
-  onRecipeChanged() {
-    this.recipeChanged();
+  
+  attached() {
+     this.async(() => {
+       this.svg = d3.select(this.$$('svg'));
+       this.onResize();
+     }, 1);
   }
-
+  
+  // Events
   recipeChanged() {
-		if (this.properties.recipe === undefined) return;
+		if (this.recipe === undefined) return;
 	  this.drawReactors();
 	}
-
-  drawReactors() {
-		this.svg = d3.select(this.shadowRoot).select('svg');
+  
+  // on iron-resize
+  onResize() {
+    if (this.svg === undefined) return;
+    var bbox = this.$$('svg').getBoundingClientRect();
+    this.size.width = bbox.width;
+    this.size.height = bbox.height - this.vMargin * 2;
+    this.reactorWidth = bbox.width / this.recipe.reactors.length;
+    console.log('onResize {width:',this.size.width,', height:', this.size.height,', reactorWidth:', this.reactorWidth,'}');
+    // Remove old
     this.svg.selectAll("*").remove();
-		var dataset = this.properties.recipe.reactors;
-		var bbox = this.svg.node().getBoundingClientRect();
-		var width = bbox.width / dataset.length;
-		var height = bbox.height;
-		var halfWidth = width / 2.0;
-
+    // Redraw
+    this.drawReactors();
+  }
+  
+  // Methods
+  drawReactors() {
+    if (this.svg === undefined)
+      return;
+      
     var reactorGroup = this.svg.selectAll('g')
-  		.data(dataset)
+  		.data(this.recipe.reactors)
   		.enter()
   		.append('g')
-  		.attr("transform", function(d:any, i:any) {
-  			return 'translate(' + ((i * width) + halfWidth) + ', 30)';
-  		});
-
-  	// Draw Line
-  	reactorGroup
-  		.append("rect")
-  		.attr("x", -1.5)
-  		.attr('y', 0)
-  		.attr('width', 3)
-  		.attr('height', height);
+      .attr("transform", (d:any, idx:number) => {
+        return 'translate(' + ((idx * this.reactorWidth) + this.reactorWidth / 2.0) + ', 0)';
+      });
 
   	// Start
-  	//this.drawStart(reactorGroup);
-    this.properties.recipe.reactors.forEach(this.drawSteps.bind(this, d3, reactorGroup), this);
+    this.recipe.reactors
+      .forEach((reactor) => {
+      	reactorGroup
+      		.append("rect")
+      		.attr("x", -1.5)
+      		.attr('y', 0)
+      		.attr('width', 3)
+      		.attr('height', this.size.height);
+      
+        reactor.steps.forEach((step, idx) => {
+          switch(step.type.id) {
+            case StepType.start.id: return this.drawStart(reactorGroup);
+            case StepType.addIngredient.id: return this.drawIngredient(step, reactorGroup, idx * this.nodeOffset);
+            case StepType.heating.id: return this.drawHeating(step, reactorGroup, idx * this.nodeOffset);
+            default:
+              console.log('Unrecognized Step Type', step);
+              break;
+          }
+        });
+      });
 	}
-	drawStart(group:any) {
-      	// g.append('circle')
-      	// 	.attr('r', '10')
-      	// 	.attr('fill', 'white')
-      	// 	.attr('stroke', 'black');
-		    // g.append('circle')
-    		//   .attr('r', '3');
-	}
-  drawSteps(d3:any, g:any, reactor:any) {
-    reactor.steps.forEach(this.drawStep.bind(this, g, 80), this);
+  
+  drawStart(g:any) {
+  	g.append('circle')
+  		.attr('r', '10')
+  		.attr('fill', 'white')
+  		.attr('stroke', 'black');
+    g.append('text')
+      .attr("x", -8)
+      .attr("y",  7)
+      .attr("font-size", "1.2em")
+      .text('\u2605');
   }
-  drawStep(g:any, offset:any, step:Step, index:any) {
+  
+  drawIngredient(step:Step, g:any, localOffset:number) {
+    g.append('circle')
+      .attr('r', '10')
+      .attr('cy', localOffset)
+      .attr('fill', 'white')
+      .attr('stroke', 'black');
+    g.append('text')
+      .attr("x", -5)
+      .attr("y", localOffset + 5)
+      .text('\u2726');
+  }
+  
+  drawHeating(step:Step, g:any, localOffset:number) {
+    g.append('circle')
+      .attr('r', '10')
+      .attr('cy', localOffset)
+      .attr('fill', 'white')
+      .attr('stroke', 'black');
+    g.append('text')
+      .attr("x", -8)
+      .attr("y", localOffset + 5)
+      .text('\ud83d\udd25');
+  }
+  
+  drawStep(g:any, offset:number, step:Step, index:number) {
     switch(step.type.id) {
-      case StepType.start.id:
-      	g.append('circle')
-      		.attr('r', '10')
-      		.attr('fill', 'white')
-      		.attr('stroke', 'black');
-        g.append('text')
-          .attr("x", -8)
-          .attr("y",  7)
-          .attr("font-size", "1.2em")
-          .text('\u2605');
-        break;
-      case StepType.addIngredient.id:
-        g.append('circle')
-          .attr('r', '10')
-          .attr('cy', index * offset)
-          .attr('fill', 'white')
-          .attr('stroke', 'black');
-        g.append('text')
-          .attr("x", -5)
-          .attr("y", (index * offset) + 5)
-          .text('\u2726');
-        break;
-      case StepType.heating.id:
-        g.append('circle')
-          .attr('r', '10')
-          .attr('cy', index * offset)
-          .attr('fill', 'white')
-          .attr('stroke', 'black');
-        g.append('text')
-          .attr("x", -8)
-          .attr("y", (index * offset) + 5)
-          .text('\ud83d\udd25');
-        break;
+      case StepType.start.id: return this.drawStart(g);
+      case StepType.addIngredient.id: return this.drawIngredient(step, g, index * offset);
+      case StepType.heating.id: return this.drawHeating(step, g, index * offset);
       default:
         console.log('Unrecognized Step Type', step);
         break;
     }
+  }
+}
+
+RecipeGraph.prototype.is = 'recipe-graph';
+
+RecipeGraph.prototype.listeners = {
+  "iron-resize": 'onResize'
+}
+
+RecipeGraph.prototype.behaviors = [
+  Polymer.IronResizableBehavior 
+]
+
+RecipeGraph.prototype.properties = {
+  recipe: {
+    type: Recipe,
+    value: undefined,
+    observer: 'recipeChanged'
+  },
+  size: {
+    type: Object,
+    value: undefined
   }
 }

@@ -3,6 +3,9 @@
     :host {
         @apply(--layout-vertical);
     }
+    iron-pages {
+        @apply(--layout-vertical);
+    }
   </style>
   
   <template>
@@ -13,9 +16,9 @@
       <paper-tab>Triggers</paper-tab>
     </paper-tabs>
     
-    <iron-pages flex selected="{{selected}}">
-      <recipe-graph recipe={{recipe}}></recipe-graph>
-      <recipe-triggers triggers="{{reactor.steps}}"></recipe-triggers>
+    <iron-pages selected="{{selected}}" class="flex">
+      <recipe-graph recipe={{recipe}} class="flex"></recipe-graph>
+      <recipe-triggers triggers="{{reactor.steps}}" class="flex"></recipe-triggers>
     </iron-pages>
   </template>
   

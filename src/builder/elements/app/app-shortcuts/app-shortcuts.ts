@@ -1,3 +1,5 @@
+/// <reference path="../../../src/defs/polymer/polymer.ts" />
+
 /// <reference path="../../../src/shortcuts.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/Keyboard.ts" />

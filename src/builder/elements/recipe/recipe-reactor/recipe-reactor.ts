@@ -1,4 +1,4 @@
-/// <reference path="../../../src/base/polymer.d.ts" />
+/// <reference path="../../../src/defs/polymer/polymer.ts" />
 
 class RecipeReactor {
   is:string = 'recipe-reactor';

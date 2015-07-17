@@ -1,4 +1,5 @@
-/// <reference path="../../../src/base/polymer.d.ts" />
+/// <reference path="../../../src/defs/polymer/polymer.ts" />
+
 /// <reference path="../../../src/base/codes.ts" />
 
 class WidgetList {

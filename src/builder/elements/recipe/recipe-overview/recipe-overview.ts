@@ -10,7 +10,7 @@ class RecipeOverview {
   
   recipeChanged() {
     this.current = this.recipe.reactors[0];
-    console.log('recipe Changed', this.current);
+    console.info('recipe Changed', this.current);
   }
 }
 

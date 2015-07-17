@@ -3,14 +3,12 @@
 <dom-module id="recipe-graph">
 
   <style>
-    :host {
-        @apply(--layout-vertical);
-    }
+    :host { @apply(--layout-vertical); }
   </style>
+  <link rel="stylesheet" href="recipe-graph.css">
 
   <template>
-    <link rel="stylesheet" href="recipe-graph.css">
-    <svg flex></svg>
+    <svg class="flex"></svg>
   </template>
   <script src="recipe-graph.js"></script>
   <script>Polymer(RecipeGraph.prototype);</script>

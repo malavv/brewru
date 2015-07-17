@@ -1,4 +1,5 @@
-/// <reference path="../../../src/base/polymer.d.ts" />
+/// <reference path="../../../src/defs/polymer/polymer.ts" />
+
 /// <reference path="../../../src/base/keyboard.ts" />
 
 class WidgetText {
@@ -41,9 +42,6 @@ class WidgetText {
     this.commited = this.value;
     this.selected = 1;
   }
-  valueChanged(oldV:any, newV:any) {
-    console.log('valueChanged', oldV, newV);
-  }
 }
 WidgetText.prototype.is = 'widget-text';
 
@@ -54,8 +52,7 @@ WidgetText.prototype.listeners = {
 
 WidgetText.prototype.properties = {
   value: {
-    type: String,
-    observer: 'valueChanged'
+    type: String
   },
   commited: {
     type: String,
