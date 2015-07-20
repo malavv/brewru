@@ -2,26 +2,11 @@
 
 /// <reference path="../../../src/base/codes.ts" />
 
-class WidgetList {
-  is:string = 'widget-list';
-  
-  private static codes:base.BaseConvert = new base.KeyboardBase();
-  private $:any;
+class WidgetList extends Polymer.DomModule {
+  private static codes:base.BaseConvert = new base.KeyboardBase();  
+  private data:Array<any>;
   private style:any;
-  private handle: EventListener = (evt: Event) => {
-    this.handleKey(<KeyboardEvent>evt);
-  }
-
-  properties:any = {
-    data: {
-      type: Array,
-      value: []
-    },
-    selection: {
-      type: Object,
-      value: undefined
-    }
-  }
+  private handle: EventListener = (evt: Event) => { this.handleKey(<KeyboardEvent>evt); }
 
   /** Used with loose focus to enable keyboard selection. */
   public grabFocus() { window.addEventListener('keypress', this.handle, false); }
@@ -31,7 +16,7 @@ class WidgetList {
   private handleKey(evt: KeyboardEvent) : void {
     var
         idx = WidgetList.codes.toIdx(String.fromCharCode(evt.which));
-    if (idx < 0 || idx >= this.properties.data.length) return;
+    if (idx < 0 || idx >= this.data.length) return;
     this.$.list.selectItem(idx);
     evt.preventDefault();
   }
@@ -40,10 +25,23 @@ class WidgetList {
   private dataChanged(oldVal:any, newVal:any) { this.resize(); }
 
   private resize() {
-    this.style.height = (this.properties.data.length * this.$.list.height) + 'px';
+    this.style.height = (this.data.length * this.$.list.height) + 'px';
   }
 
   toBase(idx:number):string {
     return WidgetList.codes.toCode(idx);
+  }
+}
+
+WidgetList.prototype.is = 'widget-list';
+WidgetList.prototype.properties = {
+  data: {
+    type: Array,
+    value: [],
+    observer: 'dataChanged'
+  },
+  selection: {
+    type: Object,
+    value: undefined
   }
 }

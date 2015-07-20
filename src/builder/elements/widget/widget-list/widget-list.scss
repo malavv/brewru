@@ -1,29 +1,24 @@
-:host {
-  core-list#list {
-    width: 400px;
-    padding: 0;
-    margin: 0;
+iron-list {
+  width: 400px;
+  padding: 0;
+  margin: 0;
 
-    /* Each item in the list : 30px */
-    div.item {
-      background-color: #fff;
-      height: 30px;
-      border-bottom: 1px solid #ddd;
-      border-top: 1px solid #ddd;
-      border-left: 3px solid #0000ff;
-      cursor: pointer;
-      &:hover {
-        background-color: #ddd;
-      }
-      div.idx {
-        width: 70px;
-        font-weight: bold;
-        text-align: center;
-      }
-      div.value {}
+  /* Each item in the list : 30px */
+  div.item {
+    background-color: #fff;
+    // height: 30px;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-left: 3px solid #0000ff;
+    cursor: pointer;
+    &:hover {
+      background-color: #ddd;
     }
-    div.selected {
-      background-color: #c5c5c5;
+    div.idx {
+      width: 70px;
+      font-weight: bold;
+      text-align: center;
     }
+    div.value {}
   }
 }

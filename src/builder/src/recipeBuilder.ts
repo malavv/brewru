@@ -7,7 +7,6 @@
 /// <reference path="base/eventBus.ts" />
 /// <reference path="base/messageType.ts" />
 /// <reference path="base/quantity.ts" />
-/// <reference path="step/stepState.ts" />
 /// <reference path="units/system.ts" />
 
 class RecipeBuilder {
@@ -27,10 +26,10 @@ class RecipeBuilder {
 	    );
 	}
 
-	onNewStepCreated(a:StepState) {
-	    this.recipe.reactors[0].steps.push(new Step(a.name, a.type));
+	onNewStepCreated(config: {name:string; type:ConceptRef}) {
+	    this.recipe.reactors[0].steps.push(new Step(config.name, config.type));
 	    bus.publish(MessageType.RecipeChanged);
-		console.log('StepState[Finish]', a);
+		console.log('StepState[Finish]', config);
 	}
 
 	fetchInventory() : IngredientSrc {

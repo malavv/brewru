@@ -1,10 +1,34 @@
 <dom-module id="recipe-wizard">
-
+  <style>
+    :host {
+      background-color: red;
+      width:200px;
+      height:200px;
+      @apply(--layout-vertical);
+    }
+    iron-pages {
+      @apply(--layout-vertical);
+    }
+    #menu {
+      @apply(--layout-vertical);
+    }
+  </style>
   <template>
-    <app-menu></app-menu>
-    <app-text></app-text>
-    <app-ingredient recipe="{{recipe}}" ingredientSrc="{{inventory}}"></app-ingredient>
-    <app-quantity></app-quantity>
+    <iron-pages selected="{{selectedTmpl}}" class="flex">
+      <div id="menu" class="flex">
+        <widget-list data="{{menuitems}}" selection="{{menuselection}}" class="flex"></widget-list>
+      </div>
+      <div id="text">
+        <paper-input label="{{description}}" value="{{value}}" committedValue="{{committed}}" flex autofocus></paper-input>
+      </div>
+      <div id="ingredient">
+        <widget-list data="{{ingredients}}" selection="{{ingredient}}"></widget-list>
+        <widget-quantity quantity="{{quantity}}"></widget-quantity>
+      </div>
+      <div id="quantity">
+        <span>{{description}}</span><widget-quantity id="qty" quantity="{{quantity}}"></widget-quantity>
+      </div>
+    </iron-pages>
   </template>
 
   <script src="recipe-wizard.js"></script>

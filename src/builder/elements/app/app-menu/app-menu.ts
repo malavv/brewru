@@ -20,12 +20,10 @@ class AppMenuWrapper {
  *    On closing the menu without a selection, it will send a bus event
  *    with a null item.
  */
-class AppMenu {
-  is:string = 'app-menu';
+class AppMenu extends Polymer.DomModule {
   items:Array<Object> = [];
   selection:Object = undefined;
   hidden:boolean;
-  $:any;
 
   ready() {
     bus.suscribe(MessageType.AskMenu, this.onAskMenu, this);
@@ -70,3 +68,11 @@ class AppMenu {
     return data instanceof AppMenuWrapper ? data.val : data;
   }
 }
+
+AppMenu.prototype.is = 'app-menu';
+
+AppMenu.prototype.properties = {}
+
+AppMenu.prototype.behaviors = [
+  Polymer.IronOverlayBehavior
+];

@@ -28,8 +28,7 @@
       <recipe-ingredients inventory="{{builder.inventory}}" recipe="{{builder.recipe}}" class="flex-1"></recipe-ingredients>
   
       <!-- Manages the recipe building process. -->
-      <recipe-newstep builder="{{builder}}" hidden></recipe-newstep>
-      <recipe-wizard inventory="{{builder.inventory}}" recipe="{{builder.recipe}}" hidden></recipe-wizard>
+      <recipe-wizard builder="{{builder}}"></recipe-wizard>
       
       <!--Manages the builder information-->
       <recipe-builder builder="{{builder}}" hidden></recipe-builder>

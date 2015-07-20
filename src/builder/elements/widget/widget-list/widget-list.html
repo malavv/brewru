@@ -3,19 +3,63 @@
     :host {
         @apply(--layout-vertical);
     }
+    .iron-selected {
+      background: #234;
+    }
   </style>
+  <link rel="stylesheet" href="widget-list.css">
+  
   <template>
-    <link rel="stylesheet" href="widget-list.css">
-
-    <iron-list id="list" data="data" selection="selection" height="30" flex>
-      <template>
-        <div class="item {{ {selected: selected} | tokenList }}" horizontal layout center>
-            <div class="idx">{{index | toBase}}</div>
-          <div class="value">{{model}}</div>
-        </div>
-      </template>
+    <iron-list items="[[items]]" as="item">
+        <template>
+          <div class="item horizontal layout center" on-tap="_onTap">
+            <div class="idx">{{_toBase(index)}}</div><div class="value">{{item}}</div>
+          </div>
+        </template>
     </iron-list>
   </template>
-  <script src="widget-list.js"></script>
-  <script>Polymer(WidgetList.prototype);</script>
+  <script>
+  (function() {
+  var codes = new base.KeyboardBase();
+  Polymer({
+    is: 'widget-list',
+    
+    properties: {
+      items: {
+        type: Array,
+        value: []
+      },
+      
+      selected: {
+        type: String,
+        notify: true
+      },
+      
+      _selectedModel: {
+        type: Object
+      }
+    },
+    
+    ready() {},
+    
+    observers: [
+      '_itemsChanged(items.*)'
+    ],
+    
+    _onTap: function(evt) {
+      if (this._selectedModel) {
+        this._selectedModel.classList.remove('iron-selected');
+      }
+      this._selectedModel = evt.target;
+      this._selectedModel.classList.add('iron-selected');
+      this.selected = evt.model.item;
+    },
+    
+    _itemsChanged: function(oldVal, newVal) {},
+    _toBase: function(idx) {
+      return codes.toCode(idx);
+    }
+  });
+  })()  
+  </script>
 </dom-module>

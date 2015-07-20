@@ -10,6 +10,7 @@ module Polymer {
     properties: {[key:string]: Object};
     listeners: {[key:string]: string};
     root: Element;
+    $:any;
     // Methods
     $$: (selector: string) => Element;
     async: (callback:()=>void, waitTime:number) => void;
