@@ -20,20 +20,20 @@ class RecipeGraph extends Polymer.DomModule {
     this.size = {width:-1, height:-1}
     bus.suscribe(MessageType.RecipeChanged, this.recipeChanged, this);
   }
-  
+
   attached() {
      this.async(() => {
        this.svg = d3.select(this.$$('svg'));
        this.onResize();
      }, 1);
   }
-  
+
   // Events
   recipeChanged() {
 		if (this.recipe === undefined) return;
 	  this.drawReactors();
 	}
-  
+
   // on iron-resize
   onResize() {
     if (this.svg === undefined) return;
@@ -46,12 +46,12 @@ class RecipeGraph extends Polymer.DomModule {
     // Redraw
     this.drawReactors();
   }
-  
+
   // Methods
   drawReactors() {
     if (this.svg === undefined)
       return;
-      
+
     var reactorGroup = this.svg.selectAll('g')
   		.data(this.recipe.reactors)
   		.enter()
@@ -69,7 +69,7 @@ class RecipeGraph extends Polymer.DomModule {
       		.attr('y', 0)
       		.attr('width', 3)
       		.attr('height', this.size.height);
-      
+
         reactor.steps.forEach((step, idx) => {
           switch(step.type.id) {
             case StepType.start.id: return this.drawStart(reactorGroup);
@@ -82,7 +82,7 @@ class RecipeGraph extends Polymer.DomModule {
         });
       });
 	}
-  
+
   drawStart(g:any) {
   	g.append('circle')
   		.attr('r', '10')
@@ -94,7 +94,7 @@ class RecipeGraph extends Polymer.DomModule {
       .attr("font-size", "1.2em")
       .text('\u2605');
   }
-  
+
   drawIngredient(step:Step, g:any, localOffset:number) {
     g.append('circle')
       .attr('r', '10')
@@ -106,7 +106,7 @@ class RecipeGraph extends Polymer.DomModule {
       .attr("y", localOffset + 5)
       .text('\u2726');
   }
-  
+
   drawHeating(step:Step, g:any, localOffset:number) {
     g.append('circle')
       .attr('r', '10')
@@ -118,7 +118,7 @@ class RecipeGraph extends Polymer.DomModule {
       .attr("y", localOffset + 5)
       .text('\ud83d\udd25');
   }
-  
+
   drawStep(g:any, offset:number, step:Step, index:number) {
     switch(step.type.id) {
       case StepType.start.id: return this.drawStart(g);
@@ -131,24 +131,20 @@ class RecipeGraph extends Polymer.DomModule {
   }
 }
 
-RecipeGraph.prototype.is = 'recipe-graph';
+window.Polymer(window.Polymer.Base.extend(RecipeGraph.prototype, {
+  is: 'recipe-graph',
 
-RecipeGraph.prototype.listeners = {
-  "iron-resize": 'onResize'
-}
-
-RecipeGraph.prototype.behaviors = [
-  Polymer.IronResizableBehavior 
-]
-
-RecipeGraph.prototype.properties = {
-  recipe: {
-    type: Recipe,
-    value: undefined,
-    observer: 'recipeChanged'
+  properties: {
+    recipe: {
+      type: Recipe,
+      observer: 'recipeChanged'
+    },
+    size: Object
   },
-  size: {
-    type: Object,
-    value: undefined
+  behaviors: [
+    Polymer.IronResizableBehavior
+  ],
+  listeners: {
+    'iron-resize': 'onResize'
   }
-}
+}));

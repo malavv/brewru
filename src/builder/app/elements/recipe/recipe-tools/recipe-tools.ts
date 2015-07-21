@@ -4,21 +4,18 @@
 /// <reference path="../../../src/recipe.ts" />
 
 class RecipeTools {
-  is:string = 'recipe-tools';
   selected: number;
-  
-  properties:any = {
-    reactor: {
-      type: Reactor,
-      value: undefined
-    },
-    recipe: {
-      type: Recipe,
-      value: undefined
+}
+
+window.Polymer(window.Polymer.Base.extend(RecipeTools.prototype, {
+  is: 'recipe-tools',
+
+  properties: {
+    reactor: Reactor,
+    recipe: Recipe,
+    selected: {
+      type: Number,
+      value: 0
     }
   }
-  
-  ready() {
-    this.selected = 0;
-  }
-}
+}));
