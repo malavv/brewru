@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en-US">
-  
+
   <head>
     <title>Recipe Viewer</title>
-    
+
     <meta charset="UTF-8">
-    
+
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <meta name="application-name" content="Brewru - Recipe Builder">
 
@@ -16,24 +16,24 @@
 
     <!-- Base Brewru Library -->
     <script src="lib/base.js"></script>
-    
+
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements/elements.html">
     <!-- endreplace-->
   </head>
-  
+
   <body unresolved class="fullbleed layout horizontal">
     <span id="browser-sync-binding"></span>
     <template is="dom-bind">
       <!-- Keyboard shortcut Manager linked to the PubSub. -->
       <app-shortcuts></app-shortcuts>
-  
+
       <recipe-overview recipe="{{builder.recipe}}" class="flex-3"></recipe-overview>
       <recipe-ingredients inventory="{{builder.inventory}}" recipe="{{builder.recipe}}" class="flex-1"></recipe-ingredients>
-  
+
       <!-- Manages the recipe building process. -->
       <recipe-wizard builder="{{builder}}"></recipe-wizard>
-      
+
       <!--Manages the builder information-->
       <recipe-builder builder="{{builder}}" hidden></recipe-builder>
     </template>

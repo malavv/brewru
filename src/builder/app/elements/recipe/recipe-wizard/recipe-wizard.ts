@@ -52,7 +52,6 @@ class RecipeWizard extends Polymer.DomModule {
         }
       });
   }
-  
 
   /** Ask the user to choose a step type. */
   public askStepType(): Promise<ConceptRef> {
@@ -152,23 +151,24 @@ class RecipeWizard extends Polymer.DomModule {
   }
 }
 
-RecipeWizard.prototype.is = 'recipe-wizard';
+window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
+  is: 'recipe-wizard',
 
-RecipeWizard.prototype.properties = {
-  builder: {
-    type: RecipeBuilder,
-    value: undefined
+  properties: {
+    builder: {
+      type: RecipeBuilder,
+      value: undefined
+    },
+    // Menu
+    menuitems: Array,
+    menuselection: Object,
+    selectedTmpl: {
+      type: Number,
+      value: 0
+    }
   },
-  // Menu
-  menuitems: Array,
-  menuselection: Object,
-  
-  selectedTmpl: {
-    type: Number,
-    value: 0
-  }
-}
 
-RecipeWizard.prototype.behaviors = [
-  Polymer.IronOverlayBehavior
-];
+  behaviors: [
+    Polymer.IronOverlayBehavior
+  ]
+}));

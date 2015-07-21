@@ -1,45 +1,42 @@
 <dom-module id="recipe-ingredients">
-  
+
   <style>
     :host {
         @apply(--layout-vertical);
         text-align: center;
     }
     #iron-list {
-      @apply(--layout-flex);
     }
 
   </style>
   <link rel="stylesheet" href="recipe-ingredients.css">
-  
+
   <template>
-    
     <div class="section">Dynamic</div>
     <iron-list items="[[dynamic]]" as="item" class="flex">
-      <template><div class="ingredient">[[item.ingredient.concept.name]]</div></template>      
+      <template><div class="ingredient">[[item.ingredient.concept.name]]</div></template>
     </iron-list>
-    
+
     <div class="section">Fermentables</div>
     <iron-list items="[[fermentables]]" class="flex">
       <template><div class="ingredient">[[item.ingredient.concept.name]]</div></template>
     </iron-list>
-    
+
     <div class="section">Hops</div>
     <iron-list items="[[hops]]" class="flex">
       <template><div class="ingredient">[[item.ingredient.concept.name]]</div></template>
     </iron-list>
-    
+
     <div class="section">Yeasts</div>
     <iron-list items="[[yeasts]]" class="flex">
       <template><div class="ingredient">[[item.ingredient.concept.name]]</div></template>
     </iron-list>
-    
+
     <div class="section">Miscellaneous</div>
     <iron-list items="[[miscellaneous]]" class="flex">
       <template><div class="ingredient">[[item.ingredient.concept.name]]</div></template>
     </iron-list>
   </template>
-  
+
   <script src="recipe-ingredients.js"></script>
-  <script>Polymer(RecipeIngredients.prototype);</script>
 </dom-module>

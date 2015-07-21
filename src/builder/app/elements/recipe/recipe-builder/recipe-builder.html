@@ -2,22 +2,17 @@
   <script>
   Polymer({
     is: 'recipe-builder',
-  
+
     properties: {
       builder: {
         type: RecipeBuilder,
-        notify: true,
-        observer: 'builderChanged'
+        notify: true
       }
     },
-    
+
     ready: function() {
       this.builder = new RecipeBuilder();
-    },
-    
-    builderChanged: function(oldValue, newValue) {
-      console.info('builderChanged', oldValue, newValue);
-    }    
+    }
   });
   </script>
 </dom-module>
