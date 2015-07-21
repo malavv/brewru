@@ -8,19 +8,23 @@
     
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <meta name="application-name" content="Brewru - Recipe Builder">
-    
-    <!-- Base library for Polymer -->
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-    
+
+    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- endbuild -->
+
+
     <!-- Base Brewru Library -->
     <script src="lib/base.js"></script>
     
-    <!-- Polymer elements import. (For vulcanization reason.) -->
+    <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements/elements.html">
+    <!-- endreplace-->
   </head>
   
-  <body class="fullbleed layout horizontal" unresolved>
-    <template is="dom-bind" id="app">
+  <body unresolved class="fullbleed layout horizontal">
+    <span id="browser-sync-binding"></span>
+    <template is="dom-bind">
       <!-- Keyboard shortcut Manager linked to the PubSub. -->
       <app-shortcuts></app-shortcuts>
   
@@ -33,8 +37,6 @@
       <!--Manages the builder information-->
       <recipe-builder builder="{{builder}}" hidden></recipe-builder>
     </template>
-    
-    <script src="lib/app.js"></script>
   </body>
 
 </html>

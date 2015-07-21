@@ -1,0 +1,9 @@
+:host div.container {
+  padding: 0 10px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none; }
+
+:host div.systems {
+  position: absolute; }

@@ -10,8 +10,6 @@ src/bin/
 src/src.iml
 
 # Builder
-src/builder/app/bower_components/
+src/builder/bower_components/
 src/builder/node_modules/
-src/builder/app/elements/
 src/builder/doc
-src/builder/app/lib/base.js
