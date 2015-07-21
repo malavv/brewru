@@ -13,3 +13,5 @@ src/src.iml
 src/builder/bower_components/
 src/builder/node_modules/
 src/builder/doc
+src/builder/app/**/*.js
+src/builder/dist

@@ -1,7 +1,6 @@
 /**
  * Homemade definition class for a Polymer Element.
  */
-
 module Polymer {
   export class DomModule {
     // Properties
@@ -19,3 +18,6 @@ module Polymer {
   export var IronOverlayBehavior: Object;
   export var IronResizableBehavior: Object;
 }
+
+interface Window { Polymer: any; }
+window.Polymer = window.Polymer || {};

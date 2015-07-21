@@ -52,7 +52,8 @@ gulp.task('serve', ['sass', 'images'], function () {
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/elements/**/*.scss'], ['sass', reload]);
-  gulp.watch(['app/{src,elements}/**/*.ts'], ['tslint']);
+  gulp.watch(['app/elements/**/*.ts'], ['ts-elem', reload]);
+  gulp.watch(['app/src/**/*.ts'], ['ts-base', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
