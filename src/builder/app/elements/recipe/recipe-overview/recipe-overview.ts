@@ -22,7 +22,11 @@ window.Polymer(window.Polymer.Base.extend(RecipeOverview.prototype, {
       notify: true,
       observer: 'recipeChanged'
     },
-    current: Reactor
+    current: Reactor,
+    selected: {
+      type: Number,
+      value: 0
+    }
   },
 
   listeners: {

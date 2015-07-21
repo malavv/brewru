@@ -28,6 +28,7 @@ interface IStepFactory {
   build(): Step[];
   isComplete(): boolean;
 }
+
 class StepState {
   name: string;
   ingredient: Ingredient

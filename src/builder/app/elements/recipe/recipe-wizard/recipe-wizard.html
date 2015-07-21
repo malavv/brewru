@@ -16,14 +16,15 @@
   <template>
     <iron-pages selected="{{selectedTmpl}}" class="flex">
       <div id="menu" class="flex">
-        <widget-list data="{{menuitems}}" selection="{{menuselection}}" class="flex"></widget-list>
+        <widget-list items="{{_menuItems}}" selected="{{_menuSelected}}" class="flex"></widget-list>
       </div>
-      <div id="text">
-        <paper-input label="{{description}}" value="{{value}}" committedValue="{{committed}}" flex autofocus></paper-input>
+      <div id="text" class="flex">
+        <iron-a11y-keys target="[[_textInput]]" keys="enter" on-keys-pressed="_textCommit"></iron-a11y-keys>
+        <paper-input id="_textInput" label="{{description}}" value="{{textValue}}" autofocus></paper-input>
       </div>
       <div id="ingredient">
-        <widget-list data="{{ingredients}}" selection="{{ingredient}}"></widget-list>
-        <widget-quantity quantity="{{quantity}}"></widget-quantity>
+        <widget-list items="{{_ingItems}}" selected="{{_ingSelected}}"></widget-list>
+        <widget-quantity id="_ingQtyElem" quantity="{{_ingQty}}"></widget-quantity>
       </div>
       <div id="quantity">
         <span>{{description}}</span><widget-quantity id="qty" quantity="{{quantity}}"></widget-quantity>
@@ -31,5 +32,8 @@
     </iron-pages>
   </template>
 
+  <script src="wizardStep.js"></script>
+  <script src="heatingFactory.js"></script>
+  <script src="addIngredientFactory.js"></script>
   <script src="recipe-wizard.js"></script>
 </dom-module>

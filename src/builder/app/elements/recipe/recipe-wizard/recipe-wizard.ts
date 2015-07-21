@@ -17,12 +17,27 @@ class RecipeWizard extends Polymer.DomModule {
   isChoosing: boolean;
   selected: number;
   builder: RecipeBuilder;
-  menuitems: Array<any>
+
   selectedTmpl: number;
+  description: string;
+  _textInput: any;
+  textValue: string;
+
+  // Menu
+  _menuItems: Array<any>
+  _menuSelected: any;
+
+  // Ingredient
+  _ingItems: Array<any>;
+  _ingSelected: any;
+  _ingQty: Quantity;
+
+  _currentResolve: (l:any) => void;
+  _currentReject: () => void;
 
   ready() {
     this.isChoosing = false;
-
+    this._textInput = this.$._textInput;
     bus.suscribe(MessageType.CreateStep, this.onCreateStep, this);
   }
 
@@ -70,9 +85,15 @@ class RecipeWizard extends Polymer.DomModule {
     }
   }
 
-  public static askText(data: { description: string }): Promise<string> {
-    return bus.publishAndWaitFor(MessageType.AnswerText, MessageType.AskText, data)
-      .then(RecipeWizard.isTextChoiceValid);
+  public askText(data: { description: string }): Promise<string> {
+    this.description = (data === undefined || data.description === undefined) ? "" : data.description;
+    this.selectedTmpl = 1;
+    this.opened = true;
+
+    return new Promise((resolve, reject) => {
+        this._currentResolve = resolve;
+        this._currentReject = reject;
+    }).then(RecipeWizard.isTextChoiceValid)
   }
 
   public askMenu(data: Array<any>): Promise<ConceptRef> {
@@ -84,20 +105,41 @@ class RecipeWizard extends Polymer.DomModule {
       data = RecipeWizard.wrap(<string[]>data);
 
     // Feed items to menu
-    this.menuitems = data;
+    this._menuSelected = undefined;
+    this._menuItems = data;
     // Select menu
     this.selectedTmpl = 0;
     // Show Wizard.
     this.opened = true;
 
-    return new Promise(()=>{});
-    //return bus.publishAndWaitFor(MessageType.AnswerMenu, MessageType.AskMenu, data).then(RecipeWizard.isMenuChoiceValid);
+    return new Promise((resolve, reject) => {
+        this._currentResolve = resolve;
+        this._currentReject = reject;
+    }).then(RecipeWizard.isMenuChoiceValid)
   }
 
 
-  public static askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
-    return bus.publishAndWaitFor(MessageType.AnswerIngredient, MessageType.AskIngredient, type)
-      .then(RecipeWizard.isIngredientChoiceValid);
+  public askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
+    this._ingItems = undefined;
+    this._ingQty = undefined;
+    this._ingSelected = undefined;
+
+    if (type === IngredientType.Dynamic) {
+      this._ingItems = this.builder.recipe.listDynamicIngredients();
+    } else {
+      this._ingItems = this.builder.inventory.stocks.filter((i:Ingredient) => i.type === type);
+    }    
+    this.$._ingQtyElem.reset();
+
+    // Select menu
+    this.selectedTmpl = 2;
+    // Show Wizard.
+    this.opened = true;
+
+    return new Promise((resolve, reject) => {
+        this._currentResolve = resolve;
+        this._currentReject = reject;
+    }).then(RecipeWizard.isIngredientChoiceValid)
   }
 
   public static askQuantity(config: { description: String; allowed: Array<Dim> }): Promise<Quantity> {
@@ -127,28 +169,69 @@ class RecipeWizard extends Polymer.DomModule {
 
   public query(ingredients: any, factory: IStepFactory): Promise<IStepFactory> {
     return Promise.resolve(factory.next())
-      .then(RecipeWizard.processNext.bind(this, factory))
+      .then(this.processNext.bind(this, factory))
       .then(() => {
         return Promise.resolve(factory);
       });
   }
 
-  public static processNext(factory: IStepFactory, c: WizardConfig): Promise<any> {
-    console.log('RecipeWizard Heavy Mod warning');
+  private _askScreen(c: WizardConfig) : Promise<any> {
+    switch(c.wizardPanel) {
+        case WizardStep.ingredient: 
+            return this.askIngredient(c.config);
+          break;
+        case WizardStep.menu: 
+          return this.askMenu(c.config);
+        case WizardStep.quantity: 
+          console.warn('Unimplemented screen');
+          break;
+        case WizardStep.text: 
+          return this.askText(c.config);
+        default:
+          return Promise.reject(new Error('Invalid Wizard Step'));
+    }
+  }
 
-    return Promise.resolve();
-    // return c.wizardScreen(c.config)
-    //     .then(RecipeWizard.registerData.bind(this, factory.data, c.propertyName))
-    //     .then(() => {
-    //       var next:WizardConfig = factory.next();
-    //       if (next === undefined) return Promise.resolve(factory);
-    //       else return RecipeWizard.processNext(factory, next);
-    //     });
+  public processNext(factory: IStepFactory, c: WizardConfig): Promise<any> {
+    return this._askScreen(c)
+      .then(RecipeWizard.registerData.bind(this, factory.data, c.propertyName))
+        .then(() => {
+          var next:WizardConfig = factory.next();
+          if (next === undefined) return Promise.resolve(factory);
+          else return this.processNext(factory, next);
+        });
   }
 
   private static registerData(result: { [key: string]: any; }, key: string, data: any) {
     result[key] = data;
   }
+
+  _menuSelectedChanged(newVal: any, oldVal: any) {
+    if (this.opened && this.selectedTmpl === 0) {
+        this._currentResolve((newVal instanceof AppMenuWrapper) ? newVal.val : newVal);
+        this._currentResolve = undefined;
+        this._currentReject = undefined;
+    }
+  }
+  _textCommit() {
+    if (this.opened && this.selectedTmpl === 1) {
+      this._currentResolve({description: this.description, value: this.textValue});
+      this._currentResolve = undefined;
+      this._currentReject = undefined;
+    }
+  }
+
+  _ingSelectedChanged() { this._onIngStateChanged(); }
+  _ingQtyChanged() { this._onIngStateChanged(); }
+  _onIngStateChanged() {
+    if (this._ingSelected === undefined) return;
+    if (this._ingQty === undefined) return;
+    this._currentResolve({
+      ingredient: this._ingSelected,
+      quantity: this._ingQty
+    });
+  }
+  
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
@@ -159,13 +242,24 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
       type: RecipeBuilder,
       value: undefined
     },
-    // Menu
-    menuitems: Array,
-    menuselection: Object,
+
     selectedTmpl: {
       type: Number,
       value: 0
-    }
+    },
+    textValue: {
+      type: String
+    },
+    // Menu
+    _menuItems: Array,
+    _menuSelected: {
+      type: Object,
+      observer: '_menuSelectedChanged'
+    },
+    // Ingredient
+    _ingItems: Array,
+    _ingSelected: Object,
+    _ingQty: Object
   },
 
   behaviors: [
