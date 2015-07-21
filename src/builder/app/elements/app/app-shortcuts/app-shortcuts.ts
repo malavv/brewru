@@ -40,6 +40,10 @@ class AppShortcuts extends Polymer.DomModule {
   }
 }
 
-AppShortcuts.prototype.is = 'app-shortcuts';
-/** Creates an automatic overlay using "opened" and closing automatically. */
-AppShortcuts.prototype.behaviors = [ Polymer.IronOverlayBehavior ];
+window.Polymer(window.Polymer.Base.extend(AppShortcuts.prototype, {
+  is: 'app-shortcuts',
+
+  behaviors: [
+    Polymer.IronOverlayBehavior
+  ]
+}));
