@@ -4,12 +4,12 @@
         @apply(--layout-horizontal);
     }
   </style>
+  <link rel="stylesheet" href="widget-quantity.css">
+  
   <template>
-    <link rel="stylesheet" href="widget-quantity.css">
-
-    <input is="core-input" id="test" type="number" value="{{val}}" committedValue="{{commited}}"></input>
-    <widget-units class="unselectable" unit="{{unit}}" allowed="{{allowed}}"></widget-units>
+    <input type="number" value="{{amount::change}}"></input>
+    <widget-units unit="{{unit}}" allowed="{{allowed}}"></widget-units>
   </template>
+  
   <script src="widget-quantity.js"></script>
-  <script>Polymer(WidgetQuantity.prototype);</script>
 </dom-module>

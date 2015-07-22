@@ -25,7 +25,7 @@
           <span class="label flex" >Quick Usage:</span><div class="value flex" >&lt;widget-text text=&quot;{{'\{{binding}\}'}}&quot;&gt;&lt;/widget-text&gt;</div>
         </div>
         <div class="horizontal layout">
-          <span class="label flex" >Example:</span><div class="value flex" ><widget-text valuetext="{{exampleText}}"></widget-text></div>
+          <span class="label flex" >Example:</span><div class="value flex" ><widget-text value="{{exampleText}}"></widget-text></div>
         </div>
         <div class="horizontal layout">
           <span class="label flex" >Value:</span><div class="value flex" >{{exampleText}}</div>
@@ -79,7 +79,7 @@
       exampleList: [],
       exampleSelection: null,
       
-      ready() {
+      ready: function() {
         this.selected = 0;
         this.exampleText = "Lorem Ipsum";
         this.exampleList = [

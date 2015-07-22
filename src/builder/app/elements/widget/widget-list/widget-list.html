@@ -18,48 +18,5 @@
         </template>
     </iron-list>
   </template>
-  <script>
-  (function() {
-  var codes = new base.KeyboardBase();
-  Polymer({
-    is: 'widget-list',
-    
-    properties: {
-      items: {
-        type: Array,
-        value: []
-      },
-      
-      selected: {
-        type: String,
-        notify: true
-      },
-      
-      _selectedModel: {
-        type: Object
-      }
-    },
-    
-    ready() {},
-    
-    observers: [
-      '_itemsChanged(items.*)'
-    ],
-    
-    _onTap: function(evt) {
-      if (this._selectedModel) {
-        this._selectedModel.classList.remove('iron-selected');
-      }
-      this._selectedModel = evt.target;
-      this._selectedModel.classList.add('iron-selected');
-      this.selected = evt.model.item;
-    },
-    
-    _itemsChanged: function(oldVal, newVal) {},
-    _toBase: function(idx) {
-      return codes.toCode(idx);
-    }
-  });
-  })()  
-  </script>
+  <script src="widget-list.js"></script>
 </dom-module>

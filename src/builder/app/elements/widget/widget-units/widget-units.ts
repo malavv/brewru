@@ -2,27 +2,17 @@
 
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/units/system.ts" />
+/// <reference path="../../../src/units/unit.ts" />
 
 class WidgetUnits {
-  is:string = 'widget-units';
   USCust:Array<Unit>;
   SI:Array<Unit>;
   isExpanded:boolean;
   ref:number;
   title:string;
+  unit: Unit;
   
   systems: Array<SystemImpl>;
-  
-  properties:any = {
-    unit: {
-      type: Unit,
-      value: undefined
-    },
-    allowed: {
-      type: Array,
-      value: Dim.all()
-    }
-  }
 
   ready() {
     this.USCust = [];
@@ -52,15 +42,34 @@ class WidgetUnits {
     }, 100)
   }
   
-  toTitle(input?:Unit) : string {
-    if (input === null || input === undefined) return 'n/a';
-    return input.symbol;    
+  toTitle(unit:Unit) : string {
+    return (unit === Unit.Unknown) ? 'n/a' : unit.symbol;
   }
 
   onChoice(evt: Event, idx: number, node: HTMLLIElement) {
-    this.properties.unit = UnitSystem.getUnit((<{[name:string]: string}>node.dataset)['unit']);
-    
+    this.unit = UnitSystem.getUnit(evt.target.dataUnit);
     this.isExpanded = false;
     this.ref = 0;
   }
 }
+
+window.Polymer(window.Polymer.Base.extend(WidgetUnits.prototype, {
+  is: 'widget-units',
+
+  properties: {
+    unit: {
+      type: Unit,
+      value: Unit.Unknown,
+      notify: true
+    },
+    allowed: {
+      type: Array,
+      value: Dim.all()
+    }
+  },
+
+  listeners: {
+    mouseover: 'onHoverIn',
+    mouseout: 'onHoverOut'
+  }
+}));

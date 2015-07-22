@@ -3,8 +3,12 @@
 /// <reference path="../../../src/base/codes.ts" />
 
 class WidgetList extends Polymer.DomModule {
-  private static codes:base.BaseConvert = new base.KeyboardBase();  
-  private data:Array<any>;
+  private static codes:base.BaseConvert = new base.KeyboardBase();
+  
+  private items: Array<any>;
+  private selected: any;
+  private _selectedModel: any;
+  
   private style:any;
   private handle: EventListener = (evt: Event) => { this.handleKey(<KeyboardEvent>evt); }
 
@@ -16,32 +20,60 @@ class WidgetList extends Polymer.DomModule {
   private handleKey(evt: KeyboardEvent) : void {
     var
         idx = WidgetList.codes.toIdx(String.fromCharCode(evt.which));
-    if (idx < 0 || idx >= this.data.length) return;
+    if (idx < 0 || idx >= this.items.length) return;
     this.$.list.selectItem(idx);
     evt.preventDefault();
   }
 
-  /** On request made. */
-  private dataChanged(oldVal:any, newVal:any) { this.resize(); }
-
   private resize() {
-    this.style.height = (this.data.length * this.$.list.height) + 'px';
+    this.style.height = (this.items.length * this.$.list.height) + 'px';
   }
-
-  toBase(idx:number):string {
+  
+  _onTap(evt:any) {
+    if (this._selectedModel) {
+      this._selectedModel.classList.remove('iron-selected');
+    }
+    this._selectedModel = evt.target;
+    this._selectedModel.classList.add('iron-selected');
+    this.selected = evt.model.item;
+  }
+  
+  _itemsChanged() {
+    this._reset();
+  }
+  _toBase(idx : any) {
     return WidgetList.codes.toCode(idx);
   }
-}
-
-WidgetList.prototype.is = 'widget-list';
-WidgetList.prototype.properties = {
-  data: {
-    type: Array,
-    value: [],
-    observer: 'dataChanged'
-  },
-  selection: {
-    type: Object,
-    value: undefined
+  
+  private _reset() {
+    if (this._selectedModel !== undefined) {
+      this._selectedModel.classList.remove('iron-selected');
+      this._selectedModel = undefined;
+    }
+    this.selected = undefined;
   }
 }
+
+window.Polymer(window.Polymer.Base.extend(WidgetList.prototype, {
+  is: 'widget-list',
+
+  properties: {
+    items: {
+      type: Array,
+      value: []
+    },
+    
+    selected: {
+      type: String,
+      notify: true
+    },
+    
+    _selectedModel: {
+      type: Object
+    }
+  },
+  
+  observers: [
+    '_itemsChanged(items.*)'
+  ]
+}));
