@@ -28,6 +28,8 @@ class RecipeWizard extends Polymer.DomModule {
   description: string;
   _textInput: any;
   textValue: string;
+  
+  _qty: Quantity;
 
   // Menu
   _menuItems: Array<any>
@@ -148,9 +150,19 @@ class RecipeWizard extends Polymer.DomModule {
     }).then(RecipeWizard.isIngredientChoiceValid)
   }
 
-  public static askQuantity(config: { description: String; allowed: Array<Dim> }): Promise<Quantity> {
-    return bus.publishAndWaitFor(MessageType.AnswerQuantity, MessageType.AskQuantity, config)
-      .then(RecipeWizard.isQuantityChoiceValid);
+  public askQuantity(config: { description: string; allowed: Array<Dim> }): Promise<Quantity> {
+    this.description = config.description;
+    this._qty = undefined;
+    
+    // Select menu
+    this.selectedTmpl = 3;
+    // Show Wizard.
+    this.opened = true;
+    
+    return new Promise((resolve, reject) => {
+        this._currentResolve = resolve;
+        this._currentReject = reject;
+    }).then(RecipeWizard.isQuantityChoiceValid)
   }
 
   private static isQuantityChoiceValid(data: { qty: Quantity }) {
@@ -190,9 +202,8 @@ class RecipeWizard extends Polymer.DomModule {
           break;
         case WizardStep.menu: 
           return this.askMenu(c.config);
-        case WizardStep.quantity: 
-          console.warn('Unimplemented screen');
-          break;
+        case WizardStep.quantity:
+          return this.askQuantity(c.config);
         case WizardStep.text: 
           return this.askText(c.config);
         default:
@@ -238,7 +249,14 @@ class RecipeWizard extends Polymer.DomModule {
       ingredient: this._ingSelected,
       quantity: this._ingQty
     });
-  }  
+  }
+  _qtyChanged() {
+    if (this.opened && this.selectedTmpl === 3) {
+      this._currentResolve({description: this.description, qty:this._qty});
+      this._currentResolve = undefined;
+      this._currentReject = undefined;
+    }
+  }
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
@@ -272,6 +290,10 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
     _ingQty: {
       type:Object,
       observer: '_ingQtyChanged'
+    },
+    _qty: {
+      type: Quantity,
+      observer: '_qtyChanged'
     }
   },
 

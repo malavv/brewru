@@ -29,7 +29,6 @@ class RecipeBuilder {
 	onNewStepCreated(config: {name:string; type:ConceptRef}) {
 	    this.recipe.reactors[0].steps.push(new Step(config.name, config.type));
 	    bus.publish(MessageType.RecipeChanged);
-		console.log('StepState[Finish]', config);
 	}
 
 	fetchInventory() : IngredientSrc {
