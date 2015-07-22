@@ -11,6 +11,12 @@
 /// <reference path="heatingFactory.ts" />
 /// <reference path="addIngredientFactory.ts" />
 
+class AppMenuWrapper {
+  val: string;
+  toString() : string { return this.val; }
+  constructor(val:string) { this.val = val; }
+}
+
 class RecipeWizard extends Polymer.DomModule {
   /* Is the Panel Opened? Coming from IronOverlay. */
   private opened: boolean;
@@ -171,6 +177,8 @@ class RecipeWizard extends Polymer.DomModule {
     return Promise.resolve(factory.next())
       .then(this.processNext.bind(this, factory))
       .then(() => {
+        this.selectedTmpl = 0;
+        this.opened = false;
         return Promise.resolve(factory);
       });
   }
@@ -230,8 +238,7 @@ class RecipeWizard extends Polymer.DomModule {
       ingredient: this._ingSelected,
       quantity: this._ingQty
     });
-  }
-  
+  }  
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
@@ -258,8 +265,14 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
     },
     // Ingredient
     _ingItems: Array,
-    _ingSelected: Object,
-    _ingQty: Object
+    _ingSelected: {
+      type:Object,
+      observer: '_ingSelectedChanged'
+    },
+    _ingQty: {
+      type:Object,
+      observer: '_ingQtyChanged'
+    }
   },
 
   behaviors: [

@@ -30,7 +30,9 @@ class RecipeGraph extends Polymer.DomModule {
 
   // Events
   recipeChanged() {
-		if (this.recipe === undefined) return;
+		if (this.recipe === undefined || this.svg === undefined) return;
+    // Remove old
+    this.svg.selectAll("*").remove();
 	  this.drawReactors();
 	}
 
@@ -52,7 +54,7 @@ class RecipeGraph extends Polymer.DomModule {
     if (this.svg === undefined)
       return;
 
-    var reactorGroup = this.svg.selectAll('g')
+    var rg = this.svg.selectAll('g')
   		.data(this.recipe.reactors)
   		.enter()
   		.append('g')
@@ -63,7 +65,7 @@ class RecipeGraph extends Polymer.DomModule {
   	// Start
     this.recipe.reactors
       .forEach((reactor) => {
-      	reactorGroup
+      	rg
       		.append("rect")
       		.attr("x", -1.5)
       		.attr('y', 0)
@@ -71,17 +73,32 @@ class RecipeGraph extends Polymer.DomModule {
       		.attr('height', this.size.height);
 
         reactor.steps.forEach((step, idx) => {
-          switch(step.type.id) {
-            case StepType.start.id: return this.drawStart(reactorGroup);
-            case StepType.addIngredient.id: return this.drawIngredient(step, reactorGroup, idx * this.nodeOffset);
-            case StepType.heating.id: return this.drawHeating(step, reactorGroup, idx * this.nodeOffset);
-            default:
-              console.log('Unrecognized Step Type', step);
-              break;
-          }
+          this._drawStep(step, rg, idx * this.nodeOffset);
         });
+
+        // reactor.steps.forEach((step, idx) => {
+        //   switch(step.type.id) {
+        //     case StepType.start.id: return this.drawStart(rg);
+        //     case StepType.addIngredient.id: return this.drawIngredient(step, rg, idx * this.nodeOffset);
+        //     case StepType.heating.id: return this.drawHeating(step, rg, idx * this.nodeOffset);
+        //     default:
+        //       console.log('Unrecognized Step Type', step);
+        //       break;
+        //   }
+        // });
       });
 	}
+  
+  _drawStep(step:Step, g:any, localOffset:number) {
+    switch(step.type.id) {
+      case StepType.start.id: return this.drawStart(g);
+      case StepType.addIngredient.id: return this.drawIngredient(step, g, localOffset);
+      case StepType.heating.id: return this.drawHeating(step, g, localOffset);
+      default:
+        console.log('Unrecognized Step Type', step);
+        break;
+    }
+  }
 
   drawStart(g:any) {
   	g.append('circle')

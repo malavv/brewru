@@ -9,7 +9,6 @@ class RecipeOverview extends Polymer.DomModule {
 
   recipeChanged() {
     this.current = this.recipe.reactors[0];
-    console.info('recipe Changed', this.current);
   }
 }
 

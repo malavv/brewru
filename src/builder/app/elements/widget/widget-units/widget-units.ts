@@ -46,8 +46,10 @@ class WidgetUnits {
     return (unit === Unit.Unknown) ? 'n/a' : unit.symbol;
   }
 
-  onChoice(evt: Event, idx: number, node: HTMLLIElement) {
-    this.unit = UnitSystem.getUnit(evt.target.dataUnit);
+  onChoice(evt: MouseEvent, idx: number, node: HTMLLIElement) {
+    var trg : {[name:string]: string} = <any>evt.target; 
+    var unitId: string = trg['dataUnit'];
+    this.unit = UnitSystem.getUnit(unitId);
     this.isExpanded = false;
     this.ref = 0;
   }
