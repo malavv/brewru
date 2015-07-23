@@ -1,6 +1,7 @@
 /// <reference path="../../../src/defs/es6-promise/es6-promise.d.ts" />
 /// <reference path="../../../src/ingredient.ts" />
 /// <reference path="wizardStep.ts" />
+/// <reference path="../../../src/step.ts" />
 
 class AddIngredientFactory implements IStepFactory {
   private state:number = 0;
@@ -16,7 +17,6 @@ class AddIngredientFactory implements IStepFactory {
         this.state = 2;
         return new WizardConfig('menu', WizardStep.menu, ["dynamic", "fermentables", "hops", "yeast", "miscellaneous"]);
       case 2:
-      console.log('add ingredient')
         this.state = 3;
         return new WizardConfig('qty', WizardStep.ingredient, this.name2type(this.data['menu']));
       default:
@@ -26,16 +26,11 @@ class AddIngredientFactory implements IStepFactory {
 
   name2type(name : string) : IngredientType {
     switch (this.data['menu']) {
-      case 'dynamic':
-        return IngredientType.Dynamic;
-      case 'fermentables':
-        return IngredientType.Fermentables;
-      case 'hops':
-        return IngredientType.Hops;
-      case 'yeast':
-        return IngredientType.Yeasts;
-      case 'miscellaneous':
-        return IngredientType.Miscellaneous;
+      case 'dynamic': return IngredientType.Dynamic;
+      case 'fermentables': return IngredientType.Fermentables;
+      case 'hops': return IngredientType.Hops;
+      case 'yeast': return IngredientType.Yeasts;
+      case 'miscellaneous': return IngredientType.Miscellaneous;
     }
   }
 

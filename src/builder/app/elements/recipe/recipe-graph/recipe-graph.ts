@@ -30,6 +30,7 @@ class RecipeGraph extends Polymer.DomModule {
 
   // Events
   recipeChanged() {
+    console.log('changed')
 		if (this.recipe === undefined || this.svg === undefined) return;
     // Remove old
     this.svg.selectAll("*").remove();

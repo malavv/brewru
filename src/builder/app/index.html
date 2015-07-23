@@ -28,14 +28,14 @@
       <!-- Keyboard shortcut Manager linked to the PubSub. -->
       <app-shortcuts></app-shortcuts>
 
-      <recipe-overview recipe="{{builder.recipe}}" class="flex-3"></recipe-overview>
-      <recipe-ingredients inventory="{{builder.inventory}}" recipe="{{builder.recipe}}" class="flex-1"></recipe-ingredients>
+      <recipe-overview recipe="{{recipe}}" class="flex-3"></recipe-overview>
+      <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
 
       <!-- Manages the recipe building process. -->
-      <recipe-wizard builder="{{builder}}"></recipe-wizard>
+      <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
 
       <!--Manages the builder information-->
-      <recipe-builder builder="{{builder}}" hidden></recipe-builder>
+      <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
     </template>
   </body>
 

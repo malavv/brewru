@@ -5,7 +5,6 @@
 /// <reference path="../../../src/base/eventBus.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/errors.ts" />
-/// <reference path="../../../src/recipeBuilder.ts" />
 
 /// <reference path="wizardStep.ts" />
 /// <reference path="heatingFactory.ts" />
@@ -22,7 +21,6 @@ class RecipeWizard extends Polymer.DomModule {
   private opened: boolean;
   isChoosing: boolean;
   selected: number;
-  builder: RecipeBuilder;
 
   selectedTmpl: number;
   description: string;
@@ -57,7 +55,7 @@ class RecipeWizard extends Polymer.DomModule {
         return this.create(ref); 
       })
       .then((factory: IStepFactory) => { 
-        return this.query(this.builder.inventory.stocks, factory); 
+        return this.query(this.inventory.stocks, factory); 
       })
       .then((stepFactory: IStepFactory) => { 
         return stepFactory.build(); 
@@ -133,9 +131,9 @@ class RecipeWizard extends Polymer.DomModule {
     this._ingSelected = undefined;
 
     if (type === IngredientType.Dynamic) {
-      this._ingItems = this.builder.recipe.listDynamicIngredients();
+      this._ingItems = this.recipe.listDynamicIngredients();
     } else {
-      this._ingItems = this.builder.inventory.stocks.filter((i:Ingredient) => i.type === type);
+      this._ingItems = this.inventory.stocks.filter((i:Ingredient) => i.type === type);
     }    
     this.$._ingQtyElem.reset();
 
@@ -263,8 +261,12 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
   is: 'recipe-wizard',
 
   properties: {
-    builder: {
-      type: RecipeBuilder,
+    inventory: {
+      type: Object,
+      value: undefined
+    },
+    recipe: {
+      type: Object,
       value: undefined
     },
 

@@ -113,12 +113,18 @@ gulp.task('copy', function () {
 
   var elements = gulp.src(['app/elements/**/*.html'])
     .pipe(gulp.dest('dist/elements'));
-
+    
+  var scripts = gulp.src(['app/elements/**/*.js'])
+    .pipe(gulp.dest('dist/elements'));
+    
+  var styles = gulp.src(['app/elements/**/*.css'])
+    .pipe(gulp.dest('dist/elements'));
+    
   var vulcanized = gulp.src(['app/elements/elements.html'])
     .pipe($.rename('elements.vulcanized.html'))
     .pipe(gulp.dest('dist/elements'));
 
-  return merge(app, bower, elements, vulcanized)
+  return merge(app, bower, scripts, styles, elements, vulcanized)
     .pipe($.size({title: 'copy'}));
 });
 
