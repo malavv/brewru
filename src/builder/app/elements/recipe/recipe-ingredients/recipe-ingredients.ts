@@ -33,40 +33,26 @@ class RecipeIngredients extends Polymer.DomModule {
       tapWater: Ingredient = new Ingredient(OntoRef.createAnon("tap water"), null),
       tapQty: Quantity = new Quantity(Infinity, SI.sym('l'));
 
-    this.dynamic = [
-      new InventoryMatchedIngredients(tapWater, [{qty: tapQty, ingredient: tapWater}])
-    ];
-    this.fermentables = [];
-    this.hops = [];
-    this.yeasts = [];
-    this.miscellaneous = [];
+    this.async(() => { 
+      this.dynamic = [new InventoryMatchedIngredients(tapWater, [{qty: tapQty, ingredient: tapWater}])];
+      this.fermentables = [];
+      this.hops = [];
+      this.yeasts = [];
+      this.miscellaneous = [];
+    }, 1);
   }
 
   inventoryChanged() {
-    this.fermentables = [];
-    this.hops = [];
-    this.yeasts = [];
-    this.miscellaneous = [];
+    var createInventoryItem = (i: Ingredient) => new InventoryMatchedIngredients(i, []);
 
-    this.inventory.stocks.forEach((i:Ingredient) => {
-      switch (i.type) {
-        case IngredientType.Fermentables:
-          this.fermentables.push(new InventoryMatchedIngredients(i, []));
-          break;
-        case IngredientType.Hops:
-          this.hops.push(new InventoryMatchedIngredients(i, []));
-          break;
-        case IngredientType.Yeasts:
-          this.yeasts.push(new InventoryMatchedIngredients(i, []));
-          break;
-        case IngredientType.Miscellaneous:
-          this.miscellaneous.push(new InventoryMatchedIngredients(i, []));
-          break;
-        default:
-          console.warn('[RecipeIngredients]<inventoryChanged> Unknown ingredient type');
-          break;
-      }
-    });
+    this.async(() => {
+      this.fermentables = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Fermentables).map(createInventoryItem);
+      this.hops = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Hops).map(createInventoryItem);
+      this.yeasts = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Yeasts).map(createInventoryItem);
+      this.miscellaneous = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Miscellaneous).map(createInventoryItem);
+    }, 1);
+
+    return;
   }
 
   recipeChanged() {}
@@ -84,10 +70,20 @@ window.Polymer(window.Polymer.Base.extend(RecipeIngredients.prototype, {
       type: Recipe,
       observer: 'recipeChanged'
     },
-    dynamic: Array,
-    fermentables: Array,
-    hops: Array,
-    yeasts: Array,
-    miscellaneous: Array
+    dynamic: {
+      type: Array
+    },
+    fermentables: {
+      type: Array
+    },
+    hops: {
+      type: Array
+    },
+    yeasts: {
+      type: Array
+    },
+    miscellaneous: {
+      type: Array
+    }
   }
 }));

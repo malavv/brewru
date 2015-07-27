@@ -58,10 +58,7 @@ window.Polymer(window.Polymer.Base.extend(WidgetList.prototype, {
   is: 'widget-list',
 
   properties: {
-    items: {
-      type: Array,
-      value: []
-    },
+    items: Array,
     
     selected: {
       type: String,
