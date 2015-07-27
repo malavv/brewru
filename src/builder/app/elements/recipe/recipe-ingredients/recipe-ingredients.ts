@@ -46,16 +46,16 @@ class RecipeIngredients extends Polymer.DomModule {
     var createInventoryItem = (i: Ingredient) => new InventoryMatchedIngredients(i, []);
 
     this.async(() => {
-      this.fermentables = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Fermentables).map(createInventoryItem);
-      this.hops = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Hops).map(createInventoryItem);
-      this.yeasts = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Yeasts).map(createInventoryItem);
-      this.miscellaneous = this.inventory.stocks.filter((i: Ingredient) => i.type === IngredientType.Miscellaneous).map(createInventoryItem);
+      this.fermentables = this._getByType(IngredientType.Fermentables).map(createInventoryItem);
+      this.hops = this._getByType(IngredientType.Hops).map(createInventoryItem);
+      this.yeasts = this._getByType(IngredientType.Yeasts).map(createInventoryItem);
+      this.miscellaneous = this._getByType(IngredientType.Miscellaneous).map(createInventoryItem);
     }, 1);
-
-    return;
   }
 
-  recipeChanged() {}
+  _getByType(type:IngredientType) : Ingredient[] {
+    return this.inventory.stocks.filter((i: Ingredient) => i.type === type);
+  }
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeIngredients.prototype, {
@@ -67,8 +67,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeIngredients.prototype, {
       observer: 'inventoryChanged'
     },
     recipe: {
-      type: Recipe,
-      observer: 'recipeChanged'
+      type: Recipe
     },
     dynamic: {
       type: Array

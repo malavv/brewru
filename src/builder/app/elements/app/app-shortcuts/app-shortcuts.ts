@@ -25,8 +25,8 @@ class AppShortcuts extends Polymer.DomModule {
   ready() {
     this.listed = shortcuts;
     this.opened = false;
-    window.addEventListener('keyup', (e: KeyboardEvent) => { this.onKeyUp(e); }, false);
-    bus.suscribe(MessageType.ShowShortcuts, () => { this.opened = true; }, this);
+    //window.addEventListener('keyup', (e: KeyboardEvent) => { this.onKeyUp(e); }, false);
+    //bus.suscribe(MessageType.ShowShortcuts, () => { this.opened = true; }, this);
   }
 
   /**
@@ -38,6 +38,13 @@ class AppShortcuts extends Polymer.DomModule {
     if (!this.listed.hasKey(key)) return;
     bus.publish(this.listed.get(key).intent);
   }
+
+  _showShortcuts() {
+    this.opened = true;
+  }
+  _createNewStep() {
+    bus.publish(MessageType.CreateStep); 
+  }
 }
 
 window.Polymer(window.Polymer.Base.extend(AppShortcuts.prototype, {
@@ -45,5 +52,12 @@ window.Polymer(window.Polymer.Base.extend(AppShortcuts.prototype, {
 
   behaviors: [
     Polymer.IronOverlayBehavior
-  ]
+  ],
+
+  properties: {
+    target: {
+      type: Object,
+      value: function() { return document.body; }
+    }
+  }
 }));

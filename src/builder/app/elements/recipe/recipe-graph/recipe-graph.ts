@@ -30,17 +30,22 @@ class RecipeGraph extends Polymer.DomModule {
 
   // Events
   recipeChanged() {
-    console.log('changed')
 		if (this.recipe === undefined || this.svg === undefined) return;
     // Remove old
     this.svg.selectAll("*").remove();
 	  this.drawReactors();
 	}
 
-  // on iron-resize
   onResize() {
-    if (this.svg === undefined) return;
+    if (this.svg === undefined) {
+      // Not yet loaded.
+      return;
+    } 
     var bbox = this.$$('svg').getBoundingClientRect();
+    if (bbox.width === 0 && bbox.height === 0) {
+      // Switched out of view.
+      return;
+    }
     this.size.width = bbox.width;
     this.size.height = bbox.height - this.vMargin * 2;
     this.reactorWidth = bbox.width / this.recipe.reactors.length;
