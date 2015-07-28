@@ -4,6 +4,8 @@
 /// <reference path="../../../src/step.ts" />
 
 class AddIngredientFactory implements IStepFactory {
+  private static ingredientTypes: Array<string> = ["dynamic", "fermentables", "hops", "yeast", "miscellaneous"];
+
   private state:number = 0;
 
   data:{ [key: string]: any; } = {};
@@ -15,10 +17,16 @@ class AddIngredientFactory implements IStepFactory {
         return new WizardConfig('name', WizardStep.text, { description: 'Ingredient Step Name'} );
       case 1:
         this.state = 2;
-        return new WizardConfig('menu', WizardStep.menu, ["dynamic", "fermentables", "hops", "yeast", "miscellaneous"]);
+        return new WizardConfig('menu', WizardStep.menu, AddIngredientFactory.ingredientTypes);
       case 2:
         this.state = 3;
-        return new WizardConfig('qty', WizardStep.ingredient, this.name2type(this.data['menu']));
+        return new WizardConfig('ingredient', WizardStep.ingredient, this.name2type(this.data['menu']));
+      case 3:
+        this.state = 4;
+        return new WizardConfig('qty', WizardStep.quantity, {
+          description: 'How Much :',
+          allowed: [Dim.Mass, Dim.Volume]
+        });
       default:
         return undefined;
     }
@@ -35,6 +43,7 @@ class AddIngredientFactory implements IStepFactory {
   }
 
   build() : Step[] {
+      console.log('build');
     return [new Step(this.data['name'], StepType.addIngredient)];
   }
 

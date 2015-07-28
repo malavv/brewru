@@ -126,6 +126,10 @@ class RecipeWizard extends Polymer.DomModule {
 
 
   public askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
+    if (type === undefined) {
+        console.log('Undefined ingredient type');
+        return Promise.reject(new CancelError());
+    }
     this._ingItems = undefined;
 
     if (type === IngredientType.Dynamic) {
@@ -142,7 +146,7 @@ class RecipeWizard extends Polymer.DomModule {
     return new Promise((resolve, reject) => {
         this._currentResolve = resolve;
         this._currentReject = reject;
-    }).then(RecipeWizard.isIngredientChoiceValid)
+    }).then(RecipeWizard.isIngredientChoiceValid.bind(this, this._ingItems))
   }
 
   public askQuantity(config: { description: string; allowed: Array<Dim> }): Promise<Quantity> {
@@ -164,8 +168,10 @@ class RecipeWizard extends Polymer.DomModule {
     return data.qty !== undefined ? Promise.resolve(data.qty) : Promise.reject('');
   }
 
-  private static isIngredientChoiceValid(data: { ingredient: Ingredient; quantity: Quantity }) {
-    return (data.ingredient !== null && data.quantity !== null) ? Promise.resolve(data) : Promise.reject(new CancelError());
+  private static isIngredientChoiceValid(items: Array<any>, type: number) {
+    if (type !== undefined && typeof(type) === 'number' && type >= 0 && type < items.length)
+      return Promise.resolve((items[type] instanceof AppMenuWrapper) ? items[type].val : items[type]);
+    return Promise.reject(new CancelError());
   }
 
   private static isTextChoiceValid(result: { description: string; value?: string; }) {
@@ -174,7 +180,7 @@ class RecipeWizard extends Polymer.DomModule {
 
   private static isMenuChoiceValid(items: Array<any>, type: number) {
     if (type !== undefined && typeof(type) === 'number' && type >= 0 && type < items.length)
-      return Promise.resolve(items[type]);
+      return Promise.resolve((items[type] instanceof AppMenuWrapper) ? items[type].val : items[type]);
     return Promise.reject(new CancelError());
   }
 
@@ -222,7 +228,7 @@ class RecipeWizard extends Polymer.DomModule {
     result[key] = data;
   }
 
-  _menuSelectedChanged(newVal: any, oldVal: any) {
+  _menuSelectedChanged(newIdx: any, oldIdx: any) {
     if (this.opened && this.selectedTmpl === 0) {
       var
         resolve = this._currentResolve,
@@ -232,7 +238,7 @@ class RecipeWizard extends Polymer.DomModule {
       this.async(() => {
         this.$$('#menu widget-list').clear();
       }, 1);
-      resolve((newVal instanceof AppMenuWrapper) ? newVal.val : newVal);
+      resolve(newIdx);
     }
   }
   _textCommit() {
@@ -242,16 +248,18 @@ class RecipeWizard extends Polymer.DomModule {
       this._currentReject = undefined;
     }
   }
-
-  _ingSelectedChanged() { this._onIngStateChanged(); }
-  _ingQtyChanged() { this._onIngStateChanged(); }
-  _onIngStateChanged() {
-    if (this._ingSelected === undefined) return;
-    if (this._ingQty === undefined) return;
-    this._currentResolve({
-      ingredient: this._ingSelected,
-      quantity: this._ingQty
-    });
+  _ingSelectedChanged(newIdx: any, oldIdx: any) {
+    if (this.opened && this.selectedTmpl === 2) {
+      var
+        resolve = this._currentResolve,
+        reject = this._currentReject;
+      this._currentResolve = undefined;
+      this._currentReject = undefined;
+      this.async(() => {
+        this.$$('#ingredient widget-list').clear();
+      }, 1);
+      resolve(newIdx);
+    }
   }
   _qtyChanged() {
     if (this.opened && this.selectedTmpl === 3) {
