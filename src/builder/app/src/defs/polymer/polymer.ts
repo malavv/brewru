@@ -17,6 +17,8 @@ module Polymer {
 
   export var IronOverlayBehavior: Object;
   export var IronResizableBehavior: Object;
+  export var IronMultiSelectableBehavior: Object;
+  export var IronSelection: any;
 }
 
 interface Window { Polymer: any; }

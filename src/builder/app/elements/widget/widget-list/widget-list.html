@@ -6,17 +6,22 @@
     .iron-selected {
       background: #234;
     }
+    div[selected] {
+      background: red;
+    }
   </style>
   <link rel="stylesheet" href="widget-list.css">
   
   <template>
-    <iron-list items="[[items]]" as="item">
+    <iron-list id="list" items="{{items}}" as="item" autofocus>
         <template>
-          <div class="item horizontal layout center" on-tap="_onTap">
-            <div class="idx">{{_toBase(index)}}</div><div class="value">{{item}}</div>
+          <div class="item horizontal layout center" on-tap="_selectRow">
+            <div class="idx">{{_toBase(index)}}</div>
+            <div class="value">{{item}}</div>
           </div>
         </template>
     </iron-list>
   </template>
+  
   <script src="widget-list.js"></script>
 </dom-module>

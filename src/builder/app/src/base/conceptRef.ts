@@ -1,23 +1,23 @@
 interface ConceptRef {
   isAnon: boolean;
-  id: string;
+  ref: string;
   name: string;
 }
 
 class OntoRef implements ConceptRef {
-  private static nextAnonId = 0;
-  id: string;
+  private static nextAnonRef = 0;
+  ref: string;
   isAnon: boolean;
   name: string;
   
-  constructor(id:string, name:string) {
-    this.id = id || 'anon:' + OntoRef.nextAnonId++;
+  constructor(ref:string, name:string) {
+    this.ref = ref || 'anon:' + OntoRef.nextAnonRef++;
     this.name = name;
-    this.isAnon = id === null;    
+    this.isAnon = ref === null;    
   }
   
   toString(): string { return this.name; }
   
   static createAnon(name:string) : ConceptRef { return new OntoRef(null, name); }
-  static create(id:string, name:string) : ConceptRef { return new OntoRef(id, name); }
+  static create(ref:string, name:string) : ConceptRef { return new OntoRef(ref, name); }
 }

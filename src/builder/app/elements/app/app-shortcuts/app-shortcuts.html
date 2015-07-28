@@ -16,17 +16,15 @@
   <template>
     <iron-a11y-keys keys="shift+6" target="[[target]]" on-keys-pressed="_showShortcuts"></iron-a11y-keys>
     <iron-a11y-keys keys="alt+s" target="[[target]]" on-keys-pressed="_createNewStep"></iron-a11y-keys>
-
     
     <div class="title">Keyboard Shortcuts</div>
-    <template is="dom-repeat" items="[[listed.all]]" as="shortcut">
+    <template is="dom-repeat" items="[[listed]]" as="shortcut">
       <div class="key">
-        <div class="shortcut">{{shortcut.binding}}</div>
-        <div class="text">{{shortcut.description}}</div>
+        <div class="shortcut">[[shortcut.binding]]</div>
+        <div class="text">[[shortcut.description]]</div>
       </div>
     </template>
   </template>
 
   <script src="app-shortcuts.js"></script>
-
 </dom-module>
