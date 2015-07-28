@@ -19,6 +19,7 @@ module Polymer {
   export var IronResizableBehavior: Object;
   export var IronMultiSelectableBehavior: Object;
   export var IronSelection: any;
+  export var dom: (any) => any;
 }
 
 interface Window { Polymer: any; }

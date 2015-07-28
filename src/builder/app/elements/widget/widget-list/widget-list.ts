@@ -3,27 +3,40 @@
 /// <reference path="../../../src/base/codes.ts" />
 
 class WidgetList extends Polymer.DomModule {
-  private static codes:base.BaseConvert = new base.KeyboardBase();
+  // From IronSelectable
+  private _selection: any;
+  private select: any;
+  private selectable: any;
+  private _bindFilterItem: any;
   
+  // Polymer element
+  private style: any;
   // Properties
-  private _selection: any;  
+  private data: Array<any>;
   
-  private style:any;
-  
-  private _selectRow(template: any) {
-    this.select(template.model.item);
+  /**
+   * Allows external code to clear the selection.
+   * 
+   * Watch out for the need to async this. Depending on when you notice the selection.
+   */
+  public clear() {
+    this._selection.clear();
   }
   
+  /**
+   * Computes exactly the size required for the items.
+   */
   private resize() {
-    this.style.height = (this.items.length * this.$.list.height) + 'px';
+    this.style.height = (this.data.length * this.$.list.height) + 'px';
   }
   
-  _itemsChanged() {
-    console.log('_itemsChanged');
-  }
-  
-  _toBase(idx : any) {
-    return WidgetList.codes.toCode(idx);
+  /**
+   * Overriding the items selection from selectable.
+   * Since the selectable items are inside list and not inside me.
+   */
+  private get items() {
+    var nodes = Polymer.dom(this.$.list).queryDistributedElements(this.selectable || '*');
+    return Array.prototype.filter.call(nodes, this._bindFilterItem);
   }
 }
 
@@ -31,14 +44,10 @@ window.Polymer(window.Polymer.Base.extend(WidgetList.prototype, {
   is: 'widget-list',
 
   properties: {
-    items: Array
+    data: Array
   },
   
   behaviors: [
     Polymer.IronMultiSelectableBehavior
-  ],
-  
-  observers: [
-    '_itemsChanged(items.*)'
   ]
 }));

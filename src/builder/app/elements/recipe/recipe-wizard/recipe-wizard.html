@@ -15,14 +15,14 @@
   <template>
     <iron-pages selected="{{selectedTmpl}}" class="flex">
       <div id="menu" class="flex">
-        <widget-list items="{{_menuItems}}" selected="{{_menuSelected}}" class="flex"></widget-list>
+        <widget-list data="{{_menuItems}}" selected="{{_menuSelected}}" class="flex"></widget-list>
       </div>
       <div id="text" class="flex">
         <iron-a11y-keys target="[[_textInput]]" keys="enter" on-keys-pressed="_textCommit"></iron-a11y-keys>
         <paper-input id="_textInput" label="{{description}}" value="{{textValue}}" autofocus></paper-input>
       </div>
       <div id="ingredient">
-        <widget-list items="{{_ingItems}}" selected="{{_ingSelected}}"></widget-list>
+        <widget-list data="{{_ingItems}}" selected="{{_ingSelected}}"></widget-list>
         <widget-quantity id="_ingQtyElem" quantity="{{_ingQty}}"></widget-quantity>
       </div>
       <div id="quantity">

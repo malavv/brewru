@@ -10,14 +10,24 @@ iron-list {
     border-top: 1px solid #ddd;
     border-left: 3px solid #0000ff;
     cursor: pointer;
-    &:hover {
-      background-color: #ddd;
-    }
+    
     div.idx {
       width: 70px;
       font-weight: bold;
       text-align: center;
     }
-    div.value {}
+    
+    &:hover {
+      background-color: #ddd;
+    }
+    
+    &.iron-selected {
+      background: #bbb;
+      
+      &:hover {
+        background-color: #ccc;
+      }
+    }
   }
+  
 }

@@ -225,9 +225,15 @@ class RecipeWizard extends Polymer.DomModule {
 
   _menuSelectedChanged(newVal: any, oldVal: any) {
     if (this.opened && this.selectedTmpl === 0) {
-        this._currentResolve((newVal instanceof AppMenuWrapper) ? newVal.val : newVal);
-        this._currentResolve = undefined;
-        this._currentReject = undefined;
+      var
+        resolve = this._currentResolve,
+        reject = this._currentReject;
+      this._currentResolve = undefined;
+      this._currentReject = undefined;
+      this.async(() => {
+        this.$$('#menu widget-list').clear();
+      }, 1);
+      resolve((newVal instanceof AppMenuWrapper) ? newVal.val : newVal);
     }
   }
   _textCommit() {
