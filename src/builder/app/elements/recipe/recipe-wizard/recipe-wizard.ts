@@ -79,11 +79,11 @@ class RecipeWizard extends Polymer.DomModule {
     return this.askMenu(StepType.All);
   }
 
-  public create(ref: ConceptRef): Promise<IStepFactory> {
-    switch (ref.id) {
-      case StepType.addIngredient.id:
+  public create(concept: ConceptRef): Promise<IStepFactory> {
+    switch (concept.ref) {
+      case StepType.addIngredient.ref:
         return Promise.resolve(new AddIngredientFactory());
-      case StepType.heating.id:
+      case StepType.heating.ref:
         return Promise.resolve(new HeatingFactory());
       default:
         console.warn('StepFactory<create>');
@@ -121,21 +121,18 @@ class RecipeWizard extends Polymer.DomModule {
     return new Promise((resolve, reject) => {
         this._currentResolve = resolve;
         this._currentReject = reject;
-    }).then(RecipeWizard.isMenuChoiceValid)
+    }).then(RecipeWizard.isMenuChoiceValid.bind(this, this._menuItems))
   }
 
 
   public askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
     this._ingItems = undefined;
-    this._ingQty = undefined;
-    this._ingSelected = undefined;
 
     if (type === IngredientType.Dynamic) {
       this._ingItems = this.recipe.listDynamicIngredients();
     } else {
       this._ingItems = this.inventory.stocks.filter((i:Ingredient) => i.type === type);
     }    
-    this.$._ingQtyElem.reset();
 
     // Select menu
     this.selectedTmpl = 2;
@@ -175,8 +172,10 @@ class RecipeWizard extends Polymer.DomModule {
     return result.value !== undefined ? Promise.resolve(result.value) : Promise.reject(new CancelError());
   }
 
-  private static isMenuChoiceValid(type?: ConceptRef) {
-    return type !== undefined ? Promise.resolve(type) : Promise.reject(new CancelError());
+  private static isMenuChoiceValid(items: Array<any>, type: number) {
+    if (type !== undefined && typeof(type) === 'number' && type >= 0 && type < items.length)
+      return Promise.resolve(items[type]);
+    return Promise.reject(new CancelError());
   }
 
   private static wrap(data: Array<string>): Object[] {
