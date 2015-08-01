@@ -18,14 +18,15 @@
         <widget-list data="{{_menuItems}}" selected="{{_menuSelected}}" class="flex"></widget-list>
       </div>
       <div id="text" class="flex">
-        <iron-a11y-keys target="[[_textInput]]" keys="enter" on-keys-pressed="_textCommit"></iron-a11y-keys>
-        <paper-input id="_textInput" label="{{description}}" value="{{textValue}}" autofocus></paper-input>
+        <paper-input label="{{_description}}" value="{{_text::change}}" autofocus></paper-input>
       </div>
       <div id="ingredient">
+        <!--This will be made into something more robust later-->
         <widget-list data="{{_ingItems}}" selected="{{_ingSelected}}"></widget-list>
       </div>
       <div id="quantity">
-        <span>{{description}}</span><widget-quantity id="qty" quantity="{{_qty}}"></widget-quantity>
+        <span>{{_description}}</span>
+        <widget-quantity id="qty" quantity="{{_qty}}"></widget-quantity>
       </div>
     </iron-pages>
   </template>

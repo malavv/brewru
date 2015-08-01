@@ -12,73 +12,110 @@
 /// <reference path="wizardStep.ts" />
 /// <reference path="heatingFactory.ts" />
 /// <reference path="addIngredientFactory.ts" />
+/// <reference path="../../widget/widget-list/widget-list.ts" />
 
-class AppMenuWrapper {
+class NativeStrBox {
   val: string;
   toString() : string { return this.val; }
   constructor(val:string) { this.val = val; }
 }
 
+function boxNativeIfNeeded(data: Array<any>) : Array<any> {
+  return typeof (data[0]) === 'string' ? data.map(s => new NativeStrBox(s)) : data;
+}
+
+function unboxNativeIfNeeded(item : any) : any {
+  return item instanceof NativeStrBox ? (<NativeStrBox>item).val : item;
+}
+
+function registerData(result: { [key: string]: any; }, key: string, data: any) {
+  result[key] = data;
+}
+
+enum WizardScreen {
+  menu,
+  text,
+  ingredient,
+  quantity
+}
+
 class RecipeWizard extends Polymer.DomModule {
   /* Is the Panel Opened? Coming from IronOverlay. */
   private opened: boolean;
-  isChoosing: boolean;
-  selected: number;
+  private isChoosing: boolean;
+  private promise: {resolve:any;reject:any};
 
+  // Internal
   selectedTmpl: number;
-  description: string;
-  _textInput: any;
-  textValue: string;
-  
-  _qty: Quantity;
   
   // Properties
   inventory: IngredientSrc;
   recipe: Recipe;
 
+  // All
+  _description: string;
+  // Text
+  _text: string;
   // Menu
   _menuItems: Array<any>
   _menuSelected: any;
-
   // Ingredient
   _ingItems: Array<any>;
   _ingSelected: any;
-  _ingQty: Quantity;
+  // Quantity
+  _qty: Quantity;
 
-  _currentResolve: (l:any) => void;
-  _currentReject: () => void;
-
+  // Polymer.Base
   ready() {
     this.isChoosing = false;
-    this._textInput = this.$._textInput;
     bus.suscribe(MessageType.CreateStep, this.onCreateStep, this);
   }
-
-  onCreateStep(data: any) {
-    if (this.isChoosing) return;
-
-    this.askStepType()
-      .then((ref: ConceptRef) => { 
-        return this.create(ref); 
-      })
-      .then((factory: IStepFactory) => { 
-        return this.query(this.inventory.stocks, factory); 
-      })
-      .then((stepFactory: IStepFactory) => { 
-        return stepFactory.build(); 
-      })
-      .then((step: Step[]) => {
-        step.forEach((s: Step) => {
-          bus.publish(MessageType.NewStepCreated, s);
-        })
-      }).catch((e: Error) => {
-        this.isChoosing = false;
-        if (e instanceof CancelError) {
-          console.info('Wizard Canceled');
-        } else {
-          console.error("Wizard issue, or Step building failure", e);
-        }
-      });
+  
+  /** Returns a promise asking for text. */
+  public askText(data: { description: string }): Promise<string> {
+    this._description = (data === undefined || data.description === undefined) ? "" : data.description;
+    this.switchToScreen(WizardScreen.text);
+    this.opened = true;
+    return new Promise(this._storePromise.bind(this));
+  }
+  /** 
+   * Returns a promise asking for an item from a menu.
+   * 
+   * This will auto-wrap native string array. 
+   */
+  public askMenu(data: Array<any>): Promise<ConceptRef> {
+    // If nothing asked
+    if (data === undefined || data.length === 0)  return Promise.resolve();
+    
+    this._menuSelected = undefined;
+    this._menuItems = boxNativeIfNeeded(data);
+    this.switchToScreen(WizardScreen.menu);
+    this.opened = true;
+    return new Promise(this._storePromise.bind(this));
+  }
+  /**
+   * Returns a primuse asking for an item's quantity.
+   */
+  public askQuantity(config: { description: string; allowed: Array<Dim> }): Promise<Quantity> {
+    this._description = config.description;
+    this.$.qty.reset();
+    this._qty = undefined;
+    this.switchToScreen(WizardScreen.quantity);
+    this.opened = true;
+    return new Promise(this._storePromise.bind(this));
+  }
+  /**
+   * Returns a primuse asking for an ingredient.
+   */
+  public askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
+    if (type === undefined) return Promise.reject(new InvalidStateError());
+    
+    this._ingItems = type === IngredientType.Dynamic 
+      ? this.recipe.listDynamicIngredients() 
+      : this.inventory.stocks.filter((i:Ingredient) => i.type === type);
+    this.switchToScreen(WizardScreen.ingredient); 
+    this.opened = true;
+    return new Promise(this._storePromise.bind(this));
   }
 
   /** Ask the user to choose a step type. */
@@ -98,103 +135,6 @@ class RecipeWizard extends Polymer.DomModule {
     }
   }
 
-  public askText(data: { description: string }): Promise<string> {
-    this.description = (data === undefined || data.description === undefined) ? "" : data.description;
-    this.selectedTmpl = 1;
-    this.opened = true;
-
-    return new Promise((resolve, reject) => {
-        this._currentResolve = resolve;
-        this._currentReject = reject;
-    }).then(RecipeWizard.isTextChoiceValid)
-  }
-
-  public askMenu(data: Array<any>): Promise<ConceptRef> {
-    if (data === undefined)
-      return undefined;
-    if (data.length === 0)
-      return Promise.resolve();
-    if (typeof (data[0]) === 'string')
-      data = RecipeWizard.wrap(<string[]>data);
-
-    // Feed items to menu
-    this._menuSelected = undefined;
-    this._menuItems = data;
-    // Select menu
-    this.selectedTmpl = 0;
-    // Show Wizard.
-    this.opened = true;
-
-    return new Promise((resolve, reject) => {
-        this._currentResolve = resolve;
-        this._currentReject = reject;
-    }).then(RecipeWizard.isMenuChoiceValid.bind(this, this._menuItems))
-  }
-
-
-  public askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
-    if (type === undefined) {
-        console.log('Undefined ingredient type');
-        return Promise.reject(new CancelError());
-    }
-    this._ingItems = undefined;
-
-    if (type === IngredientType.Dynamic) {
-      this._ingItems = this.recipe.listDynamicIngredients();
-    } else {
-      this._ingItems = this.inventory.stocks.filter((i:Ingredient) => i.type === type);
-    }    
-
-    // Select menu
-    this.selectedTmpl = 2;
-    // Show Wizard.
-    this.opened = true;
-
-    return new Promise((resolve, reject) => {
-        this._currentResolve = resolve;
-        this._currentReject = reject;
-    }).then(RecipeWizard.isIngredientChoiceValid.bind(this, this._ingItems))
-  }
-
-  public askQuantity(config: { description: string; allowed: Array<Dim> }): Promise<Quantity> {
-    this.description = config.description;
-    this._qty = undefined;
-    
-    // Select menu
-    this.selectedTmpl = 3;
-    // Show Wizard.
-    this.opened = true;
-    
-    return new Promise((resolve, reject) => {
-        this._currentResolve = resolve;
-        this._currentReject = reject;
-    }).then(RecipeWizard.isQuantityChoiceValid)
-  }
-
-  private static isQuantityChoiceValid(data: { qty: Quantity }) {
-    return data.qty !== undefined ? Promise.resolve(data.qty) : Promise.reject('');
-  }
-
-  private static isIngredientChoiceValid(items: Array<any>, type: number) {
-    if (type !== undefined && typeof(type) === 'number' && type >= 0 && type < items.length)
-      return Promise.resolve((items[type] instanceof AppMenuWrapper) ? items[type].val : items[type]);
-    return Promise.reject(new CancelError());
-  }
-
-  private static isTextChoiceValid(result: { description: string; value?: string; }) {
-    return result.value !== undefined ? Promise.resolve(result.value) : Promise.reject(new CancelError());
-  }
-
-  private static isMenuChoiceValid(items: Array<any>, type: number) {
-    if (type !== undefined && typeof(type) === 'number' && type >= 0 && type < items.length)
-      return Promise.resolve((items[type] instanceof AppMenuWrapper) ? items[type].val : items[type]);
-    return Promise.reject(new CancelError());
-  }
-
-  private static wrap(data: Array<string>): Object[] {
-    return data.map(s => new AppMenuWrapper(s));
-  }
-
   public query(ingredients: any, factory: IStepFactory): Promise<IStepFactory> {
     return Promise.resolve(factory.next())
       .then(this.processNext.bind(this, factory))
@@ -205,6 +145,108 @@ class RecipeWizard extends Polymer.DomModule {
       });
   }
 
+  public processNext(factory: IStepFactory, c: WizardConfig): Promise<any> {
+    return this._askScreen(c)
+      .then(registerData.bind(this, factory.data, c.propertyName))
+      .then(() => {
+        var next:WizardConfig = factory.next();
+        if (next === undefined) return Promise.resolve(factory);
+        else return this.processNext(factory, next);
+      });
+  }
+  
+  private _textChanged(newVal?: string, oldVal?: string) {
+    if (!this.opened || this.selectedTmpl !== 1) return;
+    if (newVal === undefined) return Promise.reject(new InvalidStateError());
+    var promise = this.promise;
+    this.promise = undefined;    
+    this.async(() => {
+      this._description = "";
+      this._text = "";
+    }, 1);    
+    promise.resolve({
+      description: this._description,
+      value: newVal
+    });
+  }
+  
+  private _menuSelectedChanged(newIdx?: number, oldIdx?: number) {
+    if (newIdx === undefined) return; // When reseting the value.
+    var promise = this.promise;
+    this.promise = undefined;
+    if (!this.opened || this.selectedTmpl !== 0) {
+      promise.reject(new InvalidStateError());
+      return;
+    }
+    if (newIdx < 0 || newIdx >= this._menuItems.length) {
+      promise.reject(new InvalidStateError());
+      return;
+    }
+    var choice = this._menuItems[newIdx];
+    this._menuItems = [];
+    this._menuSelected = undefined;
+    this.async(() => { 
+      (<WidgetList><any>this.$$('#menu widget-list')).clear();
+    }, 1);
+    
+    promise.resolve(unboxNativeIfNeeded(choice));
+  }
+  
+  private _ingSelectedChanged(newIdx?: number, oldIdx?: number) {
+    if (newIdx === undefined) return; // When reseting the value.
+    var promise = this.promise;
+    this.promise = undefined;
+    if (!this.opened || this.selectedTmpl !== 2) {
+      promise.reject(new InvalidStateError());
+      return;
+    }
+    if (newIdx < 0 || newIdx >= this._ingItems.length) {
+      promise.reject(new InvalidStateError());
+      return;
+    }
+    var choice = this._ingItems[newIdx];
+    this._ingItems = [];
+    this._ingSelected = undefined;
+    this.async(() => { 
+      (<WidgetList><any>this.$$('#ingredient widget-list')).clear();
+    }, 1);
+    
+    promise.resolve(unboxNativeIfNeeded(choice));
+  }
+  
+  private _qtyChanged(newVal?: Quantity, oldVal?: Quantity) {
+    if (newVal === undefined) return; // When reseting the value.
+    var promise = this.promise;
+    this.promise = undefined;
+    if (!this.opened || this.selectedTmpl !== 3) {
+      promise.reject(new InvalidStateError());
+      return;
+    }
+    var choice = this._qty;
+    this._qty = undefined;
+    promise.resolve({
+      description: this._description, 
+      qty: choice
+    });
+  }
+  
+  private _storePromise(resolve:any, reject:any) {
+    this.promise = {
+      resolve: resolve, 
+      reject: reject
+    };
+  }
+  
+  private switchToScreen(screen:WizardScreen) {
+    var screenId = -1;
+    switch (screen) {
+      case WizardScreen.menu: this.selectedTmpl = 0; break;
+      case WizardScreen.text: this.selectedTmpl = 1; break;
+      case WizardScreen.ingredient: this.selectedTmpl = 2; break;
+      case WizardScreen.quantity: this.selectedTmpl = 3; break;
+      default: console.warn('Unrecognized Screen requested');
+    }
+  }
   private _askScreen(c: WizardConfig) : Promise<any> {
     switch(c.wizardPanel) {
         case WizardStep.ingredient: 
@@ -220,60 +262,32 @@ class RecipeWizard extends Polymer.DomModule {
           return Promise.reject(new Error('Invalid Wizard Step'));
     }
   }
+  private onCreateStep(data: any) {
+    if (this.isChoosing) return;
 
-  public processNext(factory: IStepFactory, c: WizardConfig): Promise<any> {
-    return this._askScreen(c)
-      .then(RecipeWizard.registerData.bind(this, factory.data, c.propertyName))
-        .then(() => {
-          var next:WizardConfig = factory.next();
-          if (next === undefined) return Promise.resolve(factory);
-          else return this.processNext(factory, next);
-        });
-  }
-
-  private static registerData(result: { [key: string]: any; }, key: string, data: any) {
-    result[key] = data;
-  }
-
-  _menuSelectedChanged(newIdx: any, oldIdx: any) {
-    if (this.opened && this.selectedTmpl === 0) {
-      var
-        resolve = this._currentResolve,
-        reject = this._currentReject;
-      this._currentResolve = undefined;
-      this._currentReject = undefined;
-      this.async(() => {
-        (<WidgetList><any>this.$$('#menu widget-list')).clear();
-      }, 1);
-      resolve(newIdx);
-    }
-  }
-  _textCommit() {
-    if (this.opened && this.selectedTmpl === 1) {
-      this._currentResolve({description: this.description, value: this.textValue});
-      this._currentResolve = undefined;
-      this._currentReject = undefined;
-    }
-  }
-  _ingSelectedChanged(newIdx: any, oldIdx: any) {
-    if (this.opened && this.selectedTmpl === 2) {
-      var
-        resolve = this._currentResolve,
-        reject = this._currentReject;
-      this._currentResolve = undefined;
-      this._currentReject = undefined;
-      this.async(() => {
-        (<WidgetList><any>this.$$('#ingredient widget-list')).clear();
-      }, 1);
-      resolve(newIdx);
-    }
-  }
-  _qtyChanged() {
-    if (this.opened && this.selectedTmpl === 3) {
-      this._currentResolve({description: this.description, qty:this._qty});
-      this._currentResolve = undefined;
-      this._currentReject = undefined;
-    }
+    this.askStepType()
+      .then((ref: ConceptRef) => { 
+        return this.create(ref); 
+      })
+      .then((factory: IStepFactory) => { 
+        return this.query(this.inventory.stocks, factory); 
+      })
+      .then((stepFactory: IStepFactory) => { 
+        return stepFactory.build(); 
+      })
+      .then((step: Step[]) => {
+        step.forEach((s: Step) => {
+          bus.publish(MessageType.NewStepCreated, s);
+        })
+      })
+      .catch((e: Error) => {
+        this.isChoosing = false;
+        if (e instanceof CancelError) {
+          console.info('Wizard Canceled');
+        } else {
+          console.error("Wizard issue, or Step building failure", e);
+        }
+      });
   }
 }
 
@@ -281,6 +295,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
   is: 'recipe-wizard',
 
   properties: {
+    // ----------- Outside  -----------
     inventory: {
       type: Object,
       value: undefined
@@ -289,13 +304,19 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
       type: Object,
       value: undefined
     },
-
+    
+    // ----------- Internal -----------
+    // Selects the Wizard Page.
     selectedTmpl: {
       type: Number,
       value: 0
     },
-    textValue: {
-      type: String
+    // Used to describe pages (used in more than one)
+    _description: String,
+    // Value of the Text Page.
+    _text: {
+      type:String,
+      observer: '_textChanged'
     },
     // Menu
     _menuItems: Array,
