@@ -19,7 +19,7 @@
             <ul>
               <template is="dom-repeat" items="{{allowed}}" as="dim">
                 <template is="dom-repeat" items="{{listUnits(system, dim)}}" as="unit">
-                    <li on-tap="onChoice" data-unit={{unit.concept.id}} data-test={{unit.concept}}>{{unit}}</li>
+                    <li on-tap="onChoice" data-unit={{unit.concept.ref}}>{{unit}}</li>
                 </template>
               </template>
             </ul>
