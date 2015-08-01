@@ -96,10 +96,10 @@ class RecipeGraph extends Polymer.DomModule {
 	}
   
   _drawStep(step:Step, g:any, localOffset:number) {
-    switch(step.type.id) {
-      case StepType.start.id: return this.drawStart(g);
-      case StepType.addIngredient.id: return this.drawIngredient(step, g, localOffset);
-      case StepType.heating.id: return this.drawHeating(step, g, localOffset);
+    switch(step.type.ref) {
+      case StepType.start.ref: return this.drawStart(g);
+      case StepType.addIngredient.ref: return this.drawIngredient(step, g, localOffset);
+      case StepType.heating.ref: return this.drawHeating(step, g, localOffset);
       default:
         console.log('Unrecognized Step Type', step);
         break;
@@ -143,10 +143,10 @@ class RecipeGraph extends Polymer.DomModule {
   }
 
   drawStep(g:any, offset:number, step:Step, index:number) {
-    switch(step.type.id) {
-      case StepType.start.id: return this.drawStart(g);
-      case StepType.addIngredient.id: return this.drawIngredient(step, g, index * offset);
-      case StepType.heating.id: return this.drawHeating(step, g, index * offset);
+    switch(step.type.ref) {
+      case StepType.start.ref: return this.drawStart(g);
+      case StepType.addIngredient.ref: return this.drawIngredient(step, g, index * offset);
+      case StepType.heating.ref: return this.drawHeating(step, g, index * offset);
       default:
         console.log('Unrecognized Step Type', step);
         break;

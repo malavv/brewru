@@ -22,7 +22,7 @@ class SystemImpl {
   }
   
   getById(id: string) : Unit {
-    var match: Unit[] = this.units.filter((u: Unit) => { return u.concept.id === id; });
+    var match: Unit[] = this.units.filter((u: Unit) => { return u.concept.ref === id; });
     return match.length === 0 ? null : match[0];
   }
 }

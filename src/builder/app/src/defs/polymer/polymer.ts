@@ -10,16 +10,25 @@ module Polymer {
     listeners: {[key:string]: string};
     root: Element;
     $:any;
+    
     // Methods
-    $$: (selector: string) => Element;
-    async: (callback:()=>void, waitTime:number) => void;
+    $$: (slctr: string) => Element;
+    async: (callback:()=>void, waitTime:number) => number;
+    cancelAsync: (handle:number) => void;
+    fire : (type:string, detail?:Object, options?:Object) => CustomEvent;
+  }
+  
+  interface Api {
+    appendChild(node:HTMLElement) : void;
+    insertBefore(node:HTMLElement, beforeNode:HTMLElement) : void;
+    removeChild(node:HTMLElement) : void;
   }
 
   export var IronOverlayBehavior: Object;
   export var IronResizableBehavior: Object;
   export var IronMultiSelectableBehavior: Object;
   export var IronSelection: any;
-  export var dom: (any) => any;
+  export var dom: (selector:string) => any;
 }
 
 interface Window { Polymer: any; }

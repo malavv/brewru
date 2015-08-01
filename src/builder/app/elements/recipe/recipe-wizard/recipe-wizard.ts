@@ -6,6 +6,9 @@
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/errors.ts" />
 
+/// <reference path="../../../src/ingredientSrc.ts" />
+/// <reference path="../../../src/recipe.ts" />
+
 /// <reference path="wizardStep.ts" />
 /// <reference path="heatingFactory.ts" />
 /// <reference path="addIngredientFactory.ts" />
@@ -28,6 +31,10 @@ class RecipeWizard extends Polymer.DomModule {
   textValue: string;
   
   _qty: Quantity;
+  
+  // Properties
+  inventory: IngredientSrc;
+  recipe: Recipe;
 
   // Menu
   _menuItems: Array<any>
@@ -236,7 +243,7 @@ class RecipeWizard extends Polymer.DomModule {
       this._currentResolve = undefined;
       this._currentReject = undefined;
       this.async(() => {
-        this.$$('#menu widget-list').clear();
+        (<WidgetList><any>this.$$('#menu widget-list')).clear();
       }, 1);
       resolve(newIdx);
     }
@@ -256,7 +263,7 @@ class RecipeWizard extends Polymer.DomModule {
       this._currentResolve = undefined;
       this._currentReject = undefined;
       this.async(() => {
-        this.$$('#ingredient widget-list').clear();
+        (<WidgetList><any>this.$$('#ingredient widget-list')).clear();
       }, 1);
       resolve(newIdx);
     }
