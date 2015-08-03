@@ -43,7 +43,6 @@ class AddIngredientFactory implements IStepFactory {
   }
 
   build() : Step[] {
-      console.log('build');
     return [new Step(this.data['name'], StepType.addIngredient)];
   }
 

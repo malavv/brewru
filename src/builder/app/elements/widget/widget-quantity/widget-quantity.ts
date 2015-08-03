@@ -4,23 +4,13 @@
 /// <reference path="../../../src/units/unit.ts" />
 
 class WidgetQuantity extends Polymer.DomModule {
-  amount: number;
-  unit: Unit;
-  
+  /** Quantity to look for */
   quantity:any;
+  /** Dimensions you are allowed to choose from. */
   allowed: Array<Dim>;
   
-  private _amountChanged() { this._check(); }
-  private _unitChanged() { this._check(); }
-  
-  private _isValid() {
-    return this.unit !== Unit.Unknown && this.amount !== 0;
-  }
-  
-  private _check() {
-    if (!this._isValid()) return;
-    this.quantity = new Quantity(this.amount, this.unit);
-  }
+  amount: number;
+  unit: Unit;
   
   public restrictDimensions(dimensions: Array<Dim>) {
     console.log('restrict dimensions');
@@ -31,6 +21,16 @@ class WidgetQuantity extends Polymer.DomModule {
     this.amount = 0;
     this.unit = Unit.Unknown;
     this.quantity = undefined;
+  }
+  
+  private _amountChanged() { this._check(); }
+  private _unitChanged() { this._check(); }
+  private _isValid() {
+    return this.unit !== Unit.Unknown && this.amount !== 0;
+  }
+  private _check() {
+    if (!this._isValid()) return;
+    this.quantity = new Quantity(this.amount, this.unit);
   }
 }
 
@@ -56,8 +56,5 @@ window.Polymer(window.Polymer.Base.extend(WidgetQuantity.prototype, {
       type:Array,
       value: Dim.all()
     }
-  },
-
-  listeners: {
   }
 }));

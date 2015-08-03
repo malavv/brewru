@@ -125,8 +125,8 @@ class RecipeGraph extends Polymer.DomModule {
       .attr('fill', 'white')
       .attr('stroke', 'black');
     g.append('text')
-      .attr("x", -5)
-      .attr("y", localOffset + 5)
+      .attr("x", -6)
+      .attr("y", localOffset + 6)
       .text('\u2726');
   }
 
