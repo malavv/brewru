@@ -27,14 +27,14 @@ class RecipeBuilder extends Polymer.DomModule {
     var src = new IngredientSrc(Entities.inventory);
 	
 	return src.addAll([
-	  new Ingredient(Entities.syrup, IngredientType.Fermentables),
-	  new Ingredient(Entities.c120, IngredientType.Fermentables),
-	  new Ingredient(Entities.c60, IngredientType.Fermentables),
-	  new Ingredient(Entities.paleChoco, IngredientType.Fermentables),
-	  new Ingredient(Entities.blackMalt, IngredientType.Fermentables),
-	  new Ingredient(Entities.flakedRye, IngredientType.Fermentables),
-	  new Ingredient(Entities.rolledOat, IngredientType.Fermentables),
-	  new Ingredient(Entities.yeastNutrient, IngredientType.Miscellaneous),
+	  new Ingredient(Entities.syrup, IngredientType.Fermentables, [Dim.Volume]),
+	  new Ingredient(Entities.c120, IngredientType.Fermentables, [Dim.Mass]),
+	  new Ingredient(Entities.c60, IngredientType.Fermentables, [Dim.Mass]),
+	  new Ingredient(Entities.paleChoco, IngredientType.Fermentables, [Dim.Mass]),
+	  new Ingredient(Entities.blackMalt, IngredientType.Fermentables, [Dim.Mass]),
+	  new Ingredient(Entities.flakedRye, IngredientType.Fermentables, [Dim.Mass]),
+	  new Ingredient(Entities.rolledOat, IngredientType.Fermentables, [Dim.Mass]),
+	  new Ingredient(Entities.yeastNutrient, IngredientType.Miscellaneous, [Dim.Mass]),
 	  new Ingredient(Entities.w2112, IngredientType.Yeasts),
 	]);
   }

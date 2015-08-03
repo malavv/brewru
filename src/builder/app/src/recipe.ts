@@ -20,9 +20,12 @@ class Recipe {
   }
   
   listDynamicIngredients() : Ingredient[] {
-    var dyn: Ingredient[] = <Ingredient[]>this.reactors.reduce((last: Object[], elem: Reactor) => {
-        return last.concat(elem.steps.filter(s => s.type === StepType.defineOutput));
-      }, []);
-	  return [ new Ingredient(Entities.tapWater, null) ].concat(dyn);
+	  return [
+      new Ingredient(Entities.tapWater, null, [Dim.Volume]) 
+    ].concat(this.reactors.reduce(this._getOutput.bind(this), []));
+  }
+  
+  private _getOutput(last: Object[], elem: Reactor) {
+    return last.concat(elem.steps.filter(s => s.type === StepType.defineOutput));
   }
 }

@@ -25,7 +25,7 @@ class AddIngredientFactory implements IStepFactory {
         this.state = 4;
         return new WizardConfig('qty', WizardStep.quantity, {
           description: 'How Much :',
-          allowed: [Dim.Mass, Dim.Volume]
+          allowed: this.data['ingredient'].dimensions
         });
       default:
         return undefined;
