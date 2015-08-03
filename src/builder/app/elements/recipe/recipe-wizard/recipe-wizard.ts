@@ -164,10 +164,7 @@ class RecipeWizard extends Polymer.DomModule {
       this._description = "";
       this._text = "";
     }, 1);    
-    promise.resolve({
-      description: this._description,
-      value: newVal
-    });
+    promise.resolve(newVal);
   }
   
   private _menuSelectedChanged(newIdx?: number, oldIdx?: number) {

@@ -3,25 +3,28 @@
 
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
-
-
+/**
+ * Draws the diagram of the reactor's step.
+ */
 class RecipeGraph extends Polymer.DomModule {
-  recipe:Recipe;
-  svg:any;
-  size:{width:number; height:number};
-  reactorWidth:number;
-  nodeOffset:number;
-  vMargin:number;
-
+  private static vMargin : number = 15;
+  private static minStepsHeight : number = 10;
+   
+  /** Space between node on the diagram. */
+  private _verticalOffset : number;
+  /** Space between reactors line on the diagram. */
+  private _horizontalOffset : number;
+  
+  private recipe: Recipe;
+  private svg: any;
+  private size: { width:number; height:number };
+  
   // Lifecycles
-  ready() {
-    this.nodeOffset = 80;
-    this.vMargin = 30;
+  private ready() {
     this.size = {width:-1, height:-1}
     bus.suscribe(MessageType.RecipeChanged, this.recipeChanged, this);
   }
-
-  attached() {
+  private attached() {
      this.async(() => {
        this.svg = d3.select(this.$$('svg'));
        this.onResize();
@@ -29,49 +32,42 @@ class RecipeGraph extends Polymer.DomModule {
   }
 
   // Events
-  recipeChanged() {
+  private recipeChanged() {
 		if (this.recipe === undefined || this.svg === undefined) return;
     // Remove old
     this.svg.selectAll("*").remove();
-	  this.drawReactors();
+	  this._drawReactors();
 	}
-
-  onResize() {
-    if (this.svg === undefined) {
-      // Not yet loaded.
-      return;
-    } 
-    var bbox = this.$$('svg').getBoundingClientRect();
-    if (bbox.width === 0 && bbox.height === 0) {
-      // Switched out of view.
-      return;
-    }
-    this.size.width = bbox.width;
-    this.size.height = bbox.height - this.vMargin * 2;
-    this.reactorWidth = bbox.width / this.recipe.reactors.length;
+  private onResize() {
+    if (this.svg === undefined) return; // Not yet loaded.
+    
+    this._updateSize();
+    this._verticalOffset = this.size.height / Math.max(this._getMaxNumberOfSteps(), RecipeGraph.minStepsHeight);
+    this._horizontalOffset = this.size.width / this.recipe.reactors.length; 
+        
+    if (this.size.width === 0) return; // Switched out of view.
     // Remove old
     this.svg.selectAll("*").remove();
     // Redraw
-    this.drawReactors();
+    this._drawReactors();
   }
 
-  // Methods
-  drawReactors() {
+  private _drawReactors() {
     if (this.svg === undefined)
       return;
 
-    var rg = this.svg.selectAll('g')
+    var reactorGroup = this.svg.selectAll('g')
   		.data(this.recipe.reactors)
   		.enter()
   		.append('g')
       .attr("transform", (d:any, idx:number) => {
-        return 'translate(' + ((idx * this.reactorWidth) + this.reactorWidth / 2.0) + ', 0)';
+        return 'translate(' + ((idx * this._horizontalOffset) + this._horizontalOffset / 2.0) + ', 0)';
       });
 
   	// Start
     this.recipe.reactors
       .forEach((reactor) => {
-      	rg
+      	reactorGroup
       		.append("rect")
       		.attr("x", -1.5)
       		.attr('y', 0)
@@ -79,78 +75,89 @@ class RecipeGraph extends Polymer.DomModule {
       		.attr('height', this.size.height);
 
         reactor.steps.forEach((step, idx) => {
-          this._drawStep(step, rg, idx * this.nodeOffset);
+          var stepGroup = reactorGroup.append('g')
+            .classed('step', true)
+            .attr("transform", 'translate(0, ' + idx * this._verticalOffset + ')');
+          this._drawStep(step, stepGroup);
         });
-
-        // reactor.steps.forEach((step, idx) => {
-        //   switch(step.type.id) {
-        //     case StepType.start.id: return this.drawStart(rg);
-        //     case StepType.addIngredient.id: return this.drawIngredient(step, rg, idx * this.nodeOffset);
-        //     case StepType.heating.id: return this.drawHeating(step, rg, idx * this.nodeOffset);
-        //     default:
-        //       console.log('Unrecognized Step Type', step);
-        //       break;
-        //   }
-        // });
       });
 	}
-  
-  _drawStep(step:Step, g:any, localOffset:number) {
+  private _drawStep(step:Step, g:any) {
     switch(step.type.ref) {
-      case StepType.start.ref: return this.drawStart(g);
-      case StepType.addIngredient.ref: return this.drawIngredient(step, g, localOffset);
-      case StepType.heating.ref: return this.drawHeating(step, g, localOffset);
+      case StepType.start.ref: return this._drawStart(g);
+      case StepType.addIngredient.ref: return this._drawIngredient(step, g);
+      case StepType.heating.ref: return this._drawHeating(step, g);
       default:
         console.log('Unrecognized Step Type', step);
         break;
     }
   }
-
-  drawStart(g:any) {
-  	g.append('circle')
+  private _drawStart(group:any) {
+  	group.append('circle')
   		.attr('r', '10')
+      .attr('cy', 10)
   		.attr('fill', 'white')
   		.attr('stroke', 'black');
-    g.append('text')
+    group.append('text')
       .attr("x", -8)
-      .attr("y",  7)
+      .attr("y",  16)
       .attr("font-size", "1.2em")
       .text('\u2605');
   }
-
-  drawIngredient(step:Step, g:any, localOffset:number) {
+  private _drawIngredient(step:Step, g:any) {
     g.append('circle')
       .attr('r', '10')
-      .attr('cy', localOffset)
       .attr('fill', 'white')
       .attr('stroke', 'black');
     g.append('text')
       .attr("x", -6)
-      .attr("y", localOffset + 6)
+      .attr("y", 6)
       .text('\u2726');
-  }
 
-  drawHeating(step:Step, g:any, localOffset:number) {
+    g.on('mouseover', function(d:any) { d3.select(this).select('.bubble').style({opacity:'1'}); });
+    this._drawBubble(g, step.name);
+  }
+  
+  private _drawBubble(g: any, txt: string) {
+    var bubbleGroup = g.append('g')
+      .classed('bubble', true)
+      .style("opacity", 0);
+    bubbleGroup.append('rect')
+      .attr("x", -this.size.width / 2)
+      .attr("y", - 15 / 2)
+  		.attr('width', this.size.width)
+  		.attr('height', 15)
+      .attr("fill", '#dfdfdf')
+      .style("text-anchor", "middle");
+    bubbleGroup.append('text')
+      .attr("y", 5)
+      .style("text-anchor", "middle")
+      .text(txt);
+     bubbleGroup.on('mouseout', function(d:any) {
+       d3.select(this).style({opacity:'0.0',})
+     });
+  }
+  
+  private _drawHeating(step:Step, g:any) {
     g.append('circle')
       .attr('r', '10')
-      .attr('cy', localOffset)
       .attr('fill', 'white')
       .attr('stroke', 'black');
     g.append('text')
       .attr("x", -8)
-      .attr("y", localOffset + 5)
+      .attr("y", 5)
       .text('\ud83d\udd25');
+      
+    g.on('mouseover', function(d:any) { d3.select(this).select('.bubble').style({opacity:'1'}); });
+    this._drawBubble(g, step.name);
   }
-
-  drawStep(g:any, offset:number, step:Step, index:number) {
-    switch(step.type.ref) {
-      case StepType.start.ref: return this.drawStart(g);
-      case StepType.addIngredient.ref: return this.drawIngredient(step, g, index * offset);
-      case StepType.heating.ref: return this.drawHeating(step, g, index * offset);
-      default:
-        console.log('Unrecognized Step Type', step);
-        break;
-    }
+  private _getMaxNumberOfSteps() : number {
+    return Math.max.apply(null, this.recipe.reactors.map(r => r.steps.length));
+  }
+  private _updateSize() {
+    var bbox = this.$$('svg').getBoundingClientRect();
+    this.size.width = bbox.width;
+    this.size.height = bbox.height - RecipeGraph.vMargin * 2;
   }
 }
 
