@@ -6,15 +6,13 @@ class Reactor {
 	
 	public id: number;
 	public name: string;
-	public src: IngredientSrc;
-	public steps: Array<Step> = [];
+	public steps: Array<Step>;
 	
-	constructor(id: number = 0, name: string = 'Anonymous') {
+	constructor(id: number = 0, name: string = 'Anonymous', steps: Array<Step> = [new Step('start', StepType.start)]) {
 		this.id = id;
 		this.name = name;
-		this.steps.push(new Step('start', StepType.start));
+		this.steps = steps;
 	}
-	
 	
 	public addAfter(lhs: any, newObj: any) {
 		if (newObj.timing === 'After') {

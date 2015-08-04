@@ -39,6 +39,7 @@ class UnitSystem {
       new Unit(new OntoRef('brew:inch', 'inch'), 'in', 0, 1, Dim.Length, null),
       new Unit(new OntoRef('brew:pint', 'pint'), 'pt', 0, 1, Dim.Volume, null),
       new Unit(new OntoRef('brew:cup', 'cup'), 'cup', 0, 1, Dim.Volume, null),
+      new Unit(new OntoRef('brew:tsp', 'teaspoon'), 'tsp', 0, 1, Dim.Volume, null),
       new Unit(new OntoRef('brew:farenheit', 'farenheit'), 'F', 0, 1, Dim.Temperature, null)
   ]);
   public static Imperial = new SystemImpl('Imperial', [

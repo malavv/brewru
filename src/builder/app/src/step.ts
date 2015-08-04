@@ -4,12 +4,13 @@
  * This will need to be reviewed with specific sub-classes.
  */
 class Step {
+	static idx = 0;
 	id: string;
 	name: string;
 	type: ConceptRef
 	
-	constructor(name: string, type: ConceptRef) {
-		this.id = 'anon:0';
+	constructor(name: string, type: ConceptRef, id: string = 'anon:' + Step.idx++) {
+		this.id = id;
 		this.name = name;
 		this.type = type;
 	}

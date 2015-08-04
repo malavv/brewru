@@ -6,6 +6,8 @@
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/errors.ts" />
 
+/// <reference path="../../../src/supply/ingredient.ts" />
+
 /// <reference path="../../../src/ingredientSrc.ts" />
 /// <reference path="../../../src/recipe.ts" />
 
@@ -108,12 +110,12 @@ class RecipeWizard extends Polymer.DomModule {
   /**
    * Returns a primuse asking for an ingredient.
    */
-  public askIngredient(type: IngredientType): Promise<{ ingredient: Ingredient; quantity: Quantity }> {
+  public askIngredient(type: Supply.IngType): Promise<{ ingredient: Supply.Ing; quantity: Quantity }> {
     if (type === undefined) return Promise.reject(new InvalidStateError());
     
-    this._ingItems = type === IngredientType.Dynamic 
+    this._ingItems = type === Supply.IngType.Dynamic 
       ? this.recipe.listDynamicIngredients() 
-      : this.inventory.stocks.filter((i:Ingredient) => i.type === type);
+      : this.inventory.stocks.filter((i:Supply.Ing) => i.type() === type);
     this.switchToScreen(WizardScreen.ingredient); 
     this.opened = true;
     return new Promise(this._storePromise.bind(this));
@@ -300,7 +302,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeWizard.prototype, {
     },
     recipe: {
       type: Object,
-      value: undefined
+      notify: true
     },
     
     // ----------- Internal -----------

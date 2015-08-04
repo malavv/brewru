@@ -17,17 +17,16 @@ window.Polymer(window.Polymer.Base.extend(RecipeOverview.prototype, {
 
   properties: {
     recipe: {
-      type: Recipe,
+      type: Object,
       notify: true,
       observer: 'recipeChanged'
     },
-    current: Reactor,
+    current: {
+      type: Object
+    },
     selected: {
       type: Number,
       value: 0
     }
-  },
-
-  listeners: {
   }
 }));

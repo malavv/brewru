@@ -1,20 +1,20 @@
 /// <reference path="../../../src/defs/polymer/polymer.ts" />
 
 /// <reference path="../../../src/ingredients.ts" />
-/// <reference path="../../../src/ingredient.ts" />
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
+/// <reference path="../../../src/supply/ingredient.ts" />
 /// <reference path="../../../src/units/system.ts" />
 
 interface InventoryItem {
   qty: Quantity;
-  ingredient: Ingredient;
+  ingredient: Supply.Ing;
 }
 
 class InventoryMatchedIngredients {
-  ingredient: Ingredient;
+  ingredient: Supply.Ing;
   stocks: InventoryItem[];
-  constructor(ingredient: Ingredient, stocks: InventoryItem[]) {
+  constructor(ingredient: Supply.Ing, stocks: InventoryItem[]) {
     this.ingredient = ingredient;
     this.stocks = stocks;
   }
@@ -30,7 +30,7 @@ class RecipeIngredients extends Polymer.DomModule {
 
   ready() {
     var
-      tapWater: Ingredient = new Ingredient(OntoRef.createAnon("tap water"), null),
+      tapWater: Supply.Ing = new Supply.Ing(OntoRef.createAnon("tap water"), null),
       tapQty: Quantity = new Quantity(Infinity, SI.sym('l'));
 
     this.async(() => { 
@@ -43,18 +43,18 @@ class RecipeIngredients extends Polymer.DomModule {
   }
 
   inventoryChanged() {
-    var createInventoryItem = (i: Ingredient) => new InventoryMatchedIngredients(i, []);
+    var createInventoryItem = (i: Supply.Ing) => new InventoryMatchedIngredients(i, []);
 
     this.async(() => {
-      this.fermentables = this._getByType(IngredientType.Fermentables).map(createInventoryItem);
-      this.hops = this._getByType(IngredientType.Hops).map(createInventoryItem);
-      this.yeasts = this._getByType(IngredientType.Yeasts).map(createInventoryItem);
-      this.miscellaneous = this._getByType(IngredientType.Miscellaneous).map(createInventoryItem);
+      this.fermentables = this._getByType(Supply.IngType.Fermentable).map(createInventoryItem);
+      this.hops = this._getByType(Supply.IngType.Hops).map(createInventoryItem);
+      this.yeasts = this._getByType(Supply.IngType.Yeast).map(createInventoryItem);
+      this.miscellaneous = this._getByType(Supply.IngType.Miscellaneous).map(createInventoryItem);
     }, 1);
   }
 
-  _getByType(type:IngredientType) : Ingredient[] {
-    return this.inventory.stocks.filter((i: Ingredient) => i.type === type);
+  _getByType(type:Supply.IngType) : Supply.Ing[] {
+    return this.inventory.stocks.filter((i: Supply.Ing) => i.type() === type);
   }
 }
 

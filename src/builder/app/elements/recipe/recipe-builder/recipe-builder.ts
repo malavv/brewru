@@ -1,9 +1,11 @@
 /// <reference path="../../../src/defs/polymer/polymer.ts" />
 
-/// <reference path="../../../src/ingredient.ts" />
+/// <reference path="../../../src/supply/ingredient.ts" />
 /// <reference path="../../../src/ingredients.ts" />
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
+
+interface Window { builder: any; };
 
 class RecipeBuilder extends Polymer.DomModule {
   inventory: IngredientSrc;
@@ -13,9 +15,21 @@ class RecipeBuilder extends Polymer.DomModule {
   ready() {
 	 this.inventory = this._fetchInventory();
 	 this.ingredients = new Ingredients();
-	 this.recipe = new Recipe(undefined);
+	 this.recipe = new Recipe();
 	
 	 bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
+   
+   window.builder = this;
+  }
+  
+  public saveRecipe() {
+    localStorage.setItem('recipe', JSON.stringify(this.recipe));
+  }
+  
+  public loadRecipe() {
+    var json = JSON.parse(localStorage.getItem('recipe'));
+    var newRecipe = Recipe.decode(json);
+    this.recipe = newRecipe;
   }
   
   private _onNewStepCreated(config: {name:string; type:ConceptRef}) {
@@ -27,15 +41,16 @@ class RecipeBuilder extends Polymer.DomModule {
     var src = new IngredientSrc(Entities.inventory);
 	
 	return src.addAll([
-	  new Ingredient(Entities.syrup, IngredientType.Fermentables, [Dim.Volume]),
-	  new Ingredient(Entities.c120, IngredientType.Fermentables, [Dim.Mass]),
-	  new Ingredient(Entities.c60, IngredientType.Fermentables, [Dim.Mass]),
-	  new Ingredient(Entities.paleChoco, IngredientType.Fermentables, [Dim.Mass]),
-	  new Ingredient(Entities.blackMalt, IngredientType.Fermentables, [Dim.Mass]),
-	  new Ingredient(Entities.flakedRye, IngredientType.Fermentables, [Dim.Mass]),
-	  new Ingredient(Entities.rolledOat, IngredientType.Fermentables, [Dim.Mass]),
-	  new Ingredient(Entities.yeastNutrient, IngredientType.Miscellaneous, [Dim.Mass]),
-	  new Ingredient(Entities.w2112, IngredientType.Yeasts),
+	  new Supply.Ing(Entities.syrup, Supply.IngType.Fermentable, [Dim.Volume]),
+    new Supply.Ing(Entities.dme, Supply.IngType.Fermentable, [Dim.Volume]),
+	  new Supply.Ing(Entities.c120, Supply.IngType.Fermentable, [Dim.Mass]),
+	  new Supply.Ing(Entities.c60, Supply.IngType.Fermentable, [Dim.Mass]),
+	  new Supply.Ing(Entities.paleChoco, Supply.IngType.Fermentable, [Dim.Mass]),
+	  new Supply.Ing(Entities.blackMalt, Supply.IngType.Fermentable, [Dim.Mass]),
+	  new Supply.Ing(Entities.flakedRye, Supply.IngType.Fermentable, [Dim.Mass]),
+	  new Supply.Ing(Entities.rolledOat, Supply.IngType.Fermentable, [Dim.Mass]),
+	  new Supply.Ing(Entities.yeastNutrient, Supply.IngType.Miscellaneous, [Dim.Volume]),
+	  new Supply.Ing(Entities.w2112, Supply.IngType.Yeast),
 	]);
   }
 }

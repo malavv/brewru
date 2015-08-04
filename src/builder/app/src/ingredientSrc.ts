@@ -1,16 +1,16 @@
 /// <reference path="base/conceptRef.ts" />
-/// <reference path="ingredient.ts" />
+/// <reference path="supply/ingredient" />
 
 class IngredientSrc {
 	concept: ConceptRef;
-	stocks: Array<Ingredient>;
+	stocks: Array<Supply.Ing>;
 	
-	constructor(concept: ConceptRef) {
+	constructor(concept : ConceptRef) {
 		this.concept = concept;
 		this.stocks = [];
 	}
 	
-	addAll(items:Array<Ingredient>) {
+	addAll(items : Array<Supply.Ing>) {
 		this.stocks = this.stocks.concat(items);
 		return this;
 	}

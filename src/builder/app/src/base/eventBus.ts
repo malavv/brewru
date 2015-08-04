@@ -1,4 +1,5 @@
 /// <reference path="messageType.ts" />
+/// <reference path="../defs/es6-promise/es6-promise.d.ts" />
 
 interface HandlerFunc {
 	(data: any): void;

@@ -1,42 +1,21 @@
 /// <reference path="../../../src/defs/polymer/polymer.ts" />
 
-/// <reference path="../../../src/base/keyboard.ts" />
-
 class WidgetText extends Polymer.DomModule {
-  commited:string;
-  selected:number;
-  value:string;
+  private selected : number;
+  private value : string;
 
-  // Events
-  onClick() {
-    this.selected = 0;
-    window.setTimeout(() => {
+  private _clickHandler() {
+    this._setEditing(true);
+    this.async(() => {
       this.$.editor.focus();
       this.$.editor.select();
-    });
+    }, 1);
   }
-  onBlur() {
-    this._cancel();
+  private _setEditing(isEditing : boolean) {
+    this.selected = isEditing ? 0 : 1;
   }
-  onFocus() {
-    this.commited = this.value;
-  }
-  onKeyup(evt:KeyboardEvent) {
-    switch(Keyboard.fromEvt(evt).binding) {
-      case 'enter': this._commit(); break;
-      case 'esc': this._cancel(); break;
-    }
-    evt.stopPropagation();
-  }
-
-  // Methods
-  private _cancel() {
-    this.selected = 1;
-    this.value = this.commited;
-  }
-  private _commit() {
-    this.commited = this.value;
-    this.selected = 1;
+  private _valueHandler() {
+    this._setEditing(false);
   }
 }
 
@@ -44,21 +23,18 @@ window.Polymer(window.Polymer.Base.extend(WidgetText.prototype, {
   is: 'widget-text',
 
   properties: {
-    commited: {
-      type: String,
-      value: ''
-    },
     selected: {
       type: Number,
       value: 1
     },
     value: {
-      type: String
+      type: String,
+      observer: '_valueHandler',
+      notify: true
     }
   },
 
   listeners: {
-    'click': 'onClick',
-    'keyup': 'onKeyup'
+    'click': '_clickHandler'
   }
 }));

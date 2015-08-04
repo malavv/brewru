@@ -1,19 +1,20 @@
-/// <reference path="ingredient.ts" />
 /// <reference path="reactor.ts" />
 /// <reference path="base/conceptRef.ts" />
+/// <reference path="supply/ingredient" />
 
 class Ingredients {
-	inventory: Array<Ingredient> = [];
+	inventory: Array<Supply.Ing> = [];
 	reactors: Array<Reactor> = [];
 	
 	listAllIngredients() {
-		return [].concat(this.inventory).concat(this.reactors.map((r) => { return r.src; }));
-	}
-	getFromInventory(concept: ConceptRef) {
-		return this.inventory.filter((i) => { return i.concept === concept; });
+		return [].concat(this.inventory);
 	}
 	
-	addToInventory(ingredient: Ingredient) {
+	getFromInventory(concept: ConceptRef) {
+		return this.inventory.filter((i) => { return i.ref === concept; });
+	}
+	
+	addToInventory(ingredient: Supply.Ing) {
 		this.inventory.push(ingredient);
 	}
 	addSrc(reactor: Reactor) {

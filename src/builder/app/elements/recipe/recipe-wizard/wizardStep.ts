@@ -1,3 +1,5 @@
+/// <reference path="../../../src/supply/ingredient.ts" />
+
 enum WizardStep {
     text,
     menu,
@@ -31,7 +33,7 @@ interface IStepFactory {
 
 class StepState {
   name: string;
-  ingredient: Ingredient
+  ingredient: Supply.Ing
   qty: Quantity;
   type: ConceptRef;
   

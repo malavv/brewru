@@ -9,7 +9,7 @@
 
   <template>
     <iron-pages selected="{{selected}}" class="flex">
-      <input id="editor" type="text" is="iron-input" bind-value="{{value}}" on-blur="onBlur" on-focus="onFocus" />
+      <input id="editor" type="text" is="iron-input" value="{{value::change}}" autofocus />
       <span class="flex">{{value}}<span>
     </iron-pages>
   </template>
