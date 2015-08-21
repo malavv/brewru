@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
  * When there will be lots more functionalities it would make sense to split this class into multiple one, but not for
  * the moment.
  */
-@Path("connect")
+@Path("/")
 public class RestApi {
   public static final String CONNECTION_MSG = "Connection Successful";
 

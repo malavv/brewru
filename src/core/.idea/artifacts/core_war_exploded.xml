@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="core:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/core_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="core/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="core" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="javax.websocket:javax.websocket-api:1.1" />
+          <element id="library" level="project" name="org.glassfish.jersey.containers:jersey-container-servlet:2.21" />
+          <element id="library" level="project" name="javax.json:javax.json-api:1.0" />
+          <element id="library" level="project" name="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
