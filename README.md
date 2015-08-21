@@ -8,11 +8,13 @@ Special dedications to the heart and sole of this project. The contributors with
 
 ```
 $git shortlog -sne
-4  Maxime Lavigne (malavv) <duguigne@gmail.com>
+126  Maxime Lavigne (malavv) <duguigne@gmail.com>
 ```
 
 ## The Latest Version
-The project is still in a sub-1.0 release cycle. It is not feature complete. This will be update in time.
+**Current Version :** 0.2.7
+
+The project is still in a sub-1.0 release cycle. It is not feature complete. 
 
 ## Documentation
 All documentation for the two components are available in docs/manual. There will be user and developer manual.
@@ -25,3 +27,4 @@ Please refer to [LICENSE](LICENSE.md).
 
 ## Contacts
 * Issues and questions may be directed to the wiki page of the project.
+2015-02-27
