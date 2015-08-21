@@ -42,5 +42,6 @@
   },
   "license": "LicenseRef-1",
   "license-ref-1": "Maxime Lavigne 2015",
-  "private": true
+  "private": true,
+  "main": "app/index.html"
 }
