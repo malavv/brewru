@@ -33,7 +33,7 @@ class RecipeIngredients extends Polymer.DomModule {
       tapWater: Supply.Ing = new Supply.Ing(OntoRef.createAnon("tap water"), null),
       tapQty: Quantity = new Quantity(Infinity, SI.sym('l'));
 
-    this.async(() => { 
+    this.async(() => {
       this.dynamic = [new InventoryMatchedIngredients(tapWater, [{qty: tapQty, ingredient: tapWater}])];
       this.fermentables = [];
       this.hops = [];

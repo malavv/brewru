@@ -11,35 +11,36 @@ class RecipeBuilder extends Polymer.DomModule {
   inventory: IngredientSrc;
   ingredients: Ingredients;
   recipe: Recipe;
-  
+
   ready() {
 	 this.inventory = this._fetchInventory();
 	 this.ingredients = new Ingredients();
 	 this.recipe = new Recipe();
-	
+
 	 bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
-   
+
    window.builder = this;
   }
-  
+
   public saveRecipe() {
     localStorage.setItem('recipe', JSON.stringify(this.recipe));
   }
-  
+
   public loadRecipe() {
     var json = JSON.parse(localStorage.getItem('recipe'));
     var newRecipe = Recipe.decode(json);
     this.recipe = newRecipe;
   }
-  
+
   private _onNewStepCreated(config: {name:string; type:ConceptRef}) {
-    this.recipe.reactors[0].steps.push(new Step(config.name, config.type));
+    this.push('recipe.reactors.0.steps', new Step(config.name, config.type));
+    //this.recipe.reactors[0].steps.push(new Step(config.name, config.type));
     bus.publish(MessageType.RecipeChanged);
   }
-	
+
   private _fetchInventory() : IngredientSrc {
     var src = new IngredientSrc(Entities.inventory);
-	
+
 	return src.addAll([
 	  new Supply.Ing(Entities.syrup, Supply.IngType.Fermentable, [Dim.Volume]),
     new Supply.Ing(Entities.dme, Supply.IngType.Fermentable, [Dim.Volume]),

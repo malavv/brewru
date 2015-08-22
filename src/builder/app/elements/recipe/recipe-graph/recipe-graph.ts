@@ -3,27 +3,27 @@
 
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
-/**
- * Draws the diagram of the reactor's step.
- */
+
+/** Draws the diagram of the reactor's step. */
 class RecipeGraph extends Polymer.DomModule {
   private static vMargin : number = 15;
   private static minStepsHeight : number = 10;
-   
+
   /** Space between node on the diagram. */
   private _verticalOffset : number;
   /** Space between reactors line on the diagram. */
   private _horizontalOffset : number;
-  
+
   private recipe: Recipe;
   private svg: any;
   private size: { width:number; height:number };
-  
+
   // Lifecycles
   private ready() {
     this.size = {width:-1, height:-1}
     bus.suscribe(MessageType.RecipeChanged, this.recipeChanged, this);
   }
+
   private attached() {
      this.async(() => {
        this.svg = d3.select(this.$$('svg'));
@@ -38,13 +38,14 @@ class RecipeGraph extends Polymer.DomModule {
     this.svg.selectAll("*").remove();
 	  this._drawReactors();
 	}
+
   private onResize() {
     if (this.svg === undefined) return; // Not yet loaded.
-    
+
     this._updateSize();
     this._verticalOffset = this.size.height / Math.max(this._getMaxNumberOfSteps(), RecipeGraph.minStepsHeight);
-    this._horizontalOffset = this.size.width / this.recipe.reactors.length; 
-        
+    this._horizontalOffset = this.size.width / this.recipe.reactors.length;
+
     if (this.size.width === 0) return; // Switched out of view.
     // Remove old
     this.svg.selectAll("*").remove();
@@ -82,6 +83,7 @@ class RecipeGraph extends Polymer.DomModule {
         });
       });
 	}
+
   private _drawStep(step:Step, g:any) {
     switch(step.type.ref) {
       case StepType.start.ref: return this._drawStart(g);
@@ -92,6 +94,7 @@ class RecipeGraph extends Polymer.DomModule {
         break;
     }
   }
+
   private _drawStart(group:any) {
   	group.append('circle')
   		.attr('r', '10')
@@ -104,6 +107,7 @@ class RecipeGraph extends Polymer.DomModule {
       .attr("font-size", "1.2em")
       .text('\u2605');
   }
+
   private _drawIngredient(step:Step, g:any) {
     g.append('circle')
       .attr('r', '10')
@@ -117,7 +121,7 @@ class RecipeGraph extends Polymer.DomModule {
     g.on('mouseover', function(d:any) { d3.select(this).select('.bubble').style({opacity:'1'}); });
     this._drawBubble(g, step.name);
   }
-  
+
   private _drawBubble(g: any, txt: string) {
     var bubbleGroup = g.append('g')
       .classed('bubble', true)
@@ -137,7 +141,7 @@ class RecipeGraph extends Polymer.DomModule {
        d3.select(this).style({opacity:'0.0',})
      });
   }
-  
+
   private _drawHeating(step:Step, g:any) {
     g.append('circle')
       .attr('r', '10')
@@ -147,13 +151,15 @@ class RecipeGraph extends Polymer.DomModule {
       .attr("x", -8)
       .attr("y", 5)
       .text('\ud83d\udd25');
-      
+
     g.on('mouseover', function(d:any) { d3.select(this).select('.bubble').style({opacity:'1'}); });
     this._drawBubble(g, step.name);
   }
+
   private _getMaxNumberOfSteps() : number {
     return Math.max.apply(null, this.recipe.reactors.map(r => r.steps.length));
   }
+
   private _updateSize() {
     var bbox = this.$$('svg').getBoundingClientRect();
     this.size.width = bbox.width;

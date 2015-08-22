@@ -3,15 +3,17 @@
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
 
+/** Lists all the triggers to which something can be bound. */
 class RecipeTriggers extends Polymer.DomModule {
-  triggers: Array<Step>;
-  
+  public triggers: Array<Step>;
+
   ready() {
     bus.suscribe(MessageType.RecipeChanged, this._recipeChanged, this);
   }
-  
+
   _recipeChanged() {
-    this.triggers = [].concat(this.triggers);
+    console.log('recipe');
+    this.set('triggers', this.triggers.slice());
 	}
 }
 
@@ -19,7 +21,9 @@ window.Polymer(window.Polymer.Base.extend(RecipeTriggers.prototype, {
   is: 'recipe-triggers',
 
   properties: {
-    triggers: Array,
-    notify: true
+    triggers: {
+      type: Array,
+      notify: true
+    }
   }
 }));

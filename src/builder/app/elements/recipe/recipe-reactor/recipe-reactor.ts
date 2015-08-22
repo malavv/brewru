@@ -9,6 +9,6 @@ window.Polymer(window.Polymer.Base.extend(RecipeReactor.prototype, {
   properties: {
     reactor: {
       type: Object
-    }    
+    }
   }
 }));
