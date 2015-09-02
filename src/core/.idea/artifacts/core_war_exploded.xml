@@ -12,6 +12,7 @@
           <element id="library" level="project" name="org.glassfish.jersey.containers:jersey-container-servlet:2.21" />
           <element id="library" level="project" name="javax.json:javax.json-api:1.0" />
           <element id="library" level="project" name="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" />
+          <element id="library" level="project" name="javax.ws.rs:javax.ws.rs-api:2.0" />
         </element>
       </element>
     </root>
