@@ -10,14 +10,16 @@ module Polymer {
     listeners: {[key:string]: string};
     root: Element;
     $:any;
-    
+
     // Methods
     $$: (slctr: string) => Element;
-    async: (callback:()=>void, waitTime:number) => number;
+    async: (callback:()=>void, waitTime?:number) => number;
     cancelAsync: (handle:number) => void;
     fire : (type:string, detail?:Object, options?:Object) => CustomEvent;
+    push: (type: string, items: Object) => void;
+    set: (type: string, items: Object) => void;
   }
-  
+
   interface Api {
     appendChild(node:HTMLElement) : void;
     insertBefore(node:HTMLElement, beforeNode:HTMLElement) : void;

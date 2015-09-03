@@ -11,15 +11,33 @@ class RecipeBuilder extends Polymer.DomModule {
   inventory: IngredientSrc;
   ingredients: Ingredients;
   recipe: Recipe;
+  ws: WebSocket;
+  isConnected: Boolean;
 
   ready() {
-	 this.inventory = this._fetchInventory();
-	 this.ingredients = new Ingredients();
-	 this.recipe = new Recipe();
+	  this.inventory = this._fetchInventory();
+	  this.ingredients = new Ingredients();
+	  this.recipe = new Recipe();
+    this.ws = new WebSocket("ws://localhost:8080/socket");
+    this.ws.onopen = this.onSocketOpen;
+    this.ws.onclose = this.onSocketClosed;
 
-	 bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
+	  bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
 
-   window.builder = this;
+    window.builder = this;
+  }
+
+  onSocketOpen() {
+    var toast = document.querySelector('#toast1');
+    toast.text = "Connected";
+    toast.show();
+    this.isConnected = true;
+  }
+  onSocketClosed() {
+    var toast = document.querySelector('#toast1');
+    toast.text = "Error : Connection could not be established.";
+    toast.show();
+    this.isConnected = false;
   }
 
   public saveRecipe() {
@@ -34,7 +52,6 @@ class RecipeBuilder extends Polymer.DomModule {
 
   private _onNewStepCreated(config: {name:string; type:ConceptRef}) {
     this.push('recipe.reactors.0.steps', new Step(config.name, config.type));
-    //this.recipe.reactors[0].steps.push(new Step(config.name, config.type));
     bus.publish(MessageType.RecipeChanged);
   }
 
@@ -69,6 +86,14 @@ window.Polymer(window.Polymer.Base.extend(RecipeBuilder.prototype, {
     },
 	  recipe: {
       type: Object,
+      notify: true
+    },
+    ws: {
+      type: Object
+    },
+    isConnected: {
+      type: Boolean,
+      value: null,
       notify: true
     }
   }
