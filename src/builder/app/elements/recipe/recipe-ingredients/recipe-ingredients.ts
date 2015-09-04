@@ -4,7 +4,10 @@
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/quantity.ts" />
 /// <reference path="../../../src/supply/ingredient.ts" />
+/// <reference path="../../../src/supply/inventory.ts" />
 /// <reference path="../../../src/units/system.ts" />
+
+/// <reference path="../../../src/base/eventBus.ts" />
 
 interface InventoryItem {
   qty: Quantity;
@@ -26,7 +29,7 @@ class RecipeIngredients extends Polymer.DomModule {
   hops: InventoryMatchedIngredients[];
   yeasts: InventoryMatchedIngredients[];
   miscellaneous: InventoryMatchedIngredients[];
-  inventory: IngredientSrc;
+  inventory: Inventory;
 
   ready() {
     var
@@ -40,6 +43,15 @@ class RecipeIngredients extends Polymer.DomModule {
       this.yeasts = [];
       this.miscellaneous = [];
     }, 1);
+
+    bus.suscribe(MessageType.InventoryChanged, this._onInventoryChanged, this);
+  }
+
+  private _onInventoryChanged() {
+    this.async(() => {
+      this.fermentables = this.inventory.listItem(ItemType.Fermentables);
+    });
+    console.log('recipe ingredient received inventory changed event.');
   }
 
   inventoryChanged() {
@@ -63,7 +75,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeIngredients.prototype, {
 
   properties: {
     inventory: {
-      type: IngredientSrc,
+      type: Object,
       observer: 'inventoryChanged'
     },
     recipe: {

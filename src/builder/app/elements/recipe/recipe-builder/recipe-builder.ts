@@ -2,6 +2,7 @@
 
 /// <reference path="../../../src/supply/ingredient.ts" />
 /// <reference path="../../../src/supply/inventory.ts" />
+/// <reference path="../../../src/supply/item.ts" />
 /// <reference path="../../../src/server/server.ts" />
 /// <reference path="../../../src/ingredients.ts" />
 /// <reference path="../../../src/recipe.ts" />
@@ -69,13 +70,14 @@ class RecipeBuilder extends Polymer.DomModule {
     this.server.syncInventory()
       .then((response) => {
         console.debug('Filling inventory with ' + JSON.stringify(response));
+        response.items.forEach((item) => {
+          this.inventory.addItem(Item.fromRaw(item));
+        });
+        console.log(this.inventory);
       })
       .catch((error) => {
         console.warn('server error : ' + JSON.stringify(error));
       });
-    // ws.send(JSON.stringify({
-    //   type: 'inventorySync'
-    // }));
   }
 
  //  private _fetchInventory() : IngredientSrc {

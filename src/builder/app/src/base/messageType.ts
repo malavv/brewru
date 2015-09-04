@@ -23,4 +23,5 @@ class MessageType {
 	static AnswerQuantity:MessageType = new MessageType('AnswerQuantity', 13);
 	static ServerConnected:MessageType = new MessageType('ServerConnected', 14);
 	static UnsuccessfulConnection:MessageType = new MessageType('UnsuccessfulConnection', 15);
+	static InventoryChanged:MessageType = new MessageType('InventoryChanged', 16);
 };

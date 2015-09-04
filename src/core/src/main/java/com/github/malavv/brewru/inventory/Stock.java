@@ -22,7 +22,7 @@ public class Stock {
     return Json.createObjectBuilder()
         .add("item", item.ref)
         .add("quantity", quantity.toJson())
-        .add("boughtOn", boughtOn.toEpochDay())
+        .add("boughtOn", boughtOn.toString())
         .add("provider", provider)
         .build();
   }

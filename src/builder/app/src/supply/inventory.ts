@@ -1,5 +1,7 @@
-/// <reference path="ingredient" />
+/// <reference path="item.ts" />
+/// <reference path="itemType.ts" />
 
+/// <reference path="../base/eventBus.ts" />
 /**
  * The inventory is a collection of items having types and which can be part of stocks.
  *
@@ -7,11 +9,21 @@
  * at a certain time, from a certain supplier is a stock.
  */
 class Inventory {
-  private items: Supply.Ing[];
-  private stocks: Object[];
+  private items: Item[];
+  private stocks: Stock[];
 
   constructor() {
     this.items = [];
     this.stocks = [];
+  }
+
+  public listItem(type: ItemType) {
+    return this.items.filter((i) => { return i.type === type; });
+  }
+
+  public addItem(item: Item) {
+    this.items.push(item);
+    item.stocks.forEach((s) => { this.stocks.push(s); })
+    bus.publish(MessageType.InventoryChanged);
   }
 }
