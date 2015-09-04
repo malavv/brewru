@@ -31,7 +31,7 @@ class ServerImpl {
   public syncInventory(): Promise<Object> {
     var packet = {
       type: 'syncInventory',
-      data: null,
+      data: <Object>null,
       id: this.packetIdCounter,
       clientId: this.clientId
     };
@@ -80,7 +80,7 @@ class ServerImpl {
 
   }
 
-  private _onMessage(msg) {
+  private _onMessage(msg: MessageEvent) {
     try {
       var pkg = JSON.parse(msg.data);
       console.info('server.received', pkg);

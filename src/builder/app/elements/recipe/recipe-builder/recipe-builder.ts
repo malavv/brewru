@@ -8,6 +8,10 @@
 /// <reference path="../../../src/base/eventBus.ts" />
 
 interface Window { builder: any; };
+interface PaperToast {
+  text: string;
+  show: () => void;
+}
 
 class RecipeBuilder extends Polymer.DomModule {
   inventory: Inventory;
@@ -48,7 +52,7 @@ class RecipeBuilder extends Polymer.DomModule {
   }
 
   private _onConnectionEstablished() {
-    var toast = document.querySelector('#toast1');
+    var toast = <PaperToast><any>document.querySelector('#toast1');
     toast.text = "Connected";
     toast.show();
 
@@ -56,7 +60,7 @@ class RecipeBuilder extends Polymer.DomModule {
   }
 
   private _onUnsuccessfulConnection() {
-    var toast = document.querySelector('#toast1');
+    var toast = <PaperToast><any>document.querySelector('#toast1');
     toast.text = "Error : Connection could not be established.";
     toast.show();
   }

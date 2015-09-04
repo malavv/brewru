@@ -1,5 +1,7 @@
 package com.github.malavv.brewru;
 
+import com.github.malavv.brewru.inventory.Inventory;
+
 import javax.json.*;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -48,10 +50,11 @@ public class SocketApi {
         App.shutdown();
         break;
       case "syncInventory":
+        Inventory inventory = new Inventory();
         JsonObject json = Json.createObjectBuilder()
             .add("id", pkg.getInt("id"))
             .add("type", pkg.getString("type"))
-            .add("data", Json.createObjectBuilder().build())
+            .add("data", inventory.syncMsg(inventory.sync()))
             .add("clientId", pkg.getString("clientId"))
             .build();
 

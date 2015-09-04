@@ -43,5 +43,8 @@
   "license": "LicenseRef-1",
   "license-ref-1": "Maxime Lavigne 2015",
   "private": true,
-  "main": "app/index.html"
+  "main": "app/index.html",
+  "dependencies": {
+    "gulp-clean": "^0.3.1"
+  }
 }
