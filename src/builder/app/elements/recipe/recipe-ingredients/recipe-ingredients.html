@@ -4,37 +4,47 @@
     :host {
         @apply(--layout-vertical);
         text-align: center;
+        @apply(--shadow-elevation-2dp);
+    }
+    .ingredient {
+      @apply(--layout-horizontal);
+      @apply(--shadow-elevation-2dp);
+    }
+    .ingname {
+      @apply(--layout-flex); 
+    }
+    .itemtype {
+      @apply(--layout-horizontal);
+      font-size: 1.5em;
+      padding: 5px 0;
+      @apply(--shadow-elevation-2dp);
     }
     #iron-list {
     }
+    .item {
+      @apply(--layout-flex); 
+    }
 
   </style>
+
   <link rel="stylesheet" href="recipe-ingredients.css">
 
   <template>
-    <div class="section">Dynamic</div>
-    <iron-list items="{{dynamic}}" as="item" class="flex">
-      <template><div class="ingredient">[[item.ingredient.ref.name]]</div></template>
-    </iron-list>
-
-    <div class="section">Fermentables</div>
+    <div class="itemtype">
+      <div class="item">F</div>
+      <div class="item">H</div>
+      <div class="item">Y</div>
+      <div class="item">M</div>
+      <div class="item">D</div>
+    </div>
     <iron-list items="{{fermentables}}" class="flex">
-      <template><div class="ingredient">[[item.name]]</div></template>
-    </iron-list>
-
-    <div class="section">Hops</div>
-    <iron-list items="{{hops}}" class="flex">
-      <template><div class="ingredient">[[item.ingredient.ref.name]]</div></template>
-    </iron-list>
-
-    <div class="section">Yeasts</div>
-    <iron-list items="{{yeasts}}" class="flex">
-      <template><div class="ingredient">[[item.ingredient.ref.name]]</div></template>
-    </iron-list>
-
-    <div class="section">Miscellaneous</div>
-    <iron-list items="{{miscellaneous}}" class="flex">
-      <template><div class="ingredient">[[item.ingredient.ref.name]]</div></template>
+      <template>
+        <div class="ingredient">
+          <div class="ingtype">[[typeToLetter(item.type)]]</div>
+          <div class="ingname">[[truncate(item.name)]]</div>
+          <div class="ingstock">[[item.stocks.length]]</div>
+        </div>
+      </template>
     </iron-list>
   </template>
 

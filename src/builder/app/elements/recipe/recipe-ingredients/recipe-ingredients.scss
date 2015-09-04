@@ -1,13 +1,7 @@
-.section {
-  padding: 3px 0;
-  font-size: 1.5em;
-  font-weight: bold;
-  background-color: #dedede;
-}
 .ingredient {
   background-color: #fafafa;
-  border-bottom: 1px solid gray;
   cursor: pointer;
+  text-align: left;
 
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
@@ -17,6 +11,19 @@
 
   &:hover {
     background-color: #ededed;
+  }
+
+  .ingtype {
+    padding: 0 10px;
+    font-weight: bold;
+  }
+  .ingname {
+
+  }
+  .ingstock {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #3B616E;
   }
 }
 .unselectable {

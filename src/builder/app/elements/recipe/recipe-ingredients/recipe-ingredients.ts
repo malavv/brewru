@@ -47,6 +47,24 @@ class RecipeIngredients extends Polymer.DomModule {
     bus.suscribe(MessageType.InventoryChanged, this._onInventoryChanged, this);
   }
 
+  typeToLetter(type: ItemType): string {
+    switch (type) {
+      case 0: return 'F';
+      case 1: return 'H';
+      case 2: return 'Y';
+      case 3: return 'M';
+      case 4: return 'D';
+    }
+  }
+
+  truncate(text: string) {
+    var ellipsis = '...';
+    var max = 25;
+    return text.length > (max + ellipsis.length)
+      ? text.substring(0, max) + ellipsis
+      : text;
+  }
+
   private _onInventoryChanged() {
     this.async(() => {
       this.fermentables = this.inventory.listItem(ItemType.Fermentables);
