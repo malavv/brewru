@@ -1,6 +1,8 @@
 /// <reference path="../../../src/defs/polymer/polymer.ts" />
 
 /// <reference path="../../../src/supply/ingredient.ts" />
+/// <reference path="../../../src/supply/inventory.ts" />
+/// <reference path="../../../src/server/server.ts" />
 /// <reference path="../../../src/ingredients.ts" />
 /// <reference path="../../../src/recipe.ts" />
 /// <reference path="../../../src/base/eventBus.ts" />
@@ -8,36 +10,26 @@
 interface Window { builder: any; };
 
 class RecipeBuilder extends Polymer.DomModule {
-  inventory: IngredientSrc;
+  inventory: Inventory;
   ingredients: Ingredients;
   recipe: Recipe;
-  ws: WebSocket;
-  isConnected: Boolean;
+  server: Server;
 
   ready() {
-	  this.inventory = this._fetchInventory();
+    this.server = new ServerImpl("ws://localhost:8080/socket");
+    this.inventory = new Inventory();
 	  this.ingredients = new Ingredients();
 	  this.recipe = new Recipe();
-    this.ws = new WebSocket("ws://localhost:8080/socket");
-    this.ws.onopen = this.onSocketOpen;
-    this.ws.onclose = this.onSocketClosed;
 
 	  bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
+    bus.suscribe(MessageType.UnsuccessfulConnection, this._onUnsuccessfulConnection, this);
+    bus.suscribe(MessageType.ServerConnected, () => {
+      this.async(() => {
+          this._onConnectionEstablished();
+      });
+    }, this);
 
     window.builder = this;
-  }
-
-  onSocketOpen() {
-    var toast = document.querySelector('#toast1');
-    toast.text = "Connected";
-    toast.show();
-    this.isConnected = true;
-  }
-  onSocketClosed() {
-    var toast = document.querySelector('#toast1');
-    toast.text = "Error : Connection could not be established.";
-    toast.show();
-    this.isConnected = false;
   }
 
   public saveRecipe() {
@@ -55,22 +47,51 @@ class RecipeBuilder extends Polymer.DomModule {
     bus.publish(MessageType.RecipeChanged);
   }
 
-  private _fetchInventory() : IngredientSrc {
-    var src = new IngredientSrc(Entities.inventory);
+  private _onConnectionEstablished() {
+    var toast = document.querySelector('#toast1');
+    toast.text = "Connected";
+    toast.show();
 
-	return src.addAll([
-	  new Supply.Ing(Entities.syrup, Supply.IngType.Fermentable, [Dim.Volume]),
-    new Supply.Ing(Entities.dme, Supply.IngType.Fermentable, [Dim.Volume]),
-	  new Supply.Ing(Entities.c120, Supply.IngType.Fermentable, [Dim.Mass]),
-	  new Supply.Ing(Entities.c60, Supply.IngType.Fermentable, [Dim.Mass]),
-	  new Supply.Ing(Entities.paleChoco, Supply.IngType.Fermentable, [Dim.Mass]),
-	  new Supply.Ing(Entities.blackMalt, Supply.IngType.Fermentable, [Dim.Mass]),
-	  new Supply.Ing(Entities.flakedRye, Supply.IngType.Fermentable, [Dim.Mass]),
-	  new Supply.Ing(Entities.rolledOat, Supply.IngType.Fermentable, [Dim.Mass]),
-	  new Supply.Ing(Entities.yeastNutrient, Supply.IngType.Miscellaneous, [Dim.Volume]),
-	  new Supply.Ing(Entities.w2112, Supply.IngType.Yeast),
-	]);
+    this._fillInventory();
   }
+
+  private _onUnsuccessfulConnection() {
+    var toast = document.querySelector('#toast1');
+    toast.text = "Error : Connection could not be established.";
+    toast.show();
+  }
+
+  private _fillInventory() {
+    this.server.syncInventory()
+      .then((response) => {
+        console.debug('Filling inventory with ' + JSON.stringify(response));
+      })
+      .catch((error) => {
+        console.warn('server error : ' + JSON.stringify(error));
+      });
+    // ws.send(JSON.stringify({
+    //   type: 'inventorySync'
+    // }));
+  }
+
+ //  private _fetchInventory() : IngredientSrc {
+ //    var src = new IngredientSrc(Entities.inventory);
+
+	// return src.addAll([
+	//   new Supply.Ing(Entities.syrup, Supply.IngType.Fermentable, [Dim.Volume]),
+ //    new Supply.Ing(Entities.dme, Supply.IngType.Fermentable, [Dim.Volume]),
+	//   new Supply.Ing(Entities.c120, Supply.IngType.Fermentable, [Dim.Mass]),
+	//   new Supply.Ing(Entities.c60, Supply.IngType.Fermentable, [Dim.Mass]),
+	//   new Supply.Ing(Entities.paleChoco, Supply.IngType.Fermentable, [Dim.Mass]),
+	//   new Supply.Ing(Entities.blackMalt, Supply.IngType.Fermentable, [Dim.Mass]),
+	//   new Supply.Ing(Entities.flakedRye, Supply.IngType.Fermentable, [Dim.Mass]),
+	//   new Supply.Ing(Entities.rolledOat, Supply.IngType.Fermentable, [Dim.Mass]),
+	//   new Supply.Ing(Entities.yeastNutrient, Supply.IngType.Miscellaneous, [Dim.Volume]),
+	//   new Supply.Ing(Entities.w2112, Supply.IngType.Yeast),
+	// ]);
+ //  }
+
+
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeBuilder.prototype, {
@@ -86,14 +107,6 @@ window.Polymer(window.Polymer.Base.extend(RecipeBuilder.prototype, {
     },
 	  recipe: {
       type: Object,
-      notify: true
-    },
-    ws: {
-      type: Object
-    },
-    isConnected: {
-      type: Boolean,
-      value: null,
       notify: true
     }
   }

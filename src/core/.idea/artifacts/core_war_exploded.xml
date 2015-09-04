@@ -8,11 +8,13 @@
           <element id="module-output" name="core" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="javax.websocket:javax.websocket-api:1.1" />
           <element id="library" level="project" name="org.glassfish.jersey.containers:jersey-container-servlet:2.21" />
-          <element id="library" level="project" name="javax.json:javax.json-api:1.0" />
           <element id="library" level="project" name="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" />
           <element id="library" level="project" name="javax.ws.rs:javax.ws.rs-api:2.0" />
+          <element id="library" level="project" name="javax.websocket:javax.websocket-api:1.11" />
+          <element id="library" level="project" name="org.glassfish.jersey.core:jersey-server:2.21" />
+          <element id="library" level="project" name="javax.json:javax.json-api:1.0" />
+          <element id="library" level="project" name="org.glassfish:javax.json:1.0" />
         </element>
       </element>
     </root>

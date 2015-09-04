@@ -1,12 +1,12 @@
 class MessageType {
 	name:string;
 	id:number;
-	
+
 	constructor(name:string, id:number) {
 		this.name = name;
 		this.id = id;
 	}
-	
+
 	static unknown:MessageType = new MessageType('Unknown', 0);
 	static NewStepCreated:MessageType = new MessageType('NewStepCreated', 1);
 	static RecipeChanged:MessageType = new MessageType('RecipeChanged', 2);
@@ -21,4 +21,6 @@ class MessageType {
 	static AnswerText:MessageType = new MessageType('AnswerText', 11);
 	static AskQuantity:MessageType = new MessageType('AskQuantity', 12);
 	static AnswerQuantity:MessageType = new MessageType('AnswerQuantity', 13);
+	static ServerConnected:MessageType = new MessageType('ServerConnected', 14);
+	static UnsuccessfulConnection:MessageType = new MessageType('UnsuccessfulConnection', 15);
 };

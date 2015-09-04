@@ -1,10 +1,12 @@
 package com.github.malavv.brewru;
 
+import javax.json.*;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,13 +39,24 @@ public class SocketApi {
   @OnMessage
   public void router(String message, Session session) throws IOException {
     log.info(String.format("receiving incoming transmission : %s", message));
+    JsonReader reader = Json.createReader(new ByteArrayInputStream(message.getBytes()));
+    JsonObject pkg = reader.readObject();
 
-    switch (message) {
+    switch (pkg.getString("type")) {
       case "SHUTDOWN":
         session.getBasicRemote().sendText("Shutting Down");
         App.shutdown();
-      default:
-        session.getBasicRemote().sendText(String.format("%s from the server", message));
+        break;
+      case "syncInventory":
+        JsonObject json = Json.createObjectBuilder()
+            .add("id", pkg.getInt("id"))
+            .add("type", pkg.getString("type"))
+            .add("data", Json.createObjectBuilder().build())
+            .add("clientId", pkg.getString("clientId"))
+            .build();
+
+        session.getBasicRemote().sendText(json.toString());
+        break;
     }
   }
 }
