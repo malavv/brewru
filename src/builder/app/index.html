@@ -20,6 +20,19 @@
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements/elements.html">
     <!-- endreplace-->
+
+    <style>
+      .welcome {
+        justify-content: center;
+        background-color: #fafafa;
+      }
+      .welcome > div {
+        text-align: center;
+        font-size: 3em;
+        font-family: sans-serif;
+        color: #555;
+      }
+    </style>
   </head>
 
   <body unresolved class="fullbleed layout horizontal">
@@ -28,7 +41,13 @@
       <!-- Keyboard shortcut Manager linked to the PubSub. -->
       <app-shortcuts></app-shortcuts>
 
-      <recipe-overview recipe="{{recipe}}" class="flex-3"></recipe-overview>
+      <iron-pages selected="0" class="flex-3 layout vertical">
+        <div class="flex layout vertical welcome">
+          <div>Welcome</div>
+        </div>
+        <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
+      </iron-pages>
+
       <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
 
       <!-- Manages the recipe building process. -->
