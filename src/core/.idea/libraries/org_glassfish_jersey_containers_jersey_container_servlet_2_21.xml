@@ -1,8 +1,0 @@
-<component name="libraryTable">
-  <library name="org.glassfish.jersey.containers:jersey-container-servlet:2.21" type="repository">
-    <properties maven-id="org.glassfish.jersey.containers:jersey-container-servlet:2.21" />
-    <CLASSES />
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

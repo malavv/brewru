@@ -1,0 +1,14 @@
+:host #test {
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  width: 7em; }
+
+:host widget-units {
+  margin-left: -50px; }
+
+:host .unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none; }

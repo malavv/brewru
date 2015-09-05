@@ -13,6 +13,10 @@ src/core/.idea/workspace.xml
 src/core/.idea/dictionaries
 src/core/out/
 
+# Client Core
+src/client-core/doc
+src/client-core/node_modules
+
 # Misc
 *.sublime-project
 *.sublime-workspace

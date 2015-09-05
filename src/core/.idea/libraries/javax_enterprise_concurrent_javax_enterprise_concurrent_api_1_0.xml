@@ -1,9 +1,7 @@
 <component name="libraryTable">
   <library name="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" type="repository">
     <properties maven-id="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" />
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/javax/enterprise/concurrent/javax.enterprise.concurrent-api/1.0/javax.enterprise.concurrent-api-1.0.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

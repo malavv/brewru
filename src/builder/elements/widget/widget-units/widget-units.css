@@ -1,0 +1,15 @@
+div.container {
+  padding: 0 10px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none; }
+
+div.systems {
+  position: absolute; }
+
+li:hover {
+  border: 1px solid #ccc; }
+
+li {
+  border: 1px solid #fff; }

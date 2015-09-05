@@ -11,12 +11,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.0.24" level="application_server_libraries" />
-    <orderEntry type="library" name="org.glassfish.jersey.containers:jersey-container-servlet:2.21" level="project" />
     <orderEntry type="library" name="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" level="project" />
-    <orderEntry type="library" name="javax.ws.rs:javax.ws.rs-api:2.0" level="project" />
     <orderEntry type="library" name="org.glassfish.jersey.core:jersey-server:2.21" level="project" />
-    <orderEntry type="library" name="javax.websocket:javax.websocket-api:1.11" level="project" />
-    <orderEntry type="library" name="javax.json:javax.json-api:1.0" level="project" />
     <orderEntry type="library" name="org.glassfish:javax.json:1.0" level="project" />
+    <orderEntry type="library" name="javax.ws.rs:javax.ws.rs-api:2.0" level="project" />
+    <orderEntry type="library" name="org.glassfish.jersey.containers:jersey-container-servlet-core:2.21" level="project" />
+    <orderEntry type="library" name="javax.websocket:javax.websocket-api:1.1" level="project" />
+    <orderEntry type="library" name="javax.json:javax.json-api:1.0" level="project" />
   </component>
 </module>

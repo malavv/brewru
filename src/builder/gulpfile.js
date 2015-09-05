@@ -22,10 +22,10 @@ var
   historyApiFallback = require('connect-history-api-fallback');
 
 /* Cleans output directories. */
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', del.bind(null, ['dist']));
 
 // Watch Files For Changes & Reload
-gulp.task('serve', ['sass', 'images'], function () {
+gulp.task('serve', ['clean', 'sass', 'ts'], function () {
   browserSync({
     notify: false,
     logPrefix: 'PSK',
@@ -42,7 +42,7 @@ gulp.task('serve', ['sass', 'images'], function () {
     //       will present a certificate warning in the browser.
     // https: true,
     server: {
-      baseDir: ['.tmp', 'app'],
+      baseDir: ['.'],
       middleware: [ historyApiFallback() ],
       routes: {
         '/bower_components': 'bower_components'
@@ -50,77 +50,45 @@ gulp.task('serve', ['sass', 'images'], function () {
     }
   });
 
-  gulp.watch(['app/**/*.html'], reload);
-  gulp.watch(['app/elements/**/*.scss'], ['sass', reload]);
-  gulp.watch(['app/elements/**/*.ts'], ['ts-elem', reload]);
-  gulp.watch(['app/src/**/*.ts'], ['ts-base', reload]);
-  gulp.watch(['app/images/**/*'], reload);
+  gulp.watch(['**/*.html'], reload);
+  gulp.watch(['elements/**/*.scss'], ['sass', reload]);
+  gulp.watch(['elements/**/*.ts'], ['ts', reload]);
 });
 
 /* Compiles the SCSS items inside the elem/ tree and puts the output in the app/ tree. */
 gulp.task('sass', function () {
-  return gulp.src('app/elements/**/*.scss')
+  return gulp.src('elements/**/*.scss')
       .pipe(sass().on('error', sass.logError))
-      .pipe(gulp.dest('app/elements'));
-});
-
-/* Compiles the brewru library and puts it as base.js, to be a library to the polymer elements. */
-gulp.task('ts-base', function () {
-  return gulp.src('app/src/**/*.ts')
-      .pipe(ts({
-        noImplicitAny: true,
-        out: 'base.js',
-        target: 'es5'
-      }))
-      .js
-      .pipe(gulp.dest('app/lib/'));
+      .pipe(gulp.dest('elements'));
 });
 
 /* Compiles the polymer elements that will use the brewru library to implement the recipe builder functionalities. */
-gulp.task('ts-elem', function () {
-  return gulp.src('app/elements/**/*.ts')
+gulp.task('ts', function () {
+  return gulp.src('elements/**/*.ts')
       .pipe(ts({
         noImplicitAny: true,
         target: 'es5'
         }))
       .js
-      .pipe(gulp.dest('app/elements'));
+      .pipe(gulp.dest('elements'));
 });
-
-/* Generates documentation for Typescript. */
-// gulp.task('typedoc', function () {
-//   return gulp
-//       .src(['src/**/*.ts', 'elements/**/*.ts'])
-//       .pipe(typedoc({
-//         out: 'doc',
-//         target: 'es5',
-//         includeDeclarations: true
-//       }));
-// });
 
 // Copy All Files At The Root Level (app)
 gulp.task('copy', function () {
-  var app = gulp.src([
-    'app/*',
-    '!app/test'
-  ], {
-    dot: true
-  }).pipe(gulp.dest('dist'));
-
   var bower = gulp.src([
     'bower_components/**/*'
   ]).pipe(gulp.dest('dist/bower_components'));
 
-  var elements = gulp.src(['app/elements/**/*.html'])
+  var elements = gulp.src(['elements/**/*.html'])
     .pipe(gulp.dest('dist/elements'));
     
-  var scripts = gulp.src(['app/elements/**/*.js'])
+  var scripts = gulp.src(['elements/**/*.js'])
     .pipe(gulp.dest('dist/elements'));
     
-  var styles = gulp.src(['app/elements/**/*.css'])
+  var styles = gulp.src(['elements/**/*.css'])
     .pipe(gulp.dest('dist/elements'));
     
-  var vulcanized = gulp.src(['app/elements/elements.html'])
+  var vulcanized = gulp.src(['elements/elements.html'])
     .pipe($.rename('elements.vulcanized.html'))
     .pipe(gulp.dest('dist/elements'));
 
@@ -129,41 +97,25 @@ gulp.task('copy', function () {
 });
 
 // Lint JavaScript
-gulp.task('tslint', function () {
-  return gulp.src([
-      'app/src/**/*.ts',
-      'app/elements/**/*.ts'
-    ])
+gulp.task('lint', function () {
+  return gulp.src('app/elements/**/*.ts')
     .pipe(reload({stream: true, once: true}))
     .pipe(tsLint())
     .pipe(tsLint.report('verbose'));
 });
 
-// Optimize Images
-gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
-    .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}));
-});
-// Optimize Images
+// Optimize Library
 gulp.task('lib', function () {
-  return gulp.src('app/lib/**/*')
+  return gulp.src('lib/**/*')
     .pipe(gulp.dest('dist/lib'))
     .pipe($.size({title: 'lib'}));
 });
 
-// Copy Web Fonts To Dist
-gulp.task('fonts', function () {
-  return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/fonts'))
-    .pipe($.size({title: 'fonts'}));
-});
-
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
+  var assets = $.useref.assets({searchPath: ['dist']});
 
-  return gulp.src(['app/**/*.html', '!app/{elements,test}/**/*.html'])
+  return gulp.src(['**/*.html', '!{elements,test}/**/*.html'])
     // Replace path for vulcanized assets
     .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
     .pipe(assets)
@@ -201,8 +153,8 @@ gulp.task('vulcanize', function () {
 
 gulp.task('default', ['clean'], function(cb) {
   runSequence(
-    ['copy', 'sass', 'ts-base', 'ts-elem'],
-    ['tslint', 'images', 'fonts', 'html', 'lib'],
+    ['copy', 'sass', 'ts'],
+    ['lint', 'html', 'lib'],
     'vulcanize',
     cb
   );
