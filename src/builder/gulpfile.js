@@ -51,8 +51,8 @@ gulp.task('serve', ['clean', 'sass', 'ts'], function () {
   });
 
   gulp.watch(['**/*.html'], reload);
-  gulp.watch(['elements/**/*.scss'], ['sass', reload]);
-  gulp.watch(['elements/**/*.ts'], ['ts', reload]);
+  gulp.watch(['**/*.scss'], ['sass', reload]);
+  gulp.watch(['**/*.ts'], ['ts', reload]);
 });
 
 /* Compiles the SCSS items. */

@@ -19,7 +19,6 @@ var RecipeBuilder = (function (_super) {
         this.ingredients = new Ingredients();
         this.recipe = new Recipe();
         bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
-        bus.suscribe(MessageType.UnsuccessfulConnection, this._onUnsuccessfulConnection, this);
         bus.suscribe(MessageType.ServerConnected, function () {
             _this.async(function () {
                 _this._onConnectionEstablished();
@@ -40,25 +39,19 @@ var RecipeBuilder = (function (_super) {
         bus.publish(MessageType.RecipeChanged);
     };
     RecipeBuilder.prototype._onConnectionEstablished = function () {
-        var toast = document.querySelector('#toast1');
-        toast.text = "Connected";
-        toast.show();
         this._fillInventory();
-    };
-    RecipeBuilder.prototype._onUnsuccessfulConnection = function () {
-        var toast = document.querySelector('#toast1');
-        toast.text = "Error : Connection could not be established.";
-        toast.show();
     };
     RecipeBuilder.prototype._fillInventory = function () {
         var _this = this;
         this.server.syncInventory()
             .then(function (response) {
+            bus.publish(MessageType.StatusUpdate, "Filling inventory with Server data.");
             console.debug('Filling inventory with ' + JSON.stringify(response));
             response.items.forEach(function (item) {
                 _this.inventory.addItem(Item.fromRaw(item));
             });
             console.log(_this.inventory);
+            bus.publish(MessageType.StatusUpdate, "Done");
         })
             .catch(function (error) {
             console.warn('server error : ' + JSON.stringify(error));

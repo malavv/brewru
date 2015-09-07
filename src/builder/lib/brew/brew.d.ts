@@ -242,6 +242,7 @@ declare class MessageType {
     static ServerConnected: MessageType;
     static UnsuccessfulConnection: MessageType;
     static InventoryChanged: MessageType;
+    static StatusUpdate: MessageType;
 }
 interface HandlerFunc {
     (data: any): void;
@@ -331,22 +332,6 @@ declare class ServerImpl {
     private _onMessage(msg);
     private _onOpen();
 }
-declare class SystemImpl {
-    private units;
-    name: string;
-    constructor(name: string, units: Array<Unit>);
-    sym(symbol: string): Unit;
-    dim(dim: Dim): Array<Unit>;
-    getById(id: string): Unit;
-}
-declare class UnitSystem {
-    static SI: SystemImpl;
-    static UsCust: SystemImpl;
-    static Imperial: SystemImpl;
-    static all(): Array<SystemImpl>;
-    static getUnit(id: string): Unit;
-}
-declare var SI: SystemImpl, UsCust: SystemImpl, Imperial: SystemImpl;
 declare enum ItemType {
     Fermentables = 0,
     Hops = 1,
@@ -381,3 +366,19 @@ declare class Inventory {
     listItem(type: ItemType): Item[];
     addItem(item: Item): void;
 }
+declare class SystemImpl {
+    private units;
+    name: string;
+    constructor(name: string, units: Array<Unit>);
+    sym(symbol: string): Unit;
+    dim(dim: Dim): Array<Unit>;
+    getById(id: string): Unit;
+}
+declare class UnitSystem {
+    static SI: SystemImpl;
+    static UsCust: SystemImpl;
+    static Imperial: SystemImpl;
+    static all(): Array<SystemImpl>;
+    static getUnit(id: string): Unit;
+}
+declare var SI: SystemImpl, UsCust: SystemImpl, Imperial: SystemImpl;

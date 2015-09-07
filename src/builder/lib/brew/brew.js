@@ -423,6 +423,7 @@ var MessageType = (function () {
     MessageType.ServerConnected = new MessageType('ServerConnected', 14);
     MessageType.UnsuccessfulConnection = new MessageType('UnsuccessfulConnection', 15);
     MessageType.InventoryChanged = new MessageType('InventoryChanged', 16);
+    MessageType.StatusUpdate = new MessageType('StatusUpdate', 17);
     return MessageType;
 })();
 ;
@@ -608,62 +609,6 @@ var ServerImpl = (function () {
     };
     return ServerImpl;
 })();
-/// <reference path="dimension.ts" />
-/// <reference path="unit.ts" />
-/// <reference path="../base/conceptRef.ts" />
-var SystemImpl = (function () {
-    function SystemImpl(name, units) {
-        var _this = this;
-        this.units = [];
-        this.name = name;
-        this.units = units;
-        this.units.forEach(function (u) { u.system = _this; });
-        return this;
-    }
-    SystemImpl.prototype.sym = function (symbol) {
-        return this.units.filter(function (u) { return u.symbol === symbol; })[0];
-    };
-    SystemImpl.prototype.dim = function (dim) {
-        return this.units.filter(function (u) { return u.dimension === dim; });
-    };
-    SystemImpl.prototype.getById = function (id) {
-        var match = this.units.filter(function (u) { return u.concept.ref === id; });
-        return match.length === 0 ? null : match[0];
-    };
-    return SystemImpl;
-})();
-var UnitSystem = (function () {
-    function UnitSystem() {
-    }
-    UnitSystem.all = function () { return [this.SI, this.UsCust, this.Imperial]; };
-    UnitSystem.getUnit = function (id) {
-        var match = this.all()
-            .map(function (system, idx, arr) {
-            return system.getById(id);
-        })
-            .filter(function (unit) {
-            return unit !== null;
-        });
-        return match.length === 0 ? null : match[0];
-    };
-    UnitSystem.SI = new SystemImpl('SI', [
-        new Unit(new OntoRef('brew:kg', 'kilogram'), 'kg', 0, 1, Dim.Mass, null),
-        new Unit(new OntoRef('brew:liter', 'liter'), 'l', 0, 1, Dim.Volume, null),
-        new Unit(new OntoRef('brew:kelvin', 'kelvin'), 'K', 0, 1, Dim.Temperature, null),
-        new Unit(new OntoRef('brew:celsius', 'celsius'), 'C', 0, 1, Dim.Temperature, null),
-        new Unit(new OntoRef('brew:minute', 'minute'), 'min', 0, 1, Dim.Temporal, null)
-    ]);
-    UnitSystem.UsCust = new SystemImpl('Us Cust.', [
-        new Unit(new OntoRef('brew:inch', 'inch'), 'in', 0, 1, Dim.Length, null),
-        new Unit(new OntoRef('brew:pint', 'pint'), 'pt', 0, 1, Dim.Volume, null),
-        new Unit(new OntoRef('brew:cup', 'cup'), 'cup', 0, 1, Dim.Volume, null),
-        new Unit(new OntoRef('brew:tsp', 'teaspoon'), 'tsp', 0, 1, Dim.Volume, null),
-        new Unit(new OntoRef('brew:farenheit', 'farenheit'), 'F', 0, 1, Dim.Temperature, null)
-    ]);
-    UnitSystem.Imperial = new SystemImpl('Imperial', []);
-    return UnitSystem;
-})();
-var SI = UnitSystem.SI, UsCust = UnitSystem.UsCust, Imperial = UnitSystem.Imperial;
 var ItemType;
 (function (ItemType) {
     ItemType[ItemType["Fermentables"] = 0] = "Fermentables";
@@ -745,3 +690,59 @@ var Inventory = (function () {
     };
     return Inventory;
 })();
+/// <reference path="dimension.ts" />
+/// <reference path="unit.ts" />
+/// <reference path="../base/conceptRef.ts" />
+var SystemImpl = (function () {
+    function SystemImpl(name, units) {
+        var _this = this;
+        this.units = [];
+        this.name = name;
+        this.units = units;
+        this.units.forEach(function (u) { u.system = _this; });
+        return this;
+    }
+    SystemImpl.prototype.sym = function (symbol) {
+        return this.units.filter(function (u) { return u.symbol === symbol; })[0];
+    };
+    SystemImpl.prototype.dim = function (dim) {
+        return this.units.filter(function (u) { return u.dimension === dim; });
+    };
+    SystemImpl.prototype.getById = function (id) {
+        var match = this.units.filter(function (u) { return u.concept.ref === id; });
+        return match.length === 0 ? null : match[0];
+    };
+    return SystemImpl;
+})();
+var UnitSystem = (function () {
+    function UnitSystem() {
+    }
+    UnitSystem.all = function () { return [this.SI, this.UsCust, this.Imperial]; };
+    UnitSystem.getUnit = function (id) {
+        var match = this.all()
+            .map(function (system, idx, arr) {
+            return system.getById(id);
+        })
+            .filter(function (unit) {
+            return unit !== null;
+        });
+        return match.length === 0 ? null : match[0];
+    };
+    UnitSystem.SI = new SystemImpl('SI', [
+        new Unit(new OntoRef('brew:kg', 'kilogram'), 'kg', 0, 1, Dim.Mass, null),
+        new Unit(new OntoRef('brew:liter', 'liter'), 'l', 0, 1, Dim.Volume, null),
+        new Unit(new OntoRef('brew:kelvin', 'kelvin'), 'K', 0, 1, Dim.Temperature, null),
+        new Unit(new OntoRef('brew:celsius', 'celsius'), 'C', 0, 1, Dim.Temperature, null),
+        new Unit(new OntoRef('brew:minute', 'minute'), 'min', 0, 1, Dim.Temporal, null)
+    ]);
+    UnitSystem.UsCust = new SystemImpl('Us Cust.', [
+        new Unit(new OntoRef('brew:inch', 'inch'), 'in', 0, 1, Dim.Length, null),
+        new Unit(new OntoRef('brew:pint', 'pint'), 'pt', 0, 1, Dim.Volume, null),
+        new Unit(new OntoRef('brew:cup', 'cup'), 'cup', 0, 1, Dim.Volume, null),
+        new Unit(new OntoRef('brew:tsp', 'teaspoon'), 'tsp', 0, 1, Dim.Volume, null),
+        new Unit(new OntoRef('brew:farenheit', 'farenheit'), 'F', 0, 1, Dim.Temperature, null)
+    ]);
+    UnitSystem.Imperial = new SystemImpl('Imperial', []);
+    return UnitSystem;
+})();
+var SI = UnitSystem.SI, UsCust = UnitSystem.UsCust, Imperial = UnitSystem.Imperial;

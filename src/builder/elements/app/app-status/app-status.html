@@ -1,0 +1,22 @@
+<dom-module id="app-status">
+  
+  <link rel="import" type="css" href="app-status.css">
+  <style>
+    :host {
+      @apply(--layout-horizontal);
+    }
+  </style>
+  
+  <template>
+    <div status>{{message}}</div>
+    <div class="flex"></div>
+    
+    <iron-pages selected="{{isConnected}}">
+      <iron-icon icon="notification:sync-problem"></iron-icon>
+      <iron-icon icon="notification:sync"></iron-icon>
+    </iron-pages>
+  </template>
+  
+  <script src="app-status.js"></script>
+  
+</dom-module>

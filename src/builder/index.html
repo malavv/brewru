@@ -12,7 +12,10 @@
     <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- endbuild -->
-
+    <script>
+      window.Polymer = window.Polymer || {};
+      window.Polymer.dom = 'shadow';
+    </script>
 
     <!-- Base Brewru Library -->
     <script src="lib/brew/brew.js"></script>
@@ -20,44 +23,28 @@
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements/elements.html">
     <!-- endreplace-->
-
-    <style>
-      .welcome {
-        justify-content: center;
-        background-color: #fafafa;
-      }
-      .welcome > div {
-        text-align: center;
-        font-size: 3em;
-        font-family: sans-serif;
-        color: #555;
-      }
-    </style>
   </head>
 
-  <body unresolved class="fullbleed layout horizontal">
+  <body unresolved class="fullbleed layout vertical">
     <span id="browser-sync-binding"></span>
     <template is="dom-bind">
       <!-- Keyboard shortcut Manager linked to the PubSub. -->
       <app-shortcuts></app-shortcuts>
-
-      <iron-pages selected="0" class="flex-3 layout vertical">
-        <div class="flex layout vertical welcome">
-          <div>Welcome</div>
-        </div>
-        <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
-      </iron-pages>
-
-      <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
-
       <!-- Manages the recipe building process. -->
       <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
-
       <!--Manages the builder information-->
       <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
 
-      <paper-toast id="toast1" text="Connected to a server."></paper-toast>
+      <div class="layout horizontal flex">
+        <iron-pages selected="0" class="flex-3 layout vertical">
+          <app-splash class="flex"></app-splash>
+          <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
+        </iron-pages>
+  
+        <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
+      </div>
+      
+      <app-status></app-status>
     </template>
   </body>
-
 </html>

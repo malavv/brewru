@@ -20,7 +20,6 @@ class RecipeBuilder extends Polymer.DomModule {
 	  this.recipe = new Recipe();
 
 	  bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
-    bus.suscribe(MessageType.UnsuccessfulConnection, this._onUnsuccessfulConnection, this);
     bus.suscribe(MessageType.ServerConnected, () => {
       this.async(() => {
           this._onConnectionEstablished();
@@ -46,27 +45,19 @@ class RecipeBuilder extends Polymer.DomModule {
   }
 
   private _onConnectionEstablished() {
-    var toast = <PaperToast><any>document.querySelector('#toast1');
-    toast.text = "Connected";
-    toast.show();
-
     this._fillInventory();
-  }
-
-  private _onUnsuccessfulConnection() {
-    var toast = <PaperToast><any>document.querySelector('#toast1');
-    toast.text = "Error : Connection could not be established.";
-    toast.show();
   }
 
   private _fillInventory() {
     this.server.syncInventory()
       .then((response) => {
+        bus.publish(MessageType.StatusUpdate, "Filling inventory with Server data.");
         console.debug('Filling inventory with ' + JSON.stringify(response));
         response.items.forEach((item) => {
           this.inventory.addItem(Item.fromRaw(item));
         });
         console.log(this.inventory);
+        bus.publish(MessageType.StatusUpdate, "Done");
       })
       .catch((error) => {
         console.warn('server error : ' + JSON.stringify(error));
