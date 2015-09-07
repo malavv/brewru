@@ -55,7 +55,7 @@ gulp.task('serve', ['clean', 'sass', 'ts'], function () {
   gulp.watch(['elements/**/*.ts'], ['ts', reload]);
 });
 
-/* Compiles the SCSS items inside the elem/ tree and puts the output in the app/ tree. */
+/* Compiles the SCSS items. */
 gulp.task('sass', function () {
   return gulp.src('elements/**/*.scss')
       .pipe(sass().on('error', sass.logError))
@@ -73,7 +73,7 @@ gulp.task('ts', function () {
       .pipe(gulp.dest('elements'));
 });
 
-// Copy All Files At The Root Level (app)
+// Copy All Files At The Root Level
 gulp.task('copy', function () {
   var bower = gulp.src([
     'bower_components/**/*'
@@ -92,13 +92,13 @@ gulp.task('copy', function () {
     .pipe($.rename('elements.vulcanized.html'))
     .pipe(gulp.dest('dist/elements'));
 
-  return merge(app, bower, scripts, styles, elements, vulcanized)
+  return merge(bower, scripts, styles, elements, vulcanized)
     .pipe($.size({title: 'copy'}));
 });
 
 // Lint JavaScript
 gulp.task('lint', function () {
-  return gulp.src('app/elements/**/*.ts')
+  return gulp.src('elements/**/*.ts')
     .pipe(reload({stream: true, once: true}))
     .pipe(tsLint())
     .pipe(tsLint.report('verbose'));
