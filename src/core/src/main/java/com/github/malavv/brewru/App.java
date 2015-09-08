@@ -1,8 +1,7 @@
 package com.github.malavv.brewru;
 
-import org.glassfish.jersey.server.ResourceConfig;
-
 import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -11,16 +10,8 @@ import java.net.Socket;
  * <p>
  * This is were each class providing resource that needs to be managed by Tomcat are listed here.
  */
-@ApplicationPath("")
-public class App extends ResourceConfig {
-
-  /**
-   * Constructor called by Tomcat. Needs to be public.
-   */
-  public App() {
-    register(RestApi.class);
-    register(SocketApi.class);
-  }
+@ApplicationPath("/")
+public class App extends Application {
 
   /**
    * Will contact Tomcat and request an application shutdown.

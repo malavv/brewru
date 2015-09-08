@@ -18,5 +18,8 @@
     <orderEntry type="library" name="org.glassfish.jersey.containers:jersey-container-servlet-core:2.21" level="project" />
     <orderEntry type="library" name="javax.websocket:javax.websocket-api:1.1" level="project" />
     <orderEntry type="library" name="javax.json:javax.json-api:1.0" level="project" />
+    <orderEntry type="library" name="org.apache.jena:jena-core:2.12.0" level="project" />
+    <orderEntry type="library" name="net.sourceforge.owlapi:owlapi-api:4.0.2" level="project" />
+    <orderEntry type="library" name="net.sourceforge.owlapi:owlapi-apibinding:4.0.2" level="project" />
   </component>
 </module>

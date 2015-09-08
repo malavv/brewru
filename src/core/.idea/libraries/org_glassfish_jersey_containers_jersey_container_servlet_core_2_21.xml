@@ -3,8 +3,6 @@
     <properties maven-id="org.glassfish.jersey.containers:jersey-container-servlet-core:2.21" />
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/containers/jersey-container-servlet-core/2.21/jersey-container-servlet-core-2.21.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/hk2/external/javax.inject/2.4.0-b31/javax.inject-2.4.0-b31.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/core/jersey-common/2.21/jersey-common-2.21.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar!/" />

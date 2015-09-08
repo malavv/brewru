@@ -1,6 +1,10 @@
 package com.github.malavv.brewru;
 
 import com.github.malavv.brewru.inventory.Inventory;
+import com.github.malavv.brewru.onto.OntoProxy;
+import com.hp.hpl.jena.ontology.OntDocumentManager;
+import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 import javax.json.*;
 import javax.websocket.OnClose;
@@ -44,6 +48,12 @@ public class SocketApi {
     JsonReader reader = Json.createReader(new ByteArrayInputStream(message.getBytes()));
     JsonObject pkg = reader.readObject();
 
+    if (!pkg.containsKey("type")) {
+      log.warning("Malformed payload.");
+      return;
+    }
+
+
     switch (pkg.getString("type")) {
       case "SHUTDOWN":
         session.getBasicRemote().sendText("Shutting Down");
@@ -57,8 +67,17 @@ public class SocketApi {
             .add("data", inventory.syncMsg(inventory.sync()))
             .add("clientId", pkg.getString("clientId"))
             .build();
-
         session.getBasicRemote().sendText(json.toString());
+        break;
+      case "onto":
+        OntoProxy proxy = new OntoProxy();
+        JsonObject j = Json.createObjectBuilder()
+            .add("ontologies", proxy.m.listOntologies().toList().stream().map(Resource::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .add("classes", proxy.m.listClasses().toList().stream().map(Resource::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .add("individuals", proxy.m.listIndividuals().toList().stream().map(Resource::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .add("statements", proxy.m.listStatements().toList().stream().map(Object::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .build();
+        session.getBasicRemote().sendText(j.toString());
         break;
     }
   }
