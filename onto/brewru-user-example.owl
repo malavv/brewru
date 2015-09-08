@@ -1,0 +1,43 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix brew: <http://brewru.com/malavv#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://brewru.com/malavv> .
+
+<http://brewru.com/malavv> rdf:type owl:Ontology ;
+                           
+                           owl:imports <http://github.com/malavv/brewru/0.0.2> .
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+###  http://github.com/malavv/brewru#mockStockOfLME
+
+:mockStockOfLME rdf:type brew:stock ,
+                         owl:NamedIndividual ;
+                
+                brew:acquiredOn "2015-09-08T13:30:03"^^xsd:dateTime ;
+                
+                brew:createdOn "2015-09-08T13:30:03"^^xsd:dateTime ;
+                
+                brew:ofIngredient brew:briessPaleLme ;
+                
+                brew:ofQuantity brew:mockStockQty ;
+                
+                brew:soldBy brew:moutInternational .
+
+
+
+###  http://github.com/malavv/brewru#mockStockQty
+
+:mockStockQty rdf:type brew:quantity ,
+                       owl:NamedIndividual ;
+              
+              brew:hasMagnitude "1.0"^^xsd:double ;
+              
+              brew:hasUnit brew:kilogram .
