@@ -2,11 +2,11 @@ package com.github.malavv.brewru;
 
 import com.github.malavv.brewru.inventory.Inventory;
 import com.github.malavv.brewru.onto.OntoProxy;
-import com.hp.hpl.jena.ontology.OntDocumentManager;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.Resource;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -72,10 +72,9 @@ public class SocketApi {
       case "onto":
         OntoProxy proxy = new OntoProxy();
         JsonObject j = Json.createObjectBuilder()
-            .add("ontologies", proxy.m.listOntologies().toList().stream().map(Resource::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-            .add("classes", proxy.m.listClasses().toList().stream().map(Resource::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-            .add("individuals", proxy.m.listIndividuals().toList().stream().map(Resource::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-            .add("statements", proxy.m.listStatements().toList().stream().map(Object::toString).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .add("ontologies", proxy.ontology.getOWLOntologyManager().getOntologies().stream().map(o -> o.getOntologyID().getOntologyIRI().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .add("classes", proxy.ontology.getClassesInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+            .add("individuals", proxy.ontology.getIndividualsInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
             .build();
         session.getBasicRemote().sendText(j.toString());
         break;
