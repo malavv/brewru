@@ -1,144 +1,370 @@
-@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:      <http://www.w3.org/2002/07/owl#> .
-@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
-@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
-@prefix skos:     <http://www.w3.org/2004/02/skos/core#> .
-@prefix brew:     <http://github.com/malavv/brewru#> .
-@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix brew: <http://github.com/malavv/brewru#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://github.com/malavv/brewru> .
 
-<http://github.com/malavv/brewru>
-  rdf:type owl:Ontology;
-  owl:versionInfo "0.0.2";
-  rdfs:label "The Brewing Ontology";
-  rdfs:comment "The domain ontology which defines the core concepts and relations used in the world of Brewing.";
-  dcterms:created "2015-08-21"^^xsd:date;
-  dcterms:modified "2015-09-13"^^xsd:date;
-  dcterms:contributor [foaf:mbox "duguigne@gmail.com"];
-  .
+<http://github.com/malavv/brewru> rdf:type owl:Ontology ;
+                                  
+                                  rdfs:label "The Brewing Ontology" ;
+                                  
+                                  dcterms:created "2015-08-21"^^xsd:date ;
+                                  
+                                  dcterms:modified "2015-09-13"^^xsd:date ;
+                                  
+                                  owl:versionInfo "0.0.2" ;
+                                  
+                                  rdfs:comment "The domain ontology which defines the core concepts and relations used in the world of Brewing." ;
+                                  
+                                  dcterms:contributor [ ] .
 
-# --- Annotations -----------------------------------------------
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+###  http://github.com/malavv/brewru#hasFlavor
 
 brew:hasFlavor rdf:type owl:AnnotationProperty .
+
+
+
+###  http://github.com/malavv/brewru#wikiLink
+
 brew:wikiLink rdf:type owl:AnnotationProperty .
 
-# --- Object Properties -----------------------------------------
 
-brew:hasManufacturer rdf:type owl:ObjectProperty;
-    .
 
-brew:hasState rdf:type owl:ObjectProperty;
-    .
+###  http://www.semanticweb.org/owl/owlapi/turtle#wikiLink
 
-brew:hasUnit rdf:type owl:ObjectProperty;
-    rdfs:range :unit;
-    .
+:wikiLink rdf:type owl:AnnotationProperty .
 
-brew:isVarietyOf rdf:type owl:ObjectProperty;
-    .
 
-brew:ofGrain rdf:type owl:ObjectProperty;
-    rdfs:range :component;
-    .
 
-brew:ofIngredient rdf:type owl:ObjectProperty;
-    .
+###  http://www.w3.org/2008/05/skos#prefLabel
 
-brew:ofQuantity rdf:type owl:ObjectProperty;
-    .
+<http://www.w3.org/2008/05/skos#prefLabel> rdf:type owl:AnnotationProperty .
 
-brew:soldBy rdf:type owl:ObjectProperty;
-    .
 
-# --- Data Properties -----------------------------------------
 
-brew:acquiredOn rdf:type owl:DatatypeProperty;
-    rdfs:range xsd:dateTime;
-    .
 
-brew:createdOn rdf:type owl:DatatypeProperty;
-    rdfs:range xsd:dateTime;
-    .
 
-brew:hasColorMeasurement rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf :hasMeasurement;
-    .
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://github.com/malavv/brewru#component
+
+brew:component rdf:type owl:ObjectProperty ;
+               
+               rdfs:domain brew:mixture ;
+               
+               rdfs:range brew:substanceSpecification .
+
+
+
+###  http://github.com/malavv/brewru#hasManufacturer
+
+brew:hasManufacturer rdf:type owl:ObjectProperty .
+
+
+
+###  http://github.com/malavv/brewru#hasState
+
+brew:hasState rdf:type owl:ObjectProperty .
+
+
+
+###  http://github.com/malavv/brewru#hasUnit
+
+brew:hasUnit rdf:type owl:ObjectProperty ;
+             
+             rdfs:range :unit .
+
+
+
+###  http://github.com/malavv/brewru#isVarietyOf
+
+brew:isVarietyOf rdf:type owl:ObjectProperty .
+
+
+
+###  http://github.com/malavv/brewru#ofGrain
+
+brew:ofGrain rdf:type owl:ObjectProperty ;
+             
+             rdfs:range :component .
+
+
+
+###  http://github.com/malavv/brewru#ofIngredient
+
+brew:ofIngredient rdf:type owl:ObjectProperty .
+
+
+
+###  http://github.com/malavv/brewru#ofQuantity
+
+brew:ofQuantity rdf:type owl:ObjectProperty .
+
+
+
+###  http://github.com/malavv/brewru#soldBy
+
+brew:soldBy rdf:type owl:ObjectProperty .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://github.com/malavv/brewru#acquiredOn
+
+brew:acquiredOn rdf:type owl:DatatypeProperty ;
+                
+                rdfs:range xsd:dateTime .
+
+
+
+###  http://github.com/malavv/brewru#createdOn
+
+brew:createdOn rdf:type owl:DatatypeProperty ;
+               
+               rdfs:range xsd:dateTime .
+
+
+
+###  http://github.com/malavv/brewru#hasColorMeasurement
+
+brew:hasColorMeasurement rdf:type owl:DatatypeProperty ;
+                         
+                         rdfs:subPropertyOf :hasMeasurement .
+
+
+
+###  http://github.com/malavv/brewru#hasMagnitude
 
 brew:hasMagnitude rdf:type owl:DatatypeProperty ;
-    rdfs:range xsd:double;
-    .
+                  
+                  rdfs:range xsd:double .
 
-brew:hasMeasurement rdf:type owl:DatatypeProperty;
-    .
 
-brew:hasPlatoMeasurement rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf :hasColorMeasurement;
-    .
 
-brew:percentFermentable rdf:type owl:DatatypeProperty;
-    .
+###  http://github.com/malavv/brewru#hasMeasurement
 
-# --- Classes -------------------------------------------------
+brew:hasMeasurement rdf:type owl:DatatypeProperty .
 
-brew:mixture a rdfs:Class, owl:Class;
-    rdfs:label "Mixture"@en;
-    rdfs:comment "Mixture of substance"@en;
-    .
 
-brew:substance a rdfs:Class, owl:Class;
-    rdfs:label "Substance"@en;
-    rdfs:comment "Substance"@en;
-    .
 
-brew:additive rdf:type owl:Class;
-    rdfs:subClassOf :component;
-    .
+###  http://github.com/malavv/brewru#hasPlatoMeasurement
 
-brew:colorMeasurement rdf:type owl:Class;
-    rdfs:subClassOf :measurement;
-    .
+brew:hasPlatoMeasurement rdf:type owl:DatatypeProperty ;
+                         
+                         rdfs:subPropertyOf :hasColorMeasurement .
+
+
+
+###  http://github.com/malavv/brewru#percentFermentable
+
+brew:percentFermentable rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.semanticweb.org/owl/owlapi/turtle#hasColorMeasurement
+
+:hasColorMeasurement rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.semanticweb.org/owl/owlapi/turtle#hasMeasurement
+
+:hasMeasurement rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://github.com/malavv/brewru#additive
+
+brew:additive rdf:type owl:Class ;
+              
+              rdfs:subClassOf :component .
+
+
+
+###  http://github.com/malavv/brewru#colorMeasurement
+
+brew:colorMeasurement rdf:type owl:Class ;
+                      
+                      rdfs:subClassOf :measurement .
+
+
+
+###  http://github.com/malavv/brewru#company
 
 brew:company rdf:type owl:Class ;
-    <http://www.w3.org/2008/05/skos#prefLabel> "Company"@en;
-    .
+             
+             <http://www.w3.org/2008/05/skos#prefLabel> "Company"@en .
 
-brew:component rdf:type owl:Class;
-    .
 
-brew:fermentable rdf:type owl:Class;
-    rdfs:subClassOf :component;
-    .
 
-brew:grain rdf:type owl:Class;
-    .
+###  http://github.com/malavv/brewru#fermentable
 
-brew:hop rdf:type owl:Class;
-    rdfs:subClassOf :component;
-    .
+brew:fermentable rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :component .
+
+
+
+###  http://github.com/malavv/brewru#grain
+
+brew:grain rdf:type owl:Class .
+
+
+
+###  http://github.com/malavv/brewru#hop
+
+brew:hop rdf:type owl:Class ;
+         
+         rdfs:subClassOf :component .
+
+
+
+###  http://github.com/malavv/brewru#maltedGrainExtract
 
 brew:maltedGrainExtract rdf:type owl:Class ;
-    rdfs:subClassOf :fermentable;
-    .
+                        
+                        rdfs:subClassOf :fermentable .
 
-brew:measurement rdf:type owl:Class;
-    .
 
-brew:quantity rdf:type owl:Class;
-    .
 
-brew:state rdf:type owl:Class;
-    .
+###  http://github.com/malavv/brewru#measurement
 
-brew:stock rdf:type owl:Class;
-    .
+brew:measurement rdf:type owl:Class .
 
-brew:unit rdf:type owl:Class;
-    .
 
-brew:yeast rdf:type owl:Class;
-    rdfs:subClassOf :component;
-    .
 
-brew:yeastAssimilableNitrogen rdf:type owl:Class;
-    :wikiLink "https://en.wikipedia.org/wiki/Yeast_assimilable_nitrogen"^^xsd:string;
-    .
+###  http://github.com/malavv/brewru#mixture
+
+brew:mixture rdf:type owl:Class ;
+             
+             rdfs:label "Mixture"@en ;
+             
+             rdfs:comment "Mixture of substance"@en .
+
+
+
+###  http://github.com/malavv/brewru#quantity
+
+brew:quantity rdf:type owl:Class .
+
+
+
+###  http://github.com/malavv/brewru#state
+
+brew:state rdf:type owl:Class .
+
+
+
+###  http://github.com/malavv/brewru#stock
+
+brew:stock rdf:type owl:Class .
+
+
+
+###  http://github.com/malavv/brewru#substanceSpecification
+
+brew:substanceSpecification rdf:type owl:Class .
+
+
+
+###  http://github.com/malavv/brewru#unit
+
+brew:unit rdf:type owl:Class .
+
+
+
+###  http://github.com/malavv/brewru#yeast
+
+brew:yeast rdf:type owl:Class ;
+           
+           rdfs:subClassOf :component .
+
+
+
+###  http://github.com/malavv/brewru#yeastAssimilableNitrogen
+
+brew:yeastAssimilableNitrogen rdf:type owl:Class ;
+                              
+                              :wikiLink "https://en.wikipedia.org/wiki/Yeast_assimilable_nitrogen"^^xsd:string .
+
+
+
+###  http://www.semanticweb.org/owl/owlapi/turtle#component
+
+:component rdf:type owl:Class .
+
+
+
+###  http://www.semanticweb.org/owl/owlapi/turtle#fermentable
+
+:fermentable rdf:type owl:Class .
+
+
+
+###  http://www.semanticweb.org/owl/owlapi/turtle#measurement
+
+:measurement rdf:type owl:Class .
+
+
+
+###  http://www.semanticweb.org/owl/owlapi/turtle#unit
+
+:unit rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://github.com/malavv/brewru#CBW
+
+brew:CBW rdf:type brew:mixture ,
+                  owl:NamedIndividual .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+
