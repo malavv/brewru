@@ -6,92 +6,37 @@ var __extends = (this && this.__extends) || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var InventoryMatchedIngredients = (function () {
-    function InventoryMatchedIngredients(ingredient, stocks) {
-        this.ingredient = ingredient;
-        this.stocks = stocks;
-    }
-    return InventoryMatchedIngredients;
-})();
-var RecipeIngredients = (function (_super) {
-    __extends(RecipeIngredients, _super);
-    function RecipeIngredients() {
+/**
+ * Presents the items available for this recipe.
+ */
+var RecipeItems = (function (_super) {
+    __extends(RecipeItems, _super);
+    function RecipeItems() {
         _super.apply(this, arguments);
     }
-    RecipeIngredients.prototype.ready = function () {
-        var _this = this;
-        var tapWater = new Supply.Ing(OntoRef.createAnon("tap water"), null), tapQty = new Quantity(Infinity, SI.sym('l'));
-        this.async(function () {
-            _this.dynamic = [new InventoryMatchedIngredients(tapWater, [{ qty: tapQty, ingredient: tapWater }])];
-            _this.fermentables = [];
-            _this.hops = [];
-            _this.yeasts = [];
-            _this.miscellaneous = [];
-        }, 1);
+    RecipeItems.prototype.ready = function () {
         bus.suscribe(MessageType.InventoryChanged, this._onInventoryChanged, this);
     };
-    RecipeIngredients.prototype.typeToLetter = function (type) {
-        switch (type) {
-            case 0: return 'F';
-            case 1: return 'H';
-            case 2: return 'Y';
-            case 3: return 'M';
-            case 4: return 'D';
-        }
-    };
-    RecipeIngredients.prototype.truncate = function (text) {
-        var ellipsis = '...';
-        var max = 25;
-        return text.length > (max + ellipsis.length)
-            ? text.substring(0, max) + ellipsis
-            : text;
-    };
-    RecipeIngredients.prototype._onInventoryChanged = function () {
+    RecipeItems.prototype._onInventoryChanged = function () {
         var _this = this;
         this.async(function () {
-            _this.fermentables = _this.inventory.listItem(ItemType.Fermentables);
+            console.info("RecipeItems updating listing.");
+            _this.items = _this.inventory.listItem();
         });
-        console.log('recipe ingredient received inventory changed event.');
     };
-    RecipeIngredients.prototype.inventoryChanged = function () {
-        var _this = this;
-        var createInventoryItem = function (i) { return new InventoryMatchedIngredients(i, []); };
-        this.async(function () {
-            _this.fermentables = _this._getByType(Supply.IngType.Fermentable).map(createInventoryItem);
-            _this.hops = _this._getByType(Supply.IngType.Hops).map(createInventoryItem);
-            _this.yeasts = _this._getByType(Supply.IngType.Yeast).map(createInventoryItem);
-            _this.miscellaneous = _this._getByType(Supply.IngType.Miscellaneous).map(createInventoryItem);
-        }, 1);
-    };
-    RecipeIngredients.prototype._getByType = function (type) {
-        return this.inventory.stocks.filter(function (i) { return i.type() === type; });
-    };
-    return RecipeIngredients;
+    return RecipeItems;
 })(Polymer.DomModule);
-window.Polymer(window.Polymer.Base.extend(RecipeIngredients.prototype, {
+window.Polymer(window.Polymer.Base.extend(RecipeItems.prototype, {
     is: 'recipe-ingredients',
     properties: {
         inventory: {
-            type: Object,
-            observer: 'inventoryChanged'
+            type: Object
         },
         recipe: {
-            type: Recipe
+            type: Object
         },
-        dynamic: {
+        items: {
             type: Array
         },
-        fermentables: {
-            type: Array
-        },
-        hops: {
-            type: Array
-        },
-        yeasts: {
-            type: Array
-        },
-        miscellaneous: {
-            type: Array
-        }
     }
 }));

@@ -2,50 +2,80 @@
 
   <style>
     :host {
-        @apply(--layout-vertical);
-        text-align: center;
-        @apply(--shadow-elevation-2dp);
-    }
-    .ingredient {
-      @apply(--layout-horizontal);
-    }
-    .ingname {
-      @apply(--layout-flex); 
-    }
-    .itemtype {
-      @apply(--layout-horizontal);
-      font-size: 1.5em;
-      padding: 5px 0;
+      @apply(--layout-vertical);
       @apply(--shadow-elevation-2dp);
     }
-    #iron-list {
-    }
-    .item {
-      @apply(--layout-flex); 
+
+    :host .itemtype {
+      @apply(--layout-horizontal);
+      @apply(--shadow-elevation-2dp);
+      font-size: 1.5em;
+      text-align: center;
     }
 
+    :host .itemtype > div {
+      @apply(--layout-flex);
+      border-bottom-width: 3px;
+      border-bottom-style: solid;
+    }
+
+    :host div[data-type="0"] { border-color: red; }
+    :host div[data-type="1"] { border-color: orange; }
+    :host div[data-type="2"] { border-color: yellow; }
+    :host div[data-type="3"] { border-color: green; }
+    :host div[data-type="4"] { border-color: blue; }
+
+    :host .ingredient {
+      cursor: pointer;
+      border-left-width: 3px;
+      border-left-style: solid;
+      white-space: nowrap;
+      padding-left: 5px;
+    }
+
+    :host .ingredient .ing-stock {
+      width: 30px;
+      text-align: center;
+      font-weight: bold;
+      color: #3B616E;
+    }
+
+    :host .ingredient .ing-name {
+      @apply(--layout-flex);
+      overflow: hidden;
+    }
+
+    :host .ingredient:hover {
+      @apply(--shadow-elevation-2dp);
+    }
+
+    /* Move to common style? */
+    .unselectable {
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+    }
   </style>
 
-  <link rel="stylesheet" href="recipe-ingredients.css">
-
   <template>
-    <div class="itemtype">
-      <div class="item">F</div>
-      <div class="item">H</div>
-      <div class="item">Y</div>
-      <div class="item">M</div>
-      <div class="item">D</div>
+    <div class="itemtype unselectable">
+      <div data-type="0">F</div>
+      <div data-type="1">H</div>
+      <div data-type="2">Y</div>
+      <div data-type="3">M</div>
+      <div data-type="4">D</div>
     </div>
-    <iron-list items="{{fermentables}}" class="flex">
+    <iron-list items="{{items}}" class="flex">
       <template>
-        <div class="ingredient">
-          <div class="ingtype">[[typeToLetter(item.type)]]</div>
-          <div class="ingname">[[truncate(item.name)]]</div>
-          <div class="ingstock">[[item.stocks.length]]</div>
+        <div class="ingredient layout horizontal" data-type$="{{item.type}}">
+          <div class="ing-name">[[item.name]]</div>
+          <div class="ing-stock">[[item.stocks.length]]</div>
         </div>
       </template>
     </iron-list>
   </template>
 
   <script src="recipe-ingredients.js"></script>
-</dom-module>
+</dom-module>@

@@ -50,10 +50,10 @@ class RecipeBuilder extends Polymer.DomModule {
 
   private _fillInventory() {
     this.server.syncInventory()
-      .then((response) => {
+      .then((response:any) => {
         bus.publish(MessageType.StatusUpdate, "Filling inventory with Server data.");
         console.debug('Filling inventory with ' + JSON.stringify(response));
-        response.items.forEach((item) => {
+        response.items.forEach((item:any) => {
           this.inventory.addItem(Item.fromRaw(item));
         });
         console.log(this.inventory);

@@ -17,7 +17,9 @@ class Inventory {
     this.stocks = [];
   }
 
-  public listItem(type: ItemType) {
+  public listItem(type?: ItemType) {
+    if (type === undefined)
+      return this.items;
     return this.items.filter((i) => { return i.type === type; });
   }
 
