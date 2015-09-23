@@ -44,25 +44,6 @@ public class Inventory {
         )
     );
 
-
-    UnitSystem us = new UnitSystem();
-    us.name = "US Cust.";
-    us.ref = "brew:UsCust";
-    Unit tsp = new Unit();
-    tsp.dimension = Dimension.Volume;
-    tsp.multiplier = 1;
-    tsp.offset = 0;
-    tsp.ref = "brew:Teaspoon";
-    tsp.symbol = "tsp";
-    tsp.system = us;
-    Quantity quarterTsp = new Quantity();
-    quarterTsp.magnitude = 0.25;
-    quarterTsp.unit = tsp;
-
-    yeastNutrient.addStock(new Stock(
-      quarterTsp, LocalDate.now(), "Moût Int."
-    ));
-
     return Arrays.asList(
         lmePale,
         yeastNutrient

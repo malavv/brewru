@@ -1,16 +1,36 @@
 <dom-module id="app-splash">
-  
-  <link rel="import" type="css" href="app-splash.css">
+
   <style>
     :host {
       @apply(--layout-vertical);
+      justify-content: center;
+      background-color: #fafafa;
+    }
+    :host div.title {
+      text-align: center;
+      font-size: 3em;
+      font-family: sans-serif;
+      color: #555;
+      padding-bottom: 40px;
+    }
+    :host div.action {
+      @apply(--layout-horizontal);
+      margin: 0 auto;
+      width: 70%;
+    }
+    :host div.action > paper-button {
+      @apply(--layout-flex);
+      text-align: center;
     }
   </style>
-  
+
   <template>
-    <div>Welcome</div>
+    <div class="title">Welcome</div>
+    <div class="action">
+      <paper-button raised on-tap="createNew">Create New</paper-button>
+      <paper-button raised>Load Recipe</paper-button>
+    </div>
   </template>
-  
+
   <script src="app-splash.js"></script>
-  
 </dom-module>

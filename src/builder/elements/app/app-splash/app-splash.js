@@ -13,9 +13,19 @@ var AppSplash = (function (_super) {
     }
     AppSplash.prototype.ready = function () {
     };
+    AppSplash.prototype.createNew = function () {
+        this.selected = 1;
+        console.log('create new');
+    };
     return AppSplash;
 })(Polymer.DomModule);
 window.Polymer(window.Polymer.Base.extend(AppSplash.prototype, {
     is: 'app-splash',
-    properties: {}
+    properties: {
+        selected: {
+            type: Number,
+            value: 0,
+            notify: true
+        }
+    }
 }));

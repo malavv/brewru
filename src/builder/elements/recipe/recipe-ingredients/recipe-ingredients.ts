@@ -33,6 +33,6 @@ window.Polymer(window.Polymer.Base.extend(RecipeItems.prototype, {
     },
     items: {
       type: Array
-    },
+    }
   }
 }));

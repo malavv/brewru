@@ -36,8 +36,8 @@
       <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
 
       <div class="layout horizontal flex">
-        <iron-pages selected="0" class="flex-3 layout vertical">
-          <app-splash class="flex"></app-splash>
+        <iron-pages selected="{{selected}}" class="flex-3 layout vertical">
+          <app-splash selected="{{selected}}" class="flex"></app-splash>
           <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
         </iron-pages>
 

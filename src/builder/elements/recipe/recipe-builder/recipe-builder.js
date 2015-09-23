@@ -46,11 +46,9 @@ var RecipeBuilder = (function (_super) {
         this.server.syncInventory()
             .then(function (response) {
             bus.publish(MessageType.StatusUpdate, "Filling inventory with Server data.");
-            console.debug('Filling inventory with ' + JSON.stringify(response));
             response.items.forEach(function (item) {
                 _this.inventory.addItem(Item.fromRaw(item));
             });
-            console.log(_this.inventory);
             bus.publish(MessageType.StatusUpdate, "Done");
         })
             .catch(function (error) {
