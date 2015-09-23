@@ -9,14 +9,15 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Inventory {
 
   public List<Item> sync() {
-    Item lmePale = new Item(ItemType.Fermentables, "brew:LmePale");
-
+    Item lmePale = new Item(ItemType.Fermentables, "brew:LmePale", "Briess Golden Light LME");
+    Item yeastNutrient = new Item(ItemType.Miscellaneous, "brew:YeastNutrient", "North. Brew. Yeast Nutrient");
 
     Quantity quantity = new Quantity();
     quantity.magnitude = 1;
@@ -43,7 +44,29 @@ public class Inventory {
         )
     );
 
-    return Collections.singletonList(lmePale);
+
+    UnitSystem us = new UnitSystem();
+    us.name = "US Cust.";
+    us.ref = "brew:UsCust";
+    Unit tsp = new Unit();
+    tsp.dimension = Dimension.Volume;
+    tsp.multiplier = 1;
+    tsp.offset = 0;
+    tsp.ref = "brew:Teaspoon";
+    tsp.symbol = "tsp";
+    tsp.system = us;
+    Quantity quarterTsp = new Quantity();
+    quarterTsp.magnitude = 0.25;
+    quarterTsp.unit = tsp;
+
+    yeastNutrient.addStock(new Stock(
+      quarterTsp, LocalDate.now(), "Moût Int."
+    ));
+
+    return Arrays.asList(
+        lmePale,
+        yeastNutrient
+    );
   }
 
   public JsonObject syncMsg(final List<Item> items) {

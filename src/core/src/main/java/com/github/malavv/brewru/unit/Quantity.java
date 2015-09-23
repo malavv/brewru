@@ -4,7 +4,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 public class Quantity {
-  public float magnitude;
+  public double magnitude;
   public Unit unit;
 
   public JsonObject toJson() {
