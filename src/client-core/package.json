@@ -1,12 +1,29 @@
 {
+  "version": "0.0.5",
   "name": "client-core",
-  "version": "1.0.0",
-  "description": "A core library for the client of Brewru.",
-  "main": "index.js",
-  "directories": {
-    "doc": "doc"
+  "description": "Core function libraries for the recipe manager.",
+  "keywords": [
+    "brewing",
+    "beer"
+  ],
+  "homepage": "https://github.com/malavv/brewru",
+  "author": {
+    "name": "Maxime Lavigne",
+    "email": "duguigne@gmail.com",
+    "url": "malavv.com"
   },
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malavv/brewru.git"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "devDependencies": {
+    "gulp-karma": "0.0.4",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.9",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.6",
     "del": "^2.0.1",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
@@ -15,16 +32,7 @@
     "gulp-typescript": "^2.8.2",
     "gulp-tslint": "^3.2.0"
   },
-  "devDependencies": {
-    "gulp-karma": "0.0.4",
-    "jasmine-core": "^2.3.4",
-    "karma": "^0.13.9",
-    "karma-chrome-launcher": "^0.2.0",
-    "karma-jasmine": "^0.3.6"
-  },
   "scripts": {
     "test": "gulp test"
-  },
-  "author": "Maxime Lavigne (malavv)",
-  "license": "MIT"
+  }
 }
