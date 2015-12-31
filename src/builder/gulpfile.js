@@ -94,11 +94,4 @@
     gulp.watch(['../client-core/release/lib/*.js'], ['copy:lib']);
     gulp.watch(['elements/**/*.ts'], ['compile:ts']);
   });
-
-  // Optimize Library
-  gulp.task('lib', function () {
-    return gulp.src('lib/**/*')
-      .pipe(gulp.dest('dist/lib'))
-      .pipe($.size({title: 'lib'}));
-  });
 })();
