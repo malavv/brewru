@@ -24,18 +24,14 @@ var WidgetList = (function (_super) {
     WidgetList.prototype.resize = function () {
         this.style.height = (this.data.length * this.$.list.height) + 'px';
     };
-    Object.defineProperty(WidgetList.prototype, "items", {
-        /**
-         * Overriding the items selection from selectable.
-         * Since the selectable items are inside list and not inside me.
-         */
-        get: function () {
-            var nodes = Polymer.dom(this.$.list).queryDistributedElements(this.selectable || '*');
-            return Array.prototype.filter.call(nodes, this._bindFilterItem);
-        },
-        enumerable: true,
-        configurable: true
-    });
+    /**
+     * Overriding the items selection from selectable.
+     * Since the selectable items are inside list and not inside me.
+     */
+    WidgetList.prototype.items = function () {
+        var nodes = Polymer.dom(this.$.list).queryDistributedElements(this.selectable || '*');
+        return Array.prototype.filter.call(nodes, this._bindFilterItem);
+    };
     return WidgetList;
 })(Polymer.DomModule);
 window.Polymer(window.Polymer.Base.extend(WidgetList.prototype, {

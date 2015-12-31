@@ -123,7 +123,7 @@ var RecipeGraph = (function (_super) {
             .style("text-anchor", "middle")
             .text(txt);
         bubbleGroup.on('mouseout', function (d) {
-            d3.select(this).style({ opacity: '0.0', });
+            d3.select(this).style({ opacity: '0.0' });
         });
     };
     RecipeGraph.prototype._drawHeating = function (step, g) {

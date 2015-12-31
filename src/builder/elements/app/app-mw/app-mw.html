@@ -1,0 +1,29 @@
+<dom-module id="app-mw">
+  <style>
+    :host {
+      @apply(--layout-vertical);
+    }
+  </style>
+
+  <template>
+    <!-- Keyboard shortcut Manager linked to the PubSub. -->
+    <app-shortcuts></app-shortcuts>
+    <!-- Manages the recipe building process. -->
+    <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
+    <!--Manages the builder information-->
+    <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
+
+    <div class="layout horizontal flex">
+      <iron-pages selected="{{selected}}" class="flex-3 layout vertical">
+        <app-splash selected="{{selected}}" class="flex"></app-splash>
+        <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
+      </iron-pages>
+
+      <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
+    </div>
+
+    <app-status></app-status>
+  </template>
+
+  <script src="app-mw.js"></script>
+</dom-module>

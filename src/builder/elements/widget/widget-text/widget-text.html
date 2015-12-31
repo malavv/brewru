@@ -4,8 +4,13 @@
     :host {
       @apply(--layout-horizontal);
     }
+    :host {
+      text-align: center;
+    }
+    :host input#editor {
+      text-align: center;
+    }
   </style>
-  <link rel="stylesheet" href="widget-text.css">
 
   <template>
     <iron-pages selected="{{selected}}" class="flex">

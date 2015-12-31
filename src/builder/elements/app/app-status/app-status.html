@@ -1,9 +1,17 @@
 <dom-module id="app-status">
   
-  <link rel="import" type="css" href="app-status.css">
   <style>
     :host {
       @apply(--layout-horizontal);
+    }
+    :host {
+      background-color: #aaa;
+      padding: 0 10px;
+      [status] {
+        margin: auto;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: .8em;
+      }
     }
   </style>
   

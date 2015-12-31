@@ -1,6 +1,5 @@
 <dom-module id="app-shortcuts">
 
-  <link rel="stylesheet" href="app-shortcuts.css">
   <style>
     :host {
         @apply(--layout-vertical);
@@ -10,6 +9,18 @@
     }
     .key {
       @apply(--layout-horizontal);
+    }
+    div.title {
+      text-align: center;
+      font-size: 1.3em;
+    }
+    div.key {
+      padding: 10px;
+      div.shortcut {
+        text-align: center;
+        width: 70px;
+        font-weight: bold;
+      }
     }
   </style>
 

@@ -8,8 +8,16 @@
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
     }
+    :host div.name {
+      background-color: #999;  
+      text-align: center;
+      font-size: 1.5em;
+      border-bottom: 2px solid blue;
+    }
+    :host div.content {
+      background-color: #f0f0f0;
+    }
   </style>
-  <link rel="stylesheet" href="recipe-reactor.css">
 
   <template>
     <div class="name">

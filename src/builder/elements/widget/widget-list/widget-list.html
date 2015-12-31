@@ -6,8 +6,37 @@
     div[selected] {
       background: red;
     }
+  iron-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Each item in the list : 30px */
+  iron-list div.item {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-left: 3px solid #0000ff;
+    cursor: pointer; 
+  }
+    
+  iron-list div.item div.idx {
+    width: 70px;
+    font-weight: bold;
+    text-align: center;
+  }
+      
+  iron-list div.item:hover {
+    background-color: #ddd;
+  }
+      
+  iron-list div.item .iron-selected {
+    background: #bbb;
+  }      
+  iron-list div.item .iron-selected:hover {
+    background-color: #ccc;
+  }
   </style>
-  <link rel="stylesheet" href="widget-list.css">
   
   <template>
     <iron-list id="list" items="{{data}}" as="item">

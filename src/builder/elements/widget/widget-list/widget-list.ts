@@ -33,7 +33,7 @@ class WidgetList extends Polymer.DomModule {
    * Overriding the items selection from selectable.
    * Since the selectable items are inside list and not inside me.
    */
-  private get items() {
+  private items() {
     var nodes = Polymer.dom(this.$.list).queryDistributedElements(this.selectable || '*');
     return Array.prototype.filter.call(nodes, this._bindFilterItem);
   }
@@ -49,4 +49,6 @@ window.Polymer(window.Polymer.Base.extend(WidgetList.prototype, {
   behaviors: [
     Polymer.IronMultiSelectableBehavior
   ]
+
+  
 }));

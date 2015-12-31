@@ -1,52 +1,25 @@
 <!doctype html>
-<html lang="en-US">
+<html lang="en">
+<head>
+  <title>Brewru</title>
+  <meta charset="UTF-8">
+  
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="application-name" content="Brewru - Recipe Builder">
 
-  <head>
-    <title>Recipe Viewer</title>
+  <!-- Polymer Base Library -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+  
+  <!-- Client Core Utilities -->
+  <script src="lib/brew/brew.js"></script>
 
-    <meta charset="UTF-8">
+  <!-- All elements being loaded -->
+  <link rel="import" href="elements/elements.html">
 
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <meta name="application-name" content="Brewru - Recipe Builder">
-
-    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <!-- endbuild -->
-    <script>
-      window.Polymer = window.Polymer || {};
-      window.Polymer.dom = 'shadow';
-    </script>
-
-    <!-- Base Brewru Library -->
-    <script src="lib/brew/brew.js"></script>
-
-    <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
-
-    <!-- will be replaced with elements/elements.vulcanized.html -->
-    <link rel="import" href="elements/elements.html">
-    <!-- endreplace-->
-  </head>
-
-  <body unresolved class="fullbleed layout vertical">
-    <span id="browser-sync-binding"></span>
-    <template is="dom-bind">
-      <!-- Keyboard shortcut Manager linked to the PubSub. -->
-      <app-shortcuts></app-shortcuts>
-      <!-- Manages the recipe building process. -->
-      <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
-      <!--Manages the builder information-->
-      <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
-
-      <div class="layout horizontal flex">
-        <iron-pages selected="{{selected}}" class="flex-3 layout vertical">
-          <app-splash selected="{{selected}}" class="flex"></app-splash>
-          <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
-        </iron-pages>
-
-        <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
-      </div>
-
-      <app-status></app-status>
-    </template>
-  </body>
+  <!-- Needed to use css classes right away -->
+  <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+</head>
+<body class="fullbleed">
+    <app-mw class="fit"></app-mw>
+</body>
 </html>
