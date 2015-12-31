@@ -1,57 +1,91 @@
 'use strict';
 
 var
-  gulp = require('gulp'),
-  clean = require('gulp-clean'),
-  merge = require('merge2'),
+  param = {
+    dist: 'release',
+    exploded: 'release/exploded',
+    src: 'src/**/*.ts',
+    distname: 'brew.js',
+    distlib: 'release/lib',
+    distdoc: 'release/doc'
+  },
+
+  concat = require('gulp-concat'),
   del  = require('del'),
+  gulp = require('gulp'),
+  merge = require('merge2'),
+  sourcemaps = require('gulp-sourcemaps'),
   ts = require('gulp-typescript'),
+
   tsLint = require('gulp-tslint'),
   typedoc = require('gulp-typedoc'),
-  karma = require('karma');
+  karma = require('karma'),
 
-/* Cleans output directories. */
-gulp.task('clean', del.bind(null, ['release']));
+  project = ts.createProject({
+    declaration: true,
+    noExternalResolve: true,
+    noImplicitAny: true
+  });
 
-gulp.task('build', function () {
-  var tsResult = gulp.src('src/**/*.ts')
-    .pipe(ts({
-        declaration: true,
-        noExternalResolve: true,
-        out: 'brew.js'
-    }));
-  
+gulp.task('default', ['dist:clean', 'dist:build', 'dist:test', 'dist:doc']);
+
+gulp.task('dist:clean', del.bind(null, [param.dist]));
+
+// Used for live compiling and linting.
+gulp.task('watch', ['dist:clean', 'dev:build', 'dev:lint'], function() {
+  gulp.watch('src/**/*.ts', ['dev:build', 'dev:lint']);
+});
+
+// Compiles for dev purposes. Not Prod.
+gulp.task('dev:build', function () {
+  var tsData = gulp.src(param.src)
+    .pipe(ts(project));
+
   return merge([
-    tsResult.dts.pipe(gulp.dest('release/')),
-    tsResult.js.pipe(gulp.dest('release/'))
-  ]);
+    tsData.dts.pipe(gulp.dest(param.exploded)),
+    tsData.js.pipe(gulp.dest(param.exploded))
+  ])
+});
+
+// Compiles for production. Just def and lib.
+gulp.task('dist:build', function () {
+  var tsData = gulp.src(param.src)
+    .pipe(sourcemaps.init())
+    .pipe(ts({
+      sortOutput: true,
+      declaration: true,
+      noExternalResolve: true,
+      out: param.distname
+    }));
+  return merge([
+    tsData.dts
+      .pipe(gulp.dest(param.distlib)),
+    tsData.js
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest(param.distlib))
+  ])
 });
 
 /* Generates documentation for Typescript. */
-gulp.task('doc', function () {
+gulp.task('dist:doc', function () {
   return gulp
-      .src('src/**/*.ts')
-      .pipe(typedoc({
-        out: 'doc',
-        target: 'es5',
-        includeDeclarations: true
-      }));
+    .src(param.src)
+    .pipe(typedoc({
+      out: param.distdoc,
+      target: 'es5',
+      includeDeclarations: true
+    }));
 });
 
-gulp.task('test', function(done) {
-  new karma.Server({
-    configFile: __dirname  + '/karma.conf.js',
-    singleRun: true
-  }, done).start();
-});
-
-// Lint JavaScript
-gulp.task('tslint', function () {
-  return gulp.src('src/**/*.ts')
+gulp.task('dev:lint', function () {
+  return gulp.src(param.src)
     .pipe(tsLint())
     .pipe(tsLint.report('verbose'));
 });
 
-gulp.task('watch', ['clean', 'build', 'tslint'], function() {
-    gulp.watch('src/**/*.ts', ['build', 'tslint']);
+gulp.task('dist:test', function(done) {
+  new karma.Server({
+    configFile: __dirname  + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
 });
