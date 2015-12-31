@@ -2,6 +2,7 @@
 
 var
   gulp = require('gulp'),
+  replace = require('gulp-replace'),
   $ = require('gulp-load-plugins')(),
   clean = require('gulp-clean'),
   del  = require('del'),
@@ -53,6 +54,13 @@ gulp.task('serve', ['clean', 'sass', 'ts'], function () {
   gulp.watch(['**/*.html'], reload);
   gulp.watch(['**/*.scss'], ['sass', reload]);
   gulp.watch(['**/*.ts'], ['ts', reload]);
+  gulp.watch(['../client-core/release/lib/*.js'], ['corelib', reload]);
+});
+
+gulp.task('corelib', function () {
+  return gulp.src('../client-core/release/lib/*')
+      .pipe(replace('src/defs/', '../'))
+      .pipe(gulp.dest('lib/brew'));
 });
 
 /* Compiles the SCSS items. */

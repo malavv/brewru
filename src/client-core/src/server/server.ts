@@ -62,7 +62,12 @@ class ServerImpl {
     this.packetIdCounter = 0;
     this.timeoutMs = 500;
     this.clientId = "uid00001";
-    this.ws = new WebSocket(this.url);
+    try {
+        this.ws = new WebSocket(this.url);  
+    } catch (e) {
+        console.log('error', e);
+    }
+    
     this.communications = {};
 
     this.ws.onclose = this._onClose.bind(this);

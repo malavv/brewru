@@ -95,7 +95,7 @@ declare class IngredientSrc {
     concept: ConceptRef;
     stocks: Array<Supply.Ing>;
     constructor(concept: ConceptRef);
-    addAll(items: Array<Supply.Ing>): IngredientSrc;
+    addAll(items: Array<Supply.Ing>): this;
 }
 /** This will need to be reviewed with specific sub-classes. */
 declare class Step {
@@ -190,7 +190,7 @@ declare class Shortcuts {
     hasKey(key: Keyboard): boolean;
     get(key: Keyboard): Shortcut;
     /** Chainable method to add a Shortcut to this manager. */
-    add(binding: string, intent: MessageType, description: string): Shortcuts;
+    add(binding: string, intent: MessageType, description: string): this;
 }
 declare module base {
     /** Allows to encode a number to a different base. */
@@ -304,7 +304,7 @@ declare class ListNode {
 declare class List {
     begin: ListNode;
     end: ListNode;
-    push(payload: any): List;
+    push(payload: any): this;
 }
 /**
  * Server proxy object which serves as an Object that could be queried from JS.

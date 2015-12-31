@@ -32,8 +32,8 @@ gulp.task('default', ['dist:clean', 'dist:build', 'dist:test', 'dist:doc']);
 gulp.task('dist:clean', del.bind(null, [param.dist]));
 
 // Used for live compiling and linting.
-gulp.task('watch', ['dist:clean', 'dev:build', 'dev:lint'], function() {
-  gulp.watch('src/**/*.ts', ['dev:build', 'dev:lint']);
+gulp.task('watch', ['dist:clean', 'dev:build', 'dev:lint', 'dist:build'], function() {
+  gulp.watch(param.src, ['dev:build', 'dev:lint', 'dist:build']);
 });
 
 // Compiles for dev purposes. Not Prod.
