@@ -14,7 +14,7 @@ class MessageType {
 	static AnswerIngredient:MessageType = new MessageType('AnswerIngredient', 4);
 	static ShowShortcuts:MessageType = new MessageType('ShowShortcuts', 5);
 	static CreateStep:MessageType = new MessageType('CreateStep', 6);
-	static Cancel:MessageType = new MessageType('CreateStep', 7);
+	static Cancel:MessageType = new MessageType('Cancel', 7);
 	static AskMenu:MessageType = new MessageType('AskMenu', 8);
 	static AnswerMenu:MessageType = new MessageType('AnswerMenu', 9);
 	static AskText:MessageType = new MessageType('AskText', 10);

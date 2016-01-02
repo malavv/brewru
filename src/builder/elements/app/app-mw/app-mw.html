@@ -1,29 +1,76 @@
+<link rel="import" href="shortcut-behavior.html">
+<!-- 
+Main Windows for the Brewru Client App.
+
+See as the main windows of an application. Here you will see
+the main components laying the screen out.
+-->
 <dom-module id="app-mw">
   <style>
     :host {
       @apply(--layout-vertical);
     }
+    .shortcuts {
+      @apply(--layout-vertical);
+      width: 300px;
+    }
+    .shortcuts div {
+      @apply(--layout-horizontal);
+    }
+    .shortcuts .label {
+      width: 55px;
+    }
+    #content {
+     @apply(--layout-horizontal); 
+     @apply(--layout-flex); 
+    }
+    #mainSection {
+      @apply(--layout-vertical); 
+      @apply(--layout-flex-3); 
+    }
+    #mainSection > * {
+      @apply(--layout-flex); 
+    }
+    #sidebarSection {
+      @apply(--layout-flex); 
+    }
+    #sidebarSection > *{
+      @apply(--layout-flex); 
+    }
   </style>
 
   <template>
-    <!-- Keyboard shortcut Manager linked to the PubSub. -->
-    <app-shortcuts></app-shortcuts>
+    <div id="content">
+      <iron-pages id="mainSection" selected="{{selectedContent}}">
+        <app-splash selected="{{selectedContent}}"></app-splash>
+        <recipe-overview recipe="{{recipe}}"></recipe-overview>
+      </iron-pages>
+
+      <iron-pages id="sidebarSection" selected="{{selectedSidebar}}">
+        <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}"></recipe-ingredients>
+      </iron-pages>
+    </div>
+
+    <app-status></app-status>
+
+    <!-- Data Oriented Elements -->
     <!-- Manages the recipe building process. -->
     <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
     <!--Manages the builder information-->
     <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
 
-    <div class="layout horizontal flex">
-      <iron-pages selected="{{selected}}" class="flex-3 layout vertical">
-        <app-splash selected="{{selected}}" class="flex"></app-splash>
-        <recipe-overview recipe="{{recipe}}" class="flex"></recipe-overview>
-      </iron-pages>
-
-      <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}" class="flex-1"></recipe-ingredients>
-    </div>
-
-    <app-status></app-status>
+    <!-- Centered dialog Panel -->
+    <paper-dialog id="shortcutsPanel">
+      <h2>Keyboard Shortcuts</h2>
+      <div class="shortcuts">
+        <template is="dom-repeat" items="[[shortcuts]]">
+          <div>
+            <div class="label">[[item.binding]]</div>
+            <div>[[item.description]]</div>
+          </div>
+        </template>
+      </div>
+    </paper-dialog>
   </template>
-
   <script src="app-mw.js"></script>
 </dom-module>

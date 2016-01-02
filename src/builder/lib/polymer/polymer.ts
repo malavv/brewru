@@ -27,6 +27,7 @@ module Polymer {
   }
 
   export var IronOverlayBehavior: Object;
+  export var IronA11yKeysBehavior: Object;
   export var IronResizableBehavior: Object;
   export var IronMultiSelectableBehavior: Object;
   export var IronSelection: any;

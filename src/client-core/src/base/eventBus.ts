@@ -17,7 +17,7 @@ class EventBus {
 	/**
 	 * When true the bus will log all events on the console.
 	 */
-	isLogging: boolean = false;
+	isLogging: boolean = true;
 	
 	/**
 	 * Sends an event to all potential suscribers
