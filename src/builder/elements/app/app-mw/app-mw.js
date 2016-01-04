@@ -12,16 +12,23 @@ var AppMainWindow = (function (_super) {
     }
     AppMainWindow.prototype.ready = function () {
         this.selectedSidebar = 0;
+        this.selectedContent = 0;
         console.log('Hello World from AppMw');
         // Pushing to shortcuts for the shortcut behavior.
-        this.shortcuts.forEach(function (shortcut) {
-            this.addShortcut(shortcut.binding, shortcut.type);
-        }, this);
+        this.shortcuts.forEach(function (s) { this.addShortcut(s.binding, s.type); }, this);
         bus.suscribe(MessageType.ShowShortcuts, this._onShowShortcuts, this);
+        bus.suscribe(MessageType.RecipeSelected, this._onRecipeSelected, this);
     };
     AppMainWindow.prototype._onShowShortcuts = function () {
         var _this = this;
         this.async(function () { _this.$.shortcutsPanel.open(); });
+    };
+    AppMainWindow.prototype._onRecipeSelected = function (recipe) {
+        var _this = this;
+        this.async(function () {
+            console.log('MW - recipe', recipe);
+            _this.selectedContent = 1;
+        });
     };
     return AppMainWindow;
 })(Polymer.DomModule);
@@ -31,6 +38,7 @@ window.Polymer(window.Polymer.Base.extend(AppMainWindow.prototype, {
         ShortcutBehavior
     ],
     properties: {
+        selectedContent: Number,
         shortcuts: {
             type: Array,
             value: function () {
@@ -41,7 +49,7 @@ window.Polymer(window.Polymer.Base.extend(AppMainWindow.prototype, {
                         type: MessageType.ShowShortcuts
                     },
                     {
-                        binding: 'alt+S',
+                        binding: 'alt+s',
                         description: 'Create new step',
                         type: MessageType.CreateStep
                     },

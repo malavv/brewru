@@ -2,7 +2,26 @@
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
 class AppStatus extends Polymer.DomModule {
+  isConnected: Boolean;
+  message: String;
+
   ready() {
+    this.isConnected = true;
+    this.message = "";
+    bus.suscribe(MessageType.UnsuccessfulConnection, this.onNotConnected, this);
+    bus.suscribe(MessageType.ServerConnected, this.onConnected, this);
+    bus.suscribe(MessageType.StatusUpdate, this.onNewStatus, this);
+  }
+
+  onNotConnected() {
+    this.isConnected = false;
+    this.message = "Check server connection";
+  }
+  onConnected() {
+    this.isConnected = true;
+  }
+  onNewStatus(msg: String) {
+    this.message = msg;
   }
 }
 
@@ -10,26 +29,7 @@ window.Polymer(window.Polymer.Base.extend(AppStatus.prototype, {
   is: 'app-status',
 
   properties: {
-    isConnected: {
-      type: Boolean,
-      value: true
-    },
-    message: {
-      type: String,
-      value: ""
-    }
-  },
-  
-  ready() {
-    bus.suscribe(MessageType.UnsuccessfulConnection, () => { 
-      this.isConnected = false;
-      this.message = "Check server connection";  
-    }, this);
-    bus.suscribe(MessageType.ServerConnected, () => { 
-      this.isConnected = true; 
-    }, this);
-    bus.suscribe(MessageType.StatusUpdate, (msg) => { 
-      this.message = msg; 
-    }, this);
+    isConnected: Boolean,
+    message: String
   }
 }));

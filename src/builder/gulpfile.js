@@ -34,7 +34,7 @@
 
   /** Recreates a distribution package. */
   gulp.task('prod', ['copy', 'vulcanize']);
-  gulp.task('dev', ['serve:dev', 'compile']);
+  gulp.task('dev', ['copy:lib', 'serve:dev', 'compile']);
 
   /** Updates bower if needed. */
   gulp.task('init', function() { return bower({ cmd: 'update'}); });

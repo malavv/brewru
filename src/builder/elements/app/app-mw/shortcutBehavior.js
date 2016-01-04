@@ -1,7 +1,8 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
+var __shortcuts = [];
 var ShortcutBehaviorImpl = {
-    __shortcuts: [],
+    __shortcuts: __shortcuts,
     properties: {},
     keyBindings: {},
     attached: function () {

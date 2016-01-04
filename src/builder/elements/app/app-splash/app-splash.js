@@ -11,20 +11,22 @@ var AppSplash = (function (_super) {
         _super.apply(this, arguments);
     }
     AppSplash.prototype.ready = function () {
+        this.isChoosing = false;
     };
     AppSplash.prototype.createNew = function () {
-        this.selected = 1;
-        console.log('create new');
+        bus.publish(MessageType.RecipeSelected, null);
+    };
+    AppSplash.prototype.loadRecipe = function () {
+        this.isChoosing = true;
+    };
+    AppSplash.prototype._onRecipeSelected = function (evt) {
+        bus.publish(MessageType.RecipeSelected, evt.target.files[0]);
     };
     return AppSplash;
 })(Polymer.DomModule);
 window.Polymer(window.Polymer.Base.extend(AppSplash.prototype, {
     is: 'app-splash',
     properties: {
-        selected: {
-            type: Number,
-            value: 0,
-            notify: true
-        }
+        isChoosing: Boolean
     }
 }));

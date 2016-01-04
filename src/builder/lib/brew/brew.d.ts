@@ -243,6 +243,7 @@ declare class MessageType {
     static UnsuccessfulConnection: MessageType;
     static InventoryChanged: MessageType;
     static StatusUpdate: MessageType;
+    static RecipeSelected: MessageType;
 }
 interface HandlerFunc {
     (data: any): void;

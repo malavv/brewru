@@ -11,32 +11,28 @@ var AppStatus = (function (_super) {
         _super.apply(this, arguments);
     }
     AppStatus.prototype.ready = function () {
+        this.isConnected = true;
+        this.message = "";
+        bus.suscribe(MessageType.UnsuccessfulConnection, this.onNotConnected, this);
+        bus.suscribe(MessageType.ServerConnected, this.onConnected, this);
+        bus.suscribe(MessageType.StatusUpdate, this.onNewStatus, this);
+    };
+    AppStatus.prototype.onNotConnected = function () {
+        this.isConnected = false;
+        this.message = "Check server connection";
+    };
+    AppStatus.prototype.onConnected = function () {
+        this.isConnected = true;
+    };
+    AppStatus.prototype.onNewStatus = function (msg) {
+        this.message = msg;
     };
     return AppStatus;
 })(Polymer.DomModule);
 window.Polymer(window.Polymer.Base.extend(AppStatus.prototype, {
     is: 'app-status',
     properties: {
-        isConnected: {
-            type: Boolean,
-            value: true
-        },
-        message: {
-            type: String,
-            value: ""
-        }
-    },
-    ready: function () {
-        var _this = this;
-        bus.suscribe(MessageType.UnsuccessfulConnection, function () {
-            _this.isConnected = false;
-            _this.message = "Check server connection";
-        }, this);
-        bus.suscribe(MessageType.ServerConnected, function () {
-            _this.isConnected = true;
-        }, this);
-        bus.suscribe(MessageType.StatusUpdate, function (msg) {
-            _this.message = msg;
-        }, this);
+        isConnected: Boolean,
+        message: String
     }
 }));

@@ -25,4 +25,5 @@ class MessageType {
 	static UnsuccessfulConnection:MessageType = new MessageType('UnsuccessfulConnection', 15);
 	static InventoryChanged:MessageType = new MessageType('InventoryChanged', 16);
 	static StatusUpdate:MessageType = new MessageType('StatusUpdate', 17);
+  static RecipeSelected: MessageType = new MessageType('RecipeSelected', 18);
 };

@@ -2,14 +2,19 @@
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
 class AppSplash extends Polymer.DomModule {
-  private selected: Number;
+  private isChoosing: Boolean;
 
   ready() {
+    this.isChoosing = false;
   }
-
-  createNew() {
-    this.selected = 1;
-    console.log('create new');
+  private createNew() {
+    bus.publish(MessageType.RecipeSelected, null);
+  }
+  private loadRecipe() {
+    this.isChoosing = true;
+  }
+  private _onRecipeSelected(evt) {
+    bus.publish(MessageType.RecipeSelected, evt.target.files[0]);
   }
 }
 
@@ -17,10 +22,6 @@ window.Polymer(window.Polymer.Base.extend(AppSplash.prototype, {
   is: 'app-splash',
 
   properties: {
-    selected: {
-      type: Number,
-      value: 0,
-      notify: true
-    }
+    isChoosing: Boolean
   }
 }));

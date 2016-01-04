@@ -1,8 +1,15 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
+interface _Shortcut {
+  binding: String;
+  type: MessageType;
+} 
+
+var __shortcuts: Array<_Shortcut> = [];
+
 var ShortcutBehaviorImpl = {
-  __shortcuts: [],
+  __shortcuts: __shortcuts,
 
   properties: {
   },
@@ -14,7 +21,7 @@ var ShortcutBehaviorImpl = {
     this.keyEventTarget = document.body;
   },
 
-  addShortcut(binding, type) {
+  addShortcut(binding: String, type: MessageType) {
     this.addOwnKeyBinding(binding, '_keyPressed');
     this.__shortcuts.push({
       binding: binding,
@@ -22,10 +29,10 @@ var ShortcutBehaviorImpl = {
     });
   },
 
-  _keyPressed(evt) {
+  _keyPressed(evt:any) {
     this.__shortcuts
-      .filter(function(s) { return this.keyboardEventMatchesKeys(evt.detail.keyboardEvent, s.binding); }, this)
-      .forEach(function(s) { bus.publish(s.type); }, this)
+      .filter(function(s: _Shortcut) { return this.keyboardEventMatchesKeys(evt.detail.keyboardEvent, s.binding); }, this)
+      .forEach(function(s: _Shortcut) { bus.publish(s.type); }, this)
   }
 }
 

@@ -4,7 +4,7 @@
     :host {
       @apply(--layout-vertical);
       justify-content: center;
-      background-color: #fafafa;
+      background-color: #ededed;
     }
     :host div.title {
       text-align: center;
@@ -21,15 +21,23 @@
     :host div.action > paper-button {
       @apply(--layout-flex);
       text-align: center;
+      background-color: white;
     }
+    :host iron-collapse {
+      margin: 0 auto;
+      padding-top: 10px;
+    };
   </style>
 
   <template>
     <div class="title">Welcome</div>
     <div class="action">
       <paper-button raised on-tap="createNew">Create New</paper-button>
-      <paper-button raised>Load Recipe</paper-button>
+      <paper-button raised 
+        on-tap="loadRecipe"
+        disabled$={{isChoosing}}>Load Recipe</paper-button>
     </div>
+    <iron-collapse opened$={{isChoosing}}><input type="file" on-change="_onRecipeSelected"></iron-collapse>
   </template>
 
   <script src="app-splash.js"></script>
