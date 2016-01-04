@@ -41,12 +41,12 @@ the main components laying the screen out.
 
   <template>
     <div id="content">
-      <iron-pages id="mainSection" selected="{{selectedContent}}">
+      <iron-pages id="mainSection" selected="{{content}}">
         <app-splash></app-splash>
-        <recipe-overview recipe="{{recipe}}"></recipe-overview>
+        <recipe-editor inventory="{{inventory}}" recipe="{{recipe}}"></recipe-editor>
       </iron-pages>
 
-      <iron-pages id="sidebarSection" selected="{{selectedSidebar}}">
+      <iron-pages id="sidebarSection" selected="{{sidebar}}">
         <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}"></recipe-ingredients>
       </iron-pages>
     </div>
@@ -54,10 +54,7 @@ the main components laying the screen out.
     <app-status></app-status>
 
     <!-- Data Oriented Elements -->
-    <!-- Manages the recipe building process. -->
-    <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
-    <!--Manages the builder information-->
-    <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
+    <app-inventory inventory="{{inventory}}"></app-inventory>
 
     <!-- Centered dialog Panel -->
     <paper-dialog id="shortcutsPanel">
@@ -72,5 +69,6 @@ the main components laying the screen out.
       </div>
     </paper-dialog>
   </template>
+
   <script src="app-mw.js"></script>
 </dom-module>

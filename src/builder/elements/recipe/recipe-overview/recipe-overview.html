@@ -40,13 +40,24 @@
     height: 100%;
     z-index: 100;
   }
+  .recipeView {
+    @apply(--layout-horizontal);
+    @apply(--layout-flex);
+  }
+  .recipeSidebar {
+    @apply(--layout-vertical);
+    width: 200px;
+  }
+  .recipeContent {
+    @apply(--layout-flex-5);  
+  }
   </style>
 
 	<template>
     <widget-text class="recipeName" value="{{recipe.name}}"></widget-text>
 
-    <div class="flex layout horizontal">
-      <div class="flex layout vertical">
+    <div class="recipeView">
+      <div class="recipeSidebar">
         <paper-tabs selected="{{selected}}">
           <paper-tab>Graph</paper-tab>
           <paper-tab>Triggers</paper-tab>
@@ -58,7 +69,7 @@
         </iron-pages>
       </div>
 
-      <recipe-reactor reactor="{{current}}" class="flex-4"></recipe-reactor>
+      <recipe-reactor class="recipeContent" reactor="{{current}}"></recipe-reactor>
     </div>
 	</template>
 

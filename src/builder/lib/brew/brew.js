@@ -610,7 +610,7 @@ var ServerImpl = (function () {
         }
     };
     ServerImpl.prototype._onOpen = function () {
-        bus.publish(MessageType.ServerConnected);
+        bus.publish(MessageType.ServerConnected, this);
     };
     return ServerImpl;
 })();

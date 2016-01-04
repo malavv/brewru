@@ -1,0 +1,22 @@
+<dom-module id="recipe-editor">
+
+  <style>
+    :host {
+      @apply(--layout-vertical);
+    }
+    :host recipe-overview {
+      @apply(--layout-flex);
+    }
+  </style>
+
+  <template>
+    <recipe-overview recipe="{{recipe}}"></recipe-overview>
+    <!-- Data Oriented Elements -->
+    <!-- Manages the recipe building process. -->
+    <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
+    <!--Manages the builder information-->
+    <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
+  </template>
+
+  <script src="recipe-editor.js"></script>
+</dom-module>

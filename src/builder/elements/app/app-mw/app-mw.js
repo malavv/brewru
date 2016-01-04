@@ -11,8 +11,8 @@ var AppMainWindow = (function (_super) {
         _super.apply(this, arguments);
     }
     AppMainWindow.prototype.ready = function () {
-        this.selectedSidebar = 0;
-        this.selectedContent = 0;
+        this.sidebar = 0;
+        this.content = 0;
         console.log('Hello World from AppMw');
         // Pushing to shortcuts for the shortcut behavior.
         this.shortcuts.forEach(function (s) { this.addShortcut(s.binding, s.type); }, this);
@@ -27,7 +27,7 @@ var AppMainWindow = (function (_super) {
         var _this = this;
         this.async(function () {
             console.log('MW - recipe', recipe);
-            _this.selectedContent = 1;
+            _this.content = 1;
         });
     };
     return AppMainWindow;
@@ -38,7 +38,8 @@ window.Polymer(window.Polymer.Base.extend(AppMainWindow.prototype, {
         ShortcutBehavior
     ],
     properties: {
-        selectedContent: Number,
+        content: Number,
+        sidebar: Number,
         shortcuts: {
             type: Array,
             value: function () {
