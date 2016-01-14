@@ -1,9 +1,9 @@
-# Builder
-src/builder/bower_components/
-src/builder/node_modules/
+# Javascript Recipe Builder Client
+src/builder/bower_components
+src/builder/node_modules
 src/builder/doc
-src/builder/app/**/*.js
-src/builder/app/**/*.css
+src/builder/elements/**/*.js
+src/builder/lib/brew
 src/builder/dist
 
 # Core
@@ -12,10 +12,6 @@ src/core/.idea/uiDesigner.xml
 src/core/.idea/workspace.xml
 src/core/.idea/dictionaries
 src/core/out/
-
-# Client Core
-src/client-core/doc
-src/client-core/node_modules
 
 # Misc
 *.sublime-project
