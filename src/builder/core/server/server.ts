@@ -1,6 +1,6 @@
 /// <reference path="../base/eventBus.ts" />
 /// <reference path="../base/messageType.ts" />
-/// <reference path="../defs/es6-promise/es6-promise.d.ts" />
+/// <reference path="../../lib/es6-promise/es6-promise.d.ts" />
 
 /**
  * Server proxy object which serves as an Object that could be queried from JS.

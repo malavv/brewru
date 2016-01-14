@@ -2,11 +2,11 @@
   "version": "v4",
   "repo": "borisyankov/DefinitelyTyped",
   "ref": "master",
-  "path": "src/defs",
-  "bundle": "src/defs/tsd.d.ts",
+  "path": "lib",
+  "bundle": "lib/tsd.d.ts",
   "installed": {
     "d3/d3.d.ts": {
-      "commit": "a9c59f8166b4d7f1e8c4309a506987c2e6d78b5e"
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
     },
     "es6-promise/es6-promise.d.ts": {
       "commit": "a9c59f8166b4d7f1e8c4309a506987c2e6d78b5e"

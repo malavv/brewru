@@ -13,7 +13,7 @@ class AppSplash extends Polymer.DomModule {
   private loadRecipe() {
     this.isChoosing = true;
   }
-  private _onRecipeSelected(evt) {
+  private _onRecipeSelected(evt: any) {
     bus.publish(MessageType.RecipeSelected, evt.target.files[0]);
   }
 }

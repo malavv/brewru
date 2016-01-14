@@ -12,7 +12,7 @@ class AppInventory extends Polymer.DomModule {
     }, this);
   }
 
-  onSynchronize(server) {
+  onSynchronize(server: any) {
     server.syncInventory()
       .then((response: any) => {
         bus.publish(MessageType.StatusUpdate, "Filling inventory with Server data.");
@@ -21,7 +21,7 @@ class AppInventory extends Polymer.DomModule {
         });
         bus.publish(MessageType.StatusUpdate, "Done");
       })
-      .catch((error) => {
+      .catch((error:any) => {
         console.warn('server error : ' + JSON.stringify(error));
       });
   }
