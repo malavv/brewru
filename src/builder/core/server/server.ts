@@ -99,6 +99,6 @@ class ServerImpl {
   }
 
   private _onOpen() {
-    bus.publish(MessageType.ServerConnected);
+    bus.publish(MessageType.ServerConnected, this);
   }
 }

@@ -12,14 +12,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.0.24" level="application_server_libraries" />
     <orderEntry type="library" name="javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.0" level="project" />
-    <orderEntry type="library" name="org.glassfish.jersey.core:jersey-server:2.21" level="project" />
-    <orderEntry type="library" name="org.glassfish:javax.json:1.0" level="project" />
-    <orderEntry type="library" name="javax.ws.rs:javax.ws.rs-api:2.0" level="project" />
-    <orderEntry type="library" name="org.glassfish.jersey.containers:jersey-container-servlet-core:2.21" level="project" />
     <orderEntry type="library" name="javax.websocket:javax.websocket-api:1.1" level="project" />
-    <orderEntry type="library" name="javax.json:javax.json-api:1.0" level="project" />
     <orderEntry type="library" name="org.apache.jena:jena-core:2.12.0" level="project" />
     <orderEntry type="library" name="net.sourceforge.owlapi:owlapi-api:3.5.2" level="project" />
     <orderEntry type="library" name="net.sourceforge.owlapi:owlapi-apibinding:3.5.2" level="project" />
+    <orderEntry type="library" name="org.glassfish.tyrus:tyrus-server:1.12" level="project" />
+    <orderEntry type="library" name="org.glassfish.tyrus:tyrus-container-grizzly-server:1.12" level="project" />
+    <orderEntry type="library" name="javax.json:javax.json-api:1.0" level="project" />
+    <orderEntry type="library" name="org.glassfish:javax.json:1.0.4" level="project" />
   </component>
 </module>
