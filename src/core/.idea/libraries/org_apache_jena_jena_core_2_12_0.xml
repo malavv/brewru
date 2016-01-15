@@ -16,10 +16,18 @@
       <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-core/2.12.0/jena-core-2.12.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.6/slf4j-api-1.7.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-iri/1.1.0/jena-iri-1.1.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.7.6/slf4j-log4j12-1.7.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$USER_HOME$/.ideaLibSources/xercesImpl-2.11.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-core/2.12.0/jena-core-2.12.0-sources.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-core/2.12.0/jena-core-2.12.0-sources.jar!/" />
     </SOURCES>
   </library>

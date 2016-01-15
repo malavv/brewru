@@ -1,7 +1,7 @@
 /// <reference path="item.ts" />
 /// <reference path="itemType.ts" />
-
 /// <reference path="../base/eventBus.ts" />
+
 /**
  * The inventory is a collection of items having types and which can be part of stocks.
  *

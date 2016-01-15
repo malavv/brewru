@@ -13,11 +13,21 @@ class RecipeItems extends Polymer.DomModule {
     bus.suscribe(MessageType.InventoryChanged, this._onInventoryChanged, this);
   }
 
+  private contains(arr: Array<any>, elements: any) {
+    return arr.indexOf(elements) != -1;
+  }
+
   private _onInventoryChanged() {
-    this.async(() => {
-      console.info("RecipeItems updating listing.")
-      this.items = this.inventory.listItem();
-    });
+    var newList = this.inventory.listItem();
+    var removedList = this.items.filter(item => !this.contains(newList, item.ref), this);
+    var addedList = newList.filter(item => !this.contains(this.items, item.ref), this);
+
+    addedList.forEach(item => {
+      this.async(() => {
+        this.push('items', item)
+      }, 1);
+    }, this);
+    console.info("RecipeItems updating listing adding : " + addedList.length + " removed : " + removedList.length + " newlist ");
   }
 }
 
@@ -32,7 +42,8 @@ window.Polymer(window.Polymer.Base.extend(RecipeItems.prototype, {
       type: Object
     },
     items: {
-      type: Array
+      type: Array,
+      value: function() { return []; }
     }
   }
 }));

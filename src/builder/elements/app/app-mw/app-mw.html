@@ -29,10 +29,11 @@ the main components laying the screen out.
       @apply(--layout-flex-3); 
     }
     #mainSection > * {
-      @apply(--layout-flex); 
+      @apply(--layout-flex);
     }
     #sidebarSection {
-      @apply(--layout-flex); 
+      @apply(--layout-vertical);
+      @apply(--layout-flex);
     }
     #sidebarSection > *{
       @apply(--layout-flex); 
@@ -45,6 +46,8 @@ the main components laying the screen out.
         <app-splash></app-splash>
         <recipe-editor inventory="{{inventory}}" recipe="{{recipe}}"></recipe-editor>
       </iron-pages>
+
+      <app-splitter></app-splitter>
 
       <iron-pages id="sidebarSection" selected="{{sidebar}}">
         <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}"></recipe-ingredients>

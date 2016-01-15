@@ -3,12 +3,11 @@
   <style>
     :host {
       @apply(--layout-vertical);
-      @apply(--shadow-elevation-2dp);
+      @apply(--layout-flex);
     }
 
     :host .itemtype {
       @apply(--layout-horizontal);
-      @apply(--shadow-elevation-2dp);
       font-size: 1.5em;
       text-align: center;
     }
@@ -52,29 +51,44 @@
     /* Move to common style? */
     .unselectable {
       -moz-user-select: -moz-none;
-      -khtml-user-select: none;
       -webkit-user-select: none;
-      -o-user-select: none;
       user-select: none;
+    }
+    paper-header-panel {
+      @apply(--layout-flex);
+    }
+    .testH {
+      @apply(--layout-horizontal);
     }
   </style>
 
   <template>
-    <div class="itemtype unselectable">
-      <div data-type="0">F</div>
-      <div data-type="1">H</div>
-      <div data-type="2">Y</div>
-      <div data-type="3">M</div>
-      <div data-type="4">D</div>
-    </div>
-    <iron-list items="{{items}}" class="flex">
-      <template>
-        <div class="ingredient layout horizontal" data-type$="{{item.type}}">
-          <div class="ing-name">[[item.name]]</div>
-          <div class="ing-stock">[[item.stocks.length]]</div>
+    <paper-header-panel>
+      <div class="paper-header">
+        <div class="testH">
+          <iron-icon icon="icons:visibility-off"></iron-icon>
+          <paper-input type="search" placeholder="name" autosave="test" results="5" no-label-float>
+          </paper-input>
         </div>
-      </template>
-    </iron-list>
+        <div class="itemtype unselectable">
+          <div data-type="0">F</div>
+          <div data-type="1">H</div>
+          <div data-type="2">Y</div>
+          <div data-type="3">M</div>
+          <div data-type="4">D</div>
+        </div>
+      </div>
+      <div class="flex">
+        <iron-list items="[[items]]" class="flex">
+          <template>
+            <div class="ingredient layout horizontal" data-type$="{{item.type}}">
+              <div class="ing-name">[[item.name]]</div>
+              <div class="ing-stock">[[item.stocks.length]]</div>
+            </div>
+          </template>
+        </iron-list>
+      </div>
+    </paper-header-panel>
   </template>
 
   <script src="recipe-ingredients.js"></script>
