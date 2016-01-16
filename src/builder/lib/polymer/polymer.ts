@@ -12,7 +12,7 @@ module Polymer {
     $:any;
 
     // Methods
-    $$: (slctr: string) => Element;
+    $$: (slctr: string) => (HTMLElement);
     async: (callback:()=>void, waitTime?:number) => number;
     cancelAsync: (handle:number) => void;
     fire : (type:string, detail?:Object, options?:Object) => CustomEvent;

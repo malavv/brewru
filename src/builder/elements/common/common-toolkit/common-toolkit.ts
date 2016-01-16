@@ -9,7 +9,8 @@ class CommonToolkit extends Polymer.DomModule {
   attached() {
     var children = Polymer.dom(this).children;
     var childCount:number = children.length;
-    console.log('CommonToolkit', childCount)
+
+    this.close();
   }
 
   track(e) {
@@ -34,9 +35,22 @@ class CommonToolkit extends Polymer.DomModule {
     e.preventDefault();
   }
 
+  close() {
+    this.$.details.hide();
+    this.selected = null
+  }
+
   onWidthChange() {
-    this.$$('.content iron-pages').style.width = this.width + 'px';
-    console.log('onWidthChange');
+    var content: HTMLElement;
+    content = this.$$('.content iron-pages');
+    content.style.width = this.width + 'px';
+  }
+
+  _selected(newV: any) {
+    if (newV == null)
+      this.$.details.hide();
+    else
+      this.$.details.show();
   }
 }
 
@@ -46,7 +60,7 @@ window.Polymer(window.Polymer.Base.extend(CommonToolkit.prototype, {
   properties: {
     selected: {
       type: Number,
-      value: 0
+      observer: '_selected'
     },
     locked: {
       type: Boolean,
