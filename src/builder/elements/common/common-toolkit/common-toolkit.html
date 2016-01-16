@@ -1,0 +1,71 @@
+
+
+<dom-module id="common-toolkit">
+  <style>
+    :host {
+      @apply(--layout-horizontal);
+      /*width: 31px;*/
+      /* 27 + splitter */
+      margin-right: 27px;
+    }
+    :host div.splitter {
+      background-color: #00AA00;
+      width: 4px;
+      cursor: col-resize;
+    }
+    :host iron-selector.side {
+      @apply(--layout-horizontal);
+
+      transform-origin: 0 0;
+      transform: rotate(90deg) translate(0, -27px);
+      position: absolute;
+    }
+
+    iron-pages {
+      width: 200px;
+
+    }
+    .side ::content .iron-selected {
+      border-bottom: 3px solid red;
+    }
+    .side ::content .iron-selected {
+      border-bottom: 3px solid red;
+    }
+    .side ::content > * {
+      border-bottom: 3px solid rbga(0, 0, 0, 0);
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .content {
+      @apply(--layout-vertical);
+    }
+    .content iron-pages {
+      @apply(--layout-flex);
+    }
+    .content iron-pages ::content > *{
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
+
+  <template>
+    <div class="splitter" on-track="track" on-down="preventSelection"></div>
+
+    <div class="content">
+      <div>
+        <iron-icon icon="icons:apps"></iron-icon>
+        <input type="search" />
+      </div>
+      <iron-pages selected="{{selected}}" >
+        <content select="[main]"></content>
+      </iron-pages>
+    </div>
+
+    <iron-selector class="side" selected="{{selected}}">
+      <content select="[toolbar]"></content>
+    </iron-selector>
+  </template>
+
+  <script src="common-toolkit.js"></script>
+</dom-module>

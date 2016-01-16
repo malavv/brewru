@@ -85,6 +85,12 @@
       .pipe(ts(elementsProj))
       .js.pipe(gulp.dest(p.elements)); 
   });
+
+  gulp.task('watch:elements', function() {
+    gulp.watch(['elements/**/*.ts'], ['lint:elements', 'compile:elements']);
+  });
+
+
   gulp.task('compile:core', [], function(cb) { 
     var tsData = gulp.src(p.core + '/' + p.allTs)
       .pipe(sourcemaps.init())
