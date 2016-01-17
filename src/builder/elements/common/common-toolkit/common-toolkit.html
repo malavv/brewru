@@ -4,17 +4,14 @@
   <style>
     :host {
       @apply(--layout-horizontal);
-      /*width: 31px;*/
-      /* 27 + splitter */
-      margin-right: 27px;
+      padding-right: 27px;
     }
-    :host div.splitter {
-      background-color: #444;
-      border-left: 2px solid #777;
-      width: 4px;
-      cursor: col-resize;
+
+    iron-collapse#details {
+      @apply(--layout-horizontal);
     }
-    :host iron-selector.side {
+
+    iron-selector.side {
       @apply(--layout-horizontal);
 
       transform-origin: 0 0;
@@ -24,22 +21,23 @@
       background-color: #eee;
     }
 
-    iron-pages {
-      width: 200px;
-    }
-    .side ::content .iron-selected {
-      border-bottom: 3px solid red;
+    :host div.splitter {
+      background-color: #444;
+      border-left: 2px solid #777;
+      width: 4px;
+      cursor: col-resize;
     }
 
-    .side ::content > * {
-      border-bottom: 3px solid rbga(0, 0, 0, 0);
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-    .content {
+    div.content {
       @apply(--layout-vertical);
     }
+
+    iron-pages {
+      width: 200px;
+      height: 100%;
+    }
+
+
     .content iron-pages {
       @apply(--layout-flex);
     }
@@ -47,10 +45,18 @@
       /*width: 100%;*/
       /*height: 100vh;*/
     }
+    .side ::content .iron-selected {
+      border-bottom: 3px solid red;
+    }
+    .side ::content > * {
+      border-bottom: 3px solid rbga(0, 0, 0, 0);
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
     div.content div.header {
       background-color: #fafafa;
     }
-
     div.content div.header iron-icon.header-icon {
       --iron-icon-width: 22px;
       padding: 0 3px;
@@ -67,7 +73,7 @@
   </style>
 
   <template>
-    <iron-collapse id="details">
+    <iron-collapse id="details" horizontal>
       <div class="splitter" on-track="track" on-down="preventSelection"></div>
 
       <div class="content">

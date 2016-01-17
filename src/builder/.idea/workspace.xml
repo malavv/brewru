@@ -4,9 +4,6 @@
     <list default="true" id="1b0c0840-ac07-48c7-91e1-16f027f2c5bb" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html" afterPath="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.ts" afterPath="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/elements/common/common-toolkit/demo/index.html" afterPath="$PROJECT_DIR$/elements/common/common-toolkit/demo/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/polymer/polymer.ts" afterPath="$PROJECT_DIR$/lib/polymer/polymer.ts" />
     </list>
     <ignored path="builder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,14 +23,14 @@
     <favorites_list name="builder" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.78534573">
+    <splitter split-orientation="horizontal" split-proportion="0.27714285">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="common-toolkit.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="common-toolkit.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2652796">
-                  <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -49,10 +46,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/demo/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-18.307692">
+                <state vertical-scroll-proportion="0.51951545">
                   <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
                   <folding />
                 </state>
@@ -86,9 +83,17 @@
           <file leaf-file-name="common-toolkit.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.5787349">
-                  <caret line="69" column="30" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="30" />
-                  <folding />
+                <state vertical-scroll-proportion="0.66352624">
+                  <caret line="75" column="42" selection-start-line="75" selection-start-column="42" selection-end-line="75" selection-end-column="42" />
+                  <folding>
+                    <element signature="e#690#726#0" expanded="false" />
+                    <element signature="e#764#819#0" expanded="false" />
+                    <element signature="e#855#898#0" expanded="false" />
+                    <element signature="e#923#1072#0" expanded="false" />
+                    <element signature="e#1100#1140#0" expanded="false" />
+                    <element signature="e#1190#1337#0" expanded="false" />
+                    <element signature="e#1393#1522#0" expanded="false" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -134,9 +139,9 @@
         <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/elements/common/common-toolkit/common-tool.ts" />
         <option value="$PROJECT_DIR$/lib/polymer/polymer.ts" />
-        <option value="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html" />
         <option value="$PROJECT_DIR$/elements/common/common-toolkit/demo/index.html" />
         <option value="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.ts" />
+        <option value="$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html" />
       </list>
     </option>
   </component>
@@ -372,8 +377,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -458,8 +463,8 @@
     <frame x="55" y="0" width="1007" height="1149" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27760577" sideWeight="0.52195734" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27760577" sideWeight="0.47804266" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27760577" sideWeight="0.52697617" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27760577" sideWeight="0.47302383" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939035" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -516,7 +521,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#690#726#0" expanded="false" />
+            <element signature="e#764#819#0" expanded="false" />
+            <element signature="e#855#898#0" expanded="false" />
+            <element signature="e#923#1072#0" expanded="false" />
+            <element signature="e#1100#1140#0" expanded="false" />
+            <element signature="e#1190#1337#0" expanded="false" />
+            <element signature="e#1393#1522#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -623,7 +636,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -659,7 +671,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -842,27 +853,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html">
+    <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5787349">
-          <caret line="69" column="30" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/demo/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.307692">
+        <state vertical-scroll-proportion="0.51951545">
           <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.ts">
+    <entry file="file://$PROJECT_DIR$/elements/common/common-toolkit/common-toolkit.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2652796">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding />
+        <state vertical-scroll-proportion="0.66352624">
+          <caret line="75" column="42" selection-start-line="75" selection-start-column="42" selection-end-line="75" selection-end-column="42" />
+          <folding>
+            <element signature="e#690#726#0" expanded="false" />
+            <element signature="e#764#819#0" expanded="false" />
+            <element signature="e#855#898#0" expanded="false" />
+            <element signature="e#923#1072#0" expanded="false" />
+            <element signature="e#1100#1140#0" expanded="false" />
+            <element signature="e#1190#1337#0" expanded="false" />
+            <element signature="e#1393#1522#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
