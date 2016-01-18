@@ -43,7 +43,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeItems.prototype, {
     },
     items: {
       type: Array,
-      value: function() { return []; }
+      value: function(): Array<Object> { return []; }
     }
   }
 }));

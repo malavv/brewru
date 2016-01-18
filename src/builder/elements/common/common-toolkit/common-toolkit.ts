@@ -5,33 +5,26 @@ class CommonToolkit extends Polymer.DomModule {
   target: HTMLElement;
   width: number;
   minWidth: number;
+  selected: number;
 
   attached() {
-    var children = Polymer.dom(this).children;
-    var childCount:number = children.length;
-
+    this.$$('iron-pages').style.width = this.minWidth + 'px';
     this.close();
   }
 
-  track(e) {
+  track(e:any) {
+    if (this.locked) { return; }
     switch (e.detail.state) {
       case 'start':
         this.width = this.$$('.content iron-pages').getBoundingClientRect().width;
         break;
       case 'track':
-        var dx = e.detail.ddx;
-        this.width = Math.max(this.width - dx, this.minWidth);
+        this.width = Math.max(this.width - e.detail.ddx, this.minWidth);
         break;
-      case 'end':
-        console.log('Tracking ended!');
-        break;
-    }
-    if (this.locked) {
-      return;
     }
   }
 
-  preventSelection(e:any) {
+  preventSelection(e: any) {
     e.preventDefault();
   }
 

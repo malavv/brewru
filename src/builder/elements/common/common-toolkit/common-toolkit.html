@@ -1,10 +1,18 @@
-
-
 <dom-module id="common-toolkit">
   <style>
     :host {
+      --sidebar-height: 27px;
+      --sidebar-transl: -27px;
+      --sidebar-bg: #eee;
+      --handle-bg: #444;
+      --handle-contrast: #aaa;
+      --handle-width: 3px;
+      --header-bg: #fafafa;
+      --vis-btn-bg: #fefefe;
+      --vis-btn-border: #eaeaea;
+
       @apply(--layout-horizontal);
-      padding-right: 27px;
+      padding-right: var(--sidebar-height);
     }
 
     iron-collapse#details {
@@ -15,16 +23,17 @@
       @apply(--layout-horizontal);
 
       transform-origin: 0 0;
-      transform: rotate(90deg) translate(0, -27px);
+      transform: rotate(90deg) translate(0, var(--sidebar-transl));
       position: absolute;
 
-      background-color: #eee;
+      background-color: var(--sidebar-bg);
     }
 
-    :host div.splitter {
-      background-color: #444;
-      border-left: 2px solid #777;
-      width: 4px;
+    div.splitter {
+      background-color: var(--handle-bg);
+      border-left: 1px solid var(--handle-contrast);
+      border-right: 1px solid var(--handle-contrast);
+      width: var(--handle-width);
       cursor: col-resize;
     }
 
@@ -32,18 +41,8 @@
       @apply(--layout-vertical);
     }
 
-    iron-pages {
-      width: 200px;
-      height: 100%;
-    }
-
-
     .content iron-pages {
       @apply(--layout-flex);
-    }
-    .content iron-pages ::content > *{
-      /*width: 100%;*/
-      /*height: 100vh;*/
     }
     .side ::content .iron-selected {
       border-bottom: 3px solid red;
@@ -55,7 +54,7 @@
       user-select: none;
     }
     div.content div.header {
-      background-color: #fafafa;
+      background-color: var(--header-bg);
     }
     div.content div.header iron-icon.header-icon {
       --iron-icon-width: 22px;
@@ -65,10 +64,9 @@
       margin-left: 2px;
     }
     div.content div.header iron-icon.header-icon:hover {
-      --iron-icon-fill-color: #bbb;
-      background-color: #ddd;
+      background-color: var(--vis-btn-bg);
       border-radius: 5px;
-      border: 1px solid #bbb;
+      border: 1px solid var(--vis-btn-border);
     }
   </style>
 
