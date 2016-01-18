@@ -47,11 +47,10 @@ the main components laying the screen out.
         <recipe-editor inventory="{{inventory}}" recipe="{{recipe}}"></recipe-editor>
       </iron-pages>
 
-      <app-splitter></app-splitter>
-
-      <iron-pages id="sidebarSection" selected="{{sidebar}}">
-        <recipe-ingredients inventory="{{inventory}}" recipe="{{recipe}}"></recipe-ingredients>
-      </iron-pages>
+      <common-toolkit>
+        <paper-tab toolbar><iron-icon icon="icons:view-list"></iron-icon><div>Ingredients</div></paper-tab>
+        <recipe-ingredients main inventory="{{inventory}}" recipe="{{recipe}}"></recipe-ingredients>
+      </common-toolkit>
     </div>
 
     <app-status></app-status>
