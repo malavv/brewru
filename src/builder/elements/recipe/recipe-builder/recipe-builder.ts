@@ -14,7 +14,6 @@ class RecipeBuilder extends Polymer.DomModule {
   server: Server;
 
   ready() {
-    console.log('stuff builder');
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
     this.recipe = new Recipe();

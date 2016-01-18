@@ -1,0 +1,31 @@
+<dom-module id="shortcut-panel">
+  <style>
+    :host {}
+    div.shortcuts {
+      @apply(--layout-vertical);
+      width: 300px;
+    }
+    div.shortcuts div {
+      @apply(--layout-horizontal);
+    }
+    div.shortcuts div.label {
+      width: 55px;
+    }
+  </style>
+
+  <template>
+    <paper-dialog>
+      <h2>Keyboard Shortcuts</h2>
+      <div class="shortcuts">
+        <template is="dom-repeat" items="[[shortcuts]]">
+          <div>
+            <div class="label">[[item.binding]]</div>
+            <div>[[item.description]]</div>
+          </div>
+        </template>
+      </div>
+    </paper-dialog>
+  </template>
+
+  <script src="shortcut-panel.js"></script>
+</dom-module>

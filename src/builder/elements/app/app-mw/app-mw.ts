@@ -14,12 +14,7 @@ class AppMainWindow extends Polymer.DomModule {
     // Pushing to shortcuts for the shortcut behavior.
     this.shortcuts.forEach(function(s) { this.addShortcut(s.binding, s.type); }, this);
 
-    bus.suscribe(MessageType.ShowShortcuts, this._onShowShortcuts, this);
     bus.suscribe(MessageType.RecipeSelected, this._onRecipeSelected, this);
-  }
-
-  private _onShowShortcuts() {
-    this.async(() => { this.$.shortcutsPanel.open(); });
   }
 
   private _onRecipeSelected(recipe: any) {

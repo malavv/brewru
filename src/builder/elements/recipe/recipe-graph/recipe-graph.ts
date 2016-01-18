@@ -18,7 +18,7 @@ class RecipeGraph extends Polymer.DomModule {
 
   // Lifecycles
   private ready() {
-    this.size = {width:-1, height:-1}
+    this.size = { width: -1, height: -1 };
     bus.suscribe(MessageType.RecipeChanged, this.recipeChanged, this);
   }
 

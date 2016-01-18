@@ -3,28 +3,43 @@
   <style>
     :host {
         @apply(--layout-vertical);
+      padding: 10px 0;
     }
-    .name {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-justified);
+
+    div.desc {
+      @apply(--layout-horizontal);
+      padding: 0 20px 0 20px;
+      justify-content: space-around;
+      align-items: center;
     }
-    :host div.name {
-      background-color: #999;  
-      text-align: center;
-      font-size: 1.5em;
-      border-bottom: 2px solid blue;
+    div.desc label {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: right;
+      width: 150px;
+      padding-right: 20px;
     }
-    :host div.content {
-      background-color: #f0f0f0;
+    div.desc iron-autogrow-textarea {
+      @apply(--layout-flex);
+    }
+    div.desc pre {
+      @apply(--layout-flex);
     }
   </style>
 
   <template>
-    <div class="name">
-      <widget-text value="{{reactor.name}}"></widget-text>
-      #<span>{{reactor.id}}</span>
+    <div class="desc">
+      <label>Description</label>
+      <iron-autogrow-textarea autofocus rows="4">
+      </iron-autogrow-textarea>
     </div>
-    <div vertical layout class="flex">
+    <div class="desc">
+      <label>Code</label>
+      <pre>
+        {
+          test
+        }
+      </pre>
     </div>
   </template>
   <script src="recipe-reactor.js"></script>
