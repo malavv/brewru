@@ -4,18 +4,60 @@
     :host {
       @apply(--layout-vertical);
     }
-    :host recipe-overview {
+
+    div.header {
+      @apply(--layout-horizontal);
+    }
+    div.header paper-tab {
+      @apply(--layout-horizontal);
+      font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+      font-weight: bold;
+      color: #fff;
+      background-color: #333;
+    }
+    div.header widget-text {
+      @apply(--layout-flex);
+      background-color: #ccc;
+      text-align: center;
+      padding: 3px 0;
+      font-size: 1.7em;
+      font-weight: bold;
+      color: #333;
+    }
+    iron-pages.content {
+      @apply(--layout-flex);
+      @apply(--layout-vertical);
+    }
+    iron-pages.content > * {
       @apply(--layout-flex);
     }
   </style>
 
   <template>
-    <recipe-overview recipe="{{recipe}}"></recipe-overview>
+    <div class="header">
+      <paper-tabs noink selected="{{_selectedEditor}}">
+        <paper-tab>Desc</paper-tab>
+        <paper-tab>Code</paper-tab>
+        <paper-tab>Reactor</paper-tab>
+      </paper-tabs>
+      <widget-text class="recipeName" value="{{recipe.name}}"></widget-text>
+    </div>
+
+    <iron-pages class="content" selected="{{_selectedEditor}}">
+      <recipe-description recipe="{{recipe}}"></recipe-description>
+      <recipe-code recipe="{{recipe}}"></recipe-code>
+      <recipe-reactor reactor="{{current}}"></recipe-reactor>
+    </iron-pages>
+
     <!-- Data Oriented Elements -->
     <!-- Manages the recipe building process. -->
-    <recipe-wizard inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}"></recipe-wizard>
+    <recipe-wizard inventory="{{inventory}}"
+                   ingredients="{{ingredients}}"
+                   recipe="{{recipe}}"></recipe-wizard>
     <!--Manages the builder information-->
-    <recipe-builder inventory="{{inventory}}" ingredients="{{ingredients}}" recipe="{{recipe}}" hidden></recipe-builder>
+    <recipe-builder inventory="{{inventory}}"
+                    ingredients="{{ingredients}}"
+                    recipe="{{recipe}}" hidden></recipe-builder>
   </template>
 
   <script src="recipe-editor.js"></script>

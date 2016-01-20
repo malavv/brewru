@@ -3,11 +3,13 @@
 /// <reference path="entities.ts" />
 
 class Recipe {
-  name: string;
+  public name: string;
+  public description: string;
   reactors: Array<Reactor>;
 	
   constructor(name: string = 'Anonymous', reactors: Array<Reactor> = [Reactor.createAnon()]) {
     this.name = name;
+    this.description = '';
     this.reactors = reactors;
   }
 	

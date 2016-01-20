@@ -16,10 +16,12 @@ class RecipeBuilder extends Polymer.DomModule {
   ready() {
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
-    this.recipe = new Recipe();
+
+    var recipe = new Recipe();
+    recipe.description = 'Test for the description system';
+    this.set('recipe', recipe);
 
     bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
-
     window.builder = this;
   }
 

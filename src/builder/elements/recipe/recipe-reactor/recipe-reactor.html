@@ -2,45 +2,12 @@
 
   <style>
     :host {
-        @apply(--layout-vertical);
-      padding: 10px 0;
-    }
-
-    div.desc {
-      @apply(--layout-horizontal);
-      padding: 0 20px 0 20px;
-      justify-content: space-around;
-      align-items: center;
-    }
-    div.desc label {
-      display: inline-block;
-      vertical-align: middle;
-      text-align: right;
-      width: 150px;
-      padding-right: 20px;
-    }
-    div.desc iron-autogrow-textarea {
-      @apply(--layout-flex);
-    }
-    div.desc pre {
-      @apply(--layout-flex);
+      @apply(--layout-vertical);
     }
   </style>
 
   <template>
-    <div class="desc">
-      <label>Description</label>
-      <iron-autogrow-textarea autofocus rows="4">
-      </iron-autogrow-textarea>
-    </div>
-    <div class="desc">
-      <label>Code</label>
-      <pre>
-        {
-          test
-        }
-      </pre>
-    </div>
   </template>
+
   <script src="recipe-reactor.js"></script>
 </dom-module>

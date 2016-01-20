@@ -1,0 +1,22 @@
+<dom-module id="recipe-code">
+  <style>
+    :host {
+      @apply(--layout-vertical);
+      padding: 50px;
+      background-color: #fafafa;
+    }
+    div.code {
+      box-shadow: inset 0 0 10px #000000;
+      padding: 10px;
+      background-color: #fff;
+    }
+  </style>
+
+  <template>
+    <div class="code">
+      <pre>{{jsonify(recipe)}}</pre>
+    </div>
+  </template>
+
+  <script src="recipe-code.js"></script>
+</dom-module>

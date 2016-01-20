@@ -7,8 +7,5 @@ window.Polymer(window.Polymer.Base.extend(RecipeReactor.prototype, {
   is: 'recipe-reactor',
 
   properties: {
-    reactor: {
-      type: Object
-    }
   }
 }));
