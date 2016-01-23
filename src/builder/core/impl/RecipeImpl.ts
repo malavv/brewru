@@ -16,4 +16,8 @@ class RecipeImpl {
     this.id = 'unimplemented';
     this.steps = [];
   }
+
+  addStep(step : StepImpl) {
+    this.steps.push(step);
+  }
 }

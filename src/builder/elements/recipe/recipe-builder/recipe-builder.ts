@@ -21,10 +21,11 @@ class RecipeBuilder extends Polymer.DomModule {
     window.builder = this;
   }
 
-  public defaultRecipe():RecipeImpl {
+  public defaultRecipe() : RecipeImpl {
     var recipe = new RecipeImpl();
     recipe.description = 'APA recipe from xBeeriment';
     recipe.style = Styles.americanIpa;
+    recipe.addStep(new StepImpl(StepImplType.equipment, "6 Gal Kettle"));
     return recipe;
   }
 
