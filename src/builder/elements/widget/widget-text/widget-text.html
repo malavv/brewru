@@ -10,12 +10,16 @@
     :host input#editor {
       text-align: center;
     }
+    label {
+      color: #444;
+    }
   </style>
 
   <template>
     <iron-pages selected="{{selected}}" class="flex">
+      <label>{{placeholder}}</label>
       <input id="editor" type="text" is="iron-input" value="{{value::change}}" autofocus />
-      <span class="flex">{{value}}<span>
+      <span class="flex">{{value}}</span>
     </iron-pages>
   </template>
 

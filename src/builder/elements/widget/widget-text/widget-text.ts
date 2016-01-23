@@ -1,8 +1,39 @@
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
+enum WidgetTextState {
+  placeholder,
+  editing,
+  display
+}
+
 class WidgetText extends Polymer.DomModule {
-  private selected : number;
-  private value : string;
+  private selected: number;
+  private placeholder: string;
+  private value: string;
+
+  public ready() {
+    this.selected = WidgetTextState.placeholder;
+    if (this.placeholder == null)
+      this.placeholder = '--placeholder--';
+  }
+
+  private _setEditing(isEditing : boolean) {
+    if (isEditing) {
+      this.selected = WidgetTextState.editing;
+      return;
+    }
+
+    if (this.value == '')
+      this.selected = WidgetTextState.placeholder;
+    else
+      this.selected = WidgetTextState.display;
+  }
+
+  private _valueChangedHandler() {
+    if (this.value == null)  this.value = '';
+    this.value = this.value.trim();
+    this._setEditing(false);
+  }
 
   private _clickHandler() {
     this._setEditing(true);
@@ -11,27 +42,19 @@ class WidgetText extends Polymer.DomModule {
       this.$.editor.select();
     }, 1);
   }
-  private _setEditing(isEditing : boolean) {
-    this.selected = isEditing ? 0 : 1;
-  }
-  private _valueHandler() {
-    this._setEditing(false);
-  }
 }
 
 window.Polymer(window.Polymer.Base.extend(WidgetText.prototype, {
   is: 'widget-text',
 
   properties: {
-    selected: {
-      type: Number,
-      value: 1
-    },
+    selected: Number,
     value: {
       type: String,
-      observer: '_valueHandler',
+      observer: '_valueChangedHandler',
       notify: true
-    }
+    },
+    placeholder: String
   },
 
   listeners: {
