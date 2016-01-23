@@ -1,10 +1,7 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
-interface Window { builder: any; };
-interface PaperToast {
-  text: string;
-  show: () => void;
+interface Window { builder: any;
 }
 
 class RecipeBuilder extends Polymer.DomModule {
@@ -17,8 +14,8 @@ class RecipeBuilder extends Polymer.DomModule {
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
 
-    var recipe = new Recipe();
-    recipe.description = 'Test for the description system';
+    var recipe = new RecipeImpl();
+    recipe.description = 'APA recipe from xBeeriment';
     this.set('recipe', recipe);
 
     bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
@@ -31,8 +28,7 @@ class RecipeBuilder extends Polymer.DomModule {
 
   public loadRecipe() {
     var json = JSON.parse(localStorage.getItem('recipe'));
-    var newRecipe = Recipe.decode(json);
-    this.recipe = newRecipe;
+    this.recipe = Recipe.decode(json);
   }
 
   private _onNewStepCreated(config: {name:string; type:ConceptRef}) {

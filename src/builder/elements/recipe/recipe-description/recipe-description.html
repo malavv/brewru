@@ -4,28 +4,42 @@
       @apply(--layout-vertical);
       padding: 10px 0;
     }
-    div.desc {
+
+    div.row {
       @apply(--layout-horizontal);
-      padding: 0 20px 0 20px;
       justify-content: space-around;
       align-items: center;
+      padding: 0 20px 10px 20px;
     }
-    div.desc label {
+
+    label {
       display: inline-block;
       vertical-align: middle;
       text-align: right;
       width: 150px;
       padding-right: 20px;
     }
-    div.desc iron-autogrow-textarea {
+
+    div.row iron-autogrow-textarea, select {
       @apply(--layout-flex);
     }
   </style>
 
   <template>
-    <div class="desc">
+    <div class="row desc">
       <label>Description</label>
       <iron-autogrow-textarea autofocus bind-value="{{recipe.description}}" rows="4"></iron-autogrow-textarea>
+    </div>
+    <div class="row style">
+      <label for="selectStyle">Style</label>
+      <select id="selectStyle" value="{{bjcp::input}}">
+        <option disabled selected> -- select an option --</option>
+        <template is="dom-repeat" items="{{listStyles()}}">
+          <option value$={{item.bjcpStyle}}>
+            <span>{{item.bjcpCategory}}</span> - <span>{{item.bjcpStyle}}</span> -
+            <span>{{item.name}}</span></option>
+        </template>
+      </select>
     </div>
   </template>
 
