@@ -27,7 +27,7 @@ class RecipeItems extends Polymer.DomModule {
         this.push('items', item)
       }, 1);
     }, this);
-    console.info("RecipeItems updating listing adding : " + addedList.length + " removed : " + removedList.length + " newlist ");
+    //console.info("RecipeItems updating listing adding : " + addedList.length + " removed : " + removedList.length + " newlist ");
   }
 }
 

@@ -14,12 +14,18 @@ class RecipeBuilder extends Polymer.DomModule {
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
 
-    var recipe = new RecipeImpl();
-    recipe.description = 'APA recipe from xBeeriment';
-    this.set('recipe', recipe);
+
+    this.set('recipe', this.defaultRecipe());
 
     bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
     window.builder = this;
+  }
+
+  public defaultRecipe():RecipeImpl {
+    var recipe = new RecipeImpl();
+    recipe.description = 'APA recipe from xBeeriment';
+    recipe.style = Styles.americanIpa;
+    return recipe;
   }
 
   public saveRecipe() {

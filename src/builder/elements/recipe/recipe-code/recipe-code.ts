@@ -5,7 +5,6 @@ class RecipeCode extends Polymer.DomModule {
   recipe: Recipe;
 
   public jsonify() {
-    console.log('jsonify');
     return JSON.stringify(this.recipe, undefined, 2);
   }
 }
