@@ -12,7 +12,7 @@ class StepImpl {
   private id: string;
   public name: string;
 
-  private type: StepImplType;
+  public type: StepImplType;
 
   constructor(type: StepImplType = StepImplType.unknown, name: string) {
     this.type = type;

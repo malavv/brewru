@@ -26,6 +26,11 @@ class RecipeBuilder extends Polymer.DomModule {
     recipe.description = 'APA recipe from xBeeriment';
     recipe.style = Styles.americanIpa;
     recipe.addStep(new StepImpl(StepImplType.equipment, "6 Gal Kettle"));
+    recipe.addStep(new StepImpl(StepImplType.ingredient, "23 L Tap Water"));
+
+    recipe.addStep(new StepImpl(StepImplType.heating, 'Bring to a boil'));
+    recipe.addStep(new StepImpl(StepImplType.ingredient, "LME - Clear"));
+    recipe.addStep(new StepImpl(StepImplType.ingredient, "DME - Clear"));
     return recipe;
   }
 

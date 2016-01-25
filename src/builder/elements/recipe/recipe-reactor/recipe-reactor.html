@@ -45,23 +45,22 @@
     <div class="reactor-view">
       <div id="reactor">
         <template is="dom-repeat" items="{{buildingSteps}}">
-          <div class="step">{{item.name}}</div>
+          <div class$="{{_recipeClass(item)}}">{{item.label}}</div>
         </template>
-        <div class="new">+</div>
-        <div class="step equipment">8 Gal Kettle</div>
-        <div class="step ingredient">23 L of Water</div>
-        <div class="new">+</div>
-        <div class="new">+</div>
-        <div class="step heating">Bring to a boil</div>
-        <div class="step ingredient">LME - Clear</div>
-        <div class="step ingredient">DME - Clear</div>
-        <div class="new">+</div>
-        <div class="step heating">T - 60 min</div>
-        <div class="step heating">T - 30 min</div>
+        <!--<div class="new">+</div>-->
+        <!--<div class="step equipment">8 Gal Kettle</div>-->
+        <!--<div class="step ingredient">23 L of Water</div>-->
+        <!--<div class="new">+</div>-->
+        <!--<div class="new">+</div>-->
+        <!--<div class="step heating">Bring to a boil</div>-->
+        <!--<div class="step ingredient">LME - Clear</div>-->
+        <!--<div class="step ingredient">DME - Clear</div>-->
+        <!--<div class="new">+</div>-->
+        <!--<div class="step heating">T - 60 min</div>-->
+        <!--<div class="step heating">T - 30 min</div>-->
       </div>
-      Test
     </div>
-    <div class="desc">Test</div>
+    <div class="desc">Description zone</div>
   </template>
 
   <script src="recipe-reactor.js"></script>
