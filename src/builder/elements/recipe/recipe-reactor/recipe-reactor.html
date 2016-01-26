@@ -3,11 +3,12 @@
   <style>
     :host {
       @apply(--layout-horizontal);
-      height: 100%;
+      overflow: hidden;
     }
     div.reactor-view {
       @apply(--layout-flex);
-      padding-top: 40px;
+      overflow: auto;
+      padding: 20px 0;
     }
     div#reactor {
       width: 200px;
