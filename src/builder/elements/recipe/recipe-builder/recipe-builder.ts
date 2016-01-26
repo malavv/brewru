@@ -35,9 +35,13 @@ class RecipeBuilder extends Polymer.DomModule {
     recipe.addStep(new IngredientStep("Add DME", "DME - Clear", "1 kg"));
 
     var keepHeating:HeatingStep[] = HeatingStep.create("60 min @100c");
+    var tminus30 = new HeatingStep("Middle (" + keepHeating[0].name + ")", keepHeating[1]);
+    // Keeping the chain linked
+    keepHeating[0].next = tminus30.id;
+
     recipe.addStep(keepHeating[0]);
     recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));
-    recipe.addStep(new HeatingStep("Middle (" + keepHeating[0].name + ")", keepHeating[0].groupId));
+    recipe.addStep(tminus30);
     recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));
     recipe.addStep(keepHeating[1]);
     recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));

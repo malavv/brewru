@@ -74,10 +74,16 @@ class RecipeReactor extends Polymer.DomModule {
     // For each equipment group
     // Add an add that skips all ing or misc.
     equipmentGroupedSteps.forEach((eg) => {
+      var needAddition = true;
+
       for (var i = 0; i < eg.length; i++) {
+        if (eg[i] instanceof GroupStep && needAddition)
+          controls.push(createControl({type: ControlType.add}));
         controls.push(createStep(eg[i]));
       }
-      controls.push(createControl({type: ControlType.add}));
+
+      if (needAddition)
+        controls.push(createControl({type: ControlType.add}));
     });
 
     this.set('buildingSteps', controls);

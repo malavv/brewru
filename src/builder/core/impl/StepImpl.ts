@@ -8,113 +8,92 @@ enum StepImplType {
   unknown
 }
 
-interface StepImpl {
-  name: string;
-  type: StepImplType;
-}
+class StepImpl {
+  private static uid:number = 0;
 
-class HeatingStep implements StepImpl {
-  public static uid:number = 0;
-
+  public id:number;
   public name:string;
   public type:StepImplType;
-  public groupId:number;
 
-  constructor(name:string, groupId:number) {
-    this.type = StepImplType.heating;
+  constructor(name:string,
+              type:StepImplType = StepImplType.unknown) {
     this.name = name;
-    this.groupId = groupId;
+    this.type = type;
+    this.id = StepImpl.uid++;
+  }
+}
+
+class GroupStep extends StepImpl {
+  public next:number;
+
+  constructor(name:string,
+              type:StepImplType = StepImplType.unknown,
+              next?:number) {
+    super(name, StepImplType.heating);
+    this.next = next;
+  }
+}
+
+class HeatingStep extends GroupStep {
+  constructor(name:string, next?:number) {
+    super(name, StepImplType.heating, next);
   }
 
   public static create(name:string):HeatingStep[] {
-    var gid = HeatingStep.uid++;
-    return [
-      new HeatingStep("Begin (" + name + ")", gid),
-      new HeatingStep("End (" + name + ")", gid)
-    ];
+    var
+        h2 = new HeatingStep("End (" + name + ")"),
+        h1 = new HeatingStep("Begin (" + name + ")", h2.id);
+    return [h1, h2];
   }
 }
 
-class CoolingStep implements StepImpl {
-  public static uid:number = 0;
-
-  public name:string;
-  public type:StepImplType;
-  public groupId:number;
-
-  constructor(name:string, groupId:number) {
-    this.type = StepImplType.cooling;
-    this.name = name;
-    this.groupId = groupId;
+class CoolingStep extends GroupStep {
+  constructor(name:string, next?:number) {
+    super(name, StepImplType.cooling, next);
   }
 
   public static create(name:string):CoolingStep[] {
-    var gid = CoolingStep.uid++;
-    return [
-      new CoolingStep("Begin (" + name + ")", gid),
-      new CoolingStep("End (" + name + ")", gid)
-    ];
+    var
+        c2 = new CoolingStep("End (" + name + ")"),
+        c1 = new CoolingStep("Begin (" + name + ")", c2.id);
+    return [c1, c2];
   }
 }
 
-class FermentationStep implements StepImpl {
-  public static uid:number = 0;
-
-  public name:string;
-  public type:StepImplType;
-  public groupId:number;
-
-  constructor(name:string, groupId:number) {
-    this.type = StepImplType.fermenting;
-    this.name = name;
-    this.groupId = groupId;
+class FermentationStep extends GroupStep {
+  constructor(name:string, next?:number) {
+    super(name, StepImplType.fermenting, next);
   }
 
   public static create(name:string):FermentationStep[] {
-    var gid = FermentationStep.uid++;
-    return [
-      new FermentationStep("Begin (" + name + ")", gid),
-      new FermentationStep("End (" + name + ")", gid)
-    ];
+    var
+        f2 = new FermentationStep("End (" + name + ")"),
+        f1 = new FermentationStep("Begin (" + name + ")", f2.id);
+    return [f1, f2];
   }
 }
 
-class IngredientStep implements StepImpl {
-  public name:string;
-  public type:StepImplType;
-
-  // Special Stuff
+class IngredientStep extends StepImpl {
   public ingredient:string;
   public qty:string;
 
   constructor(name:string, ingredient:string, qty:string) {
-    this.type = StepImplType.ingredient;
-    this.name = name;
+    super(name, StepImplType.ingredient);
     this.ingredient = ingredient;
     this.qty = qty;
   }
 }
 
-class EquipmentStep implements StepImpl {
-  public name:string;
-  public type:StepImplType;
-
-  // Special Stuff
+class EquipmentStep extends StepImpl {
   public equipment:string;
 
-  constructor(name:string, equipment:string) {
-    this.type = StepImplType.equipment;
-    this.name = name;
-    this.equipment = equipment;
+  constructor(name:string) {
+    super(name, StepImplType.equipment);
   }
 }
 
-class MiscStep implements StepImpl {
-  public name:string;
-  public type:StepImplType;
-
+class MiscStep extends StepImpl {
   constructor(name:string) {
-    this.type = StepImplType.miscellaneous;
-    this.name = name;
+    super(name, StepImplType.miscellaneous);
   }
 }
