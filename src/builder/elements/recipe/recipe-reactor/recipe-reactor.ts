@@ -61,39 +61,24 @@ class RecipeReactor extends Polymer.DomModule {
     }
   }
   _recipeChanged() {
-    var controls = [];
+
+    var controls:StepOrControl[] = [];
+
+    var equipmentGroupedSteps = this.recipe.getGroupedByEquipment();
+
+    console.log('Process Groups', equipmentGroupedSteps);
 
     // First addition has no associated step.
     controls.push(createControl({type: ControlType.add}));
 
-    // Begin with basic steps.
-    var inIngredient = false;
-
-    this.recipe.steps.forEach((step : StepImpl) => {
-
-      if (step.type == StepImplType.ingredient) {
-        inIngredient = true;
-        controls.push(createStep(step));
-        return;
+    // For each equipment group
+    // Add an add that skips all ing or misc.
+    equipmentGroupedSteps.forEach((eg) => {
+      for (var i = 0; i < eg.length; i++) {
+        controls.push(createStep(eg[i]));
       }
-      if (step.type == StepImplType.miscellaneous) {
-        inIngredient = true;
-        controls.push(createStep(step));
-        return;
-      }
-
-      if (inIngredient) {
-        inIngredient = false;
-        controls.push(createControl({type: ControlType.add}));
-      }
-
-      controls.push(createStep(step));
-    });
-
-    if (inIngredient) {
-      inIngredient = false;
       controls.push(createControl({type: ControlType.add}));
-    }
+    });
 
     this.set('buildingSteps', controls);
   }
