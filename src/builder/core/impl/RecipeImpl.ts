@@ -1,4 +1,4 @@
-/// <reference path="../knowledge/style.ts" />
+/// <reference path="../knowledge/domain/style.ts" />
 
 class RecipeImpl {
   // Unique reference

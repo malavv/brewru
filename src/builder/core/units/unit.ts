@@ -7,15 +7,15 @@ class Unit {
 	offset:number;
 	multiplier:number;
 	dimension: Dim;
-	system: UnitSystem;
+	systemRef: string; /* Only its id to prevent circular reference. */
 
-	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dim, system:UnitSystem) {
+	constructor(concept:ConceptRef, symbol:string, offset:number, multiplier:number, dim:Dim, system:string) {
 		this.concept = concept;
 		this.symbol = symbol;
 		this.offset = offset;
 		this.multiplier = multiplier;
 		this.dimension = dim;
-		this.system = system;
+		this.systemRef = system;
 	}
 	
 	toString() : string {

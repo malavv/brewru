@@ -6,6 +6,7 @@ enum ControlType {
 
 interface Control {
   type: ControlType;
+  step?: StepImpl;
 }
 
 interface StepOrControl {

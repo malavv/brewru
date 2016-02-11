@@ -9,6 +9,7 @@ class Dim {
 	public static Temperature = new Dim();
 	public static Volume = new Dim();
 	public static Temporal = new Dim();
+	public static Unit = new Dim();
 	
-	public static all() { return [Dim.Length, Dim.Mass, Dim.Temperature, Dim.Volume]; }
+	public static all() { return [Dim.Length, Dim.Mass, Dim.Temperature, Dim.Volume, Dim.Unit]; }
 }

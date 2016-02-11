@@ -1,6 +1,7 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
+import IngType = Supply.IngType;
 interface Window { builder: any;
 }
 
@@ -21,18 +22,29 @@ class RecipeBuilder extends Polymer.DomModule {
   }
 
   public defaultRecipe() : RecipeImpl {
-    var recipe = new RecipeImpl();
+    var recipe = new RecipeImpl(),
+        equip = new UserEquip();
     recipe.description = 'APA recipe from xBeeriment';
     recipe.style = Styles.americanIpa;
-    recipe.addStep(new EquipmentStep("6 Gal Kettle"));
-    recipe.addStep(new IngredientStep("Add water", "Tap Water", "23 L"));
+
+    recipe.addStep(new EquipmentStep(equip.getById("user:65galKettle")));
+    recipe.addStep(new IngredientStep(
+        'Add Water',
+        new Supply.Ing(Entities.tapWater, null, [Dim.Volume]),
+        new Quantity(23, SI.sym('l'))));
 
     var bringToBoil:HeatingStep[] = HeatingStep.create("Bring to a boil");
     recipe.addStep(bringToBoil[0]);
     recipe.addStep(bringToBoil[1]);
 
-    recipe.addStep(new IngredientStep("Add LME", "LME - Clear", "1 kg"));
-    recipe.addStep(new IngredientStep("Add DME", "DME - Clear", "1 kg"));
+    recipe.addStep(new IngredientStep(
+        'Add LME',
+        new Supply.Ing(Entities.lmeClear, IngType.Fermentable, [Dim.Mass]),
+        new Quantity(1, SI.sym('kg'))));
+    recipe.addStep(new IngredientStep(
+        'Add DME',
+        new Supply.Ing(Entities.lmeClear, IngType.Fermentable, [Dim.Mass]),
+        new Quantity(1, SI.sym('kg'))));
 
     var keepHeating:HeatingStep[] = HeatingStep.create("60 min @100c");
     var tminus30 = new HeatingStep("Middle (" + keepHeating[0].name + ")", keepHeating[1]);
@@ -40,39 +52,59 @@ class RecipeBuilder extends Polymer.DomModule {
     keepHeating[0].next = tminus30.id;
 
     recipe.addStep(keepHeating[0]);
-    recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));
+    recipe.addStep(new IngredientStep(
+        'Hop Addition',
+        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
+        new Quantity(50, SI.sym('g'))));
     recipe.addStep(tminus30);
-    recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));
+    recipe.addStep(new IngredientStep(
+        'Hop Addition',
+        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
+        new Quantity(50, SI.sym('g'))));
     recipe.addStep(keepHeating[1]);
-    recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));
+    recipe.addStep(new IngredientStep(
+        'Hop Addition',
+        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
+        new Quantity(50, SI.sym('g'))));
 
     var cool:CoolingStep[] = CoolingStep.create("Cool to 22c");
     recipe.addStep(cool[0]);
     recipe.addStep(cool[1]);
 
-    recipe.addStep(new EquipmentStep("Transfer to bottling bucket"));
+    recipe.addStep(new EquipmentStep(equip.getById("user:6galBottlingBucket")));
     recipe.addStep(new MiscStep("Decantation"));
     recipe.addStep(new MiscStep("Mod. Aeration"));
     recipe.addStep(new IngredientStep("Add Yeast", "Safale US-05", "1u"));
-    recipe.addStep(new EquipmentStep("Transfert to 5 gal ferm."));
+    recipe.addStep(new IngredientStep(
+        'Add Yeast',
+        new Supply.Ing(Entities.us05, IngType.Yeast, [Dim.Unit]),
+        new Quantity(1, SI.sym('u'))));
 
     var ferm:FermentationStep[] = FermentationStep.create("1st Fermentation");
     recipe.addStep(ferm[0]);
-    recipe.addStep(new IngredientStep("Hop Addition", "Columbus", "50g"));
+
+    recipe.addStep(new IngredientStep(
+        'Hop Addition',
+        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
+        new Quantity(50, SI.sym('g'))));
+
     recipe.addStep(ferm[1]);
 
-    recipe.addStep(new EquipmentStep("Transfer Tourie"));
+    recipe.addStep(new EquipmentStep(equip.getById("user:5galCarboy")));
     recipe.addStep(new MiscStep("Decantation Filtering"));
 
     var ferm2:FermentationStep[] = FermentationStep.create("1st Fermentation");
     recipe.addStep(ferm2[0]);
     recipe.addStep(ferm2[1]);
     recipe.addStep(new MiscStep("Decantation Filtering"));
-    recipe.addStep(new IngredientStep("Priming Sugar", "Table Sugar", "50g"));
-
-    recipe.addStep(new EquipmentStep("Bottling"));
 
 
+    recipe.addStep(new IngredientStep(
+        'Priming Sugar',
+        new Supply.Ing(Entities.tableSugar, IngType.Fermentable, [Dim.Mass]),
+        new Quantity(50, SI.sym('g'))));
+
+    recipe.addStep(new EquipmentStep(equip.getById("user:grolshBottles")));
 
     return recipe;
   }
