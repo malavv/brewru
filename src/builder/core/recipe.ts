@@ -5,6 +5,7 @@
 class Recipe {
   public name: string;
   public description: string;
+  public style: Style;
   reactors: Array<Reactor>;
 	
   constructor(name: string = 'Anonymous', reactors: Array<Reactor> = [Reactor.createAnon()]) {

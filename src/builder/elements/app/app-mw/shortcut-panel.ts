@@ -8,7 +8,10 @@ class ShortcutPanel extends Polymer.DomModule {
   }
 
   public show() {
-    this.async(() => { this.$$('paper-dialog').open(); });
+    this.async(() => {
+      var dialog : any = this.$$('paper-dialog');
+      dialog.open();
+    });
   }
 }
 

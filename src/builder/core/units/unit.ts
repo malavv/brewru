@@ -18,9 +18,13 @@ class Unit {
 		this.systemRef = system;
 	}
 	
-	toString() : string {
+	public toString() : string {
 		return this.concept + '(' + this.symbol + ')';
 	}
+
+  public toJSON() : string {
+    return this.concept.ref;
+  }
 
 	public static Unknown = new Unit(OntoRef.createAnon('unknownUnit'), '', 0, 0, undefined, undefined);
 }

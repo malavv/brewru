@@ -63,7 +63,7 @@ window.Polymer(window.Polymer.Base.extend(WidgetUnits.prototype, {
     },
     allowed: {
       type: Array,
-      value: Dim.all()
+      value: allDimensions()
     }
   },
 

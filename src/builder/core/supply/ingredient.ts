@@ -2,37 +2,35 @@
 /// <reference path="../units/dimension.ts" />
 
 module Supply {
-	export class IngType {
-		public static Fermentable = new IngType('fermentable');
-		public static Hops = new IngType('hops');
-		public static Yeast = new IngType('yeast');
-		public static Miscellaneous  = new IngType('miscellaneous');
-		public static Dynamic = new IngType('dynamic');
-		public static all() {
-			return [
-				IngType.Fermentable,
-				IngType.Hops,
-				IngType.Yeast,
-				IngType.Miscellaneous,
-				IngType.Dynamic
-			];
-		}
-		
-		public name: string;
-		
-		constructor(name : string) {
-			this.name = name;
-		}
-		
-		public static of(name: string) : IngType {
-			var found = IngType.all().filter(t => t.name === name);
-			return found.length === 1 ? found[0] : null;
-		}
-		
-		public toString() : string {
-			return this.name;
-		}
-	}
+
+  export enum IngType {
+    Dynamic,
+    Fermentable,
+    Hops,
+    Miscellaneous,
+    Water,
+    Yeast
+  }
+  export function allIngredientTypes() : Array<IngType> {
+    return [
+        IngType.Dynamic,
+        IngType.Fermentable,
+        IngType.Hops,
+        IngType.Miscellaneous,
+        IngType.Water,
+        IngType.Yeast
+    ];
+  }
+
+
+	//export class IngType {
+  //
+	//	public static of(name: string) : IngType {
+	//		var found = IngType.all().filter(t => t.name === name);
+	//		return found.length === 1 ? found[0] : null;
+	//	}
+  //
+	//}
 	
 	/**
 	 * Represents the abstract concept of certain ingredient.
@@ -55,6 +53,12 @@ module Supply {
 		public type() : IngType { return this._type; }
 		public dimensions() : Array<Dim> { return this._dimensions; }
 		public toString() : string { return this.ref.name; }
+		public toJSON() : Object {
+			return {
+				ref: this.ref.ref,
+				type: this._type
+			}
+		}
 	}
 	
 	/**

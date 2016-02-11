@@ -3,6 +3,7 @@
 
 class RecipeDescription extends Polymer.DomModule {
   public recipe:Recipe;
+  public bjcp:string;
 
   public listStyles() {
     return Styles.getAll();

@@ -52,7 +52,7 @@ window.Polymer(window.Polymer.Base.extend(WidgetQuantity.prototype, {
     },
     allowed: {
       type:Array,
-      value: Dim.all()
+      value: allDimensions()
     }
   }
 }));

@@ -47,7 +47,7 @@ class RecipeBuilder extends Polymer.DomModule {
         new Quantity(1, SI.sym('kg'))));
 
     var keepHeating:HeatingStep[] = HeatingStep.create("60 min @100c");
-    var tminus30 = new HeatingStep("Middle (" + keepHeating[0].name + ")", keepHeating[1]);
+    var tminus30 = new HeatingStep("Middle (" + keepHeating[0].name + ")", keepHeating[1].id);
     // Keeping the chain linked
     keepHeating[0].next = tminus30.id;
 
@@ -74,7 +74,6 @@ class RecipeBuilder extends Polymer.DomModule {
     recipe.addStep(new EquipmentStep(equip.getById("user:6galBottlingBucket")));
     recipe.addStep(new MiscStep("Decantation"));
     recipe.addStep(new MiscStep("Mod. Aeration"));
-    recipe.addStep(new IngredientStep("Add Yeast", "Safale US-05", "1u"));
     recipe.addStep(new IngredientStep(
         'Add Yeast',
         new Supply.Ing(Entities.us05, IngType.Yeast, [Dim.Unit]),

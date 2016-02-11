@@ -15,10 +15,10 @@ class AddIngredientFactory implements IStepFactory {
         return new WizardConfig('name', WizardStep.text, { description: 'Ingredient Step Name'} );
       case 1:
         this.state = 2;
-         return new WizardConfig('menu', WizardStep.menu, Supply.IngType.all().map(t => t.name));
+         return new WizardConfig('menu', WizardStep.menu, Supply.allIngredientTypes());
       case 2:
         this.state = 3;
-        return new WizardConfig('ingredient', WizardStep.ingredient, Supply.IngType.of(this.data['menu']));
+        return new WizardConfig('ingredient', WizardStep.ingredient, Supply.IngType[this.data['menu']]);
       case 3:
         this.state = 4;
         return new WizardConfig('qty', WizardStep.quantity, {
