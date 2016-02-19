@@ -10,8 +10,8 @@ class Ingredients {
 		return [].concat(this.inventory);
 	}
 	
-	getFromInventory(concept: ConceptRef) {
-		return this.inventory.filter((i) => { return i.ref === concept; });
+	getFromInventory(ref: ConceptRef) {
+		return this.inventory.filter((ing) => ing.getRef() === ref);
 	}
 	
 	addToInventory(ingredient: Supply.Ing) {

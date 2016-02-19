@@ -18,7 +18,7 @@ class AddIngredientFactory implements IStepFactory {
          return new WizardConfig('menu', WizardStep.menu, Supply.allIngredientTypes());
       case 2:
         this.state = 3;
-        return new WizardConfig('ingredient', WizardStep.ingredient, Supply.IngType[this.data['menu']]);
+        return new WizardConfig('ingredient', WizardStep.ingredient, Supply.Type[this.data['menu']]);
       case 3:
         this.state = 4;
         return new WizardConfig('qty', WizardStep.quantity, {

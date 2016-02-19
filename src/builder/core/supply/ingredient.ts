@@ -3,7 +3,7 @@
 
 module Supply {
 
-  export enum IngType {
+  export enum Type {
     Dynamic,
     Fermentable,
     Hops,
@@ -11,63 +11,32 @@ module Supply {
     Water,
     Yeast
   }
-  export function allIngredientTypes() : Array<IngType> {
+  export function allIngredientTypes() : Array<Type> {
     return [
-        IngType.Dynamic,
-        IngType.Fermentable,
-        IngType.Hops,
-        IngType.Miscellaneous,
-        IngType.Water,
-        IngType.Yeast
+        Type.Dynamic,
+        Type.Fermentable,
+        Type.Hops,
+        Type.Miscellaneous,
+        Type.Water,
+        Type.Yeast
     ];
   }
 
-
-	//export class IngType {
-  //
-	//	public static of(name: string) : IngType {
-	//		var found = IngType.all().filter(t => t.name === name);
-	//		return found.length === 1 ? found[0] : null;
-	//	}
-  //
-	//}
-	
-	/**
-	 * Represents the abstract concept of certain ingredient.
-	 * 
-	 * For example, Hallertauer is a base ingredient but Hallertauer (us)
-	 * from a certain place and having a certain AA is a Ingredient.
-	 */
-	export class BaseIng {
-		private _type: IngType;
-		private _dimensions: Array<Dim>;
+	export class Ing {
+		private dimension: Dim;
+		private ref: ConceptRef;
+		private type: Type;
 		
-		public ref: ConceptRef;
-		
-		constructor(concept: ConceptRef, type: IngType, dimensions: Array<Dim> = []) {
+		constructor(concept: ConceptRef, type: Type, dimensions: Dim) {
 			this.ref = concept;
-			this._type = type;
-			this._dimensions = dimensions;
+			this.type = type;
+			this.dimension = dimensions;
 		}
-		
-		public type() : IngType { return this._type; }
-		public dimensions() : Array<Dim> { return this._dimensions; }
+
+    public getRef() : ConceptRef { return this.ref; }
+		public getType() : Type { return this.type; }
+		public getDimension() : Dim { return this.dimension; }
+
 		public toString() : string { return this.ref.name; }
-		public toJSON() : Object {
-			return {
-				ref: this.ref.ref,
-				type: this._type
-			}
-		}
 	}
-	
-	/**
-	 * Represent an ingredient but not its associated supplies.
-	 */
-	export class Ing extends BaseIng {
-		constructor(concept: ConceptRef, type: IngType, dimensions: Array<Dim> = []) {
-			super(concept, type, dimensions);
-		}
-		public toString() : string { return this.ref.name; }
-	}	
 }

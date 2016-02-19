@@ -1,65 +1,65 @@
-/// <reference path="reactor.ts" />
-/// <reference path="supply/ingredient.ts" />
-/// <reference path="entities.ts" />
+/// <reference path="knowledge/domain/style.ts" />
 
 class Recipe {
-  public name: string;
-  public description: string;
-  public style: Style;
-  reactors: Array<Reactor>;
-	
-  constructor(name: string = 'Anonymous', reactors: Array<Reactor> = [Reactor.createAnon()]) {
-    this.name = name;
-    this.description = '';
-    this.reactors = reactors;
+  // Unique reference
+  private id:string;
+
+  // Recipe Metadata
+  public name:string;
+  public description:string;
+  public style:Style;
+
+  // Steps of the recipe
+  private vessels:EquipmentStep[];
+
+  constructor(base:Equipment) {
+    if (base == null)
+      Log.error(Recipe, "Must provide an equipment.");
+    this.id = 'unimplemented';
+    this.vessels = [
+      new EquipmentStep(base, this)
+    ];
   }
-	
-  addReactor(reactor:Reactor) {
-    if (!Reactor.isReactor(reactor)) {
-      console.log("[Recipe] Object added is not a reactor");
-      return;
+
+  getGroupedByEquipment():StepImpl[][] {
+    var processGroup:StepImpl[][] = [];
+    var lastProcessIdx:number = 0;
+
+    for (var i = 0; i < this.vessels.length; i++) {
+      if (this.vessels[i].type == StepImplType.equipment && i !== lastProcessIdx) {
+        processGroup.push(this.vessels.slice(lastProcessIdx, i));
+        lastProcessIdx = i;
+      }
     }
-    this.reactors.push(reactor);
+
+    if (lastProcessIdx !== this.vessels.length) {
+      processGroup.push(this.vessels.slice(lastProcessIdx, this.vessels.length));
+    }
+
+    return processGroup;
   }
-  
-  listDynamicIngredients() : Supply.Ing[] {
-	  return [
-      new Supply.Ing(Entities.tapWater, null, [Dim.Volume]) 
-    ].concat(this.reactors.reduce(this._getOutput.bind(this), []));
+
+  addEquipment(v : EquipmentStep) {
+    this.vessels.push(v);
   }
-  
-  private _getOutput(last: Object[], elem: Reactor) {
-    return last.concat(elem.steps.filter(s => s.type === StepType.defineOutput));
+
+  getEquipments() : EquipmentStep[] {
+    return this.vessels;
   }
-  
-  public encode() : Object {
-    return JSON.stringify(this);
+
+  addIngredient(name: string, step:(EquipmentStep|GroupStep), ingredient:Supply.Ing, quantity: Quantity) : Recipe {
+    return this;
   }
-  
-  public static decode(o : {[key: string]: any}) {
-    var name = o['name'];
-    var reactors = o['reactors'].map(Recipe._decodeReactor);
-    return new Recipe(name, reactors);
+
+  public transferTo(equipment : Equipment) : EquipmentStep {
+    return null;
   }
-  
-  private static _decodeReactor(o : {[key: string]: any}) : Reactor {
-    return new Reactor(
-      <number>(o['id']),
-      <string>(o['name']),
-      <Array<Step>>(o['steps'].map(Recipe._decodeStep))
-    );
+
+  addAction(equipment:EquipmentStep, miscStep:MiscStep): Recipe {
+    return this;
   }
-  private static _decodeStep(o : {[key: string]: any}) : Step {
-    return new Step(
-      <string>(o['name']),
-      <ConceptRef>(o['type']),
-      <string>(o['id'])
-    );
-  }
-  private static _decodeRef(o : {[key: string]: any}) : ConceptRef {
-    return new OntoRef(
-      <string>(o['ref']),
-      <string>(o['name'])
-    );
+
+  ferment(param:FermentationStep[]): FermentationStep {
+    return null;
   }
 }

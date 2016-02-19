@@ -1,7 +1,7 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
-import IngType = Supply.IngType;
+import IngType = Supply.Type;
 interface Window { builder: any;
 }
 
@@ -21,100 +21,84 @@ class RecipeBuilder extends Polymer.DomModule {
     window.builder = this;
   }
 
-  public defaultRecipe() : RecipeImpl {
-    var recipe = new RecipeImpl(),
-        equip = new UserEquip();
+  public defaultRecipe() : Recipe {
+    var
+      equip = new UserEquip(),
+      recipe = new Recipe(equip.getById("user:65galKettle")),
+
+      kettle = recipe.getEquipments()[0],
+      firstFerm:EquipmentStep,
+
+      bucket: Equipment = equip.getById('user:6galBottlingBucket'),
+      carboy: Equipment = equip.getById('user:5galCarboy'),
+      bottles: Equipment = equip.getById('user:grolshBottles'),
+
+      // Ingredient
+      tapWater:Supply.Ing = new Supply.Ing(Entities.tapWater, IngType.Water, Dim.Volume),
+      lme:Supply.Ing = new Supply.Ing(Entities.lmeClear, IngType.Fermentable, Dim.Volume),
+      dme:Supply.Ing = new Supply.Ing(Entities.dmeClear, IngType.Fermentable, Dim.Mass),
+      columbus:Supply.Ing = new Supply.Ing(Entities.columbusHop, IngType.Hops, Dim.Mass),
+      yeast: Supply.Ing = new Supply.Ing(Entities.us05, IngType.Yeast, Dim.Unit),
+      primingSugar: Supply.Ing = new Supply.Ing(Entities.tableSugar, IngType.Fermentable, Dim.Mass),
+
+      // Common Quantity
+      water23l: Quantity = new Quantity(23, SI.sym('l')),
+      oneKg: Quantity = new Quantity(1, SI.sym('kg')),
+      fiftyGram: Quantity = new Quantity(50, SI.sym('g')),
+      threeCup: Quantity = new Quantity(3, SI.sym('cup'));
+
+    // Recipe Description
     recipe.description = 'APA recipe from xBeeriment';
     recipe.style = Styles.americanIpa;
+    recipe.name = 'xAPA';
 
-    recipe.addStep(new EquipmentStep(equip.getById("user:65galKettle")));
-    recipe.addStep(new IngredientStep(
-        'Add Water',
-        new Supply.Ing(Entities.tapWater, null, [Dim.Volume]),
-        new Quantity(23, SI.sym('l'))));
+    // Recipe
+    kettle
+      .addIng('Add Water', tapWater, water23l)
+      .heat('Bring to a boil', TempTarget.BOIL)
+      .addIng('Add LME', lme, oneKg)
+      .addIng('Add DME', dme, oneKg)
+      .heat('Maintain for 60 min', new TimeTarget(60, SI.sym('min')));
 
-    var bringToBoil:HeatingStep[] = HeatingStep.create("Bring to a boil");
-    recipe.addStep(bringToBoil[0]);
-    recipe.addStep(bringToBoil[1]);
+    // Main Boil
+    kettle.getHeat()[1]
+      .onBegin()
+        .addIng('Bittering Hop', columbus, fiftyGram)
+      .toEnd(new TimeTarget(25, SI.sym('min')))
+        .addIng('Dual Purpose Hop', columbus, fiftyGram)
+      .onEnd()
+        .addIng('Aroma Hop', columbus, fiftyGram);
 
-    recipe.addStep(new IngredientStep(
-        'Add LME',
-        new Supply.Ing(Entities.lmeClear, IngType.Fermentable, [Dim.Mass]),
-        new Quantity(1, SI.sym('kg'))));
-    recipe.addStep(new IngredientStep(
-        'Add DME',
-        new Supply.Ing(Entities.lmeClear, IngType.Fermentable, [Dim.Mass]),
-        new Quantity(1, SI.sym('kg'))));
+    // Cooling
+    kettle.cool('Cool to 22C', new TempTarget(22, SI.sym("C")));
 
-    var keepHeating:HeatingStep[] = HeatingStep.create("60 min @100c");
-    var tminus30 = new HeatingStep("Middle (" + keepHeating[0].name + ")", keepHeating[1].id);
-    // Keeping the chain linked
-    keepHeating[0].next = tminus30.id;
+    // First Fermentation
+    firstFerm = kettle.transferTo(bucket, [MiscStepType.Decantation, MiscStepType.Moderate_Aeration]);
+    firstFerm
+        .addIng('Add Yeast', yeast, new Quantity(1, SI.sym('u')))
+        .ferment('First Fermentation', new TimeTarget(4, SI.sym('day')));
 
-    recipe.addStep(keepHeating[0]);
-    recipe.addStep(new IngredientStep(
-        'Hop Addition',
-        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
-        new Quantity(50, SI.sym('g'))));
-    recipe.addStep(tminus30);
-    recipe.addStep(new IngredientStep(
-        'Hop Addition',
-        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
-        new Quantity(50, SI.sym('g'))));
-    recipe.addStep(keepHeating[1]);
-    recipe.addStep(new IngredientStep(
-        'Hop Addition',
-        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
-        new Quantity(50, SI.sym('g'))));
+    // Dry Hopping
+    firstFerm.getFerm()[0]
+      .toEnd(new TimeTarget(2, SI.sym('day')))
+        .addIng('Dry Hoping', columbus, fiftyGram);
 
-    var cool:CoolingStep[] = CoolingStep.create("Cool to 22c");
-    recipe.addStep(cool[0]);
-    recipe.addStep(cool[1]);
-
-    recipe.addStep(new EquipmentStep(equip.getById("user:6galBottlingBucket")));
-    recipe.addStep(new MiscStep("Decantation"));
-    recipe.addStep(new MiscStep("Mod. Aeration"));
-    recipe.addStep(new IngredientStep(
-        'Add Yeast',
-        new Supply.Ing(Entities.us05, IngType.Yeast, [Dim.Unit]),
-        new Quantity(1, SI.sym('u'))));
-
-    var ferm:FermentationStep[] = FermentationStep.create("1st Fermentation");
-    recipe.addStep(ferm[0]);
-
-    recipe.addStep(new IngredientStep(
-        'Hop Addition',
-        new Supply.Ing(Entities.columbusHop, IngType.Hops, [Dim.Mass]),
-        new Quantity(50, SI.sym('g'))));
-
-    recipe.addStep(ferm[1]);
-
-    recipe.addStep(new EquipmentStep(equip.getById("user:5galCarboy")));
-    recipe.addStep(new MiscStep("Decantation Filtering"));
-
-    var ferm2:FermentationStep[] = FermentationStep.create("1st Fermentation");
-    recipe.addStep(ferm2[0]);
-    recipe.addStep(ferm2[1]);
-    recipe.addStep(new MiscStep("Decantation Filtering"));
-
-
-    recipe.addStep(new IngredientStep(
-        'Priming Sugar',
-        new Supply.Ing(Entities.tableSugar, IngType.Fermentable, [Dim.Mass]),
-        new Quantity(50, SI.sym('g'))));
-
-    recipe.addStep(new EquipmentStep(equip.getById("user:grolshBottles")));
+    firstFerm.transferTo(carboy, [MiscStepType.Decantation])
+      .ferment('Second Fermentation', new TimeTarget(21, SI.sym('day')))
+      .transferTo(bucket, [MiscStepType.Decantation])
+      .addIng('Priming Sugar', primingSugar, threeCup)
+      .transferTo(bottles, [MiscStepType.Decantation]);
 
     return recipe;
   }
 
   public saveRecipe() {
-    localStorage.setItem('recipe', JSON.stringify(this.recipe));
+    //localStorage.setItem('recipe', JSON.stringify(this.recipe));
   }
 
   public loadRecipe() {
-    var json = JSON.parse(localStorage.getItem('recipe'));
-    this.recipe = Recipe.decode(json);
+    //var json = JSON.parse(localStorage.getItem('recipe'));
+    //this.recipe = Recipe.decode(json);
   }
 
   private _onNewStepCreated(config: {name:string; type:ConceptRef}) {

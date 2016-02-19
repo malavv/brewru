@@ -33,7 +33,7 @@ function createControl(control: Control) : StepOrControl {
 
 class RecipeReactor extends Polymer.DomModule {
   buildingSteps: StepImpl[];
-  recipe: RecipeImpl;
+  recipe: Recipe;
 
   _recipeClass(soc: StepOrControl) {
     if (soc.isStep) {
