@@ -2,7 +2,7 @@
 /// <reference path="../knowledge/domain/equipment.ts" />
 
 class EquipmentStep extends StepImpl {
-  private steps: StepImpl[] | GroupStep[];
+  private steps: StepImpl[] | ProcessStep[];
   private equipment:Equipment;
 
   constructor(equipment: Equipment, recipe: Recipe) {
@@ -17,15 +17,18 @@ class EquipmentStep extends StepImpl {
   }
 
   public heat(name: string, target:(TempTarget|TimeTarget)) : EquipmentStep {
-    this.steps.push(new HeatingStep(name, this.recipe, target));
+    this.steps.push(new ProcessStep(name, StepImplType.heating, this.recipe, target));
     return this;
   }
 
-  public getHeat() : HeatingStep[] {
-    return <HeatingStep[]> this.steps.filter(s => s instanceof HeatingStep);
+  public getHeat() : ProcessStep[] {
+    return <ProcessStep[]> this.steps.filter(s => s.type == StepImplType.heating);
   }
-  public getFerm() : FermentationStep[] {
-    return <FermentationStep[]> this.steps.filter(s => s instanceof FermentationStep);
+  public getSteps() : StepImpl[] | ProcessStep[] {
+    return this.steps;
+  }
+  public getFerm() : ProcessStep[] {
+    return <ProcessStep[]> this.steps.filter(s => s.type == StepImplType.fermenting);
   }
 
   public cool(name:string, target:TempTarget):EquipmentStep {
@@ -38,7 +41,7 @@ class EquipmentStep extends StepImpl {
     return tmp;
   }
   public ferment(name: string, target:(TempTarget|TimeTarget)) : EquipmentStep {
-    this.steps.push(new FermentationStep(name, this.recipe, target));
+    this.steps.push(new FermentationStep(name, StepImplType.fermenting, this.recipe, target));
     return this;
   }
 }

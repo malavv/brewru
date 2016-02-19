@@ -16,11 +16,11 @@ interface StepOrControl {
   label: string;
 }
 
-function createStep(step: StepImpl) : StepOrControl {
+function createStep(step: StepImpl | ProcessStepTarget) : StepOrControl {
   return {
     isStep: true,
     step: step,
-    label: step.name
+    label: step.name == null ? step.toString() : step.name
   };
 }
 function createControl(control: Control) : StepOrControl {
@@ -37,6 +37,8 @@ class RecipeReactor extends Polymer.DomModule {
 
   _recipeClass(soc: StepOrControl) {
     if (soc.isStep) {
+      if (soc.step instanceof ProcessStepTarget)
+        return 'step target';
       switch (soc.step.type) {
         case StepImplType.cooling:
           return 'step cooling';
@@ -63,28 +65,25 @@ class RecipeReactor extends Polymer.DomModule {
   }
   _recipeChanged() {
 
-    var controls:StepOrControl[] = [];
+    var
+      reactors = this.recipe.getReactors(),
+      controls:StepOrControl[] = [];
 
-    var equipmentGroupedSteps = this.recipe.getGroupedByEquipment();
-
-    console.log('Process Groups', equipmentGroupedSteps);
-
-    // First addition has no associated step.
-    controls.push(createControl({type: ControlType.add}));
 
     // For each equipment group
     // Add an add that skips all ing or misc.
-    equipmentGroupedSteps.forEach((eg) => {
-      var needAddition = true;
-
-      for (var i = 0; i < eg.length; i++) {
-        if (eg[i] instanceof GroupStep && needAddition)
-          controls.push(createControl({type: ControlType.add}));
-        controls.push(createStep(eg[i]));
-      }
-
-      if (needAddition)
-        controls.push(createControl({type: ControlType.add}));
+    reactors.forEach((reactor) => {
+      controls.push(createStep(reactor));
+      reactor.getSteps().forEach(step => {
+        if (step instanceof ProcessStep) {
+          controls.push(createStep(step));
+          (<ProcessStep> step).getTargets().forEach(target => {
+            controls.push(createStep(target));
+            target.getIng().forEach(ing => controls.push(createStep(ing)));
+          });
+        } else
+          controls.push(createStep(step))
+      });
     });
 
     this.set('buildingSteps', controls);

@@ -26,7 +26,7 @@ class RecipeBuilder extends Polymer.DomModule {
       equip = new UserEquip(),
       recipe = new Recipe(equip.getById("user:65galKettle")),
 
-      kettle = recipe.getEquipments()[0],
+      kettle = recipe.getReactors()[0],
       firstFerm:EquipmentStep,
 
       bucket: Equipment = equip.getById('user:6galBottlingBucket'),

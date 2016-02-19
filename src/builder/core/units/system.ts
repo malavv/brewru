@@ -36,7 +36,8 @@ class UnitSystem {
     new Unit(new OntoRef('brew:kelvin', 'kelvin'), 'K', 0, 1, Dim.Temperature, 'brew:SI'),
     new Unit(new OntoRef('brew:celsius', 'celsius'), 'C', 0, 1, Dim.Temperature, 'brew:SI'),
     new Unit(new OntoRef('brew:minute', 'minute'), 'min', 0, 1, Dim.Temporal, 'brew:SI'),
-    new Unit(new OntoRef('brew:unit', 'unit'), 'u', 0, 1, Dim.Unit, 'brew:SI')
+    new Unit(new OntoRef('brew:unit', 'unit'), 'u', 0, 1, Dim.Unit, 'brew:SI'),
+    new Unit(new OntoRef('brew:day', 'day'), 'day', 0, 1, Dim.Temporal, 'brew:SI'),
   ]);
   public static UsCust = new SystemImpl('brew:UsCust', 'Us Cust.', [
       new Unit(new OntoRef('brew:inch', 'inch'), 'in', 0, 1, Dim.Length, 'brew:UsCust'),

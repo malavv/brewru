@@ -9,45 +9,52 @@ class Recipe {
   public description:string;
   public style:Style;
 
-  // Steps of the recipe
-  private vessels:EquipmentStep[];
+  // Set of chained reactor describing the process.
+  private reactors:EquipmentStep[];
 
   constructor(base:Equipment) {
     if (base == null)
       Log.error(Recipe, "Must provide an equipment.");
+
     this.id = 'unimplemented';
-    this.vessels = [
+    this.reactors = [
       new EquipmentStep(base, this)
     ];
+  }
+
+  /**
+   * Get all the reactors used in this recipe.
+   * @returns {EquipmentStep[]}
+   */
+  getReactors() : EquipmentStep[] {
+    return this.reactors;
   }
 
   getGroupedByEquipment():StepImpl[][] {
     var processGroup:StepImpl[][] = [];
     var lastProcessIdx:number = 0;
 
-    for (var i = 0; i < this.vessels.length; i++) {
-      if (this.vessels[i].type == StepImplType.equipment && i !== lastProcessIdx) {
-        processGroup.push(this.vessels.slice(lastProcessIdx, i));
+    for (var i = 0; i < this.reactors.length; i++) {
+      if (this.reactors[i].type == StepImplType.equipment && i !== lastProcessIdx) {
+        processGroup.push(this.reactors.slice(lastProcessIdx, i));
         lastProcessIdx = i;
       }
     }
 
-    if (lastProcessIdx !== this.vessels.length) {
-      processGroup.push(this.vessels.slice(lastProcessIdx, this.vessels.length));
+    if (lastProcessIdx !== this.reactors.length) {
+      processGroup.push(this.reactors.slice(lastProcessIdx, this.reactors.length));
     }
 
     return processGroup;
   }
 
   addEquipment(v : EquipmentStep) {
-    this.vessels.push(v);
+    this.reactors.push(v);
   }
 
-  getEquipments() : EquipmentStep[] {
-    return this.vessels;
-  }
 
-  addIngredient(name: string, step:(EquipmentStep|GroupStep), ingredient:Supply.Ing, quantity: Quantity) : Recipe {
+
+  addIngredient(name: string, step:(EquipmentStep|ProcessStep), ingredient:Supply.Ing, quantity: Quantity) : Recipe {
     return this;
   }
 
