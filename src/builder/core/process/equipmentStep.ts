@@ -36,10 +36,9 @@ class EquipmentStep extends StepImpl {
   }
 
   public transferTo(newEquipment:Equipment, characteristics:MiscStepType[]): EquipmentStep {
-    var tmp = new EquipmentStep(newEquipment, this.recipe);
-    this.recipe.addEquipment(tmp);
-    return tmp;
+    return this.recipe.insertAfter(new EquipmentStep(newEquipment, this.recipe), this);
   }
+
   public ferment(name: string, target:(TempTarget|TimeTarget)) : EquipmentStep {
     this.steps.push(new FermentationStep(name, StepImplType.fermenting, this.recipe, target));
     return this;

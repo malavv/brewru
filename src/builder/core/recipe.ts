@@ -48,25 +48,16 @@ class Recipe {
     return processGroup;
   }
 
-  addEquipment(v : EquipmentStep) {
+
+  public insertAfter(newStep : EquipmentStep, afterThis : EquipmentStep) : EquipmentStep {
+    var idx = this.reactors.indexOf(afterThis);
+    if (idx === -1) Log.warn(Recipe, "Inserting in an unknown idx.");
+    this.reactors.splice(idx + 1, 0, newStep);
+    return newStep;
+  }
+
+  public addEquipment(v : EquipmentStep) : Recipe {
     this.reactors.push(v);
-  }
-
-
-
-  addIngredient(name: string, step:(EquipmentStep|ProcessStep), ingredient:Supply.Ing, quantity: Quantity) : Recipe {
     return this;
-  }
-
-  public transferTo(equipment : Equipment) : EquipmentStep {
-    return null;
-  }
-
-  addAction(equipment:EquipmentStep, miscStep:MiscStep): Recipe {
-    return this;
-  }
-
-  ferment(param:FermentationStep[]): FermentationStep {
-    return null;
   }
 }

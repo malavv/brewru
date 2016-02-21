@@ -100,6 +100,7 @@ class ProcessStep extends StepImpl {
   private begin: ProcessStepTarget;
   private end: ProcessStepTarget;
   private targets: ProcessStepTarget[];
+  private isProcess: boolean = true;
 
   constructor(name:string,
               type:StepImplType = StepImplType.unknown,

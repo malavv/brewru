@@ -104,9 +104,7 @@ class RecipeWizard extends Polymer.DomModule {
   public askIngredient(type: Supply.Type): Promise<{ ingredient: Supply.Ing; quantity: Quantity }> {
     if (type === undefined) return Promise.reject(new InvalidStateError());
     
-    this._ingItems = type === Supply.Type.Dynamic
-      ? this.recipe.listDynamicIngredients() 
-      : this.inventory.stocks.filter((i:Supply.Ing) => i.type() === type);
+    this._ingItems = [];
     this.switchToScreen(WizardScreen.ingredient); 
     this.opened = true;
     return new Promise(this._storePromise.bind(this));

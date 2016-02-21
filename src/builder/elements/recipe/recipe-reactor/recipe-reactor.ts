@@ -1,18 +1,8 @@
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
-enum ControlType {
-  add
-}
-
-interface Control {
-  type: ControlType;
-  step?: StepImpl;
-}
-
 interface StepOrControl {
   isStep: boolean;
-  step?: StepImpl;
-  control?: Control;
+  step?: StepImpl | ProcessStepTarget;
   label: string;
 }
 
@@ -20,14 +10,7 @@ function createStep(step: StepImpl | ProcessStepTarget) : StepOrControl {
   return {
     isStep: true,
     step: step,
-    label: step.name == null ? step.toString() : step.name
-  };
-}
-function createControl(control: Control) : StepOrControl {
-  return {
-    isStep: false,
-    control: control,
-    label: '+'
+    label: step instanceof StepImpl ? (<StepImpl> step).name : step.toString()
   };
 }
 
@@ -35,40 +18,31 @@ class RecipeReactor extends Polymer.DomModule {
   buildingSteps: StepImpl[];
   recipe: Recipe;
 
-  _recipeClass(soc: StepOrControl) {
-    if (soc.isStep) {
-      if (soc.step instanceof ProcessStepTarget)
-        return 'step target';
-      switch (soc.step.type) {
-        case StepImplType.cooling:
-          return 'step cooling';
-        case StepImplType.equipment:
-          return 'step equipment';
-        case StepImplType.fermenting:
-          return 'step fermenting';
-        case StepImplType.heating:
-          return 'step heating';
-        case StepImplType.ingredient:
-          return 'step ingredient';
-        case StepImplType.miscellaneous:
-          return 'step miscellaneous';
-        case StepImplType.unknown:
-          return 'step unknown';
-        default:
-          return 'step unknown';
-      }
-    }
-    switch(soc.control.type) {
-      case ControlType.add:
-        return 'new';
+  _recipeClass(soc: StepImpl | ProcessStepTarget) {
+    if (soc instanceof ProcessStepTarget)
+      return 'step lvl2 target';
+
+    switch ((<StepImpl>soc).type) {
+      case StepImplType.cooling:
+        return 'step lvl1 cooling';
+      case StepImplType.equipment:
+        return 'step lvl0 equipment';
+      case StepImplType.fermenting:
+        return 'step lvl1 fermenting';
+      case StepImplType.heating:
+        return 'step lvl1 heating';
+      case StepImplType.ingredient:
+        return 'step ingredient';
+      case StepImplType.unknown:
+        return 'step unknown';
+      default:
+        return 'step unknown';
     }
   }
   _recipeChanged() {
-
     var
       reactors = this.recipe.getReactors(),
       controls:StepOrControl[] = [];
-
 
     // For each equipment group
     // Add an add that skips all ing or misc.
@@ -87,6 +61,10 @@ class RecipeReactor extends Polymer.DomModule {
     });
 
     this.set('buildingSteps', controls);
+  }
+
+  _onTap() {
+    console.log("_onTap");
   }
 }
 
