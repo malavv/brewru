@@ -6,13 +6,13 @@
       overflow: hidden;
     }
     div.reactor-view {
+      width: 250px;
       overflow: auto;
-      padding: 20px 0;
       overflow-x: hidden;
     }
-    div#reactor {
-      width: 250px;
+    #reactor {
       margin: 0 auto;
+      padding: 20px 0;
       padding-left: 20px;
     }
     div.desc {
@@ -30,16 +30,19 @@
     }
 
     div.lvl0 {
-      margin-left: -10px;
+      margin-left: 0px;
     }
     div.lvl1 {
-      margin-left: 0;
-    }
-    div.lvl2 {
       margin-left: 10px;
     }
-    div.lvl3 {
+    div.lvl2 {
       margin-left: 20px;
+    }
+    div.lvl3 {
+      margin-left: 30px;
+    }
+    div.iron-selected {
+      background-color: #999580;
     }
 
     div.equipment { border-color: blue; }
@@ -55,38 +58,25 @@
     <div class="reactor-view">
       <div id="reactor">
         <template is="dom-repeat" items="{{recipe.reactors}}" as="reactor">
-          <div class="step equipment lvl0">{{reactor.equipment.name}}</div>
+          <!-- Equipment -->
+          <div class="step equipment lvl0" on-tap="_onTap">{{reactor.equipment.name}}</div>
           <div class="lvl1">
             <template is="dom-repeat" items="{{reactor.steps}}" as="step">
-              <div class$="{{_recipeClass(step)}}">{{step.name}}</div>
 
+              <!-- First Level Process and Ingredient-->
+              <div class$="{{_recipeClass(step)}}" on-tap="_onTap">{{step.name}}</div>
               <template is="dom-if" if="{{step.isProcess}}">
                 <div class="lvl2">
-                  <!-- Begin -->
-                  <div class$="{{_recipeClass(step.begin)}}">{{step.begin}}</div>
-                  <div class="lvl3">
-                    <template is="dom-repeat" items="{{step.begin.ingredients}}" as="ing">
-                      <div class$="{{_recipeClass(ing)}}">{{ing.name}}</div>
-                    </template>
-                  </div>
 
-                  <!-- Intermediary -->
+                  <!-- Process Targets -->
                   <template is="dom-repeat" items="{{step.targets}}" as="target">
-                    <div class$="{{_recipeClass(target)}}">{{target}}</div>
+                    <div class$="{{_recipeClass(target)}}" on-tap="_onTap">{{target}}</div>
                     <div class="lvl3">
                       <template is="dom-repeat" items="{{target.ingredients}}" as="ing">
-                        <div class$="{{_recipeClass(ing)}}">{{ing.name}}</div>
+                        <div class$="{{_recipeClass(ing)}}" on-tap="_onTap">{{ing.name}}</div>
                       </template>
                     </div>
                   </template>
-
-                  <!-- End -->
-                  <div class$="{{_recipeClass(step.end)}}">{{step.end}}</div>
-                  <div class="lvl3">
-                    <template is="dom-repeat" items="{{step.end.ingredients}}" as="ing">
-                      <div class$="{{_recipeClass(ing)}}">{{ing.name}}</div>
-                    </template>
-                  </div>
                 </div>
               </template>
             </template>
@@ -94,7 +84,7 @@
         </template>
       </div>
     </div>
-    <div class="desc">Description zone</div>
+    <div class="desc">{{test(selected)}}</div>
   </template>
 
   <script src="recipe-reactor.js"></script>

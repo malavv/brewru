@@ -7,6 +7,7 @@ enum StepImplType {
   cooling,
   fermenting,
   miscellaneous,
+  processTarget,
   unknown
 }
 class TempTarget {
@@ -59,16 +60,13 @@ class StepImpl {
   }
 }
 
-class ProcessStepTarget {
+class ProcessStepTarget extends StepImpl {
   private parent: ProcessStep;
-  private recipe: Recipe;
   private ingredients: IngredientStep[] = [];
-  private nameTmp;
 
   constructor(name:string, parent:ProcessStep, recipe:Recipe) {
-    this.recipe = recipe;
+    super(name, StepImplType.processTarget, recipe);
     this.parent = parent;
-    this.nameTmp = name;
   }
 
   public addIng(name: string, ingredient: Supply.Ing, quantity: Quantity) : ProcessStepTarget {
@@ -85,7 +83,7 @@ class ProcessStepTarget {
   }
 
   public toString() : string {
-    return this.nameTmp;
+    return this.name;
   }
 
   public toJSON() : Object {
@@ -97,8 +95,6 @@ class ProcessStepTarget {
 
 class ProcessStep extends StepImpl {
   public target:(TimeTarget|TempTarget);
-  private begin: ProcessStepTarget;
-  private end: ProcessStepTarget;
   private targets: ProcessStepTarget[];
   private isProcess: boolean = true;
 
@@ -108,22 +104,23 @@ class ProcessStep extends StepImpl {
               target:(TimeTarget|TempTarget)) {
     super(name, type, recipe);
     this.target = target;
-    this.begin = new ProcessStepTarget('begin ' + target.toString(), this, recipe);
-    this.end = new ProcessStepTarget('end ' + target.toString(), this, recipe);
-    this.targets = [];
+    this.targets = [
+      new ProcessStepTarget('begin ' + target.toString(), this, recipe),
+      new ProcessStepTarget('end ' + target.toString(), this, recipe)
+    ];
   }
   public getTargets() : ProcessStepTarget[] {
-    return [this.begin].concat(this.targets).concat([this.end]);
+    return this.targets;
   }
   public onBegin() : ProcessStepTarget {
-    return this.begin;
+    return this.targets[0];
   }
   public onEnd() : ProcessStepTarget{
-    return this.end;
+    return this.targets[this.targets.length - 1];
   }
   public toEnd(target: (TimeTarget|TempTarget)) : ProcessStepTarget {
     var t = new ProcessStepTarget(target.toString() + " until target", this, this.recipe);
-    this.targets.push(t);
+    this.targets.splice(this.targets.length - 1, 0, t);
     return t;
   }
 }

@@ -20,17 +20,17 @@ class RecipeReactor extends Polymer.DomModule {
 
   _recipeClass(soc: StepImpl | ProcessStepTarget) {
     if (soc instanceof ProcessStepTarget)
-      return 'step lvl2 target';
+      return 'step target';
 
     switch ((<StepImpl>soc).type) {
       case StepImplType.cooling:
-        return 'step lvl1 cooling';
+        return 'step cooling';
       case StepImplType.equipment:
-        return 'step lvl0 equipment';
+        return 'step equipment';
       case StepImplType.fermenting:
-        return 'step lvl1 fermenting';
+        return 'step fermenting';
       case StepImplType.heating:
-        return 'step lvl1 heating';
+        return 'step heating';
       case StepImplType.ingredient:
         return 'step ingredient';
       case StepImplType.unknown:
@@ -41,8 +41,8 @@ class RecipeReactor extends Polymer.DomModule {
   }
   _recipeChanged() {
     var
-      reactors = this.recipe.getReactors(),
-      controls:StepOrControl[] = [];
+        reactors = this.recipe.getReactors(),
+        controls:StepOrControl[] = [];
 
     // For each equipment group
     // Add an add that skips all ing or misc.
@@ -63,8 +63,30 @@ class RecipeReactor extends Polymer.DomModule {
     this.set('buildingSteps', controls);
   }
 
-  _onTap() {
-    console.log("_onTap");
+  _onTap(evt) {
+    if (evt.model.reactor) {
+      this.set('selected', evt.model.reactor);
+      return;
+    }
+    if (evt.model.step) {
+      this.set('selected', evt.model.step);
+      return;
+    }
+    if (evt.model.target) {
+      this.set('selected', evt.model.target);
+      return;
+    }
+    if (evt.model.ing) {
+      this.set('selected', evt.model.ing);
+      return;
+    }
+  }
+
+  _selectedChanged(lhs, rhs) {
+    console.log('_selectedChanged', lhs, rhs);
+  }
+  test(val) {
+    return JSON.stringify(val);
   }
 }
 
@@ -78,6 +100,10 @@ window.Polymer(window.Polymer.Base.extend(RecipeReactor.prototype, {
     },
     buildingSteps: {
       type: Array
+    },
+    selected: {
+      type: Object,
+      observer: '_selectedChanged'
     }
   }
 }));
