@@ -1,3 +1,5 @@
+<link rel="import" href="../recipe-graph/recipe-graph.html">
+
 <dom-module id="recipe-editor">
 
   <style>
@@ -39,6 +41,7 @@
         <paper-tab>Desc</paper-tab>
         <paper-tab>Code</paper-tab>
         <paper-tab>Reactor</paper-tab>
+        <paper-tab>Graphs</paper-tab>
       </paper-tabs>
       <widget-text class="recipeName" placeholder="Recipe Name" value="{{recipe.name}}"></widget-text>
     </div>
@@ -47,6 +50,7 @@
       <recipe-description recipe="{{recipe}}"></recipe-description>
       <recipe-code recipe="{{recipe}}"></recipe-code>
       <recipe-reactor recipe="{{recipe}}"></recipe-reactor>
+      <recipe-graph recipe="{{recipe}}"></recipe-graph>
     </iron-pages>
 
     <!-- Data Oriented Elements -->

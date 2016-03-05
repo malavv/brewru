@@ -1,0 +1,30 @@
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<dom-module id="recipe-graph">
+  <style>
+    :host {
+      @apply(--layout-vertical);
+      padding: 20px;
+      background-color: #fafafa;
+    }
+    #basic {
+      width: 480px;
+      height: 400px;
+      margin-bottom: 20px;
+      @apply(--shadow-elevation-2dp);
+    }
+
+    #substances {
+      width: 480px;
+      height: 400px;
+      @apply(--shadow-elevation-2dp);
+    }
+  </style>
+
+  <template>
+    <div id="basic" style="width: 480px; height: 400px;"></div>
+    <div id="substances" style="width: 480px; height: 400px;"></div>
+  </template>
+
+  <script src="recipe-graph.js"></script>
+</dom-module>

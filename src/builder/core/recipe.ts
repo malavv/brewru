@@ -8,6 +8,7 @@ class Recipe {
   public name:string;
   public description:string;
   public style:Style;
+  public data:{substance:string[], reactors:string[], steps:any[]};
 
   // Set of chained reactor describing the process.
   private reactors:EquipmentStep[];
@@ -20,6 +21,7 @@ class Recipe {
     this.reactors = [
       new EquipmentStep(base, this)
     ];
+    this.data = Recipe.getData();
   }
 
   /**
@@ -59,5 +61,29 @@ class Recipe {
   public addEquipment(v : EquipmentStep) : Recipe {
     this.reactors.push(v);
     return this;
+  }
+
+  public static getData() : {substance:string[], reactors:string[], steps:any[]} {
+    return {
+      "substance": [
+        //"water",
+        "calcium",
+        "magnesium",
+        "bicarbonate",
+        "chlore",
+        "sodium",
+        "sulfate",
+        "alphalupulin"
+      ],
+      "reactors": [
+        "kettle"
+      ],
+      "steps": [
+        { "reac": 0, "time": 1, "vol": 23.0, "temp": 55.0, "sub": [/*1277.778,*/ 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
+        { "reac": 0, "time": 2, "vol": 23.1, "temp": 56.0, "sub": [/*1277.778,*/ 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
+        { "reac": 0, "time": 3, "vol": 23.5, "temp": 100.0, "sub": [/*1277.778,*/ 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
+        { "reac": 0, "time": 170, "vol": 23.5, "temp": 100.0, "sub": [/*1277.778,*/ 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0.2] }
+      ]
+    };
   }
 }
