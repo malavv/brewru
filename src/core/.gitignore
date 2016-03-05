@@ -1,6 +1,6 @@
-# Core
 .idea/tasks.xml
 .idea/uiDesigner.xml
 .idea/workspace.xml
 .idea/dictionaries
+.idea/libraries/
 out/
