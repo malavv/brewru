@@ -1,0 +1,31 @@
+{
+  "data": [
+    [ 1, 0, 23.0, 55.0, 1277.778, 0.0090, 0.0080, 0.0005, 0.0005, 0.0005, 0.0005, 0.0 ],
+    [ 2, 0, 23.1, 56.0, 1277.778, 0.0090, 0.0080, 0.0005, 0.0005, 0.0005, 0.0005, 0.0 ],
+    [ 3, 0, 23.5, 100.0, 1277.778, 0.0090, 0.0080, 0.0005, 0.0005, 0.0005, 0.0005, 0.0 ],
+    [ 10, 0, 23.5, 100.0, 1277.778, 0.0090, 0.0080, 0.0005, 0.0005, 0.0005, 0.0005, 0.0 ]
+  ],
+  "dimension": [
+    "brew:reactor",
+    "brew:time"
+  ],
+  "measure": [
+    "brew:volume",
+    "brew:temperature",
+    "brew:ph"
+  ],
+  "reactors": [
+    "user:kettle"
+  ],
+  "substance": [
+    "brew:water",
+    "brew:calcium",
+    "brew:magnesium",
+    "brew:bicarbonate",
+    "brew:chlore",
+    "brew:sodium",
+    "brew:sulfate",
+    "brew:alphalupulin"
+  ],
+  "version": 0.1
+}
