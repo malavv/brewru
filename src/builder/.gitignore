@@ -1,1 +1,9 @@
+# Javascript Recipe Builder Client
+bower_components
+node_modules
+doc
+elements/**/*.js
+lib/brew
+dist
+
 .idea
