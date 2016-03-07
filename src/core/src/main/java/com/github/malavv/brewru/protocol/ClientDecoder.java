@@ -7,10 +7,10 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import java.io.StringReader;
+import java.util.Collection;
 
 public class ClientDecoder implements Decoder.Text<ClientDecoder.Request> {
-
-  public class Request {
+  public static class Request {
     public final String type;
     public final String clientId;
     public final int id;
@@ -26,7 +26,10 @@ public class ClientDecoder implements Decoder.Text<ClientDecoder.Request> {
   public Request decode(String s) throws DecodeException {
     try (JsonReader r = Json.createReader(new StringReader(s))) {
       JsonObject json = r.readObject();
-      return new Request(json.getString("type"), json.getString("clientId"), json.getInt("id"));
+      return new Request(
+          json.getString("type"),
+          json.getString("clientId"),
+          json.getInt("id"));
     }
   }
   @Override public boolean willDecode(String s) { return true; }

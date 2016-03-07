@@ -12,19 +12,16 @@ import java.util.logging.Logger;
 
 public class BrewruServer {
 
+  private static Model kb;
+
+  public static Model getKB() { return kb; }
   public static Thread t;
 
-  public static final String ns = "https://github.com/malavv/brewru#";
+
 
   public static void main(String[] args) {
-    Model model = ModelFactory.createDefaultModel();
-    model.read(BrewruServer.class.getClassLoader().getResourceAsStream("brewru.owl"), null, "TTL");
-
-    StyleGuide.listKnown(model)
-        .forEach(guide -> {
-          guide.getStyles().stream().forEach(System.out::println);
-          guide.getCategory().stream().forEach(System.out::println);
-        });
+    BrewruServer.kb = ModelFactory.createDefaultModel();
+    BrewruServer.kb.read(BrewruServer.class.getClassLoader().getResourceAsStream("brewru.owl"), null, "TTL");
 
     Server server = new Server("localhost", 8025, "/", null, SocketApi.class);
     t = Thread.currentThread();
