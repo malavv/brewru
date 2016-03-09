@@ -26,4 +26,6 @@ class MessageType {
   static InventoryChanged:MessageType = new MessageType('InventoryChanged', 16);
   static StatusUpdate:MessageType = new MessageType('StatusUpdate', 17);
   static RecipeSelected: MessageType = new MessageType('RecipeSelected', 18);
+
+  static StylesLoaded: MessageType = new MessageType('StylesLoaded', 19);
 };

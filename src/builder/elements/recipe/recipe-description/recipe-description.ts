@@ -1,12 +1,23 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
+/**
+ * Presents the general characteristics of the Recipe.
+ *
+ * This is a quick overview that let's you see quickly what this recipe is about.
+ */
 class RecipeDescription extends Polymer.DomModule {
   public recipe:Recipe;
   public bjcp:string;
+  public styles: Array;
 
-  public listStyles() {
-    return Styles.getAll();
+  public ready() {
+    bus.suscribe(MessageType.StylesLoaded, () => { this.async(() => { this.stylesLoaded(); }); }, this);
+  }
+
+  public stylesLoaded() {
+    console.log("StylesLoaded");
+    this.set('styles', Styles.getAll());
   }
 
   public attached() {
@@ -25,7 +36,7 @@ class RecipeDescription extends Polymer.DomModule {
   }
 
   public styleChanged(newStyle:Style, oldStyle:Style) {
-    this.set('bjcp', newStyle.bjcpStyle);
+    //this.set('bjcp', newStyle.bjcpStyle);
     this.$.selectStyle.value = this.bjcp;
   }
 }
@@ -41,6 +52,10 @@ window.Polymer(window.Polymer.Base.extend(RecipeDescription.prototype, {
     recipe: {
       type: Object,
       notify: true
+    },
+    styles: {
+      type: Array,
+      value: () => []
     },
     bjcp: {
       type: String,

@@ -1,4 +1,5 @@
 /// <reference path="../base/eventBus.ts" />
+/// <reference path="../base/log.ts" />
 /// <reference path="../base/messageType.ts" />
 /// <reference path="../../lib/es6-promise/es6-promise.d.ts" />
 
@@ -11,6 +12,7 @@ interface Server {
 
   endpoint(): string;
   syncInventory(): Promise<Object>;
+  getStyles(): Promise<Object>;
 }
 
 class ServerImpl {
@@ -26,6 +28,33 @@ class ServerImpl {
 
   public endpoint(): string {
     return this.url;
+  }
+
+  public getStyles(): Promise<Object> {
+    var packet = {
+      type: 'styles',
+      data: <Object>null,
+      id: this.packetIdCounter,
+      clientId: this.clientId
+    };
+
+    var promise = new Promise((resolve) => {
+      this.communications[this.packetIdCounter] = resolve;
+    });
+
+    this.packetIdCounter++;
+    console.info('server.send', packet);
+    this.ws.send(JSON.stringify(packet));
+
+    return Promise.race([
+      new Promise((_, reject) => { setTimeout(reject, this.timeoutMs); }),
+      promise
+    ]).then((data) => {
+      return data;
+    }).catch((error) => {
+      throw error;
+      return null;
+    });
   }
 
   public syncInventory(): Promise<Object> {
@@ -88,7 +117,9 @@ class ServerImpl {
   private _onMessage(msg: MessageEvent) {
     try {
       var pkg = JSON.parse(msg.data);
-      console.info('server.received', pkg);
+      console.info('server.received', pkg)
+      if (pkg.id == null)
+        Log.warn(Server, "Received Malformed Packaged." + JSON.stringify(pkg));
       var callback = this.communications[pkg.id];
       if (callback !== undefined) {
         callback(pkg.data);
@@ -99,6 +130,7 @@ class ServerImpl {
   }
 
   private _onOpen() {
+    this.isConnected = true;
     bus.publish(MessageType.ServerConnected, this);
   }
 }

@@ -91,7 +91,7 @@ public class SocketApi {
   }
 
   private String getStyles(ClientDecoder.Request r, Session s) {
-    return StyleGuide.listKnown(BrewruServer.getKB()).stream()
+    JsonArray allStyles = StyleGuide.listKnown(BrewruServer.getKB()).stream()
         .map(sg -> Json.createObjectBuilder()
             .add("ref", sg.getShortForm())
             .add("year", sg.getYear())
@@ -110,6 +110,13 @@ public class SocketApi {
                     .build()
                 ).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build())
             .build())
-        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build().toString();
+        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
+    JsonObject json = Json.createObjectBuilder()
+        .add("id", r.id)
+        .add("type", r.type)
+        .add("data", allStyles)
+        .add("clientId", r.clientId)
+        .build();
+    return json.toString();
   }
 }

@@ -34,8 +34,8 @@
       <label for="selectStyle">Style</label>
       <select id="selectStyle" value="{{bjcp::input}}">
         <option disabled value=""> -- select an option --</option>
-        <template is="dom-repeat" items="{{listStyles()}}">
-          <option value$={{item.bjcpStyle}}>{{item}}</option>
+        <template is="dom-repeat" items="[[styles]]">
+          <option value$={{item.styleCode}}>{{item}}</option>
         </template>
       </select>
     </div>
