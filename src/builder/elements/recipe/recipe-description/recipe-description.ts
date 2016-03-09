@@ -8,7 +8,7 @@
  */
 class RecipeDescription extends Polymer.DomModule {
   public recipe:Recipe;
-  public bjcp:string;
+  public style:string;
   public styles: Array;
 
   public ready() {
@@ -21,32 +21,22 @@ class RecipeDescription extends Polymer.DomModule {
   }
 
   public attached() {
-    this.$.selectStyle.value = this.bjcp;
+    this.$.selectStyle.value = 'noneselected';
   }
 
-  public getStyleByBjcpStyleCode(bjcpStyle:string) {
+  public onStyleChanged(ref:string) {
     // If already the correct one.
-    if (this.recipe.style.bjcpStyle == bjcpStyle)
-      return;
+    if (this.recipe.style != null && this.recipe.style.getRef() != null && this.recipe.style.getRef() == ref) { return; }
 
-    var style = Styles.getBjcp(bjcpStyle);
-    if (style != null && Array.isArray(style) && style.length == 1)
-      this.set('recipe.style', style[0]);
-    console.log('getStyleByCategory', bjcpStyle);
-  }
+    var style = Styles.byRef(ref);
 
-  public styleChanged(newStyle:Style, oldStyle:Style) {
-    //this.set('bjcp', newStyle.bjcpStyle);
-    this.$.selectStyle.value = this.bjcp;
+    this.set('recipe.style', style);
+    this.set('style', style != null ? style.getRef() : 'noneselected');
   }
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeDescription.prototype, {
   is: 'recipe-description',
-
-  observers: [
-    'styleChanged(recipe.style)'
-  ],
 
   properties: {
     recipe: {
@@ -57,9 +47,9 @@ window.Polymer(window.Polymer.Base.extend(RecipeDescription.prototype, {
       type: Array,
       value: () => []
     },
-    bjcp: {
+    style: {
       type: String,
-      observer: 'getStyleByBjcpStyleCode'
+      observer: 'onStyleChanged'
     }
   }
 }));

@@ -1,28 +1,49 @@
 /// <reference path="../../base/log.ts" />
 /// <reference path="style.ts" />
 
+interface RawStyleGuide {
+  org: string;
+  ref: string;
+  year: number;
+  categories: Array<RawCategory>;
+  styles: Array<RawStyle>;
+}
+interface RawStyle {
+  code: string;
+  ref: string;
+}
+interface RawCategory {
+  code: string;
+  ref: string;
+  styles: Array<string>;
+}
+
 module Styles {
-  var allGuides: Array<Object>;
-  var allStyles: Array<Object> = [];
+  var allGuides: Array<RawStyleGuide>;
+  var allStyles: Array<Style>;
+  var styleByRef: {[ref:string]: Style} = {};
 
-  export const americanLightLager = null;// new Style('American Light Lager', '1', '1A');
-  export const americanLager = null;//new Style('American Lager', '1', '1B');
-  export const creamAle = null;//new Style('Cream Ale', '1', '1C');
-  export const americanWheatBeer = null;//new Style('American Wheat Beer', '1', '1D');
-  export const americanIpa = null;//new Style('American IPA', '21', '21Z');
-
+  /**
+   * Lists all known style.
+   *
+   * Wait for StyleLoaded event.
+   * @returns {Array<Style>}
+   */
   export function getAll() {
     return allStyles;
   }
 
-  //export function getBjcp(styleId:string) {
-  //  return Styles.getAll().filter((s:Style):boolean => {
-  //    return s.bjcpStyle == styleId;
-  //  });
-  //}
+  /**
+   * Get a specific Style by its unique reference.
+   * @param ref Unique Reference of the Style.
+   * @returns {Style}
+   */
+  export function byRef(ref:String) : Style {
+    return styleByRef[ref];
+  }
 
   function onServerLoaded(server:Server) {
-    Log.info(Styles, "Loading Styles");
+    Log.info("Styles", "Loading Styles");
     server.getStyles()
         .then(data => { allGuides = <any>data; })
         .then(loadStyles)
@@ -30,18 +51,23 @@ module Styles {
   }
 
   function loadStyles() {
-    var styleMap = {};
+    var styleMap : {[ref:string]: RawStyle} = {};
+    var categoryMap : {[ref:string]: RawCategory} = {};
 
+    // Filling temporary maps.
     allGuides.forEach(guide => {
       guide.styles.forEach(s => { styleMap[s.ref] = s; });
-
-      guide.categories.forEach(category => {
-        category.styles.forEach(style => {
-          var ref = styleMap[style];
-          allStyles.push(new Style(guide.ref, category, ref));
-        })
-      })
+      guide.categories.forEach(c => { categoryMap[c.ref] = c; });
     });
+
+    // Fill all styles
+    allStyles = _.flatten(_.map(allGuides,
+        guide => _.flatten(_.map(guide.categories,
+            category => _.flatten(_.map(category.styles,
+                style => new Style(guide.ref, category, styleMap[style])))))));
+
+    // Make Helper Dictionary
+    allStyles.forEach((s) => { styleByRef[s.getRef()] = s; });
   }
 
   bus.suscribe(MessageType.ServerConnected, (server) => { onServerLoaded(server);  }, null);

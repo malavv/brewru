@@ -4,17 +4,17 @@ class Log {
     return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + "." + d.getMilliseconds();
   }
 
-  private static format(time: String, classname: String, msg: String) {
-    return "[" + time + "]<" + classname + "> : " + msg;
+  private static format(time: String, className: String, msg: String) {
+    return "[" + time + "]<" + className + "> : " + msg;
   }
 
-  public static info(classobj: any, msg: String) {
-    console.info(Log.format(Log.time(), (classobj.name || "anon"), msg));
+  public static info(className: string, msg: string) {
+    console.info(Log.format(Log.time(), (className || "anon"), msg));
   }
-  public static warn(classobj: any, msg: String) {
-    console.warn(Log.format(Log.time(), (classobj.name || "anon"), msg));
+  public static warn(className: string, msg: string) {
+    console.warn(Log.format(Log.time(), (className || "anon"), msg));
   }
-  public static error(classobj: any, msg: String) {
-    console.error(Log.format(Log.time(), (classobj.name || "anon"), msg));
+  public static error(className: string, msg: string) {
+    console.error(Log.format(Log.time(), (className || "anon"), msg));
   }
 }

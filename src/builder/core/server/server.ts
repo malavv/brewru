@@ -94,7 +94,7 @@ class ServerImpl {
     try {
         this.ws = new WebSocket(this.url);  
     } catch (e) {
-        console.log('error', e);
+        Log.error("Server", JSON.stringify(e));
     }
     
     this.communications = {};
@@ -119,7 +119,7 @@ class ServerImpl {
       var pkg = JSON.parse(msg.data);
       console.info('server.received', pkg)
       if (pkg.id == null)
-        Log.warn(Server, "Received Malformed Packaged." + JSON.stringify(pkg));
+        Log.warn("Server", "Received Malformed Packaged." + JSON.stringify(pkg));
       var callback = this.communications[pkg.id];
       if (callback !== undefined) {
         callback(pkg.data);

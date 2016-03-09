@@ -53,7 +53,7 @@ class Recipe {
 
   public insertAfter(newStep : EquipmentStep, afterThis : EquipmentStep) : EquipmentStep {
     var idx = this.reactors.indexOf(afterThis);
-    if (idx === -1) Log.warn(Recipe, "Inserting in an unknown idx.");
+    if (idx === -1) Log.warn("Recipe", "Inserting in an unknown idx.");
     this.reactors.splice(idx + 1, 0, newStep);
     return newStep;
   }

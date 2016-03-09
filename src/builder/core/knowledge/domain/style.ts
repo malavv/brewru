@@ -9,9 +9,7 @@ class Style {
   public categoryCode:string;
   public styleCode:string;
 
-  constructor(refGuide:string = '', category:Object, style:Object) {
-    console.debug("refGuide");
-
+  constructor(refGuide:string = '', category:RawCategory, style:RawStyle) {
     this.ref = style.ref;
     this.refCategory = category.ref;
     this.refGuide = refGuide;
@@ -19,8 +17,11 @@ class Style {
     this.categoryCode = category.code;
     this.styleCode = style.code;
 
-    this.id = 'unimplemented';
     this.name = 'unimplemented';
+  }
+
+  public getRef() : string {
+    return this.ref;
   }
 
   public toString() : string {
