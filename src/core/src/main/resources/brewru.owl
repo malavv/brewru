@@ -80,6 +80,32 @@
 
 #################################################################
 #
+#    Data properties
+#
+#################################################################
+
+
+###  https://github.com/malavv/brewru#hasVolumeInL
+
+:hasVolumeInL rdf:type owl:DatatypeProperty .
+
+
+
+###  https://github.com/malavv/brewru#holdsPressure
+
+:holdsPressure rdf:type owl:DatatypeProperty .
+
+
+
+###  https://github.com/malavv/brewru#isMultipleOf
+
+:isMultipleOf rdf:type owl:DatatypeProperty .
+
+
+
+
+#################################################################
+#
 #    Classes
 #
 #################################################################
@@ -88,6 +114,20 @@
 ###  https://github.com/malavv/brewru#agency
 
 :agency rdf:type owl:Class .
+
+
+
+###  https://github.com/malavv/brewru#equipment
+
+:equipment rdf:type owl:Class .
+
+
+
+###  https://github.com/malavv/brewru#kettle
+
+:kettle rdf:type owl:Class ;
+        
+        rdfs:subClassOf :vessel .
 
 
 
@@ -106,6 +146,14 @@
 ###  https://github.com/malavv/brewru#styleGuide
 
 :styleGuide rdf:type owl:Class .
+
+
+
+###  https://github.com/malavv/brewru#vessel
+
+:vessel rdf:type owl:Class ;
+        
+        rdfs:subClassOf :equipment .
 
 
 
@@ -195,6 +243,60 @@
                   :containsStyleCategory :bjcp_2015_21 ;
                   
                   :containsStyle :bjcp_2015_21A .
+
+
+
+###  https://github.com/malavv/brewru#bucket_5gal
+
+:bucket_5gal rdf:type owl:NamedIndividual ,
+                      :vessel ;
+             
+             rdfs:label "6 gal PET Bucket"@en ;
+             
+             :hasVolumeInL "22.7125"^^xsd:double ;
+             
+             :holdsPressure "false"^^xsd:boolean .
+
+
+
+###  https://github.com/malavv/brewru#glassCarboy_5.5
+
+:glassCarboy_5.5 rdf:type owl:NamedIndividual ,
+                          :vessel ;
+                 
+                 rdfs:label "5.5 gal Glass Carboy"@en ;
+                 
+                 :hasVolumeInL "20.8198"^^xsd:double ;
+                 
+                 :holdsPressure "false"^^xsd:boolean .
+
+
+
+###  https://github.com/malavv/brewru#kettle_6.5
+
+:kettle_6.5 rdf:type owl:NamedIndividual ,
+                     :kettle ;
+            
+            rdfs:label "6.5 gal Kettle"@en ;
+            
+            :hasVolumeInL "24.6052"^^xsd:double ;
+            
+            :holdsPressure "false"^^xsd:boolean .
+
+
+
+###  https://github.com/malavv/brewru#newGrolshBottles
+
+:newGrolshBottles rdf:type owl:NamedIndividual ,
+                           :vessel ;
+                  
+                  rdfs:label "Newer Grolsh Bottles"@en ;
+                  
+                  :hasVolumeInL "0.455"^^xsd:double ;
+
+                  :isMultipleOf "true"^^xsd:boolean ;
+                  
+                  :holdsPressure "true"^^xsd:boolean .
 
 
 

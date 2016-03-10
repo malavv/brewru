@@ -1,6 +1,7 @@
 package com.github.malavv.brewru;
 
 import com.github.malavv.brewru.inventory.Inventory;
+import com.github.malavv.brewru.knowledge.Equipment;
 import com.github.malavv.brewru.knowledge.Style;
 import com.github.malavv.brewru.knowledge.StyleGuide;
 import com.github.malavv.brewru.onto.OntoProxy;
@@ -36,6 +37,7 @@ public class SocketApi {
     handlers.put("syncInventory", this::syncInventory);
     handlers.put("onto", this::onto);
     handlers.put("styles", this::getStyles);
+    handlers.put("equipments", this::getEquipments);
   }
 
   @OnOpen
@@ -115,6 +117,31 @@ public class SocketApi {
         .add("id", r.id)
         .add("type", r.type)
         .add("data", allStyles)
+        .add("clientId", r.clientId)
+        .build();
+    return json.toString();
+  }
+
+  private String getEquipments(ClientDecoder.Request r, Session s) {
+    JsonArray all = Equipment.getAll(BrewruServer.getKB()).stream()
+        .map(sg -> {
+          JsonObjectBuilder bld = Json.createObjectBuilder()
+              .add("ref", sg.getRef())
+              .add("type", sg.getType().toString());
+          if (sg instanceof Equipment.Vessel) {
+            bld.add("volumeInL", ((Equipment.Vessel) sg).getVolumeInL());
+            bld.add("holdsPressure", ((Equipment.Vessel) sg).holdsPressure());
+            bld.add("isMultipleOf", ((Equipment.Vessel) sg).isMultipleOf());
+          }
+
+          return bld.build();
+        })
+        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
+
+    JsonObject json = Json.createObjectBuilder()
+        .add("id", r.id)
+        .add("type", r.type)
+        .add("data", all)
         .add("clientId", r.clientId)
         .build();
     return json.toString();

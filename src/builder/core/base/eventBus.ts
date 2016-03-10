@@ -29,6 +29,10 @@ class EventBus {
 			.forEach((handler) => { this.trigger(handler, data); });
 		this.log(type, data);
 	}
+
+	thenPublish(type: MessageType) {
+		return () => { this.publish(type); }
+	}
 	
 	/**
 	 * Suscribe to a type of events.

@@ -28,4 +28,5 @@ class MessageType {
   static RecipeSelected: MessageType = new MessageType('RecipeSelected', 18);
 
   static StylesLoaded: MessageType = new MessageType('StylesLoaded', 19);
+  static EquipmentsLoaded: MessageType = new MessageType('EquipmentsLoaded', 20);
 };

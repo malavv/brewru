@@ -13,6 +13,6 @@ class UserEquip {
   }
 
   public getById(id:string) : Equipment {
-    return this.hardcoded.filter(e => e.id == id)[0];
+    return this.hardcoded.filter(e => e.ref == id)[0];
   }
 }

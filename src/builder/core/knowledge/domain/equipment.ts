@@ -1,9 +1,10 @@
 class Equipment {
-  public id:string;
+  public ref:string;
+
   public name:string;
 
   constructor(id:string, name:string) {
-    this.id = id;
-    this.name = name;
+    this.ref = id;
+    this.name = 'unimplemented';
   }
 }

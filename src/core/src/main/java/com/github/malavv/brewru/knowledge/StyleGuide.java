@@ -2,6 +2,7 @@ package com.github.malavv.brewru.knowledge;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -38,6 +39,7 @@ public final class StyleGuide {
   }
 
   public static List<StyleGuide> listKnown(final Model model) {
+    ResourceFactory.createResource("uri");
     return model.listStatements(null, RDF.type, model.getResource(styleGuide))
         .mapWith(Statement::getSubject)
         .mapWith(styleGuide -> new StyleGuide(model, styleGuide))

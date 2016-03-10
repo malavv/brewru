@@ -13,6 +13,7 @@ interface Server {
   endpoint(): string;
   syncInventory(): Promise<Object>;
   getStyles(): Promise<Object>;
+  getEquipments(): Promise<Object>;
 }
 
 class ServerImpl {
@@ -33,6 +34,33 @@ class ServerImpl {
   public getStyles(): Promise<Object> {
     var packet = {
       type: 'styles',
+      data: <Object>null,
+      id: this.packetIdCounter,
+      clientId: this.clientId
+    };
+
+    var promise = new Promise((resolve) => {
+      this.communications[this.packetIdCounter] = resolve;
+    });
+
+    this.packetIdCounter++;
+    console.info('server.send', packet);
+    this.ws.send(JSON.stringify(packet));
+
+    return Promise.race([
+      new Promise((_, reject) => { setTimeout(reject, this.timeoutMs); }),
+      promise
+    ]).then((data) => {
+      return data;
+    }).catch((error) => {
+      throw error;
+      return null;
+    });
+  }
+
+  public getEquipments(): Promise<Object> {
+    var packet = {
+      type: 'equipments',
       data: <Object>null,
       id: this.packetIdCounter,
       clientId: this.clientId
