@@ -22,6 +22,7 @@ public final class Brew {
   public static final Property holdsPressure = property("holdsPressure");
   public static final Property isMultipleOf = property("isMultipleOf");
 
+  // Internal
   private static Resource resource(String local) { return ResourceFactory.createResource(ns + local); }
   private static Property property(String local) { return ResourceFactory.createProperty(ns, local); }
 

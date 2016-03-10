@@ -4,10 +4,7 @@ import com.github.malavv.brewru.inventory.Inventory;
 import com.github.malavv.brewru.knowledge.Equipment;
 import com.github.malavv.brewru.knowledge.Style;
 import com.github.malavv.brewru.knowledge.StyleGuide;
-import com.github.malavv.brewru.onto.OntoProxy;
 import com.github.malavv.brewru.protocol.ClientDecoder;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 import javax.json.*;
 import javax.websocket.OnClose;
@@ -17,7 +14,6 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.logging.Logger;
 
@@ -83,13 +79,14 @@ public class SocketApi {
   }
 
   private String onto(ClientDecoder.Request r, Session s) {
-    OntoProxy proxy = new OntoProxy();
-    JsonObject j = Json.createObjectBuilder()
-        .add("ontologies", proxy.ontology.getOWLOntologyManager().getOntologies().stream().map(o -> o.getOntologyID().getOntologyIRI().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-        .add("classes", proxy.ontology.getClassesInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-        .add("individuals", proxy.ontology.getIndividualsInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-        .build();
-    return j.toString();
+//    OntoProxy proxy = new OntoProxy();
+//    JsonObject j = Json.createObjectBuilder()
+//        .add("ontologies", proxy.ontology.getOWLOntologyManager().getOntologies().stream().map(o -> o.getOntologyID().getOntologyIRI().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+//        .add("classes", proxy.ontology.getClassesInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+//        .add("individuals", proxy.ontology.getIndividualsInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
+//        .build();
+//    return j.toString();
+    return "unimplemented";
   }
 
   private String getStyles(ClientDecoder.Request r, Session s) {
