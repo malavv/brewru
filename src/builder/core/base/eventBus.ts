@@ -39,7 +39,7 @@ class EventBus {
 	 * @param handler Object that will handle the message.
 	 * @param types Types of message to register to.
 	 */
-	suscribe(type: MessageType, callback: HandlerFunc, optThis: Object) {
+  suscribe(type:MessageType, callback:HandlerFunc, optThis?:Object) {
 		this.byType[type.id] = this.byType[type.id] || [];
 		this.byType[type.id].push({
 			obj: optThis || Window,
@@ -47,6 +47,17 @@ class EventBus {
 			type: type
 		});
 	}
+
+  /**
+   * Registers to receive result of the first message of this type.
+   * @param type Type to be warned of
+   * @returns {Promise}
+   */
+  onFirstMsg(type:MessageType):Promise {
+    return new Promise((resolve, reject) => {
+      this.suscribe(type, resolve);
+    });
+  }
 	
 	/**
 	 * Publish a message and waits for an answer. 

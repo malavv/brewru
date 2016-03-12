@@ -44,7 +44,7 @@ class ServerImpl {
     });
 
     this.packetIdCounter++;
-    console.info('server.send', packet);
+    //console.info('server.send', packet);
     this.ws.send(JSON.stringify(packet));
 
     return Promise.race([
@@ -71,7 +71,7 @@ class ServerImpl {
     });
 
     this.packetIdCounter++;
-    console.info('server.send', packet);
+    //console.info('server.send', packet);
     this.ws.send(JSON.stringify(packet));
 
     return Promise.race([
@@ -98,7 +98,7 @@ class ServerImpl {
     });
 
     this.packetIdCounter++;
-    console.info('server.send', packet);
+    //console.info('server.send', packet);
     this.ws.send(JSON.stringify(packet));
 
     return Promise.race([
@@ -145,7 +145,7 @@ class ServerImpl {
   private _onMessage(msg: MessageEvent) {
     try {
       var pkg = JSON.parse(msg.data);
-      console.info('server.received', pkg)
+      //console.info('server.received', pkg)
       if (pkg.id == null)
         Log.warn("Server", "Received Malformed Packaged." + JSON.stringify(pkg));
       var callback = this.communications[pkg.id];

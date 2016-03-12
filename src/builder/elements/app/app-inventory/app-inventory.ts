@@ -9,7 +9,6 @@ class AppInventory extends Polymer.DomModule {
 
     bus.suscribe(MessageType.ServerConnected, (server) => {
       this.async(() => {
-        console.log('app-inventory');
         this.onSynchronize(server); });
     }, this);
   }

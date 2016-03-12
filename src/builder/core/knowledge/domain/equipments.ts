@@ -4,7 +4,7 @@
 
 class Equipments {
   private static all : Array<Equipment> = [];
-  private static allByRef : {[ref:string]: Style} = {};
+  private static equipByRef:{[ref:string]: Equipment} = {};
 
   /**
    * Lists all known equipment in the base KB.
@@ -20,17 +20,24 @@ class Equipments {
    * @returns {Equipment}
    */
   public static byRef(ref:String) : Equipment {
-    return Equipments.allByRef[ref];
+    return Equipments.equipByRef[ref];
   }
 
   public static onServerLoaded(server:Server) {
-    Log.info('Styles', 'Loading Equipments');
-    server.getEquipments().then(Equipments.load).then(bus.thenPublish(MessageType.EquipmentsLoaded));
+    Log.info('Equipments', 'Loading Equipments');
+    server.getEquipments()
+        .then(Equipments.load)
+        .then((_) => {
+          Log.info("Equipments", "Equipments loaded")
+        })
+        .then(bus.thenPublish(MessageType.EquipmentsLoaded));
   }
 
-  private static load(data: Object) {
-    console.log('loaded', data);
+  private static load(data:Array<RawEquipment>) {
+    Equipments.all = data.map((d)=> new Equipment(d));
+    Equipments.all.forEach(e => Equipments.equipByRef[e.ref] = e);
   }
+
   private constructor() {}
 }
 bus.suscribe(MessageType.ServerConnected, (server) => { Equipments.onServerLoaded(server); }, null);

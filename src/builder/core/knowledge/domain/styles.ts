@@ -47,6 +47,9 @@ module Styles {
     server.getStyles()
         .then(data => { allGuides = <any>data; })
         .then(loadStyles)
+        .then((_) => {
+          Log.info("Styles", "Styles loaded")
+        })
         .then(() => { bus.publish(MessageType.StylesLoaded, this); });
   }
 

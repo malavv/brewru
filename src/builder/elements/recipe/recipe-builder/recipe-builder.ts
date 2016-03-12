@@ -15,23 +15,28 @@ class RecipeBuilder extends Polymer.DomModule {
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
 
-    this.set('recipe', this.defaultRecipe());
-
     bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
+
+    Promise.all([
+      bus.onFirstMsg(MessageType.EquipmentsLoaded),
+      bus.onFirstMsg(MessageType.StylesLoaded)
+    ]).then(() => {
+      this.set('recipe', this.defaultRecipe());
+    });
     window.builder = this;
   }
 
   public defaultRecipe() : Recipe {
+    Log.info("RecipeBuilder", "Ready to Build");
     var
-      equip = new UserEquip(),
-      recipe = new Recipe(equip.getById("user:65galKettle")),
+        recipe = new Recipe(Equipments.byRef("brewru:kettle_6.5")),
 
       kettle = recipe.getReactors()[0],
       firstFerm:EquipmentStep,
 
-      bucket: Equipment = equip.getById('user:6galBottlingBucket'),
-      carboy: Equipment = equip.getById('user:5galCarboy'),
-      bottles: Equipment = equip.getById('user:grolshBottles'),
+        bucket:Equipment = Equipments.byRef("brewru:bucket_5gal"),
+        carboy:Equipment = Equipments.byRef("brewru:glassCarboy_5.5"),
+        bottles:Equipment = Equipments.byRef("brewru:newGrolshBottles"),
 
       // Ingredient
       tapWater:Supply.Ing = new Supply.Ing(Entities.tapWater, IngType.Water, Dim.Volume),
@@ -49,7 +54,7 @@ class RecipeBuilder extends Polymer.DomModule {
 
     // Recipe Description
     recipe.description = 'APA recipe from xBeeriment';
-    recipe.style = Styles.americanIpa;
+    recipe.style = Styles.byRef("brewru:bjcp_2015_21A");
     recipe.name = 'xAPA';
 
     // Recipe

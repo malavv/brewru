@@ -59,7 +59,7 @@
       <div id="reactor">
         <template is="dom-repeat" items="{{recipe.reactors}}" as="reactor">
           <!-- Equipment -->
-          <div class="step equipment lvl0" on-tap="_onTap">{{reactor.equipment.name}}</div>
+          <div class="step equipment lvl0" on-tap="_onTap">{{reactor.equipment.ref}}</div>
           <div class="lvl1">
             <template is="dom-repeat" items="{{reactor.steps}}" as="step">
 

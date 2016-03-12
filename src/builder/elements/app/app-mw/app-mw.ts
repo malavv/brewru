@@ -9,7 +9,6 @@ class AppMainWindow extends Polymer.DomModule {
   public ready() {
     this.sidebar = 0;
     this.content = 0;
-    console.log('Hello World from AppMw');
 
     // Pushing to shortcuts for the shortcut behavior.
     this.shortcuts.forEach(function(s) { this.addShortcut(s.binding, s.type); }, this);
@@ -19,7 +18,6 @@ class AppMainWindow extends Polymer.DomModule {
 
   private _onRecipeSelected(recipe: any) {
     this.async(() => {
-      console.log('MW - recipe', recipe);
       this.content = 1;
     })
   }

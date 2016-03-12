@@ -16,7 +16,6 @@ class RecipeDescription extends Polymer.DomModule {
   }
 
   public stylesLoaded() {
-    console.log("StylesLoaded");
     this.set('styles', Styles.getAll());
   }
 
@@ -24,7 +23,8 @@ class RecipeDescription extends Polymer.DomModule {
     this.$.selectStyle.value = 'noneselected';
   }
 
-  public onStyleChanged(ref:string) {
+  public onStyleChanged(ref:string, old) {
+    console.log('onStyleChanged', ref, old);
     // If already the correct one.
     if (this.recipe.style != null && this.recipe.style.getRef() != null && this.recipe.style.getRef() == ref) { return; }
 
@@ -32,6 +32,10 @@ class RecipeDescription extends Polymer.DomModule {
 
     this.set('recipe.style', style);
     this.set('style', style != null ? style.getRef() : 'noneselected');
+  }
+
+  public onRecipeChanged(newRecipe:Recipe, oldRecipe:Recipe) {
+    this.set('style', newRecipe.style.getRef() || 'noneselected');
   }
 }
 
@@ -41,7 +45,8 @@ window.Polymer(window.Polymer.Base.extend(RecipeDescription.prototype, {
   properties: {
     recipe: {
       type: Object,
-      notify: true
+      notify: true,
+      observer: 'onRecipeChanged'
     },
     styles: {
       type: Array,
