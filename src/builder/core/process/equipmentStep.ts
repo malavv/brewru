@@ -6,7 +6,7 @@ class EquipmentStep extends StepImpl {
   private equipment:Equipment;
 
   constructor(equipment: Equipment, recipe: Recipe) {
-    super(equipment.name, StepImplType.equipment, recipe);
+    super(equipment.ref, StepImplType.equipment, recipe);
     this.equipment = equipment;
     this.steps = [];
   }

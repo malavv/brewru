@@ -21,12 +21,12 @@ class RecipeBuilder extends Polymer.DomModule {
       bus.onFirstMsg(MessageType.EquipmentsLoaded),
       bus.onFirstMsg(MessageType.StylesLoaded)
     ]).then(() => {
-      this.set('recipe', this.defaultRecipe());
+      this.set('recipe', RecipeBuilder.defaultRecipe());
     });
     window.builder = this;
   }
 
-  public defaultRecipe() : Recipe {
+  public static defaultRecipe() : Recipe {
     Log.info("RecipeBuilder", "Ready to Build");
     var
         recipe = new Recipe(Equipments.byRef("brewru:kettle_6.5")),
@@ -39,12 +39,12 @@ class RecipeBuilder extends Polymer.DomModule {
         bottles:Equipment = Equipments.byRef("brewru:newGrolshBottles"),
 
       // Ingredient
-      tapWater:Supply.Ing = new Supply.Ing(Entities.tapWater, IngType.Water, Dim.Volume),
-      lme:Supply.Ing = new Supply.Ing(Entities.lmeClear, IngType.Fermentable, Dim.Volume),
-      dme:Supply.Ing = new Supply.Ing(Entities.dmeClear, IngType.Fermentable, Dim.Mass),
-      columbus:Supply.Ing = new Supply.Ing(Entities.columbusHop, IngType.Hops, Dim.Mass),
-      yeast: Supply.Ing = new Supply.Ing(Entities.us05, IngType.Yeast, Dim.Unit),
-      primingSugar: Supply.Ing = new Supply.Ing(Entities.tableSugar, IngType.Fermentable, Dim.Mass),
+      tapWater:Supply.Ing = new Supply.Ing(Entities.tapWater, IngType.Water, [PhysQty.byRef("brewru:volume")]),
+      lme:Supply.Ing = new Supply.Ing(Entities.lmeClear, IngType.Fermentable, [PhysQty.byRef("brewru:volume")]),
+      dme:Supply.Ing = new Supply.Ing(Entities.dmeClear, IngType.Fermentable, [PhysQty.byRef("brewru:mass")]),
+      columbus:Supply.Ing = new Supply.Ing(Entities.columbusHop, IngType.Hops, [PhysQty.byRef("brewru:mass")]),
+      yeast: Supply.Ing = new Supply.Ing(Entities.us05, IngType.Yeast, [PhysQty.byRef("brewru:counts")]),
+      primingSugar: Supply.Ing = new Supply.Ing(Entities.tableSugar, IngType.Fermentable, [PhysQty.byRef("brewru:mass")]),
 
       // Common Quantity
       water23l: Quantity = new Quantity(23, SU('L')),

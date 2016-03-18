@@ -1,5 +1,5 @@
 /// <reference path="../base/conceptRef.ts" />
-/// <reference path="../units/dimension.ts" />
+/// <reference path="../knowledge/domain/units.ts" />
 
 module Supply {
 
@@ -23,11 +23,11 @@ module Supply {
   }
 
 	export class Ing {
-		private dimension: Dim;
+		private dimension: PhysQty[];
 		private ref: ConceptRef;
 		private type: Type;
 		
-		constructor(concept: ConceptRef, type: Type, dimensions: Dim) {
+		constructor(concept: ConceptRef, type: Type, dimensions: PhysQty[]) {
 			this.ref = concept;
 			this.type = type;
 			this.dimension = dimensions;
@@ -35,7 +35,7 @@ module Supply {
 
     public getRef() : ConceptRef { return this.ref; }
 		public getType() : Type { return this.type; }
-		public getDimension() : Dim { return this.dimension; }
+		public getDimension() : PhysQty[] { return this.dimension; }
 
 		public toString() : string { return this.ref.name; }
 	}

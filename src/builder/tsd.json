@@ -10,6 +10,9 @@
     },
     "es6-promise/es6-promise.d.ts": {
       "commit": "a9c59f8166b4d7f1e8c4309a506987c2e6d78b5e"
+    },
+    "underscore/underscore.d.ts": {
+      "commit": "ce8ae773688d2244ba11fdf3378fcd68f773e1c4"
     }
   }
 }

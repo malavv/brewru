@@ -3,28 +3,28 @@
 
 class WidgetQuantity extends Polymer.DomModule {
   /** Quantity to look for */
-  quantity:any;
+  public quantity : any;
   /** Dimensions you are allowed to choose from. */
-  allowed: Array<Dim>;
+  public allowed : PhysQty[];
   
-  amount: number;
-  unit: Unit;
+  public amount: number;
+  public unit: Unit;
   
-  public restrictDimensions(dimensions: Array<Dim>) {
+  public restrictDimensions(dimensions: PhysQty[]) {
     console.log('restrict dimensions');
     this.allowed = dimensions;
   }
   
   public reset() {
     this.amount = 0;
-    this.unit = Unit.Unknown;
-    this.quantity = undefined;
+    this.unit = null;
+    this.quantity = null;
   }
   
   private _amountChanged() { this._check(); }
   private _unitChanged() { this._check(); }
   private _isValid() {
-    return this.unit !== Unit.Unknown && this.amount !== 0;
+    return this.unit != null && this.amount !== 0;
   }
   private _check() {
     if (!this._isValid()) return;
@@ -48,11 +48,11 @@ window.Polymer(window.Polymer.Base.extend(WidgetQuantity.prototype, {
     unit: {
       type:Unit,
       observer: '_unitChanged',
-      value: Unit.Unknown
+      value: null
     },
     allowed: {
-      type:Array,
-      value: allDimensions()
+      type : Array,
+      value: PhysQty.all()
     }
   }
 }));

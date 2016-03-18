@@ -15,7 +15,7 @@ class Recipe {
 
   constructor(base:Equipment) {
     if (base == null)
-      Log.error(Recipe, "Must provide an equipment.");
+      Log.error("Recipe", "Must provide an equipment.");
 
     this.id = 'unimplemented';
     this.reactors = [

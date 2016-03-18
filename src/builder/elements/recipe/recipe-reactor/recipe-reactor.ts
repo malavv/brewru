@@ -63,7 +63,7 @@ class RecipeReactor extends Polymer.DomModule {
     this.set('buildingSteps', controls);
   }
 
-  _onTap(evt) {
+  _onTap(evt:any) {
     if (evt.model.reactor) {
       this.set('selected', evt.model.reactor);
       return;
@@ -82,10 +82,10 @@ class RecipeReactor extends Polymer.DomModule {
     }
   }
 
-  _selectedChanged(lhs, rhs) {
+  _selectedChanged(lhs:any, rhs:any) {
     console.log('_selectedChanged', lhs, rhs);
   }
-  test(val) {
+  test(val:any) {
     return JSON.stringify(val);
   }
 }

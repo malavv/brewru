@@ -1,5 +1,6 @@
 /// <reference path="../../base/log.ts" />
 /// <reference path="style.ts" />
+/// <reference path="../../../lib/underscore/underscore.d.ts" />
 
 interface RawStyleGuide {
   org: string;
@@ -38,7 +39,7 @@ module Styles {
    * @param ref Unique Reference of the Style.
    * @returns {Style}
    */
-  export function byRef(ref:String) : Style {
+  export function byRef(ref:string) : Style {
     return styleByRef[ref];
   }
 

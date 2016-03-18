@@ -1,5 +1,5 @@
 /// <reference path="../base/conceptRef.ts" />
-/// <reference path="../units/dimension.ts" />
+/// <reference path="../knowledge/domain/units.ts" />
 /// <reference path="itemType.ts" />
 /// <reference path="stock.ts" />
 

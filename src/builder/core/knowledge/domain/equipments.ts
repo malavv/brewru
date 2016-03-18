@@ -19,7 +19,7 @@ class Equipments {
    * @param ref The key to use.
    * @returns {Equipment}
    */
-  public static byRef(ref:String) : Equipment {
+  public static byRef(ref:string) : Equipment {
     return Equipments.equipByRef[ref];
   }
 
@@ -37,7 +37,5 @@ class Equipments {
     Equipments.all = data.map((d)=> new Equipment(d));
     Equipments.all.forEach(e => Equipments.equipByRef[e.ref] = e);
   }
-
-  private constructor() {}
 }
 bus.suscribe(MessageType.ServerConnected, (server) => { Equipments.onServerLoaded(server); }, null);

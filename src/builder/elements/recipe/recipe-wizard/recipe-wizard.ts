@@ -89,7 +89,7 @@ class RecipeWizard extends Polymer.DomModule {
   /**
    * Returns a primuse asking for an item's quantity.
    */
-  public askQuantity(config: { description: string; allowed: Array<Dim> }): Promise<Quantity> {
+  public askQuantity(config: { description: string; allowed: PhysQty[] }): Promise<Quantity> {
     this._description = config.description;
     this.$.qty.reset();
     this.$.qty.restrictDimensions(config.allowed);

@@ -7,9 +7,9 @@
  * This is a quick overview that let's you see quickly what this recipe is about.
  */
 class RecipeDescription extends Polymer.DomModule {
-  public recipe:Recipe;
-  public style:string;
-  public styles: Array;
+  public recipe : Recipe;
+  public style : string;
+  public styles : Style[];
 
   public ready() {
     bus.suscribe(MessageType.StylesLoaded, () => { this.async(() => { this.stylesLoaded(); }); }, this);
@@ -23,7 +23,7 @@ class RecipeDescription extends Polymer.DomModule {
     this.$.selectStyle.value = 'noneselected';
   }
 
-  public onStyleChanged(ref:string, old) {
+  public onStyleChanged(ref:string, old : string) {
     console.log('onStyleChanged', ref, old);
     // If already the correct one.
     if (this.recipe.style != null && this.recipe.style.getRef() != null && this.recipe.style.getRef() == ref) { return; }
@@ -50,7 +50,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeDescription.prototype, {
     },
     styles: {
       type: Array,
-      value: () => []
+      value: () => <Style[]>[]
     },
     style: {
       type: String,

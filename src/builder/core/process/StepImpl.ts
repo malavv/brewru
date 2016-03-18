@@ -1,4 +1,4 @@
-/// <reference path="../units/Units.ts" />
+/// <reference path="../knowledge/domain/units.ts" />
 /// <reference path="../base/quantity.ts" />
 
 enum StepImplType {
@@ -18,7 +18,7 @@ class TempTarget {
       return new TempTarget(100, SU("°C"));
   }
 
-  public constructor(magnitude: number, unit: TUnit) {
+  public constructor(magnitude: number, unit: Unit) {
     this.quantity = new Quantity(magnitude, unit);
   }
 
@@ -29,7 +29,7 @@ class TempTarget {
 class TimeTarget {
   private quantity: Quantity;
 
-  public constructor(magnitude: number, unit: TUnit) {
+  public constructor(magnitude: number, unit: Unit) {
     this.quantity = new Quantity(magnitude, unit);
   }
 

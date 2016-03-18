@@ -1,6 +1,6 @@
-/// <reference path="../base/log.ts" />
-/// <reference path="../base/eventBus.ts" />
-/// <reference path="../server/server.ts" />
+/// <reference path="../../base/log.ts" />
+/// <reference path="../../base/eventBus.ts" />
+/// <reference path="../../server/server.ts" />
 
 class PhysQty {
   private static known : {[ref : string]: PhysQty} = {};
@@ -49,7 +49,7 @@ class RawUnit {
   public symbol: string;
   public system: string;
 }
-class TUnit {
+class Unit {
   private baseUnit: string;
   private multiplier: number;
   private offset: number;
@@ -58,7 +58,7 @@ class TUnit {
   private symbol: string;
   private system: UnitSys;
   
-  public getBaseUnit() : TUnit { return Units.byRef(this.baseUnit); }
+  public getBaseUnit() : Unit { return Units.byRef(this.baseUnit); }
   public getSymbol() : string { return this.symbol; }
   
   constructor(base: string, mult: number, offset: number, physQty: PhysQty, ref: string, sym: string, system: UnitSys) {
@@ -73,13 +73,13 @@ class TUnit {
 }
 
 class Units {
-  private static known : {[ref : string]: TUnit} = {};
+  private static known : {[ref : string]: Unit} = {};
 
   /**
    * Lists all known units in the base KB.
    * @returns Array<Unit> Unit array.
    */
-  public static getAll() : Array<TUnit> {
+  public static getAll() : Array<Unit> {
     return Object.keys(Units.known).map(k => Units.known[k]);
   }
 
@@ -88,14 +88,14 @@ class Units {
    * @param ref The key to use.
    * @returns {Unit}
    */
-  public static byRef(ref : string) : TUnit {
+  public static byRef(ref : string) : Unit {
     return Units.known[ref];
   }
   
   /**
    * Retrieves a unit based on its symbol. ex: min
    */
-  public static bySymbol(symbol : string) : TUnit {
+  public static bySymbol(symbol : string) : Unit {
     var found = Units.getAll().filter(u => u.getSymbol() === symbol);
     if (found.length == 0)
       Log.warn('Units', 'Did not find unit for symbol ' + symbol);
@@ -115,9 +115,9 @@ class Units {
 
   private static load(data : Array<RawUnit>) {
     data.forEach(raw => {
-      Units.known[raw.ref] = new TUnit(raw.baseUnit, raw.multiplier, raw.offset,
+      Units.known[raw.ref] = new Unit(raw.baseUnit, raw.multiplier, raw.offset,
            PhysQty.byRef(raw.physicalQuantity), raw.ref, raw.symbol, UnitSys.byRef(raw.system));
-    })
+    });
     
     Log.info("Units", Units.getAll().length + " Units loaded")
   }

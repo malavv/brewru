@@ -21,12 +21,12 @@ class HeatingFactory implements IStepFactory {
         if (this.data['menu'] == "temperature")
           return new WizardConfig('qty', WizardStep.quantity, {
             description: 'Heat the reactor to :',
-            allowed: [Dim.Temperature]
+            allowed: [PhysQty.byRef("brewru:thermodynamicTemperature")]
           });
         if (this.data['menu'] == "time")
           return new WizardConfig('qty', WizardStep.quantity, {
             description: 'Keep last set temp for :',
-            allowed: [Dim.Temporal]
+            allowed: [PhysQty.byRef("brewru:time")]
           });
       default:
         return undefined;
