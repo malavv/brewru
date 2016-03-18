@@ -4,6 +4,7 @@ import com.github.malavv.brewru.inventory.Inventory;
 import com.github.malavv.brewru.knowledge.Equipment;
 import com.github.malavv.brewru.knowledge.Style;
 import com.github.malavv.brewru.knowledge.StyleGuide;
+import com.github.malavv.brewru.knowledge.Unit;
 import com.github.malavv.brewru.protocol.ClientDecoder;
 
 import javax.json.*;
@@ -34,6 +35,7 @@ public class SocketApi {
     handlers.put("onto", this::onto);
     handlers.put("styles", this::getStyles);
     handlers.put("equipments", this::getEquipments);
+    handlers.put("units", this::getUnitSystem);
   }
 
   @OnOpen
@@ -132,6 +134,32 @@ public class SocketApi {
           }
 
           return bld.build();
+        })
+        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
+
+    JsonObject json = Json.createObjectBuilder()
+        .add("id", r.id)
+        .add("type", r.type)
+        .add("data", all)
+        .add("clientId", r.clientId)
+        .build();
+    return json.toString();
+  }
+
+  private String getUnitSystem(ClientDecoder.Request r, Session s) {
+    JsonArray all = Unit.getAll(BrewruServer.getKB()).stream()
+        .map(u -> {
+          JsonObjectBuilder bld = Json.createObjectBuilder()
+            .add("ref", u.getRef())
+            .add("offset", u.getOffset())
+            .add("multiplier", u.getMultiplier())
+            .add("symbol", u.getSymbol());
+
+          u.getBaseUnit().ifPresent(bu -> bld.add("baseUnit", bu.getRef()));
+
+          return bld.add("physicalQuantity", u.getPhysicalQuantity().getRef())
+            .add("system", u.getSystem().getRef())
+            .build();
         })
         .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
 

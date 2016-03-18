@@ -29,4 +29,5 @@ class MessageType {
 
   static StylesLoaded: MessageType = new MessageType('StylesLoaded', 19);
   static EquipmentsLoaded: MessageType = new MessageType('EquipmentsLoaded', 20);
+  static UnitsLoaded: MessageType = new MessageType('UnitsLoaded', 21);
 };

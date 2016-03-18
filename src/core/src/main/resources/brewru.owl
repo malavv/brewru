@@ -23,6 +23,12 @@
 
 
 
+###  https://github.com/malavv/brewru#unitSymbol
+
+:unitSymbol rdf:type owl:AnnotationProperty .
+
+
+
 
 
 #################################################################
@@ -52,6 +58,12 @@
 
 
 
+###  https://github.com/malavv/brewru#hasBaseUnit
+
+:hasBaseUnit rdf:type owl:ObjectProperty .
+
+
+
 ###  https://github.com/malavv/brewru#hasStyle
 
 :hasStyle rdf:type owl:ObjectProperty ;
@@ -68,11 +80,23 @@
 
 
 
+###  https://github.com/malavv/brewru#inUnitSystem
+
+:inUnitSystem rdf:type owl:ObjectProperty .
+
+
+
 ###  https://github.com/malavv/brewru#producedStyleGuide
 
 :producedStyleGuide rdf:type owl:ObjectProperty ;
                     
                     rdfs:subPropertyOf owl:topObjectProperty .
+
+
+
+###  https://github.com/malavv/brewru#representsPhysicalQuantity
+
+:representsPhysicalQuantity rdf:type owl:ObjectProperty .
 
 
 
@@ -100,6 +124,19 @@
 ###  https://github.com/malavv/brewru#isMultipleOf
 
 :isMultipleOf rdf:type owl:DatatypeProperty .
+
+
+
+###  https://github.com/malavv/brewru#unitMultiplier
+
+:unitMultiplier rdf:type owl:DatatypeProperty .
+
+
+
+###  https://github.com/malavv/brewru#unitOffset
+
+:unitOffset rdf:type owl:DatatypeProperty .
+
 
 
 
@@ -131,6 +168,12 @@
 
 
 
+###  https://github.com/malavv/brewru#physicalQuantity
+
+:physicalQuantity rdf:type owl:Class .
+
+
+
 ###  https://github.com/malavv/brewru#style
 
 :style rdf:type owl:Class .
@@ -149,6 +192,18 @@
 
 
 
+###  https://github.com/malavv/brewru#systemOfUnits
+
+:systemOfUnits rdf:type owl:Class .
+
+
+
+###  https://github.com/malavv/brewru#unit
+
+:unit rdf:type owl:Class .
+
+
+
 ###  https://github.com/malavv/brewru#vessel
 
 :vessel rdf:type owl:Class ;
@@ -164,6 +219,13 @@
 #    Individuals
 #
 #################################################################
+
+
+###  https://github.com/malavv/brewru#amountOfSubstance
+
+:amountOfSubstance rdf:type owl:NamedIndividual ,
+                            :physicalQuantity .
+
 
 
 ###  https://github.com/malavv/brewru#bjcp
@@ -259,6 +321,103 @@
 
 
 
+###  https://github.com/malavv/brewru#celsius
+
+:celsius rdf:type owl:NamedIndividual ,
+                  :unit ;
+         
+         :unitOffset "-273.15"^^xsd:double ;
+         
+         :unitMultiplier "1.0"^^xsd:double ;
+         
+         :unitSymbol "°C" ;
+         
+         :hasBaseUnit :kelvin ;
+         
+         :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#centimetre
+
+:centimetre rdf:type owl:NamedIndividual ,
+                     :unit ;
+            
+            :unitOffset "0.0"^^xsd:double ;
+            
+            :unitMultiplier "0.01"^^xsd:double ;
+            
+            :unitSymbol "cm" ;
+            
+            :hasBaseUnit :metre ;
+            
+            :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#cubicMetre
+
+:cubicMetre rdf:type owl:NamedIndividual ,
+                     :unit ;
+            
+            :unitSymbol "m^3" ;
+            
+            :inUnitSystem :si ;
+            
+            :representsPhysicalQuantity :volume .
+
+
+
+###  https://github.com/malavv/brewru#cup
+
+:cup rdf:type owl:NamedIndividual ,
+              :unit ;
+     
+     :unitOffset "0.0"^^xsd:double ;
+     
+     :unitMultiplier "4226.75"^^xsd:double ;
+     
+     :unitSymbol "cup" ;
+     
+     :hasBaseUnit :cubicMetre ;
+     
+     :inUnitSystem :uscs .
+
+
+
+###  https://github.com/malavv/brewru#day
+
+:day rdf:type owl:NamedIndividual ,
+              :unit ;
+     
+     :unitOffset "0.0"^^xsd:double ;
+     
+     :unitMultiplier "86400.0"^^xsd:double ;
+     
+     :unitSymbol "day" ;
+     
+     :hasBaseUnit :second ;
+     
+     :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#farenheit
+
+:farenheit rdf:type owl:NamedIndividual ,
+                    :unit ;
+           
+           :unitOffset "-459.67"^^xsd:double ,
+                       "1.8"^^xsd:double ;
+           
+           :unitSymbol "°F" ;
+           
+           :hasBaseUnit :kelvin ;
+           
+           :inUnitSystem :uscs .
+
+
+
 ###  https://github.com/malavv/brewru#glassCarboy_5.5
 
 :glassCarboy_5.5 rdf:type owl:NamedIndividual ,
@@ -269,6 +428,53 @@
                  :hasVolumeInL "20.8198"^^xsd:double ;
                  
                  :holdsPressure "false"^^xsd:boolean .
+
+
+
+###  https://github.com/malavv/brewru#gram
+
+:gram rdf:type owl:NamedIndividual ,
+               :unit ;
+      
+      :unitOffset "0.0"^^xsd:double ;
+      
+      :unitMultiplier "0.001"^^xsd:double ;
+      
+      :unitSymbol "g" ;
+      
+      :hasBaseUnit :kilogram ;
+      
+      :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#inch
+
+:inch rdf:type owl:NamedIndividual ,
+               :unit ;
+      
+      :unitOffset "0.0"^^xsd:double ;
+      
+      :unitMultiplier "0.0254"^^xsd:double ;
+      
+      :unitSymbol "in" ;
+      
+      :hasBaseUnit :metre ;
+      
+      :inUnitSystem :uscs .
+
+
+
+###  https://github.com/malavv/brewru#kelvin
+
+:kelvin rdf:type owl:NamedIndividual ,
+                 :unit ;
+        
+        :unitSymbol "K" ;
+        
+        :inUnitSystem :si ;
+        
+        :representsPhysicalQuantity :thermodynamicTemperature .
 
 
 
@@ -285,6 +491,93 @@
 
 
 
+###  https://github.com/malavv/brewru#kilogram
+
+:kilogram rdf:type owl:NamedIndividual ,
+                   :unit ;
+          
+          :unitSymbol "kg" ;
+          
+          :representsPhysicalQuantity :kilogram ;
+          
+          :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#length
+
+:length rdf:type owl:NamedIndividual ,
+                 :physicalQuantity .
+
+
+
+###  https://github.com/malavv/brewru#litre
+
+:litre rdf:type owl:NamedIndividual ,
+                :unit ;
+       
+       :unitOffset "0.0"^^xsd:double ;
+       
+       :unitMultiplier "0.001"^^xsd:double ;
+       
+       :unitSymbol "L" ;
+       
+       :hasBaseUnit :cubicMetre ;
+       
+       :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#mass
+
+:mass rdf:type owl:NamedIndividual ,
+               :physicalQuantity .
+
+
+
+###  https://github.com/malavv/brewru#metre
+
+:metre rdf:type owl:NamedIndividual ,
+                :unit ;
+       
+       :unitSymbol "m" ;
+       
+       :representsPhysicalQuantity :length ;
+       
+       :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#minute
+
+:minute rdf:type owl:NamedIndividual ,
+                 :unit ;
+        
+        :unitOffset "0.0"^^xsd:double ;
+        
+        :unitMultiplier "60.0"^^xsd:double ;
+        
+        :unitSymbol "min" ;
+        
+        :hasBaseUnit :second ;
+        
+        :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#mole
+
+:mole rdf:type owl:NamedIndividual ,
+               :unit ;
+      
+      :unitSymbol "mol" ;
+      
+      :representsPhysicalQuantity :amountOfSubstance ;
+      
+      :inUnitSystem :si .
+
+
+
 ###  https://github.com/malavv/brewru#newGrolshBottles
 
 :newGrolshBottles rdf:type owl:NamedIndividual ,
@@ -293,10 +586,98 @@
                   rdfs:label "Newer Grolsh Bottles"@en ;
                   
                   :hasVolumeInL "0.455"^^xsd:double ;
-
+                  
                   :isMultipleOf "true"^^xsd:boolean ;
                   
                   :holdsPressure "true"^^xsd:boolean .
+
+
+
+###  https://github.com/malavv/brewru#pint
+
+:pint rdf:type owl:NamedIndividual ,
+               :unit ;
+      
+      :unitOffset "0.0"^^xsd:double ;
+      
+      :unitMultiplier "2113.38"^^xsd:double ;
+      
+      :unitSymbol "pt" ;
+      
+      :hasBaseUnit :cubicMetre ;
+      
+      :inUnitSystem :uscs .
+
+
+
+###  https://github.com/malavv/brewru#second
+
+:second rdf:type owl:NamedIndividual ,
+                 :unit ;
+        
+        :unitSymbol "s" ;
+        
+        :inUnitSystem :si ;
+        
+        :representsPhysicalQuantity :time .
+
+
+
+###  https://github.com/malavv/brewru#si
+
+:si rdf:type owl:NamedIndividual ,
+             :systemOfUnits ;
+    
+    rdfs:label "International System of Units"@en ,
+               "Système international d'unités"@fr .
+
+
+
+###  https://github.com/malavv/brewru#teaspoon
+
+:teaspoon rdf:type owl:NamedIndividual ,
+                   :unit ;
+          
+          :unitOffset "0.0"^^xsd:double ;
+          
+          :unitMultiplier "202884.0"^^xsd:double ;
+          
+          :unitSymbol "tsp" ;
+          
+          :hasBaseUnit :cubicMetre ;
+          
+          :inUnitSystem :uscs .
+
+
+
+###  https://github.com/malavv/brewru#thermodynamicTemperature
+
+:thermodynamicTemperature rdf:type owl:NamedIndividual ,
+                                   :physicalQuantity .
+
+
+
+###  https://github.com/malavv/brewru#time
+
+:time rdf:type owl:NamedIndividual ,
+               :physicalQuantity .
+
+
+
+###  https://github.com/malavv/brewru#uscs
+
+:uscs rdf:type owl:NamedIndividual ,
+               :systemOfUnits ;
+      
+      rdfs:label "United States customary units"@en ,
+                 "Unités de mesure américaines"@fr .
+
+
+
+###  https://github.com/malavv/brewru#volume
+
+:volume rdf:type owl:NamedIndividual ,
+                 :physicalQuantity .
 
 
 

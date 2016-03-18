@@ -53,7 +53,7 @@ class EventBus {
    * @param type Type to be warned of
    * @returns {Promise}
    */
-  onFirstMsg(type:MessageType):Promise {
+  onFirstMsg(type : MessageType) : Promise<Object> {
     return new Promise((resolve, reject) => {
       this.suscribe(type, resolve);
     });

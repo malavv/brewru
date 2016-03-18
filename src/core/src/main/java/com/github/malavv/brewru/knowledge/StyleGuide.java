@@ -39,7 +39,6 @@ public final class StyleGuide {
   }
 
   public static List<StyleGuide> listKnown(final Model model) {
-    ResourceFactory.createResource("uri");
     return model.listStatements(null, RDF.type, model.getResource(styleGuide))
         .mapWith(Statement::getSubject)
         .mapWith(styleGuide -> new StyleGuide(model, styleGuide))
