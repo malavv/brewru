@@ -1,5 +1,5 @@
 /// <reference path="base/conceptRef.ts" />
-/// <reference path="supply/ingredient" />
+/// <reference path="supply/ingredient.ts" />
 
 class IngredientSrc {
 	concept: ConceptRef;

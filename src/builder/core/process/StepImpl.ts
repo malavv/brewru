@@ -1,4 +1,5 @@
-/// <reference path="../units/system.ts" />
+/// <reference path="../units/Units.ts" />
+/// <reference path="../base/quantity.ts" />
 
 enum StepImplType {
   equipment,
@@ -11,31 +12,29 @@ enum StepImplType {
   unknown
 }
 class TempTarget {
-  private magnitude: number;
-  private unit: Unit;
+  private quantity: Quantity;
 
-  public static BOIL: TempTarget = new TempTarget(100, SI.sym("C"));
+  public static getBoil() : TempTarget {
+      return new TempTarget(100, SU("°C"));
+  }
 
-  public constructor(magnitude: number, unit: Unit) {
-    this.magnitude = magnitude;
-    this.unit = unit;
+  public constructor(magnitude: number, unit: TUnit) {
+    this.quantity = new Quantity(magnitude, unit);
   }
 
   public toString() : string {
-    return this.magnitude + " " + this.unit.symbol;
+    return 'Temp target at ' + this.quantity.toString();
   }
 }
 class TimeTarget {
-  private magnitude: number;
-  private unit: Unit;
+  private quantity: Quantity;
 
-  public constructor(magnitude: number, unit: Unit) {
-    this.magnitude = magnitude;
-    this.unit = unit;
+  public constructor(magnitude: number, unit: TUnit) {
+    this.quantity = new Quantity(magnitude, unit);
   }
 
   public toString() : string {
-    return this.magnitude + " " + this.unit.symbol;
+    return 'Time target at ' + this.quantity.toString();
   }
 }
 

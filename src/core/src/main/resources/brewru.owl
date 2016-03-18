@@ -621,7 +621,16 @@
         
         :representsPhysicalQuantity :time .
 
+###  https://github.com/malavv/brewru#unitCount
 
+:unitCount rdf:type owl:NamedIndividual ,
+                 :unit ;
+        
+        :unitSymbol "u" ;
+        
+        :inUnitSystem :si ;
+        
+        :representsPhysicalQuantity :counts .
 
 ###  https://github.com/malavv/brewru#si
 
@@ -677,6 +686,11 @@
 ###  https://github.com/malavv/brewru#volume
 
 :volume rdf:type owl:NamedIndividual ,
+                 :physicalQuantity .
+                 
+###  https://github.com/malavv/brewru#counts
+
+:counts rdf:type owl:NamedIndividual ,
                  :physicalQuantity .
 
 

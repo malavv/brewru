@@ -1,19 +1,17 @@
-/// <reference path="../units/unit.ts" />
+/// <reference path="../units/Units.ts" />
 
 class Quantity {
-	private magnitude: number;
-	private unit: Unit;
-	
-	constructor(magnitude: number, unit: Unit) {
-		this.magnitude = magnitude;
-		this.unit = unit;	
-	}
+  private magnitude: number;
+  private unit: TUnit;
 
-	public static bySym(magnitude: number, unitSymbol: string) : Quantity {
-    return new Quantity(magnitude, SI.sym(unitSymbol));
-	}
-	
-	toString() : string {
-		return this.magnitude + ' ' + this.unit.symbol;
-	}
+  public toString() : string {
+    return this.magnitude + ' ' + this.unit.getSymbol();
+  }
+  
+  constructor(magnitude: number, unit: TUnit) {
+    if (unit == null)
+      console.warn('Quantity created with null unit');
+    this.magnitude = magnitude;
+    this.unit = unit;	
+  }
 }

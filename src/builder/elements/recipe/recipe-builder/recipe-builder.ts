@@ -47,10 +47,10 @@ class RecipeBuilder extends Polymer.DomModule {
       primingSugar: Supply.Ing = new Supply.Ing(Entities.tableSugar, IngType.Fermentable, Dim.Mass),
 
       // Common Quantity
-      water23l: Quantity = new Quantity(23, SI.sym('l')),
-      oneKg: Quantity = new Quantity(1, SI.sym('kg')),
-      fiftyGram: Quantity = new Quantity(50, SI.sym('g')),
-      threeCup: Quantity = new Quantity(3, SI.sym('cup'));
+      water23l: Quantity = new Quantity(23, SU('L')),
+      oneKg: Quantity = new Quantity(1, SU('kg')),
+      fiftyGram: Quantity = new Quantity(50, SU('g')),
+      threeCup: Quantity = new Quantity(3, SU('cup'));
 
     // Recipe Description
     recipe.description = 'APA recipe from xBeeriment';
@@ -60,36 +60,36 @@ class RecipeBuilder extends Polymer.DomModule {
     // Recipe
     kettle
       .addIng('Add Water', tapWater, water23l)
-      .heat('Bring to a boil', TempTarget.BOIL)
+      .heat('Bring to a boil', TempTarget.getBoil())
       .addIng('Add LME', lme, oneKg)
       .addIng('Add DME', dme, oneKg)
-      .heat('Maintain for 60 min', new TimeTarget(60, SI.sym('min')));
+      .heat('Maintain for 60 min', new TimeTarget(60, SU('min')));
 
     // Main Boil
     kettle.getHeat()[1]
       .onBegin()
         .addIng('Bittering Hop', columbus, fiftyGram)
-      .toEnd(new TimeTarget(25, SI.sym('min')))
+      .toEnd(new TimeTarget(25, SU('min')))
         .addIng('Dual Purpose Hop', columbus, fiftyGram)
       .onEnd()
         .addIng('Aroma Hop', columbus, fiftyGram);
 
     // Cooling
-    kettle.cool('Cool to 22C', new TempTarget(22, SI.sym("C")));
+    kettle.cool('Cool to 22C', new TempTarget(22, SU("°C")));
 
     // First Fermentation
     firstFerm = kettle.transferTo(bucket, [MiscStepType.Decantation, MiscStepType.Moderate_Aeration]);
     firstFerm
-        .addIng('Add Yeast', yeast, new Quantity(1, SI.sym('u')))
-        .ferment('First Fermentation', new TimeTarget(4, SI.sym('day')));
+        .addIng('Add Yeast', yeast, new Quantity(1, SU('u')))
+        .ferment('First Fermentation', new TimeTarget(4, SU('day')));
 
     // Dry Hopping
     firstFerm.getFerm()[0]
-      .toEnd(new TimeTarget(2, SI.sym('day')))
+      .toEnd(new TimeTarget(2, SU('day')))
         .addIng('Dry Hoping', columbus, fiftyGram);
 
     firstFerm.transferTo(carboy, [MiscStepType.Decantation])
-      .ferment('Second Fermentation', new TimeTarget(21, SI.sym('day')))
+      .ferment('Second Fermentation', new TimeTarget(21, SU('day')))
       .transferTo(bucket, [MiscStepType.Decantation])
       .addIng('Priming Sugar', primingSugar, threeCup)
       .transferTo(bottles, [MiscStepType.Decantation]);

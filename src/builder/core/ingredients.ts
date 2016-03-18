@@ -1,6 +1,6 @@
 /// <reference path="reactor.ts" />
 /// <reference path="base/conceptRef.ts" />
-/// <reference path="supply/ingredient" />
+/// <reference path="supply/ingredient.ts" />
 
 class Ingredients {
 	inventory: Array<Supply.Ing> = [];
