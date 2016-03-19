@@ -15,6 +15,8 @@ interface Server {
   getStyles(): Promise<Object>;
   getEquipments(): Promise<Object>;
   getUnits(): Promise<Object>;
+
+  compute(recipe: Recipe): Promise<Object>;
 }
 
 class ServerImpl {
@@ -33,111 +35,94 @@ class ServerImpl {
   }
 
   public getStyles(): Promise<Object> {
-    var packet = {
-      type: 'styles',
-      data: <Object>null,
-      id: this.packetIdCounter,
-      clientId: this.clientId
-    };
-
-    var promise = new Promise((resolve) => {
-      this.communications[this.packetIdCounter] = resolve;
-    });
-
-    this.packetIdCounter++;
-    //console.info('server.send', packet);
-    this.ws.send(JSON.stringify(packet));
-
-    return Promise.race([
-      new Promise((_, reject) => { setTimeout(reject, this.timeoutMs); }),
-      promise
-    ]).then((data) => {
-      return data;
-    }).catch((error) => {
-      throw error;
-      return null;
-    });
+    return this._req('styles');
   }
 
   public getEquipments(): Promise<Object> {
-    var packet = {
-      type: 'equipments',
-      data: <Object>null,
-      id: this.packetIdCounter,
-      clientId: this.clientId
-    };
-
-    var promise = new Promise((resolve) => {
-      this.communications[this.packetIdCounter] = resolve;
-    });
-
-    this.packetIdCounter++;
-    //console.info('server.send', packet);
-    this.ws.send(JSON.stringify(packet));
-
-    return Promise.race([
-      new Promise((_, reject) => { setTimeout(reject, this.timeoutMs); }),
-      promise
-    ]).then((data) => {
-      return data;
-    }).catch((error) => {
-      throw error;
-      return null;
-    });
+    return this._req('equipments');
   }
 
   public getUnits(): Promise<Object> {
-    var packet = {
-      type: 'units',
-      data: <Object>null,
-      id: this.packetIdCounter,
-      clientId: this.clientId
-    };
+    return this._req('units');
+  }
 
-    var promise = new Promise((resolve) => {
-      this.communications[this.packetIdCounter] = resolve;
-    });
+  public compute(recipe: Recipe) : Promise<Object> {
+    var prepped = null;
+    return this._req('compute', prepped);
+  }
 
-    this.packetIdCounter++;
-    //console.info('server.send', packet);
-    this.ws.send(JSON.stringify(packet));
+  public syncInventory(): Promise<Object> {
+    return this._req('syncInventory');
+  }
 
-    return Promise.race([
-      new Promise((_, reject) => { setTimeout(reject, this.timeoutMs); }),
-      promise
-    ]).then((data) => {
+  private _onMessage(msg: MessageEvent) {
+    var response = ServerImpl.unwrap(msg.data);
+
+    if (response == null)
+      return;
+    if (response.id == null) {
+      Log.warn("Server", "Received Malformed Packaged." + JSON.stringify(response));
+      return;
+    }
+
+    var callback = this.communications[response.id];
+    if (callback == null) {
+      Log.warn('Server', 'No callback for received pkg ' + response.id);
+      return;
+    }
+
+    callback(response.data);
+  }
+
+  private static unwrap(json: string) : {id:string, data:Object} {
+    try {
+      return JSON.parse(json);
+    } catch (err) {
+      Log.warn('Server', 'Error parsing ' + err.message);
+      return null;
+    }
+  }
+
+  private _req(path : string, data? : any) : Promise<Object> {
+    var
+      packetId = this.packetIdCounter++,
+      timeoutId,
+      promise : Promise<Object> = Promise.race([
+      new Promise((_, reject) => {
+        timeoutId = setTimeout(reject, this.timeoutMs);
+      }),
+      new Promise(resolve => {
+        this.communications[packetId] = resolve;
+        this.ws.send(JSON.stringify({type: path, data: data, id: packetId, clientId: this.clientId}));
+      })
+    ]);
+
+    return promise.then((data : Object) => {
+      clearTimeout(timeoutId);
       return data;
-    }).catch((error) => {
-      throw error;
+    }).catch(err => {
+      Log.error('Server', 'Received server error');
+      throw err;
       return null;
     });
   }
 
-  public syncInventory(): Promise<Object> {
-    var packet = {
-      type: 'syncInventory',
-      data: <Object>null,
-      id: this.packetIdCounter,
-      clientId: this.clientId
-    };
+  private _onOpen() {
+    this.isConnected = true;
+    bus.publish(MessageType.ServerConnected, this);
+  }
 
-    var promise = new Promise((resolve) => {
-      this.communications[this.packetIdCounter] = resolve;
-    });
+  private _onClose() {
+    if (this.isConnected !== null) {
+      Log.warn('Server', 'Closing for unknown reasons');
+      return;
+    }
 
-    this.packetIdCounter++;
-    //console.info('server.send', packet);
-    this.ws.send(JSON.stringify(packet));
+    bus.publish(MessageType.UnsuccessfulConnection);
+  }
 
-    return Promise.race([
-      new Promise((_, reject) => { setTimeout(reject, this.timeoutMs); }),
-      promise
-    ]).then((data) => {
-      return data;
-    }).catch((error) => {
-      throw error;
-      return null;
-    });
+  private static _onError(err : any) {
+    Log.warn('Server', 'Websocket error ' + JSON.stringify(err) );
   }
 
   constructor(endpoint: string) {
@@ -148,45 +133,16 @@ class ServerImpl {
     this.timeoutMs = 500;
     this.clientId = "uid00001";
     try {
-        this.ws = new WebSocket(this.url);  
+      this.ws = new WebSocket(this.url);
     } catch (e) {
-        Log.error("Server", JSON.stringify(e));
+      Log.error("Server", JSON.stringify(e));
     }
-    
+
     this.communications = {};
 
     this.ws.onclose = this._onClose.bind(this);
-    this.ws.onerror = this._onError.bind(this);
+    this.ws.onerror = ServerImpl._onError.bind(this);
     this.ws.onmessage = this._onMessage.bind(this);
     this.ws.onopen = this._onOpen.bind(this);
-  }
-
-  private _onClose() {
-    if (this.isConnected === null)
-      bus.publish(MessageType.UnsuccessfulConnection);
-  }
-
-  private _onError() {
-
-  }
-
-  private _onMessage(msg: MessageEvent) {
-    try {
-      var pkg = JSON.parse(msg.data);
-      //console.info('server.received', pkg)
-      if (pkg.id == null)
-        Log.warn("Server", "Received Malformed Packaged." + JSON.stringify(pkg));
-      var callback = this.communications[pkg.id];
-      if (callback !== undefined) {
-        callback(pkg.data);
-      }
-    } catch (err) {
-      console.warn('Error parsing ' + err.message);
-    }
-  }
-
-  private _onOpen() {
-    this.isConnected = true;
-    bus.publish(MessageType.ServerConnected, this);
   }
 }

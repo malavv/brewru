@@ -48,9 +48,6 @@ module Styles {
     server.getStyles()
         .then(data => { allGuides = <any>data; })
         .then(loadStyles)
-        .then((_) => {
-          Log.info("Styles", "Styles loaded")
-        })
         .then(() => { bus.publish(MessageType.StylesLoaded, this); });
   }
 
@@ -72,6 +69,8 @@ module Styles {
 
     // Make Helper Dictionary
     allStyles.forEach((s) => { styleByRef[s.getRef()] = s; });
+
+    Log.info("Styles", allGuides.length + " Guides and " + Object.keys(allStyles).length + " Styles loaded");
   }
 
   bus.suscribe(MessageType.ServerConnected, (server) => { onServerLoaded(server);  }, null);

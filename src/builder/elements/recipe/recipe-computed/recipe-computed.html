@@ -1,0 +1,23 @@
+<dom-module id="recipe-computed">
+  <style>
+  :host {
+    @apply(--layout-vertical);
+    padding: 50px;
+    background-color: #fafafa;
+    overflow: auto;
+  }
+  div.code {
+    box-shadow: inset 0 0 10px #000000;
+    padding: 10px;
+    background-color: #fff;
+  }
+  </style>
+
+  <template>
+    <div class="code">
+      <pre>{{jsonify(recipe.data.*)}}</pre>
+    </div>
+  </template>
+
+  <script src="recipe-computed.js"></script>
+</dom-module>

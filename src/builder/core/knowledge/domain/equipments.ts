@@ -27,15 +27,13 @@ class Equipments {
     Log.info('Equipments', 'Loading Equipments');
     server.getEquipments()
         .then(Equipments.load)
-        .then((_) => {
-          Log.info("Equipments", "Equipments loaded")
-        })
         .then(bus.thenPublish(MessageType.EquipmentsLoaded));
   }
 
   private static load(data:Array<RawEquipment>) {
     Equipments.all = data.map((d)=> new Equipment(d));
     Equipments.all.forEach(e => Equipments.equipByRef[e.ref] = e);
+    Log.info("Equipments", Object.keys(Equipments.all).length + " Equipments loaded")
   }
 }
 bus.suscribe(MessageType.ServerConnected, (server) => { Equipments.onServerLoaded(server); }, null);

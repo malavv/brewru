@@ -63,7 +63,7 @@ class Recipe {
     return this;
   }
 
-  public static getData() : {substance:string[], reactors:string[], steps:any[]} {
+  public static getData() : { substance:string[], reactors:string[], steps:any[], properties:any[] } {
     return {
       "substance": [
         //"water",

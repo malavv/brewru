@@ -107,7 +107,7 @@ class Units {
    * @param server Server Proxy.
    */
   public static initialize(server : Server) {
-    Log.info('Units', 'Initializing Units');
+    Log.info('Units', 'Loading Units');
     server.getUnits()
         .then(Units.load)
         .then(bus.thenPublish(MessageType.UnitsLoaded));

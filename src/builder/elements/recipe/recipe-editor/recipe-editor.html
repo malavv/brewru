@@ -1,5 +1,3 @@
-<link rel="import" href="../recipe-graph/recipe-graph.html">
-
 <dom-module id="recipe-editor">
 
   <style>
@@ -40,8 +38,8 @@
       <paper-tabs noink selected="{{_selectedEditor}}">
         <paper-tab>Desc</paper-tab>
         <paper-tab>Code</paper-tab>
+        <paper-tab>Computed</paper-tab>
         <paper-tab>Reactor</paper-tab>
-        <paper-tab>Graphs</paper-tab>
       </paper-tabs>
       <widget-text class="recipeName" placeholder="Recipe Name" value="{{recipe.name}}"></widget-text>
     </div>
@@ -49,8 +47,8 @@
     <iron-pages class="content" selected="{{_selectedEditor}}">
       <recipe-description recipe="{{recipe}}"></recipe-description>
       <recipe-code recipe="{{recipe}}"></recipe-code>
+      <recipe-computed recipe="{{recipe}}"></recipe-computed>
       <recipe-reactor recipe="{{recipe}}"></recipe-reactor>
-      <recipe-graph recipe="{{recipe}}"></recipe-graph>
     </iron-pages>
 
     <!-- Data Oriented Elements -->
