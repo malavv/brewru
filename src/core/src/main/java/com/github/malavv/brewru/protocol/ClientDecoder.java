@@ -14,11 +14,13 @@ public class ClientDecoder implements Decoder.Text<ClientDecoder.Request> {
     public final String type;
     public final String clientId;
     public final int id;
+    public final JsonObject data;
 
-    public Request(String type, String clientId, int requestId) {
+    public Request(String type, String clientId, int requestId, JsonObject data) {
       this.type = type;
       this.clientId = clientId;
       this.id = requestId;
+      this.data = data;
     }
   }
 
@@ -29,7 +31,8 @@ public class ClientDecoder implements Decoder.Text<ClientDecoder.Request> {
       return new Request(
           json.getString("type"),
           json.getString("clientId"),
-          json.getInt("id"));
+          json.getInt("id"),
+          json.getJsonObject("data"));
     }
   }
   @Override public boolean willDecode(String s) { return true; }

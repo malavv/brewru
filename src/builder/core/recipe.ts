@@ -21,7 +21,6 @@ class Recipe {
     this.reactors = [
       new EquipmentStep(base, this)
     ];
-    this.data = Recipe.getData();
   }
 
   /**
@@ -66,34 +65,5 @@ class Recipe {
   /** Encodes the recipe for communication with the server.  */
   public encode() : Object {
     return {};
-  }
-
-  public static getData() : { substance:string[], reactors:string[], steps:any[], properties:any[] } {
-    return {
-      "substance": [
-        //"water",
-        "calcium",
-        "magnesium",
-        "bicarbonate",
-        "chlore",
-        "sodium",
-        "sulfate",
-        "alphalupulin"
-      ],
-      "reactors": [
-        "kettle"
-      ],
-      "properties": [
-        "time",
-        "volume",
-        "temperature"
-      ],
-      "steps": [
-        { "reac": 0, "prop": [1, 23.0, 55.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
-        { "reac": 0, "prop": [2, 23.1, 56.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
-        { "reac": 0, "prop": [3, 23.5, 100.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
-        { "reac": 0, "prop": [170, 23.5, 100.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0.2] }
-      ]
-    };
   }
 }
