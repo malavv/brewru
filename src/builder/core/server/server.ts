@@ -47,8 +47,7 @@ class ServerImpl {
   }
 
   public compute(recipe: Recipe) : Promise<Object> {
-    var prepped = null;
-    return this._req('compute', prepped);
+    return this._req('compute', recipe.encode());
   }
 
   public syncInventory(): Promise<Object> {
@@ -56,6 +55,11 @@ class ServerImpl {
   }
 
   private _onMessage(msg: MessageEvent) {
+    if (msg.data === 'Unsupported Requested Type') {
+      Log.error('Server ', msg.data + ' ' + msg.target.url);
+      return;
+    }
+
     var response = ServerImpl.unwrap(msg.data);
 
     if (response == null)

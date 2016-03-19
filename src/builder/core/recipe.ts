@@ -63,6 +63,11 @@ class Recipe {
     return this;
   }
 
+  /** Encodes the recipe for communication with the server.  */
+  public encode() : Object {
+    return {};
+  }
+
   public static getData() : { substance:string[], reactors:string[], steps:any[], properties:any[] } {
     return {
       "substance": [

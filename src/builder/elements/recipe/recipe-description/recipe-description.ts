@@ -24,7 +24,6 @@ class RecipeDescription extends Polymer.DomModule {
   }
 
   public onStyleChanged(ref:string, old : string) {
-    console.log('onStyleChanged', ref, old);
     // If already the correct one.
     if (this.recipe.style != null && this.recipe.style.getRef() != null && this.recipe.style.getRef() == ref) { return; }
 
