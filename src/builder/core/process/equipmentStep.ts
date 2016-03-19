@@ -1,7 +1,7 @@
 /// <reference path="StepImpl.ts" />
 /// <reference path="../knowledge/domain/equipment.ts" />
 
-class EquipmentStep extends StepImpl {
+class EquipmentStep extends StepImpl implements Encodable{
   private steps: StepImpl[] | ProcessStep[];
   private equipment:Equipment;
 
@@ -42,5 +42,14 @@ class EquipmentStep extends StepImpl {
   public ferment(name: string, target:(TempTarget|TimeTarget)) : EquipmentStep {
     this.steps.push(new FermentationStep(name, StepImplType.fermenting, this.recipe, target));
     return this;
+  }
+
+  public encode() : Object {
+    return {
+      steps: (<Encodable[]>this.steps).map(s => {
+        return s.encode != null ? s.encode() : null;
+      }),
+      equipment: this.equipment != null ? this.equipment.ref : null
+    }
   }
 }

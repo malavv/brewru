@@ -14,4 +14,11 @@ class Quantity {
     this.magnitude = magnitude;
     this.unit = unit;	
   }
+
+  public encode() : Object {
+    return {
+      magnitude: this.magnitude,
+      unit: this.unit != null ? this.unit.getRef() : null
+    }
+  }
 }

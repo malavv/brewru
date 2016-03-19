@@ -8,7 +8,6 @@ class Recipe {
   public name:string;
   public description:string;
   public style:Style;
-  public data:{substance:string[], reactors:string[], steps:any[]};
 
   // Set of chained reactor describing the process.
   private reactors:EquipmentStep[];
@@ -64,6 +63,12 @@ class Recipe {
 
   /** Encodes the recipe for communication with the server.  */
   public encode() : Object {
-    return {};
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      style: this.style != null ? this.style.getRef() : null,
+      reactors: (<Encodable[]>this.reactors).map(r => r.encode())
+    };
   }
 }

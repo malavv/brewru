@@ -60,6 +60,7 @@ class Unit {
   
   public getBaseUnit() : Unit { return Units.byRef(this.baseUnit); }
   public getSymbol() : string { return this.symbol; }
+  public getRef() : string { return this.ref; }
   
   constructor(base: string, mult: number, offset: number, physQty: PhysQty, ref: string, sym: string, system: UnitSys) {
     this.baseUnit = base;

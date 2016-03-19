@@ -9,4 +9,11 @@ class IngredientStep extends StepImpl {
     this.ingredient = ingredient;
     this.qty = qty;
   }
+
+  public encode() : Object {
+    return {
+      ingredient: this.ingredient != null ? this.ingredient.getRef() : null,
+      qty: this.qty != null ? this.qty.encode(): null
+    }
+  }
 }

@@ -33,7 +33,7 @@ module Supply {
 			this.dimension = dimensions;
 		}
 
-    public getRef() : ConceptRef { return this.ref; }
+    public getRef() : String { return this.ref.ref; }
 		public getType() : Type { return this.type; }
 		public getDimension() : PhysQty[] { return this.dimension; }
 

@@ -14,7 +14,7 @@ class RecipeComputed extends Polymer.DomModule {
     Log.info('RecipeComputed', 'Sending Request for computation');
     this.server.compute(this.recipe).then(data => {
       Log.info('RecipeComputed', 'Updating recipe data');
-      this.set('data', JSON.stringify(data));
+      this.set('data', JSON.stringify(data, undefined, 2));
     })
   }
 

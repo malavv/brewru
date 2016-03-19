@@ -11,7 +11,7 @@ enum StepImplType {
   processTarget,
   unknown
 }
-class TempTarget {
+class TempTarget implements Encodable {
   private quantity: Quantity;
 
   public static getBoil() : TempTarget {
@@ -25,8 +25,15 @@ class TempTarget {
   public toString() : string {
     return 'Temp target at ' + this.quantity.toString();
   }
+
+  public encode() {
+    return {
+      type: 'TempTarget',
+      quantity : this.quantity.encode()
+    }
+  }
 }
-class TimeTarget {
+class TimeTarget implements Encodable {
   private quantity: Quantity;
 
   public constructor(magnitude: number, unit: Unit) {
@@ -36,6 +43,18 @@ class TimeTarget {
   public toString() : string {
     return 'Time target at ' + this.quantity.toString();
   }
+
+  public encode() {
+    return {
+      type: 'TimeTarget',
+      quantity : this.quantity.encode()
+    }
+  }
+}
+
+interface Encodable {
+  /** Encodes the recipe for communication with the server.  */
+  encode() : Object;
 }
 
 class StepImpl {
@@ -59,7 +78,7 @@ class StepImpl {
   }
 }
 
-class ProcessStepTarget extends StepImpl {
+class ProcessStepTarget extends StepImpl implements Encodable{
   private parent: ProcessStep;
   private ingredients: IngredientStep[] = [];
 
@@ -89,6 +108,13 @@ class ProcessStepTarget extends StepImpl {
     this.recipe = undefined;
     this.parent = undefined;
     return this;
+  }
+  public encode():Object {
+    return {
+      type: this.type,
+      tmpName: this.name,
+      ingredients: this.ingredients.map(e => e.encode())
+    };
   }
 }
 
@@ -121,5 +147,12 @@ class ProcessStep extends StepImpl {
     var t = new ProcessStepTarget(target.toString() + " until target", this, this.recipe);
     this.targets.splice(this.targets.length - 1, 0, t);
     return t;
+  }
+
+  public encode() : Object {
+    return {
+      target: this.target.encode,
+      targets: (<Encodable[]>this.targets).map(t => t.encode())
+    }
   }
 }
