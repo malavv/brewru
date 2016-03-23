@@ -174,10 +174,54 @@ public class SocketApi {
   }
 
   private String computeRecipe(ClientDecoder.Request r, Session s) {
+    //r.data
+
+    JsonArrayBuilder steps = Json.createArrayBuilder();
+
+    for (int i = 0; i < 100; i++) {
+      JsonObjectBuilder step = Json.createObjectBuilder();
+      step.add("reac", 0);
+      step.add("prop", Json.createArrayBuilder().add(1).add(23.0).add(55.0).add(5.5).build());
+      step.add("sub", Json.createArrayBuilder()
+          .add(1277.778)
+          .add(0.009)
+          .add(0.008)
+          .add(0.005)
+          .add(0.005)
+          .add(0.005)
+          .add(0.005)
+          .add(0.0)
+          .build());
+      steps.add(step);
+    }
+
+    JsonObject data = Json.createObjectBuilder()
+        .add("substance", Json.createArrayBuilder()
+            .add("water")
+            .add("calcium")
+            .add("magnesium")
+            .add("bicarbonate")
+            .add("chlore")
+            .add("sodium")
+            .add("sulfate")
+            .add("alphalupulin")
+            .build())
+        .add("reactors", Json.createArrayBuilder()
+            .add("kettle")
+            .build())
+        .add("properties", Json.createArrayBuilder()
+            .add("time")
+            .add("volume")
+            .add("temperature")
+            .add("ph")
+            .build())
+        .add("steps", steps)
+        .build();
+
     JsonObject json = Json.createObjectBuilder()
         .add("id", r.id)
         .add("type", r.type)
-        .add("data", r.data)
+        .add("data", data)
         .add("clientId", r.clientId)
         .build();
     return json.toString();
@@ -185,24 +229,6 @@ public class SocketApi {
 
 //  public static getData() : { substance:string[], reactors:string[], steps:any[], properties:any[] } {
 //    return {
-//        "substance": [
-//    //"water",
-//    "calcium",
-//        "magnesium",
-//        "bicarbonate",
-//        "chlore",
-//        "sodium",
-//        "sulfate",
-//        "alphalupulin"
-//    ],
-//    "reactors": [
-//    "kettle"
-//    ],
-//    "properties": [
-//    "time",
-//        "volume",
-//        "temperature"
-//    ],
 //    "steps": [
 //    { "reac": 0, "prop": [1, 23.0, 55.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
 //    { "reac": 0, "prop": [2, 23.1, 56.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },

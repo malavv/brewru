@@ -6,13 +6,13 @@
   "bundle": "lib/tsd.d.ts",
   "installed": {
     "d3/d3.d.ts": {
-      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+      "commit": "b14601af3fb2ad72d5048e94188a569a1838fb9c"
     },
     "es6-promise/es6-promise.d.ts": {
-      "commit": "a9c59f8166b4d7f1e8c4309a506987c2e6d78b5e"
+      "commit": "b14601af3fb2ad72d5048e94188a569a1838fb9c"
     },
     "underscore/underscore.d.ts": {
-      "commit": "ce8ae773688d2244ba11fdf3378fcd68f773e1c4"
+      "commit": "b14601af3fb2ad72d5048e94188a569a1838fb9c"
     }
   }
 }
