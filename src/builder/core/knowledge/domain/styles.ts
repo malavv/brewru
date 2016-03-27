@@ -19,10 +19,10 @@ interface RawCategory {
   styles: Array<string>;
 }
 
-module Styles {
-  var allGuides: Array<RawStyleGuide>;
-  var allStyles: Array<Style>;
-  var styleByRef: {[ref:string]: Style} = {};
+abstract class Styles {
+  private static allGuides: RawStyleGuide[];
+  private static allStyles: Style[];
+  private static styleByRef: {[ref:string]: Style} = {};
 
   /**
    * Lists all known style.
@@ -30,8 +30,8 @@ module Styles {
    * Wait for StyleLoaded event.
    * @returns {Array<Style>}
    */
-  export function getAll() {
-    return allStyles;
+  public static getAll() : Style[] {
+    return Styles.allStyles;
   }
 
   /**
@@ -39,39 +39,36 @@ module Styles {
    * @param ref Unique Reference of the Style.
    * @returns {Style}
    */
-  export function byRef(ref:string) : Style {
-    return styleByRef[ref];
+  public static byRef(ref:string) : Style {
+    return Styles.styleByRef[ref];
   }
 
-  function onServerLoaded(server:Server) {
+  public static onServerLoaded(server:Server) : Promise<void> {
     Log.info("Styles", "Loading Styles");
-    server.getStyles()
-        .then(data => { allGuides = <any>data; })
-        .then(loadStyles)
-        .then(() => { bus.publish(MessageType.StylesLoaded, this); });
+    return server.getStyles()
+        .then(data => { Styles.allGuides = <any>data; })
+        .then(Styles.loadStyles);
   }
 
-  function loadStyles() {
+  private static loadStyles() {
     var styleMap : {[ref:string]: RawStyle} = {};
     var categoryMap : {[ref:string]: RawCategory} = {};
 
     // Filling temporary maps.
-    allGuides.forEach(guide => {
+    Styles.allGuides.forEach(guide => {
       guide.styles.forEach(s => { styleMap[s.ref] = s; });
       guide.categories.forEach(c => { categoryMap[c.ref] = c; });
     });
 
     // Fill all styles
-    allStyles = _.flatten(_.map(allGuides,
+    Styles.allStyles = _.flatten(_.map(Styles.allGuides,
         guide => _.flatten(_.map(guide.categories,
             category => _.flatten(_.map(category.styles,
                 style => new Style(guide.ref, category, styleMap[style])))))));
 
     // Make Helper Dictionary
-    allStyles.forEach((s) => { styleByRef[s.getRef()] = s; });
+    Styles.allStyles.forEach((s) => { Styles.styleByRef[s.iri] = s; });
 
-    Log.info("Styles", allGuides.length + " Guides and " + Object.keys(allStyles).length + " Styles loaded");
+    Log.info("Styles", Styles.allGuides.length + " Guides and " + Object.keys(Styles.allStyles).length + " Styles loaded");
   }
-
-  bus.suscribe(MessageType.ServerConnected, (server) => { onServerLoaded(server);  }, null);
 }

@@ -32,12 +32,12 @@
     pages: ['elements/**/*.html', 'elements/*.html', 'index.html'],
     allDist: ['dist/index.html', 'dist/img/**/*', 'dist/data/**/*'],
     images: 'img/**/*',
-    data: 'data/**/*',    
+    data: 'data/**/*',
     distImages: 'dist/img/',
     distData: 'dist/data/'
   };
 
-  var 
+  var
     elementsProj = ts.createProject({
       declaration: true,
       noImplicitAny: true
@@ -80,10 +80,10 @@
 
   /** Compiles Intermediary Languages */
   gulp.task('compile', ['compile:core', 'compile:elements']);
-  gulp.task('compile:elements', ['compile:core'], function() { 
+  gulp.task('compile:elements', ['compile:core'], function() {
     return gulp.src(p.elements + '/' + p.allTs)
       .pipe(ts(elementsProj))
-      .js.pipe(gulp.dest(p.elements)); 
+      .js.pipe(gulp.dest(p.elements));
   });
 
   gulp.task('watch:elements', function() {
@@ -91,12 +91,13 @@
   });
 
 
-  gulp.task('compile:core', [], function(cb) { 
+  gulp.task('compile:core', [], function(cb) {
     var tsData = gulp.src(p.core + '/' + p.allTs)
       .pipe(sourcemaps.init())
       .pipe(ts({
         sortOutput: true,
         declaration: true,
+        target: 'es5',
         out: 'brew.js'
       }));
     var def = tsData.dts
@@ -106,7 +107,7 @@
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(p.lib + '/' + p.brew));
     return merge([def, lib]);
-  });  
+  });
 
   /** Allows serving the static pages right from here. */
   gulp.task('serve:dev', ['clean', 'lint:core', 'lint:elements', 'compile:core', 'compile:elements'], function () {
@@ -148,7 +149,7 @@
 
   /** Serves the distribution version. */
   gulp.task('serve:dist', ['prod'], function () {
-    sync.init({ server: { 
+    sync.init({ server: {
       baseDir: 'dist/'
     }});
     gulp.watch(p.allDist).on('change', sync.reload);

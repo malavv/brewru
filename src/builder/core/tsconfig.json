@@ -1,0 +1,9 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "out": "../build/brew.js",
+    "sourceMap": true,
+    "target": "es5"
+  }
+}

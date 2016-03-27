@@ -1,5 +1,7 @@
 /// <reference path="../knowledge/domain/units.ts" />
+/// <reference path="../knowledge/domain/substance.ts"/>
 /// <reference path="../base/quantity.ts" />
+/// <reference path="../base/encodable.ts"/>
 
 enum StepImplType {
   equipment,
@@ -52,12 +54,7 @@ class TimeTarget implements Encodable {
   }
 }
 
-interface Encodable {
-  /** Encodes the recipe for communication with the server.  */
-  encode() : Object;
-}
-
-class StepImpl {
+abstract class StepImpl implements Encodable {
   private static uid:number = 0;
 
   protected recipe: Recipe;
@@ -76,6 +73,9 @@ class StepImpl {
     this.recipe = undefined;
     return this;
   }
+  encode() : Object {
+    return this.toJSON();
+  }
 }
 
 class ProcessStepTarget extends StepImpl implements Encodable{
@@ -87,7 +87,7 @@ class ProcessStepTarget extends StepImpl implements Encodable{
     this.parent = parent;
   }
 
-  public addIng(name: string, ingredient: Supply.Ing, quantity: Quantity) : ProcessStepTarget {
+  public addIng(name: string, ingredient: Substance, quantity: Quantity) : ProcessStepTarget {
     this.ingredients.push(new IngredientStep(name, ingredient, quantity, this.recipe));
     return this;
   }

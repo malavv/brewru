@@ -6,7 +6,7 @@
  */
 class RecipeItems extends Polymer.DomModule {
   private inventory: Inventory;
-  private items: Item[];
+  private items: Substance[];
   private recipe: Recipe;
 
   public ready() {
@@ -18,15 +18,16 @@ class RecipeItems extends Polymer.DomModule {
   }
 
   private _onInventoryChanged() {
-    var newList = this.inventory.listItem();
-    var removedList = this.items.filter(item => !this.contains(newList, item.ref), this);
-    var addedList = newList.filter(item => !this.contains(this.items, item.ref), this);
+    console.info('inventory changed');
+    //var newList = this.inventory.listItem();
+    //var removedList = this.items.filter(item => !this.contains(newList, item.ref), this);
+    //var addedList = newList.filter(item => !this.contains(this.items, item.ref), this);
 
-    addedList.forEach(item => {
-      this.async(() => {
-        this.push('items', item)
-      }, 1);
-    }, this);
+    //addedList.forEach(item => {
+//      this.async(() => {
+        //this.push('items', item)
+      //}, 1);
+    //}, this);
     //console.info("RecipeItems updating listing adding : " + addedList.length + " removed : " + removedList.length + " newlist ");
   }
 }

@@ -1,5 +1,4 @@
 /// <reference path="../../base/log.ts" />
-/// <reference path="../../base/eventBus.ts" />
 /// <reference path="equipment.ts" />
 
 class Equipments {
@@ -23,11 +22,10 @@ class Equipments {
     return Equipments.equipByRef[ref];
   }
 
-  public static onServerLoaded(server:Server) {
+  public static onServerLoaded(server:Server) : Promise<void> {
     Log.info('Equipments', 'Loading Equipments');
-    server.getEquipments()
-        .then(Equipments.load)
-        .then(bus.thenPublish(MessageType.EquipmentsLoaded));
+    return server.getEquipments()
+        .then(Equipments.load);
   }
 
   private static load(data:Array<RawEquipment>) {
@@ -36,4 +34,3 @@ class Equipments {
     Log.info("Equipments", Object.keys(Equipments.all).length + " Equipments loaded")
   }
 }
-bus.suscribe(MessageType.ServerConnected, (server) => { Equipments.onServerLoaded(server); }, null);

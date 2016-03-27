@@ -11,14 +11,14 @@ class Suscriber {
 	type: MessageType;
 }
 
-class EventBus {
+class Bus {
 	private byType: { [type:number]: Array<Suscriber> } = {};
-	
+
 	/**
 	 * When true the bus will log all events on the console.
 	 */
 	isLogging:boolean = false;
-	
+
 	/**
 	 * Sends an event to all potential suscribers
 	 * @param type Type of the event from EventType
@@ -33,7 +33,7 @@ class EventBus {
 	thenPublish(type: MessageType) {
 		return () => { this.publish(type); }
 	}
-	
+
 	/**
 	 * Suscribe to a type of events.
 	 * @param handler Object that will handle the message.
@@ -58,9 +58,9 @@ class EventBus {
       this.suscribe(type, resolve);
     });
   }
-	
+
 	/**
-	 * Publish a message and waits for an answer. 
+	 * Publish a message and waits for an answer.
 	 */
 	publishAndWaitFor(waitForType: MessageType, publishType: MessageType, data?: any) {
 		return new Promise((resolve, reject) => {
@@ -68,7 +68,7 @@ class EventBus {
 			this.publish(publishType, data);
 		});
 	}
-	
+
 	private log(type: MessageType, data: any) {
 		if (this.isLogging) console.log('[EventBus]', type, data);
 	}
@@ -77,4 +77,4 @@ class EventBus {
 	}
 }
 
-var bus = new EventBus();
+let bus = new Bus();

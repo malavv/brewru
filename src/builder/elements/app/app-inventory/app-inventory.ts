@@ -9,10 +9,12 @@ class AppInventory extends Polymer.DomModule {
 
     bus.suscribe(MessageType.ServerConnected, (server) => {
       this.async(() => {
-        this.onSynchronize(server); });
+        console.log('Synchronize Server Ingredient');
+        //this.onSynchronize(server); 
+      });
     }, this);
   }
-
+  /*
   onSynchronize(server: any) {
     server.syncInventory()
       .then((response: any) => {
@@ -26,6 +28,7 @@ class AppInventory extends Polymer.DomModule {
         console.warn('server error : ' + JSON.stringify(error));
       });
   }
+  */
 }
 
 window.Polymer(window.Polymer.Base.extend(AppInventory.prototype, {

@@ -1,4 +1,4 @@
-/// <reference path="../base/eventBus.ts" />
+/// <reference path="../base/bus.ts" />
 /// <reference path="../base/log.ts" />
 /// <reference path="../base/messageType.ts" />
 /// <reference path="../../lib/es6-promise/es6-promise.d.ts" />
@@ -56,7 +56,7 @@ class ServerImpl {
 
   private _onMessage(msg: MessageEvent) {
     if (msg.data === 'Unsupported Requested Type') {
-      Log.error('Server ', msg.data + ' ' + msg.target.url);
+      Log.error('Server ', msg.data + ' ' + (<any>msg.target).url);
       return;
     }
 
@@ -90,7 +90,7 @@ class ServerImpl {
   private _req(path : string, data? : any) : Promise<Object> {
     var
       packetId = this.packetIdCounter++,
-      timeoutId,
+      timeoutId : number,
       promise : Promise<Object> = Promise.race([
       new Promise((_, reject) => {
         timeoutId = setTimeout(reject, this.timeoutMs);
@@ -106,7 +106,7 @@ class ServerImpl {
       return data;
     }).catch(err => {
       Log.error('Server', 'Received server error');
-      throw err;
+      console.error(err.stack);
       return null;
     });
   }

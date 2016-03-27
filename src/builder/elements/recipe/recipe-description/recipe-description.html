@@ -35,7 +35,7 @@
       <select id="selectStyle" value="{{style::input}}">
         <option value="noneselected"> -- select an option --</option>
         <template is="dom-repeat" items="[[styles]]">
-          <option value$={{item.ref}}>{{item}}</option>
+          <option value$={{item.iri}}>{{item}}</option>
         </template>
       </select>
     </div>

@@ -1,7 +1,9 @@
 /// <reference path="StepImpl.ts" />
 /// <reference path="../knowledge/domain/equipment.ts" />
+/// <reference path="../knowledge/domain/substance.ts"/>
+/// <reference path="../base/encodable.ts"/>
 
-class EquipmentStep extends StepImpl implements Encodable{
+class EquipmentStep extends StepImpl implements Encodable {
   private steps: StepImpl[] | ProcessStep[];
   private equipment:Equipment;
 
@@ -11,7 +13,7 @@ class EquipmentStep extends StepImpl implements Encodable{
     this.steps = [];
   }
 
-  public addIng(name: string, ingredient: Supply.Ing, quantity: Quantity) : EquipmentStep {
+  public addIng(name: string, ingredient: Substance, quantity: Quantity) : EquipmentStep {
     this.steps.push(new IngredientStep(name, ingredient, quantity, this.recipe));
     return this;
   }
@@ -45,10 +47,9 @@ class EquipmentStep extends StepImpl implements Encodable{
   }
 
   public encode() : Object {
+
     return {
-      steps: (<Encodable[]>this.steps).map(s => {
-        return s.encode != null ? s.encode() : null;
-      }),
+      steps: this.steps.map(s => s.encode()),
       equipment: this.equipment != null ? this.equipment.ref : null
     }
   }

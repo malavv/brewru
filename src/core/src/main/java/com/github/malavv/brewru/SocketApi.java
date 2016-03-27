@@ -1,5 +1,7 @@
 package com.github.malavv.brewru;
 
+import com.github.malavv.brewru.api.ComputingApi;
+import com.github.malavv.brewru.api.KnowledgeApi;
 import com.github.malavv.brewru.inventory.Inventory;
 import com.github.malavv.brewru.knowledge.Equipment;
 import com.github.malavv.brewru.knowledge.Style;
@@ -25,18 +27,17 @@ import java.util.logging.Logger;
 )
 public class SocketApi {
   private static final Logger log = Logger.getLogger(SocketApi.class.getName());
+  private boolean isLogging;
   private final Set<Session> active = new HashSet<>();
-
-  private final Map<String, BiFunction<ClientDecoder.Request, Session, String>> handlers = new HashMap<>();
+  private final Map<String, BiFunction<ClientDecoder.Request, Session, JsonStructure>> handlers = new HashMap<>();
 
   public SocketApi() {
+    isLogging = false;
     handlers.put("SHUTDOWN", this::shutdown);
-    handlers.put("syncInventory", this::syncInventory);
-    handlers.put("onto", this::onto);
-    handlers.put("styles", this::getStyles);
-    handlers.put("equipments", this::getEquipments);
-    handlers.put("units", this::getUnitSystem);
-    handlers.put("compute", this::computeRecipe);
+    handlers.put("styles", KnowledgeApi::getStyles);
+    handlers.put("equipments", KnowledgeApi::getEquipments);
+    handlers.put("units", KnowledgeApi::getUnitSystem);
+    handlers.put("compute", ComputingApi::computeRecipe);
   }
 
   @OnOpen
@@ -58,183 +59,43 @@ public class SocketApi {
    */
   @OnMessage
   public String router(ClientDecoder.Request request, Session session) throws IOException {
-    log.info(String.format("receiving incoming transmission type : %s\n", request.type));
+    if (isLogging)
+      log.info(String.format("receiving incoming transmission type : %s\n", request.type));
 
     return Optional.ofNullable(handlers.get(request.type))
-        .map(handler -> handler.apply(request, session))
-        .orElse("Unsupported Requested Type");
+        .map(handler -> wrap(request, handler.apply(request, session)))
+        .orElse(wrap(
+            request,
+            Json.createObjectBuilder().build(),
+            singleErrorMsg("Unsupported Requested Type")));
   }
 
-  private String shutdown(ClientDecoder.Request r, Session s) {
+  private String wrap(ClientDecoder.Request r, JsonStructure content) {
+    return wrap(r, content, Json.createArrayBuilder().build());
+  }
+
+  private String wrap(ClientDecoder.Request r, JsonStructure content, JsonArray errors) {
+    return Json.createObjectBuilder()
+        .add("id", r.id)
+        .add("type", r.type)
+        .add("data", content)
+        .add("clientId", r.clientId)
+        .add("errors", errors)
+        .build().toString();
+  }
+
+  private JsonArray singleErrorMsg(final String msg) {
+    return Json.createArrayBuilder()
+        .add(Json.createObjectBuilder()
+            .add("msg", msg)
+            .build())
+        .build();
+  }
+
+  private JsonStructure shutdown(ClientDecoder.Request r, Session s) {
     BrewruServer.t.interrupt();
-    return "Shutting Down";
-  }
-
-  private String syncInventory(ClientDecoder.Request r, Session s) {
-    Inventory inventory = new Inventory();
-    JsonObject json = Json.createObjectBuilder()
-        .add("id", r.id)
-        .add("type", r.type)
-        .add("data", inventory.syncMsg(inventory.sync()))
-        .add("clientId", r.clientId)
+    return Json.createObjectBuilder()
+        .add("server", "Shutting Down")
         .build();
-    return json.toString();
   }
-
-  private String onto(ClientDecoder.Request r, Session s) {
-//    OntoProxy proxy = new OntoProxy();
-//    JsonObject j = Json.createObjectBuilder()
-//        .add("ontologies", proxy.ontology.getOWLOntologyManager().getOntologies().stream().map(o -> o.getOntologyID().getOntologyIRI().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-//        .add("classes", proxy.ontology.getClassesInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-//        .add("individuals", proxy.ontology.getIndividualsInSignature(true).stream().map(c -> c.getIRI().getRemainder().toString()).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-//        .build();
-//    return j.toString();
-    return "unimplemented";
-  }
-
-  private String getStyles(ClientDecoder.Request r, Session s) {
-    JsonArray allStyles = StyleGuide.listKnown(BrewruServer.getKB()).stream()
-        .map(sg -> Json.createObjectBuilder()
-            .add("ref", sg.getShortForm())
-            .add("year", sg.getYear())
-            .add("org", sg.getOrgShortForm())
-            .add("styles", sg.getStyles().stream()
-                .map(style -> Json.createObjectBuilder()
-                    .add("ref", style.getShortForm())
-                    .add("code", style.getCode())
-                    .build()
-                ).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build())
-            .add("categories", sg.getCategory().stream()
-                .map(style -> Json.createObjectBuilder()
-                    .add("ref", style.getShortForm())
-                    .add("code", style.getCode())
-                    .add("styles", style.getStyles().stream().map(Style::getShortForm).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build())
-                    .build()
-                ).collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build())
-            .build())
-        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
-    JsonObject json = Json.createObjectBuilder()
-        .add("id", r.id)
-        .add("type", r.type)
-        .add("data", allStyles)
-        .add("clientId", r.clientId)
-        .build();
-    return json.toString();
-  }
-
-  private String getEquipments(ClientDecoder.Request r, Session s) {
-    JsonArray all = Equipment.getAll(BrewruServer.getKB()).stream()
-        .map(sg -> {
-          JsonObjectBuilder bld = Json.createObjectBuilder()
-              .add("ref", sg.getRef())
-              .add("type", sg.getType().toString());
-          if (sg instanceof Equipment.Vessel) {
-            bld.add("volumeInL", ((Equipment.Vessel) sg).getVolumeInL());
-            bld.add("holdsPressure", ((Equipment.Vessel) sg).holdsPressure());
-            bld.add("isMultipleOf", ((Equipment.Vessel) sg).isMultipleOf());
-          }
-
-          return bld.build();
-        })
-        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
-
-    JsonObject json = Json.createObjectBuilder()
-        .add("id", r.id)
-        .add("type", r.type)
-        .add("data", all)
-        .add("clientId", r.clientId)
-        .build();
-    return json.toString();
-  }
-
-  private String getUnitSystem(ClientDecoder.Request r, Session s) {
-    JsonArray all = Unit.getAll(BrewruServer.getKB()).stream()
-        .map(u -> {
-          JsonObjectBuilder bld = Json.createObjectBuilder()
-            .add("ref", u.getRef())
-            .add("offset", u.getOffset())
-            .add("multiplier", u.getMultiplier())
-            .add("symbol", u.getSymbol());
-
-          u.getBaseUnit().ifPresent(bu -> bld.add("baseUnit", bu.getRef()));
-
-          return bld.add("physicalQuantity", u.getPhysicalQuantity().getRef())
-            .add("system", u.getSystem().getRef())
-            .build();
-        })
-        .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add).build();
-
-    JsonObject json = Json.createObjectBuilder()
-        .add("id", r.id)
-        .add("type", r.type)
-        .add("data", all)
-        .add("clientId", r.clientId)
-        .build();
-    return json.toString();
-  }
-
-  private String computeRecipe(ClientDecoder.Request r, Session s) {
-    //r.data
-
-    JsonArrayBuilder steps = Json.createArrayBuilder();
-
-    for (int i = 0; i < 100; i++) {
-      JsonObjectBuilder step = Json.createObjectBuilder();
-      step.add("reac", 0);
-      step.add("prop", Json.createArrayBuilder().add(1).add(23.0).add(55.0).add(5.5).build());
-      step.add("sub", Json.createArrayBuilder()
-          .add(1277.778)
-          .add(0.009)
-          .add(0.008)
-          .add(0.005)
-          .add(0.005)
-          .add(0.005)
-          .add(0.005)
-          .add(0.0)
-          .build());
-      steps.add(step);
-    }
-
-    JsonObject data = Json.createObjectBuilder()
-        .add("substance", Json.createArrayBuilder()
-            .add("water")
-            .add("calcium")
-            .add("magnesium")
-            .add("bicarbonate")
-            .add("chlore")
-            .add("sodium")
-            .add("sulfate")
-            .add("alphalupulin")
-            .build())
-        .add("reactors", Json.createArrayBuilder()
-            .add("kettle")
-            .build())
-        .add("properties", Json.createArrayBuilder()
-            .add("time")
-            .add("volume")
-            .add("temperature")
-            .add("ph")
-            .build())
-        .add("steps", steps)
-        .build();
-
-    JsonObject json = Json.createObjectBuilder()
-        .add("id", r.id)
-        .add("type", r.type)
-        .add("data", data)
-        .add("clientId", r.clientId)
-        .build();
-    return json.toString();
-  }
-
-//  public static getData() : { substance:string[], reactors:string[], steps:any[], properties:any[] } {
-//    return {
-//    "steps": [
-//    { "reac": 0, "prop": [1, 23.0, 55.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
-//    { "reac": 0, "prop": [2, 23.1, 56.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
-//    { "reac": 0, "prop": [3, 23.5, 100.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0] },
-//    { "reac": 0, "prop": [170, 23.5, 100.0], "sub": [1277.778, 0.009,0.008,0.0005,0.0005,0.0005,0.0005, 0.2] }
-//    ]
-//    };
-//  }
 }

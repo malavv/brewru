@@ -1,9 +1,7 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
-import IngType = Supply.Type;
-interface Window { builder: any;
-}
+interface Window { builder: any; }
 
 class RecipeBuilder extends Polymer.DomModule {
   inventory: Inventory;
@@ -15,15 +13,23 @@ class RecipeBuilder extends Polymer.DomModule {
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
 
-    bus.suscribe(MessageType.NewStepCreated, this._onNewStepCreated, this);
+    bus.suscribe(MessageType.ServerConnected, (server:Server) => {
+      this.init(server);
+    }, this);
 
-    Promise.all([
-      bus.onFirstMsg(MessageType.EquipmentsLoaded),
-      bus.onFirstMsg(MessageType.StylesLoaded)
-    ]).then(() => {
-      this.set('recipe', RecipeBuilder.defaultRecipe());
-    });
     window.builder = this;
+  }
+
+  public init(server : Server) {
+    Promise.all([
+      Equipments.onServerLoaded(server),
+      Units.initialize(server),
+      Styles.onServerLoaded(server)
+    ]).then(() => {
+      bus.publish(MessageType.EquipmentsLoaded);
+      bus.publish(MessageType.StylesLoaded);
+      this.set('recipe', RecipeBuilder.defaultRecipe());
+    })
   }
 
   public static defaultRecipe() : Recipe {
@@ -39,12 +45,12 @@ class RecipeBuilder extends Polymer.DomModule {
         bottles:Equipment = Equipments.byRef("brewru:newGrolshBottles"),
 
       // Ingredient
-      tapWater:Supply.Ing = new Supply.Ing(Entities.tapWater, IngType.Water, [PhysQty.byRef("brewru:volume")]),
-      lme:Supply.Ing = new Supply.Ing(Entities.lmeClear, IngType.Fermentable, [PhysQty.byRef("brewru:volume")]),
-      dme:Supply.Ing = new Supply.Ing(Entities.dmeClear, IngType.Fermentable, [PhysQty.byRef("brewru:mass")]),
-      columbus:Supply.Ing = new Supply.Ing(Entities.columbusHop, IngType.Hops, [PhysQty.byRef("brewru:mass")]),
-      yeast: Supply.Ing = new Supply.Ing(Entities.us05, IngType.Yeast, [PhysQty.byRef("brewru:counts")]),
-      primingSugar: Supply.Ing = new Supply.Ing(Entities.tableSugar, IngType.Fermentable, [PhysQty.byRef("brewru:mass")]),
+      tapWater:Substance = new Substance("brew:tapwater", SubstanceType.Water, [PhysQty.byRef("brewru:volume")]),
+      lme:Substance = new Substance("brew:lmeclear", SubstanceType.Fermentable, [PhysQty.byRef("brewru:volume")]),
+      dme:Substance = new Substance("brew:dmeclear", SubstanceType.Fermentable, [PhysQty.byRef("brewru:mass")]),
+      columbus:Substance = new Substance("brew:columbus", SubstanceType.Hops, [PhysQty.byRef("brewru:mass")]),
+      yeast: Substance = new Substance("brew:entitiesus05", SubstanceType.Yeast, [PhysQty.byRef("brewru:counts")]),
+      primingSugar: Substance = new Substance("brew:tableSugar", SubstanceType.Fermentable, [PhysQty.byRef("brewru:mass")]),
 
       // Common Quantity
       water23l: Quantity = new Quantity(23, SU('L')),
@@ -104,11 +110,6 @@ class RecipeBuilder extends Polymer.DomModule {
   public loadRecipe() {
     //var json = JSON.parse(localStorage.getItem('recipe'));
     //this.recipe = Recipe.decode(json);
-  }
-
-  private _onNewStepCreated(config: {name:string; type:ConceptRef}) {
-    this.push('recipe.reactors.0.steps', new Step(config.name, config.type));
-    bus.publish(MessageType.RecipeChanged);
   }
 }
 

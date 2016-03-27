@@ -8,33 +8,46 @@
  */
 class RecipeDescription extends Polymer.DomModule {
   public recipe : Recipe;
-  public style : string;
   public styles : Style[];
 
-  public ready() {
-    bus.suscribe(MessageType.StylesLoaded, () => { this.async(() => { this.stylesLoaded(); }); }, this);
-  }
+  // Inputs
+  public style: string = 'noneselected';
 
-  public stylesLoaded() {
-    this.set('styles', Styles.getAll());
+  public created() {
+    console.log('created');
+    bus.suscribe(MessageType.StylesLoaded, () => {  this.stylesLoaded(); }, this);
   }
 
   public attached() {
-    this.$.selectStyle.value = 'noneselected';
+    this.$.selectStyle.value = "noneselected";
+  }
+
+  public stylesLoaded() {
+    console.log('stylesLoaded');
+    this.set('styles', Styles.getAll());
   }
 
   public onStyleChanged(ref:string, old : string) {
+    console.log('onStyleChanged');
     // If already the correct one.
-    if (this.recipe.style != null && this.recipe.style.getRef() != null && this.recipe.style.getRef() == ref) { return; }
+    if (this.recipe.style != null && this.recipe.style.iri != null && this.recipe.style.iri == ref) { 
+      if (this.$.selectStyle.value == "") {
+        this.async(() => {
+          this.$.selectStyle.value = this.recipe.style.iri;
+        }, 0)
+      }
+      return; 
+    }
 
     var style = Styles.byRef(ref);
 
     this.set('recipe.style', style);
-    this.set('style', style != null ? style.getRef() : 'noneselected');
+    this.set('style', style != null ? style.iri : 'noneselected');
   }
 
   public onRecipeChanged(newRecipe:Recipe, oldRecipe:Recipe) {
-    this.set('style', newRecipe.style.getRef() || 'noneselected');
+    console.log('onRecipeChanged');
+    this.set('style', newRecipe.style.iri || 'noneselected');
   }
 }
 

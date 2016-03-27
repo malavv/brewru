@@ -1,6 +1,7 @@
-class Style {
+/// <reference path="../../base/res.ts" />
+
+class Style extends Res {
   // References
-  private ref:string;
   private refCategory:string;
   private refGuide:string;
 
@@ -10,7 +11,7 @@ class Style {
   public styleCode:string;
 
   constructor(refGuide:string = '', category:RawCategory, style:RawStyle) {
-    this.ref = style.ref;
+    super(style.ref);
     this.refCategory = category.ref;
     this.refGuide = refGuide;
 
@@ -20,11 +21,7 @@ class Style {
     this.name = 'unimplemented';
   }
 
-  public getRef() : string {
-    return this.ref;
-  }
-
   public toString() : string {
-    return this.ref + ' - ' + this.styleCode + ' - ' + this.categoryCode;
+    return this.iri + ' - ' + this.styleCode + ' - ' + this.categoryCode;
   }
 }

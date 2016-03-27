@@ -67,7 +67,7 @@ class Recipe {
       id: this.id,
       name: this.name,
       description: this.description,
-      style: this.style != null ? this.style.getRef() : null,
+      style: this.style != null ? this.style.iri : null,
       reactors: (<Encodable[]>this.reactors).map(r => r.encode())
     };
   }

@@ -1,6 +1,6 @@
-/// <reference path="item.ts" />
-/// <reference path="itemType.ts" />
-/// <reference path="../base/eventBus.ts" />
+/// <reference path="../base/bus.ts" />
+/// <reference path="../base/log.ts" />
+/// <reference path="../knowledge/domain/substance.ts"/>
 
 /**
  * The inventory is a collection of items having types and which can be part of stocks.
@@ -9,23 +9,39 @@
  * at a certain time, from a certain supplier is a stock.
  */
 class Inventory {
-  private items: Item[];
-  private stocks: Stock[];
+  private stocks: { [type : string]: Stock[] } = {};
+  private _ingredients: Substance[] = []
 
-  constructor() {
-    this.items = [];
-    this.stocks = [];
+  get ingredients() : Substance[] {
+    return this.ingredients;
   }
 
-  public listItem(type?: ItemType) {
-    if (type === undefined)
-      return this.items;
-    return this.items.filter((i) => { return i.type === type; });
+  stocksForIng(ingredient: Substance) : Stock[] {
+    return this.stocks[ingredient.iri] || [];
   }
 
-  public addItem(item: Item) {
-    this.items.push(item);
-    item.stocks.forEach((s) => { this.stocks.push(s); })
-    bus.publish(MessageType.InventoryChanged);
+  public addIng(ingredient: Substance) {
+    if (this.stocks[ingredient.iri] != null) {
+      Log.warn('Inventory', 'Adding an existing substance ' + ingredient.iri);
+      return;
+    }
+    this.add(ingredient, []);
+  }
+
+  public addStock(ingredient: Substance, stock: (Stock | Stock[])) {
+    if (this.stocks[ingredient.iri] == null) {
+      Log.warn('Inventory', 'Unknown substance ' + ingredient.iri + ' consider adding it first');
+      return;
+    }
+    if (stock instanceof Stock) {
+      this.stocks[ingredient.iri].push(<Stock>stock);
+      return;
+    }
+    this.stocks[ingredient.iri] = this.stocks[ingredient.iri].concat(<Stock[]>stock);
+  }
+
+  public add(ingredient: Substance, stocks: Stock[]) {
+    this.addIng(ingredient);
+    this.addStock(ingredient, stocks);
   }
 }
