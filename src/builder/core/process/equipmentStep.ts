@@ -46,8 +46,13 @@ class EquipmentStep extends StepImpl implements Encodable {
     return this;
   }
 
-  public encode() : Object {
+  public toString() : String {
+    if (this.equipment != null && this.equipment.getType() == 'Kettle')
+      return this.equipment.getVolumeInL().toFixed(2) + ' L Kettle';
+    return "Equip : " + this.name;
+  }
 
+  public encode() : Object {
     return {
       steps: this.steps.map(s => s.encode()),
       equipment: this.equipment != null ? this.equipment.ref : null

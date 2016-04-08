@@ -15,7 +15,7 @@
       padding: 20px 0;
       padding-left: 20px;
     }
-    div.desc {
+    .desc {
       background-color: #6b6bb8;
       @apply(--layout-flex);
     }
@@ -52,6 +52,12 @@
     div.fermenting { border-color: yellow; }
     div.cooling { border-color: deepskyblue; }
     div.target { border-color: mediumpurple; }
+
+    div[tmpl="equipStep"] {
+      @apply(--layout-horizontal);
+      @apply(--layout-around-justified);
+      text-align: center;
+    }
   </style>
 
   <template>
@@ -59,7 +65,7 @@
       <div id="reactor">
         <template is="dom-repeat" items="{{recipe.reactors}}" as="reactor">
           <!-- Equipment -->
-          <div class="step equipment lvl0" on-tap="_onTap">{{reactor.equipment.ref}}</div>
+          <div class="step equipment lvl0" on-tap="_onTap">{{reactor}}</div>
           <div class="lvl1">
             <template is="dom-repeat" items="{{reactor.steps}}" as="step">
 
@@ -84,7 +90,26 @@
         </template>
       </div>
     </div>
-    <div class="desc">{{test(selected)}}</div>
+    <iron-pages class="desc" selected="{{getStepTemplate(selected)}}" attr-for-selected="tmpl">
+      <div tmpl="equipStep">
+        <div class="vertical layout">
+          <span>Equipment details :</span>
+          <div>holds pressure : <span>{{selected.equipment.holdsPressure}}</span></div>
+          <div>Is for bottling : <span>{{selected.equipment.isMultipleOf}}</span></div>
+          <div>Type of Vessel : <span>{{selected.equipment.type}}</span></div>
+          <div>Volume in Litres : <span>{{selected.equipment.volumeInL}}</span></div>
+          <div><span>KB reference : </span><span>{{selected.equipment.ref}}</span></div>
+        </div>
+        <div>
+          <span>Steps : </span>
+          <template is="dom-repeat" items="{{selected.steps}}">
+            <div># <span>{{index}}</span></div>
+            <div>Step Type: <span>{{item.type}}</span></div>
+          </template>
+        </div>
+      </div>
+      <div tmpl="default">{{test(selected)}}</div>
+    </iron-pages>
   </template>
 
   <script src="recipe-reactor.js"></script>

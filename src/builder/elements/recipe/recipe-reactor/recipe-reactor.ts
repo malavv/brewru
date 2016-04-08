@@ -88,6 +88,11 @@ class RecipeReactor extends Polymer.DomModule {
   test(val:any) {
     return JSON.stringify(val);
   }
+  public getStepTemplate(val : StepImpl) : string {
+    if (val instanceof EquipmentStep)
+      return 'equipStep';
+    return "default";
+  }
 }
 
 window.Polymer(window.Polymer.Base.extend(RecipeReactor.prototype, {

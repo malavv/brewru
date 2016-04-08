@@ -14,8 +14,13 @@ class Equipment {
   private volumeInL:number;
 
   constructor(data:RawEquipment) {
+    this.holdsPressure = false;
+    this.isMultipleOf = false;
     Object.keys(data).forEach((key) => {
       this[key] = data[key];
     });
   }
+
+  public getType() : string { return this.type || ''; }
+  public getVolumeInL() : number { return this.volumeInL || -1; }
 }
