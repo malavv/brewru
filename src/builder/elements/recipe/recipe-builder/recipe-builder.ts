@@ -13,9 +13,8 @@ class RecipeBuilder extends Polymer.DomModule {
     this.server = new ServerImpl("ws://localhost:8025/socket");
     this.ingredients = new Ingredients();
 
-    bus.suscribe(MessageType.ServerConnected, (server:Server) => {
-      this.init(server);
-    }, this);
+    bus.suscribe(MessageType.ServerConnected, server => this.init(server), this);
+    bus.suscribe(MessageType.RecipeSelected, recipe => this.set('recipe', recipe), this);
 
     window.builder = this;
   }
@@ -28,79 +27,7 @@ class RecipeBuilder extends Polymer.DomModule {
     ]).then(() => {
       bus.publish(MessageType.EquipmentsLoaded);
       bus.publish(MessageType.StylesLoaded);
-      this.set('recipe', RecipeBuilder.defaultRecipe());
     })
-  }
-
-  public static defaultRecipe() : Recipe {
-    Log.info("RecipeBuilder", "Ready to Build");
-    var
-        recipe = new Recipe(Equipments.byRef("brewru:kettle_6.5")),
-
-      kettle = recipe.getReactors()[0],
-      firstFerm:EquipmentStep,
-
-        bucket:Equipment = Equipments.byRef("brewru:bucket_5gal"),
-        carboy:Equipment = Equipments.byRef("brewru:glassCarboy_5.5"),
-        bottles:Equipment = Equipments.byRef("brewru:newGrolshBottles"),
-
-      // Ingredient
-      tapWater:Substance = new Substance("brew:tapwater", SubstanceType.Water, [PhysQty.byRef("brewru:volume")]),
-      lme:Substance = new Substance("brew:lmeclear", SubstanceType.Fermentable, [PhysQty.byRef("brewru:volume")]),
-      dme:Substance = new Substance("brew:dmeclear", SubstanceType.Fermentable, [PhysQty.byRef("brewru:mass")]),
-      columbus:Substance = new Substance("brew:columbus", SubstanceType.Hops, [PhysQty.byRef("brewru:mass")]),
-      yeast: Substance = new Substance("brew:entitiesus05", SubstanceType.Yeast, [PhysQty.byRef("brewru:counts")]),
-      primingSugar: Substance = new Substance("brew:tableSugar", SubstanceType.Fermentable, [PhysQty.byRef("brewru:mass")]),
-
-      // Common Quantity
-      water23l: Quantity = new Quantity(23, SU('L')),
-      oneKg: Quantity = new Quantity(1, SU('kg')),
-      fiftyGram: Quantity = new Quantity(50, SU('g')),
-      threeCup: Quantity = new Quantity(3, SU('cup'));
-
-    // Recipe Description
-    recipe.description = 'APA recipe from xBeeriment';
-    recipe.style = Styles.byRef("brewru:bjcp_2015_21A");
-    recipe.name = 'xAPA';
-
-    // Recipe
-    kettle
-      .addIng('Add Water', tapWater, water23l)
-      .heat('Bring to a boil', TempTarget.getBoil())
-      .addIng('Add LME', lme, oneKg)
-      .addIng('Add DME', dme, oneKg)
-      .heat('Maintain for 60 min', new TimeTarget(60, SU('min')));
-
-    // Main Boil
-    kettle.getHeat()[1]
-      .onBegin()
-        .addIng('Bittering Hop', columbus, fiftyGram)
-      .toEnd(new TimeTarget(25, SU('min')))
-        .addIng('Dual Purpose Hop', columbus, fiftyGram)
-      .onEnd()
-        .addIng('Aroma Hop', columbus, fiftyGram);
-
-    // Cooling
-    kettle.cool('Cool to 22C', new TempTarget(22, SU("°C")));
-
-    // First Fermentation
-    firstFerm = kettle.transferTo(bucket, [MiscStepType.Decantation, MiscStepType.Moderate_Aeration]);
-    firstFerm
-        .addIng('Add Yeast', yeast, new Quantity(1, SU('u')))
-        .ferment('First Fermentation', new TimeTarget(4, SU('day')));
-
-    // Dry Hopping
-    firstFerm.getFerm()[0]
-      .toEnd(new TimeTarget(2, SU('day')))
-        .addIng('Dry Hoping', columbus, fiftyGram);
-
-    firstFerm.transferTo(carboy, [MiscStepType.Decantation])
-      .ferment('Second Fermentation', new TimeTarget(21, SU('day')))
-      .transferTo(bucket, [MiscStepType.Decantation])
-      .addIng('Priming Sugar', primingSugar, threeCup)
-      .transferTo(bottles, [MiscStepType.Decantation]);
-
-    return recipe;
   }
 
   public saveRecipe() {

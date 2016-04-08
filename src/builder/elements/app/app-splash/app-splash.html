@@ -37,7 +37,10 @@
         on-tap="loadRecipe"
         disabled$={{isChoosing}}>Load Recipe</paper-button>
     </div>
-    <iron-collapse opened$={{isChoosing}}><input type="file" on-change="_onRecipeSelected"></iron-collapse>
+    <iron-collapse opened$={{isChoosing}}>
+      <paper-button raised on-tap="complexRecipe">Complex Recipe</paper-button>
+      <paper-button raised on-tap="simpleRecipe">Simple Recipe</paper-button>
+    </iron-collapse>
   </template>
 
   <script src="app-splash.js"></script>

@@ -1,6 +1,7 @@
 /// <reference path="../../../lib/brew/brew.d.ts" />
 /// <reference path="../../../lib/polymer/polymer.ts" />
 
+import {runInNewContext} from "vm";
 /**
  * Presents the general characteristics of the Recipe.
  *
@@ -46,8 +47,7 @@ class RecipeDescription extends Polymer.DomModule {
   }
 
   public onRecipeChanged(newRecipe:Recipe, oldRecipe:Recipe) {
-    console.log('onRecipeChanged');
-    this.set('style', newRecipe.style.iri || 'noneselected');
+    this.set('style', (newRecipe == null || newRecipe.style == null || newRecipe.style.iri == null) ? 'noneselected' : newRecipe.style.iri);
   }
 }
 
