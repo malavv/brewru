@@ -58,6 +58,11 @@
       @apply(--layout-around-justified);
       text-align: center;
     }
+    div[tmpl="ingStep"] {
+      @apply(--layout-horizontal);
+      @apply(--layout-around-justified);
+      text-align: center;
+    }
   </style>
 
   <template>
@@ -106,6 +111,23 @@
             <div># <span>{{index}}</span></div>
             <div>Step Type: <span>{{item.type}}</span></div>
           </template>
+        </div>
+      </div>
+      <div tmpl="ingStep">
+        <div class="vertical layout">
+          <span>Ingredient details :</span>
+          <div>Type : <span>{{selected.ing.type}}</span></div>
+          <div>Measured as :
+            <template is="dom-repeat" items="{{selected.ing.measuredAs}}">
+              <div># <span>{{index}}</span> : <span>{{item.iri}}</span></div>
+            </template>
+          </div>
+          <div>KB ref : <span>{{selected.ing.iri}}</span></div>
+        </div>
+        <div class="vertical layout">
+          <span>Quantity details :</span>
+          <div>Magnitude : <span>{{selected.qty.magnitude}}</span></div>
+          <div>In Unit Of : <span>{{selected.qty.unit.iri}}</span></div>
         </div>
       </div>
       <div tmpl="default">{{test(selected)}}</div>

@@ -82,15 +82,14 @@ class RecipeReactor extends Polymer.DomModule {
     }
   }
 
-  _selectedChanged(lhs:any, rhs:any) {
-    console.log('_selectedChanged', lhs, rhs);
-  }
   test(val:any) {
     return JSON.stringify(val);
   }
   public getStepTemplate(val : StepImpl) : string {
     if (val instanceof EquipmentStep)
       return 'equipStep';
+    if (val instanceof IngredientStep)
+      return 'ingStep';
     return "default";
   }
 }
@@ -107,8 +106,7 @@ window.Polymer(window.Polymer.Base.extend(RecipeReactor.prototype, {
       type: Array
     },
     selected: {
-      type: Object,
-      observer: '_selectedChanged'
+      type: Object
     }
   }
 }));
