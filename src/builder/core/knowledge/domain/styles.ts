@@ -64,7 +64,7 @@ abstract class Styles {
     Styles.allStyles = _.flatten(_.map(Styles.allGuides,
         guide => _.flatten(_.map(guide.categories,
             category => _.flatten(_.map(category.styles,
-                style => new Style(guide.ref, category, styleMap[style])))))));
+                style => new Style(guide.ref, category, styleMap[style.ref])))))));
 
     // Make Helper Dictionary
     Styles.allStyles.forEach((s) => { Styles.styleByRef[s.iri] = s; });

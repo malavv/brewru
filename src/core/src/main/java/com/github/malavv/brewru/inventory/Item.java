@@ -1,9 +1,6 @@
 package com.github.malavv.brewru.inventory;
 
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +8,6 @@ public class Item {
   public final ItemType type;
   public final String ref;
   public final String name;
-
   private List<Stock> stocks;
 
   public Item(final ItemType type, final String ref, final String name) {
@@ -29,16 +25,5 @@ public class Item {
 
   public String getName() {
     return name;
-  }
-
-  public JsonObject toJson() {
-    return Json.createObjectBuilder()
-        .add("type", type.toString())
-        .add("ref", ref)
-        .add("name", getName())
-        .add("stocks", stocks.stream()
-            .map(Stock::toJson)
-            .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-        .build();
   }
 }

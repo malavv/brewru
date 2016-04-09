@@ -5,16 +5,9 @@ import com.github.malavv.brewru.unit.Quantity;
 import com.github.malavv.brewru.unit.Unit;
 import com.github.malavv.brewru.unit.UnitSystem;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Inventory {
@@ -25,8 +18,6 @@ public class Inventory {
   }
 
   public List<Item> sync() {
-    Item yeastNutrient = new Item(ItemType.Miscellaneous, "brew:YeastNutrient", "North. Brew. Yeast Nutrient");
-
     UnitSystem system = new UnitSystem();
     system.name = "SI";
     system.ref = "brew:Si";
@@ -39,9 +30,7 @@ public class Inventory {
     kg.symbol = "kg";
     kg.system = system;
 
-    Quantity quantity = new Quantity();
-    quantity.magnitude = 1;
-    quantity.unit = kg;
+    Quantity quantity = new Quantity(1, kg);
 
     return Stream.generate(() ->{
         Item lmePale = new Item(ItemType.Fermentables, "brew:lme" + inc(), "Briess Golden Light LME");
@@ -50,13 +39,5 @@ public class Inventory {
       })
       .limit(10)
       .collect(Collectors.toList());
-  }
-
-  public JsonObject syncMsg(final List<Item> items) {
-    return Json.createObjectBuilder()
-        .add("items", items.stream()
-            .map(Item::toJson)
-            .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add))
-        .build();
   }
 }

@@ -19,6 +19,7 @@ public final class Brew {
   public static final Resource unit = resource("unit");
   public static final Resource systemOfUnits = resource("systemOfUnits");
   public static final Resource physicalQuantity = resource("physicalQuantity");
+  public static final Resource styleGuide = resource("styleGuide");
 
   // Properties
   public static final Property hasVolumeInL = property("hasVolumeInL");

@@ -1,23 +1,17 @@
 package com.github.malavv.brewru;
 
-import com.github.malavv.brewru.knowledge.StyleGuide;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.glassfish.tyrus.server.Server;
 
 import javax.websocket.DeploymentException;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class BrewruServer {
-
   private static Model kb;
 
   public static Model getKB() { return kb; }
   public static Thread t;
-
-
 
   public static void main(String[] args) {
     BrewruServer.kb = ModelFactory.createDefaultModel();

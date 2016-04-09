@@ -12,19 +12,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Equipment extends KBConcept {
-  public Type getType() {
-    return this instanceof Kettle ? Type.Kettle : Type.Vessel;
-  }
-
+public abstract class Equipment extends KBConcept {
   public enum Type {
     Kettle,
     Vessel
   }
 
+  protected Type type;
+
+  private Equipment(Resource ref) {
+    super(ref);
+  }
+
   public static class Kettle extends Vessel {
     private Kettle(Resource ref, Model model) {
       super(ref, model);
+      this.type = Type.Kettle;
     }
   }
 
@@ -35,6 +38,7 @@ public class Equipment extends KBConcept {
 
     private Vessel(Resource ref, Model model) {
       super(ref);
+      this.type = Type.Vessel;
       volumeInL = ref.getProperty(Brew.hasVolumeInL).getDouble();
       holdsPressure = ref.getProperty(Brew.holdsPressure).getBoolean();
       Statement multipleOf = ref.getProperty(Brew.isMultipleOf);
@@ -76,9 +80,5 @@ public class Equipment extends KBConcept {
       default:
         return Optional.empty();
     }
-  }
-
-  private Equipment(final Resource ref) {
-    super(ref);
   }
 }

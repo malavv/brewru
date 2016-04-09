@@ -2,14 +2,12 @@ package com.github.malavv.brewru;
 
 import com.github.malavv.brewru.api.ComputingApi;
 import com.github.malavv.brewru.api.KnowledgeApi;
-import com.github.malavv.brewru.inventory.Inventory;
-import com.github.malavv.brewru.knowledge.Equipment;
-import com.github.malavv.brewru.knowledge.Style;
-import com.github.malavv.brewru.knowledge.StyleGuide;
-import com.github.malavv.brewru.knowledge.Unit;
 import com.github.malavv.brewru.protocol.ClientDecoder;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import javax.json.*;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -17,7 +15,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 /** Provides an interface for WebSocket. */
@@ -26,10 +24,21 @@ import java.util.logging.Logger;
   decoders = ClientDecoder.class
 )
 public class SocketApi {
+  public static class Pkg {
+    public final ClientDecoder.Request request;
+    public final Session session;
+    public final Gson gson;
+
+    public Pkg(ClientDecoder.Request request, Session session, Gson gson) {
+      this.request = request;
+      this.session = session;
+      this.gson = gson;
+    }
+  }
   private static final Logger log = Logger.getLogger(SocketApi.class.getName());
   private boolean isLogging;
   private final Set<Session> active = new HashSet<>();
-  private final Map<String, BiFunction<ClientDecoder.Request, Session, JsonStructure>> handlers = new HashMap<>();
+  private final Map<String, Function<Pkg, JsonElement>> handlers = new HashMap<>();
 
   public SocketApi() {
     isLogging = false;
@@ -63,39 +72,40 @@ public class SocketApi {
       log.info(String.format("receiving incoming transmission type : %s\n", request.type));
 
     return Optional.ofNullable(handlers.get(request.type))
-        .map(handler -> wrap(request, handler.apply(request, session)))
+        .map(handler -> wrap(request, handler.apply(new Pkg(request, session, new Gson()))))
         .orElse(wrap(
             request,
-            Json.createObjectBuilder().build(),
+            new JsonObject(),
             singleErrorMsg("Unsupported Requested Type")));
   }
 
-  private String wrap(ClientDecoder.Request r, JsonStructure content) {
-    return wrap(r, content, Json.createArrayBuilder().build());
+  private String wrap(ClientDecoder.Request r, JsonElement content) {
+    return wrap(r, content, new JsonArray());
   }
 
-  private String wrap(ClientDecoder.Request r, JsonStructure content, JsonArray errors) {
-    return Json.createObjectBuilder()
-        .add("id", r.id)
-        .add("type", r.type)
-        .add("data", content)
-        .add("clientId", r.clientId)
-        .add("errors", errors)
-        .build().toString();
+  private String wrap(ClientDecoder.Request r, JsonElement content, JsonArray errors) {
+    JsonObject json = new JsonObject();
+    json.addProperty("id", r.id);
+    json.addProperty("type", r.type);
+    json.add("data", content);
+    json.addProperty("clientId", r.clientId);
+    json.add("errors", errors);
+    return json.toString();
   }
 
   private JsonArray singleErrorMsg(final String msg) {
-    return Json.createArrayBuilder()
-        .add(Json.createObjectBuilder()
-            .add("msg", msg)
-            .build())
-        .build();
+    JsonObject json = new JsonObject();
+    json.addProperty("msg", msg);
+
+    JsonArray arr = new JsonArray();
+    arr.add(json);
+    return arr;
   }
 
-  private JsonStructure shutdown(ClientDecoder.Request r, Session s) {
+  private JsonElement shutdown(Pkg pkg) {
     BrewruServer.t.interrupt();
-    return Json.createObjectBuilder()
-        .add("server", "Shutting Down")
-        .build();
+    JsonObject json = new JsonObject();
+    json.addProperty("server", "Shutting Down");
+    return json;
   }
 }

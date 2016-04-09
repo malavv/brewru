@@ -1,54 +1,29 @@
 package com.github.malavv.brewru.api;
 
-import com.github.malavv.brewru.protocol.ClientDecoder;
+import com.github.malavv.brewru.SocketApi;
+import com.github.malavv.brewru.protocol.ComputationData;
+import com.google.gson.JsonElement;
 
-import javax.json.*;
-import javax.websocket.Session;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class ComputingApi {
-  public static JsonStructure computeRecipe(ClientDecoder.Request r, Session s) {
-    //r.data
-
-    JsonArrayBuilder steps = Json.createArrayBuilder();
+  public static JsonElement computeRecipe(SocketApi.Pkg pkg) {
+    ComputationData data = new ComputationData();
+    data.substance = Arrays.asList("water", "calcium", "magnesium", "bicarbonate", "chlore", "sodium", "sulfate", "alphalupulin");
+    data.reactors = Collections.singletonList("kettle");
+    data.properties = Arrays.asList("time", "volume", "temperature", "ph");
+    data.steps = new ArrayList<>();
 
     for (int i = 0; i < 100; i++) {
-      JsonObjectBuilder step = Json.createObjectBuilder();
-      step.add("reac", 0);
-      step.add("prop", Json.createArrayBuilder().add(1).add(23.0).add(55.0).add(5.5).build());
-      step.add("sub", Json.createArrayBuilder()
-          .add(1277.778)
-          .add(0.009)
-          .add(0.008)
-          .add(0.005)
-          .add(0.005)
-          .add(0.005)
-          .add(0.005)
-          .add(0.0)
-          .build());
-      steps.add(step);
+      ComputationData.Step step = new ComputationData.Step();
+      step.reac = 0;
+      step.prop = Arrays.asList(1F, 23F, 55F, 5.5F);
+      step.sub = Arrays.asList(1277.778F, 0.009F, 0.008F, 0.005F, 0.005F, 0.005F, 0.005F, 0F);
+      data.steps.add(step);
     }
 
-    return Json.createObjectBuilder()
-        .add("substance", Json.createArrayBuilder()
-            .add("water")
-            .add("calcium")
-            .add("magnesium")
-            .add("bicarbonate")
-            .add("chlore")
-            .add("sodium")
-            .add("sulfate")
-            .add("alphalupulin")
-            .build())
-        .add("reactors", Json.createArrayBuilder()
-            .add("kettle")
-            .build())
-        .add("properties", Json.createArrayBuilder()
-            .add("time")
-            .add("volume")
-            .add("temperature")
-            .add("ph")
-            .build())
-        .add("steps", steps)
-        .build();
+    return pkg.gson.toJsonTree(data);
   }
 }

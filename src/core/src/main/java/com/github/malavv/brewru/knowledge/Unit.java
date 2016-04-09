@@ -8,7 +8,6 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 public class Unit extends KBConcept {
