@@ -13,6 +13,7 @@ class IngredientStep extends StepImpl {
 
   public encode() : Object {
     return {
+      type: this.type,
       ing: this.ing.iri,
       qty: this.qty.encode()
     }

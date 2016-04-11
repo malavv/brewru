@@ -13,7 +13,7 @@ public class QuantityJson implements JsonSerializer<Quantity> {
   public JsonElement serialize(Quantity src, Type typeOfSrc, JsonSerializationContext context) {
     JsonObject json = new JsonObject();
     json.addProperty("magnitude", src.magnitude);
-    json.addProperty("unit", src.unit.ref);
+    json.addProperty("unit", src.unit.getRef());
     return json;
   }
 }

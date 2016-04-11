@@ -1,6 +1,7 @@
 package com.github.malavv.brewru.unit;
 
 import com.github.malavv.brewru.gson.QuantityJson;
+import com.github.malavv.brewru.knowledge.Unit;
 import com.google.gson.annotations.JsonAdapter;
 
 @JsonAdapter(QuantityJson.class)

@@ -1,0 +1,99 @@
+{
+  "ref": "unimplemented",
+  "name": "xAPA",
+  "description": "APA recipe from xBeeriment",
+  "style": "brewru:bjcp_2015_21A",
+  "reactors": [
+    {
+      "steps": [
+        {
+          "type": 1,
+          "ing": "brew:tapwater",
+          "qty": {
+            "magnitude": 23,
+            "unit": "brewru:litre"
+          }
+        },
+        {
+          "type": 2,
+          "targets": [
+            {
+              "type": 6,
+              "tmpName": "begin Temp target at 100 °C",
+              "ingredients": []
+            },
+            {
+              "type": 6,
+              "tmpName": "end Temp target at 100 °C",
+              "ingredients": []
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "ing": "brew:lmeclear",
+          "qty": {
+            "magnitude": 1,
+            "unit": "brewru:kilogram"
+          }
+        },
+        {
+          "type": 1,
+          "ing": "brew:dmeclear",
+          "qty": {
+            "magnitude": 1,
+            "unit": "brewru:kilogram"
+          }
+        },
+        {
+          "type": 2,
+          "targets": [
+            {
+              "type": 6,
+              "tmpName": "begin Time target at 60 min",
+              "ingredients": [
+                {
+                  "type": 1,
+                  "ing": "brew:columbus",
+                  "qty": {
+                    "magnitude": 50,
+                    "unit": "brewru:gram"
+                  }
+                }
+              ]
+            },
+            {
+              "type": 6,
+              "tmpName": "Time target at 25 min until target",
+              "ingredients": [
+                {
+                  "type": 1,
+                  "ing": "brew:columbus",
+                  "qty": {
+                    "magnitude": 50,
+                    "unit": "brewru:gram"
+                  }
+                }
+              ]
+            },
+            {
+              "type": 6,
+              "tmpName": "end Time target at 60 min",
+              "ingredients": [
+                {
+                  "type": 1,
+                  "ing": "brew:columbus",
+                  "qty": {
+                    "magnitude": 50,
+                    "unit": "brewru:gram"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "equipment": "brewru:kettle_6.5"
+    }
+  ]
+}

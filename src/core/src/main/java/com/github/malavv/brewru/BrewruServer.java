@@ -14,8 +14,7 @@ public class BrewruServer {
   public static Thread t;
 
   public static void main(String[] args) {
-    BrewruServer.kb = ModelFactory.createDefaultModel();
-    BrewruServer.kb.read(BrewruServer.class.getClassLoader().getResourceAsStream("brewru.owl"), null, "TTL");
+    init();
 
     Server server = new Server("localhost", 8025, "/", null, SocketApi.class);
     t = Thread.currentThread();
@@ -31,5 +30,10 @@ public class BrewruServer {
     } finally {
       server.stop();
     }
+  }
+
+  public static void init() {
+    BrewruServer.kb = ModelFactory.createDefaultModel();
+    BrewruServer.kb.read(BrewruServer.class.getClassLoader().getResourceAsStream("brewru.owl"), null, "TTL");
   }
 }

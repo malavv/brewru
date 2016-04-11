@@ -58,4 +58,7 @@ public class Unit extends KBConcept {
         .mapWith(raw -> new Unit(model, raw))
         .toList();
   }
+  public static Optional<Unit> from(Resource resource) {
+    return Optional.empty();
+  }
 }

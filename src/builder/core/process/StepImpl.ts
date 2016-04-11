@@ -151,6 +151,7 @@ class ProcessStep extends StepImpl {
 
   public encode() : Object {
     return {
+      type: this.type,
       target: this.target.encode,
       targets: (<Encodable[]>this.targets).map(t => t.encode())
     }

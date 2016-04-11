@@ -3,10 +3,8 @@ package com.github.malavv.brewru;
 import com.github.malavv.brewru.api.ComputingApi;
 import com.github.malavv.brewru.api.KnowledgeApi;
 import com.github.malavv.brewru.protocol.ClientDecoder;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.github.malavv.brewru.protocol.StepJson;
+import com.google.gson.*;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -71,8 +69,12 @@ public class SocketApi {
     if (isLogging)
       log.info(String.format("receiving incoming transmission type : %s\n", request.type));
 
+    Gson gson = new GsonBuilder()
+        .registerTypeAdapter(StepJson.class, new StepJson.Adapter())
+        .create();
+
     return Optional.ofNullable(handlers.get(request.type))
-        .map(handler -> wrap(request, handler.apply(new Pkg(request, session, new Gson()))))
+        .map(handler -> wrap(request, handler.apply(new Pkg(request, session, gson))))
         .orElse(wrap(
             request,
             new JsonObject(),

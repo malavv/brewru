@@ -2,7 +2,7 @@
 
 class Recipe {
   // Unique reference
-  private id:string;
+  private ref:string;
 
   // Recipe Metadata
   public name:string;
@@ -16,7 +16,7 @@ class Recipe {
     if (base == null)
       Log.error("Recipe", "Must provide an equipment.");
 
-    this.id = 'unimplemented';
+    this.ref = 'unimplemented';
     this.reactors = [
       new EquipmentStep(base, this)
     ];
@@ -64,7 +64,7 @@ class Recipe {
   /** Encodes the recipe for communication with the server.  */
   public encode() : Object {
     return {
-      id: this.id,
+      ref: this.ref,
       name: this.name,
       description: this.description,
       style: this.style != null ? this.style.iri : null,

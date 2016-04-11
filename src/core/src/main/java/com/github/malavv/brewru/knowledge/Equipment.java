@@ -71,7 +71,7 @@ public abstract class Equipment extends KBConcept {
           .collect(Collectors.toList());
   }
 
-  private static Optional<Equipment> fromKB(final Resource equipment, final Model model, final Type type) {
+  public static Optional<Equipment> fromKB(final Resource equipment, final Model model, final Type type) {
     switch (type) {
       case Kettle:
         return Optional.of(new Kettle(equipment, model));

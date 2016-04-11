@@ -12,8 +12,6 @@ public class KBConcept {
   public KBConcept(final Resource ref) { this.ref = ref; }
 
   public String getRef() {
-    if (ref.getNameSpace().equals(Brew.getNs()))
-      return Brew.getPrefix() + ref.getLocalName();
-    return "unknown:" + ref.getLocalName();
+    return Resolver.getShort(ref);
   }
 }
