@@ -3,7 +3,6 @@ package com.github.malavv.brewru.knowledge;
 import com.github.malavv.brewru.onto.KBConcept;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 public class Style extends KBConcept {

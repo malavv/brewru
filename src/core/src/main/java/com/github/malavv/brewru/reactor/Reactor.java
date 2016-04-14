@@ -10,5 +10,9 @@ public interface Reactor {
   // Must always be called
   Reactor setVessel(final Equipment.Vessel vessel);
 
-  Reactor addition(final Ingredient ingredient, final Quantity qty);
+  Reactor addition(final Ingredient ingredient, final Quantity qty, final Quantity temp) throws Reactor.Exception;
+
+  class Exception extends java.lang.Exception {
+    public Exception(String message) { super(message); }
+  }
 }

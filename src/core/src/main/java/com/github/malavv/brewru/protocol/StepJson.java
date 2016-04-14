@@ -20,9 +20,11 @@ public interface StepJson {
   class Ing implements StepJson {
     private String ing;
     private QtyJson qty;
+    private QtyJson temp;
 
     public String getIng() { return ing; }
     public QtyJson getQty() { return qty; }
+    public QtyJson getTemp() { return temp; }
   }
 
   class Heating implements StepJson {
@@ -34,6 +36,7 @@ public interface StepJson {
       Ing i = new Ing();
       i.ing = json.getAsJsonObject().get("ing").getAsString();
       i.qty = c.deserialize(json.getAsJsonObject().get("qty"), QtyJson.class);
+      i.temp = c.deserialize(json.getAsJsonObject().get("temp"), QtyJson.class);
       return i;
     }
     private StepJson heating(JsonElement json, JsonDeserializationContext c) {

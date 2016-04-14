@@ -52,6 +52,12 @@
 
 
 
+###  https://github.com/malavv/brewru#containsSubstance
+
+:containsSubstance rdf:type owl:ObjectProperty .
+
+
+
 ###  https://github.com/malavv/brewru#fromAgency
 
 :fromAgency rdf:type owl:ObjectProperty .
@@ -83,6 +89,20 @@
 ###  https://github.com/malavv/brewru#inUnitSystem
 
 :inUnitSystem rdf:type owl:ObjectProperty .
+
+
+
+###  https://github.com/malavv/brewru#measuredIn
+
+:measuredIn rdf:type owl:ObjectProperty ;
+            
+            rdfs:subPropertyOf owl:topObjectProperty .
+
+
+
+###  https://github.com/malavv/brewru#ofSubstance
+
+:ofSubstance rdf:type owl:ObjectProperty .
 
 
 
@@ -127,6 +147,12 @@
 
 
 
+###  https://github.com/malavv/brewru#ofProportion
+
+:ofProportion rdf:type owl:DatatypeProperty .
+
+
+
 ###  https://github.com/malavv/brewru#unitMultiplier
 
 :unitMultiplier rdf:type owl:DatatypeProperty .
@@ -160,6 +186,12 @@
 
 
 
+###  https://github.com/malavv/brewru#ingredient
+
+:ingredient rdf:type owl:Class .
+
+
+
 ###  https://github.com/malavv/brewru#kettle
 
 :kettle rdf:type owl:Class ;
@@ -189,6 +221,18 @@
 ###  https://github.com/malavv/brewru#styleGuide
 
 :styleGuide rdf:type owl:Class .
+
+
+
+###  https://github.com/malavv/brewru#substance
+
+:substance rdf:type owl:Class .
+
+
+
+###  https://github.com/malavv/brewru#substanceProp
+
+:substanceProp rdf:type owl:Class .
 
 
 
@@ -355,6 +399,13 @@
 
 
 
+###  https://github.com/malavv/brewru#counts
+
+:counts rdf:type owl:NamedIndividual ,
+                 :physicalQuantity .
+
+
+
 ###  https://github.com/malavv/brewru#cubicMetre
 
 :cubicMetre rdf:type owl:NamedIndividual ,
@@ -399,6 +450,13 @@
      :hasBaseUnit :second ;
      
      :inUnitSystem :si .
+
+
+
+###  https://github.com/malavv/brewru#distilledWater
+
+:distilledWater rdf:type owl:NamedIndividual ,
+                         :substance .
 
 
 
@@ -621,16 +679,7 @@
         
         :representsPhysicalQuantity :time .
 
-###  https://github.com/malavv/brewru#unitCount
 
-:unitCount rdf:type owl:NamedIndividual ,
-                 :unit ;
-        
-        :unitSymbol "u" ;
-        
-        :inUnitSystem :si ;
-        
-        :representsPhysicalQuantity :counts .
 
 ###  https://github.com/malavv/brewru#si
 
@@ -639,6 +688,20 @@
     
     rdfs:label "International System of Units"@en ,
                "Système international d'unités"@fr .
+
+
+
+###  https://github.com/malavv/brewru#tapwater
+
+:tapwater rdf:type owl:NamedIndividual ,
+                   :ingredient ;
+          
+          rdfs:label "Tap Water"@en ;
+          
+          :measuredIn :mass ,
+                      :volume ;
+          
+          :containsSubstance :wholeWater .
 
 
 
@@ -673,6 +736,19 @@
 
 
 
+###  https://github.com/malavv/brewru#unitCount
+
+:unitCount rdf:type owl:NamedIndividual ,
+                    :unit ;
+           
+           :unitSymbol "u" ;
+           
+           :representsPhysicalQuantity :counts ;
+           
+           :inUnitSystem :si .
+
+
+
 ###  https://github.com/malavv/brewru#uscs
 
 :uscs rdf:type owl:NamedIndividual ,
@@ -687,11 +763,17 @@
 
 :volume rdf:type owl:NamedIndividual ,
                  :physicalQuantity .
-                 
-###  https://github.com/malavv/brewru#counts
 
-:counts rdf:type owl:NamedIndividual ,
-                 :physicalQuantity .
+
+
+###  https://github.com/malavv/brewru#wholeWater
+
+:wholeWater rdf:type owl:NamedIndividual ,
+                     :substanceProp ;
+            
+            :ofProportion "1.0"^^xsd:double ;
+            
+            :ofSubstance :distilledWater .
 
 
 

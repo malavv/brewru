@@ -6,7 +6,6 @@ import com.github.malavv.brewru.onto.KBConcept;
 import com.google.gson.annotations.JsonAdapter;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 

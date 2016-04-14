@@ -8,10 +8,14 @@
       "steps": [
         {
           "type": 1,
-          "ing": "brew:tapwater",
+          "ing": "brewru:tapwater",
           "qty": {
             "magnitude": 23,
             "unit": "brewru:litre"
+          },
+          "temp": {
+            "magnitude": 22,
+            "unit": "brewru:celsius"
           }
         },
         {
@@ -35,6 +39,10 @@
           "qty": {
             "magnitude": 1,
             "unit": "brewru:kilogram"
+          },
+          "temp": {
+            "magnitude": 4,
+            "unit": "brewru:celsius"
           }
         },
         {
@@ -43,6 +51,10 @@
           "qty": {
             "magnitude": 1,
             "unit": "brewru:kilogram"
+          },
+          "temp": {
+            "magnitude": 4,
+            "unit": "brewru:celsius"
           }
         },
         {

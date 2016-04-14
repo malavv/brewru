@@ -1,7 +1,5 @@
 package com.github.malavv.brewru.protocol;
 
-import com.google.gson.TypeAdapter;
-
 import java.util.List;
 
 public class ComputationData {

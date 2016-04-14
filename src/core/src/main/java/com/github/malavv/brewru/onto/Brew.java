@@ -20,6 +20,7 @@ public final class Brew {
   public static final Resource systemOfUnits = resource("systemOfUnits");
   public static final Resource physicalQuantity = resource("physicalQuantity");
   public static final Resource styleGuide = resource("styleGuide");
+  public static final Resource temperature = resource("thermodynamicTemperature");
 
   // Properties
   public static final Property hasVolumeInL = property("hasVolumeInL");
@@ -32,7 +33,10 @@ public final class Brew {
   public static final Property unitMultiplier = property("unitMultiplier");
   public static final Property unitOffset = property("unitOffset");
   public static final Property representsPhysicalQuantity = property("representsPhysicalQuantity");
-
+  public static final Property measuredIn = property("measuredIn");
+  public static final Property containsSubstance = property("containsSubstance");
+  public static final Property ofSubstance = property("ofSubstance");
+  public static final Property ofProportion = property("ofProportion");
 
   // Internal
   private static Resource resource(String local) { return ResourceFactory.createResource(ns + local); }

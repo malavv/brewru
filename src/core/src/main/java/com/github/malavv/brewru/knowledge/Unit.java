@@ -1,5 +1,6 @@
 package com.github.malavv.brewru.knowledge;
 
+import com.github.malavv.brewru.BrewruServer;
 import com.github.malavv.brewru.onto.Brew;
 import com.github.malavv.brewru.onto.KBConcept;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -9,11 +10,17 @@ import com.hp.hpl.jena.vocabulary.RDF;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class Unit extends KBConcept {
   public static class PhysicalQuantity extends KBConcept {
     public PhysicalQuantity(Resource ref) { super(ref); }
     public static PhysicalQuantity byRef(Resource ref) { return new PhysicalQuantity(ref); }
+
+    @Override public int hashCode() { return ref.hashCode(); }
+    @Override public boolean equals(Object o) {
+      return (o instanceof PhysicalQuantity) && (((PhysicalQuantity) o).getRef()).equals(this.getRef());
+    }
   }
   public static class UnitSystem extends KBConcept {
     public UnitSystem(Resource ref) { super(ref); }
@@ -59,6 +66,12 @@ public class Unit extends KBConcept {
         .toList();
   }
   public static Optional<Unit> from(Resource resource) {
-    return Optional.empty();
+    Model kb = BrewruServer.getKB();
+    if (!kb.containsResource(resource)) {
+      Logger.getLogger("Unit").warning("Unknown Unit " + resource.getLocalName());
+      return Optional.empty();
+    }
+
+    return Optional.of(new Unit(kb, resource));
   }
 }

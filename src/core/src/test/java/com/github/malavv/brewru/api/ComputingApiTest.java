@@ -26,11 +26,10 @@ public class ComputingApiTest {
 
   @Test
   public void testComputeRecipe() throws Exception {
-    ComputingApi.computeRecipe(new SocketApi.Pkg(new ClientDecoder.Request(null, null, -1, getJsonRes("simpleRecipe.json")), null, gson));
+    JsonElement s = ComputingApi.computeRecipe(new SocketApi.Pkg(new ClientDecoder.Request(null, null, -1, getJsonRes("simpleRecipe.json")), null, gson));
   }
 
   private static JsonElement getJsonRes(final String url) {
-    return new JsonParser()
-        .parse(new InputStreamReader(ComputingApiTest.class.getClassLoader().getResourceAsStream(url)));
+    return new JsonParser().parse(new InputStreamReader(ComputingApiTest.class.getClassLoader().getResourceAsStream(url)));
   }
 }
