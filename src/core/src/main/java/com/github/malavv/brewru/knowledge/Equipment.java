@@ -9,6 +9,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,12 +72,21 @@ public abstract class Equipment extends KBConcept {
           .collect(Collectors.toList());
   }
 
-  public static Optional<Equipment> fromKB(final Resource equipment, final Model model, final Type type) {
+  public static Optional<Equipment> fromKB(final Resource equipment, final Model kb, final Type type) {
+    if (equipment == null) {
+      Logger.getLogger("Equipment").warning("null equipment provided");
+      return Optional.empty();
+    }
+    if (!kb.containsResource(equipment)) {
+      Logger.getLogger("Equipment").warning("Equipment " + equipment.getLocalName() + " not in the knowledge base");
+      return Optional.empty();
+    }
+
     switch (type) {
       case Kettle:
-        return Optional.of(new Kettle(equipment, model));
+        return Optional.of(new Kettle(equipment, kb));
       case Vessel:
-        return Optional.of(new Vessel(equipment, model));
+        return Optional.of(new Vessel(equipment, kb));
       default:
         return Optional.empty();
     }

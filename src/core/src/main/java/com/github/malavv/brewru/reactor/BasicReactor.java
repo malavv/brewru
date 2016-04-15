@@ -7,30 +7,31 @@ import com.github.malavv.brewru.onto.Brew;
 import com.github.malavv.brewru.unit.Quantity;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class BasicReactor implements Reactor {
-  private Equipment.Vessel vessel;
-  private Set<Substance> substances;
+  private final Equipment.Vessel vessel;
 
-  public BasicReactor() {
-    substances = new HashSet<>();
-  }
+  private Map<Substance, Integer> substancesIdx;
+  private Double[][] obs;
 
-  @Override
-  public boolean hasVessel() {
-    return vessel != null;
-  }
-
-  @Override public Reactor setVessel(Equipment.Vessel vessel) {
+  public BasicReactor(Equipment.Vessel vessel) {
     this.vessel = vessel;
-    return this;
+    substancesIdx = new HashMap<>();
+    obs = new Double[0][0];
   }
 
+  @Override public Equipment.Vessel getVessel() { return vessel; }
+  @Override public Stream<Substance> getSubstances() { return substancesIdx.keySet().stream(); }
+  @Override public Optional<Integer> getSubstanceIdx(Substance substance) { return Optional.empty(); }
+  @Override public int getLengthInMin() { return obs.length; }
   @Override
   public Reactor addition(final Ingredient ingredient, Quantity qty, Quantity temp) throws Reactor.Exception {
     if (ingredient == null || qty == null || temp == null)
       throw new Reactor.Exception("Invalid parameter to the addition");
-    if (!hasVessel())
+    if (vessel == null)
       throw new Reactor.Exception("No vessel in reactor");
     if (!ingredient.canBeMeasuredIn(qty.unit.getPhysicalQuantity()))
       throw new Reactor.Exception("Invalid unit for the ingredient");
@@ -39,19 +40,24 @@ public class BasicReactor implements Reactor {
     doAddition(ingredient, qty, temp);
     return this;
   }
+  @Override public Double[][] getData() { return new Double[0][]; }
+  @Override public double getTemperature() { return 0; }
+  @Override public double getPh() { return 0; }
+  @Override public double getVolume() { return 0; }
 
   private void doAddition(Ingredient ingredient, Quantity qty, Quantity temp) {
-    prepareForNewSubstances(ingredient.getConstituents());
+    addSpaceForNewSubstances(ingredient.getConstituents());
 
-    final double moles = ingredient.getQtyOfSubstance(qty);
-    ingredient.getProportions().forEach((substance, proportion) -> addSubstance(substance, moles * proportion));
+    ingredient.getProportions(qty).forEach(addSubstance(temp));
   }
 
-  private void addSubstance(Substance substance, double moles) {
-    System.out.println("Adding substance " + substance.getRef() + " : " + moles);
+  private BiConsumer<Substance, Double> addSubstance(Quantity temp) {
+    return (subs, qtyMoles) -> {
+      Logger.getLogger("BasicReactor").info("Adding substance " + subs.getRef() + " : " + qtyMoles + " at temp : " + temp);
+    };
   }
 
-  private void prepareForNewSubstances(Collection<Substance> newSubstances) {
-    substances.addAll(newSubstances);
+  private void addSpaceForNewSubstances(Collection<Substance> newSubstances) {
+    Logger.getLogger("BasicReactor").warning("addSpaceForNewSubstances unimplemented");
   }
 }

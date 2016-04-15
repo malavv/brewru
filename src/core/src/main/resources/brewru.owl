@@ -698,8 +698,7 @@
           
           rdfs:label "Tap Water"@en ;
           
-          :measuredIn :mass ,
-                      :volume ;
+          :measuredIn :volume ;
           
           :containsSubstance :wholeWater .
 
