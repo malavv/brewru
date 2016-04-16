@@ -21,4 +21,9 @@ public class Substance extends KBConcept {
       return Optional.empty();
     return Optional.of(new Substance(BrewruServer.getKB(), resource));
   }
+
+  @Override
+  public String toString() {
+    return getRef();
+  }
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public class Unit extends KBConcept {
+
   public static class PhysicalQuantity extends KBConcept {
     public PhysicalQuantity(Resource ref) { super(ref); }
     public static PhysicalQuantity byRef(Resource ref) { return new PhysicalQuantity(ref); }
@@ -30,14 +31,14 @@ public class Unit extends KBConcept {
   private double offset;
   private double multiplier;
   private String symbol;
-  private Optional<Unit> baseUnitRef = Optional.empty();
+  private Unit baseUnit;
   private PhysicalQuantity physicalQuantity;
   private UnitSystem system;
 
   public double getOffset() { return offset; }
   public double getMultiplier() { return multiplier; }
   public String getSymbol() { return symbol; }
-  public Optional<Unit> getBaseUnit() { return baseUnitRef; }
+  public Unit getBaseUnit() { return baseUnit; }
   public PhysicalQuantity getPhysicalQuantity() { return physicalQuantity; }
   public UnitSystem getSystem() { return system; }
 
@@ -50,8 +51,8 @@ public class Unit extends KBConcept {
     symbol = ref.getProperty(Brew.unitSymbol).getString();
     Optional.ofNullable(ref.getProperty(Brew.hasBaseUnit))
         .ifPresent(p -> {
-          this.baseUnitRef = Optional.of(new Unit(model, p.getResource()));
-          this.physicalQuantity = this.baseUnitRef.get().getPhysicalQuantity();
+          this.baseUnit = new Unit(model, p.getResource());
+          this.physicalQuantity = this.baseUnit.getPhysicalQuantity();
         });
     Optional.ofNullable(ref.getProperty(Brew.representsPhysicalQuantity))
         .ifPresent(p -> this.physicalQuantity = PhysicalQuantity.byRef(p.getResource()));

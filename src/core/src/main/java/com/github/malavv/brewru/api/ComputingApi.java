@@ -27,7 +27,7 @@ public class ComputingApi {
   }
 
   private static final Map<Class<? extends StepJson>, ReactorFunctor<StepJson>> factory = ImmutableMap.of(
-      StepJson.Ing.class, ComputingApi::setIng
+      StepJson.Ing.class, ComputingApi::addIngredient
   );
 
   public static class ComputingException extends Exception {
@@ -57,11 +57,7 @@ public class ComputingApi {
     // Handle reactor sequentially first.
     ReactorJson raw = rawRecipe.getReactors().get(0);
 
-    // Vessel
-    Optional<Equipment> vessel = getEquipment(raw.getEquipment());
-    if (!vessel.isPresent() || !(vessel.get() instanceof Equipment.Vessel))
-      throw new ComputingException("Unknown vessel " + raw.getEquipment());
-    Reactor reactor = new BasicReactor((Equipment.Vessel) vessel.get());
+    Reactor reactor = new BasicReactor(resolveVessel(getEquipment(raw.getEquipment())));
 
     // Steps
     for (StepJson rawStep: raw.getSteps())
@@ -87,13 +83,14 @@ public class ComputingApi {
     return data;
   }
 
-  public static void unknown(Reactor reactor, StepJson step) {
-    Logger.getLogger("ComputingApi").severe("Unknown step class : " + step.getClass().getName());
+  public static void unknown(Reactor reactor, StepJson step) throws ComputingException {
+    throw new ComputingException("Unknown step class : " + step.getClass().getName());
   }
 
-  public static void setIng(Reactor reactor, StepJson step) throws ComputingException, Reactor.Exception {
+  public static void addIngredient(Reactor reactor, StepJson step) throws ComputingException, Reactor.Exception {
     StepJson.Ing ingStep = (StepJson.Ing) step;
-    Optional<Ingredient> ingredient = Resolver.fromShort(ingStep.getIng()).flatMap(Ingredient::from);
+
+    Optional<Ingredient> ingredient = resolveIngredient(ingStep.getIng());
     Optional<Quantity> quantity = resolveQuantity(ingStep.getQty());
     Optional<Quantity> temperature = resolveQuantity(ingStep.getTemp());
 
@@ -104,11 +101,22 @@ public class ComputingApi {
     reactor.addition(ingredient.get(), quantity.get(), temperature.get());
   }
 
+  private static Optional<Ingredient> resolveIngredient(String raw) {
+    return raw != null
+        ? Resolver.fromShort(raw).flatMap(Ingredient::from)
+        : Optional.empty();
+  }
   private static Optional<Quantity> resolveQuantity(QtyJson raw) {
-    if (raw == null) return Optional.empty();
+    return raw != null
+        ? Resolver.fromShort(raw.getUnit()).flatMap(Unit::from).map(u -> new Quantity(raw.getMagnitude(), u))
+        : Optional.empty();
+  }
 
-    return Resolver.fromShort(raw.getUnit())
-        .flatMap(Unit::from)
-        .map(u -> new Quantity(raw.getMagnitude(), u));
+  private static Equipment.Vessel resolveVessel(Optional<Equipment> equipment) throws ComputingException {
+    if (!equipment.isPresent())
+      throw new ComputingException("Unable to resolve the equipment");
+    if (!(equipment.get() instanceof Equipment.Vessel))
+      throw new ComputingException("Resolved equipment is not a vessel");
+    return (Equipment.Vessel) equipment.get();
   }
 }

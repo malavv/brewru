@@ -13,4 +13,8 @@ public class Quantity {
     this.magnitude = magnitude;
     this.unit = unit;
   }
+
+  public Quantity toBase() {
+    return new Quantity(unit.getMultiplier() * magnitude + unit.getOffset(), unit.getBaseUnit());
+  }
 }

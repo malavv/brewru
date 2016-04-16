@@ -370,7 +370,7 @@
 :celsius rdf:type owl:NamedIndividual ,
                   :unit ;
          
-         :unitOffset "-273.15"^^xsd:double ;
+         :unitOffset "273.15"^^xsd:double ;
          
          :unitMultiplier "1.0"^^xsd:double ;
          
