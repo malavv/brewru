@@ -44,6 +44,7 @@ public class Unit extends KBConcept {
 
   private Unit(final Model model, Resource ref) {
     super(ref);
+    ref = ref.inModel(model);
     Optional.ofNullable(ref.getProperty(Brew.unitOffset))
         .ifPresent(val -> offset = val.getDouble());
     Optional.ofNullable(ref.getProperty(Brew.unitMultiplier))

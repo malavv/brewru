@@ -26,6 +26,7 @@ public class Ingredient extends KBConcept {
   /** Accepted physicial  */
   private Set<Unit.PhysicalQuantity> physicalQuantities;
   private Map<Substance, Double> substances;
+  private final double molarMassOfWaterInKgPerMole = 0.01801528;
 
   public Ingredient(Model kb, Resource resource) {
     super(resource);
@@ -53,5 +54,15 @@ public class Ingredient extends KBConcept {
       return Optional.empty();
 
     return Optional.of(new Ingredient(BrewruServer.getKB(), resource));
+  }
+
+  public double getMolalityOfComponent(Substance component) {
+    Logger.getLogger("Ingredient").warning("UNIMPLEMENTED");
+    if (getRef().equals("brewru:tapwater")) {
+      if (component.getRef().equals("brewru:distilledWater")) {
+        return 1 / molarMassOfWaterInKgPerMole;
+      }
+    }
+    return 0.0;
   }
 }

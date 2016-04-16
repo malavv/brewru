@@ -556,7 +556,7 @@
           
           :unitSymbol "kg" ;
           
-          :representsPhysicalQuantity :kilogram ;
+          :representsPhysicalQuantity :mass ;
           
           :inUnitSystem :si .
 

@@ -21,6 +21,8 @@ public final class Brew {
   public static final Resource physicalQuantity = resource("physicalQuantity");
   public static final Resource styleGuide = resource("styleGuide");
   public static final Resource temperature = resource("thermodynamicTemperature");
+  public static final Resource mass = resource("mass");
+  public static final Resource kg = resource("kilogram");
 
   // Properties
   public static final Property hasVolumeInL = property("hasVolumeInL");
