@@ -105,7 +105,13 @@
           ]
         }
       ],
-      "equipment": "brewru:kettle_6.5"
+      "vessel": {
+        "equipment": "brewru:kettle_6.5",
+        "temp": {
+          "magnitude": 22,
+          "unit": "brewru:celsius"
+        }
+      }
     }
   ]
 }

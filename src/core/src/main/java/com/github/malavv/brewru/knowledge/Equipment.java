@@ -2,6 +2,8 @@ package com.github.malavv.brewru.knowledge;
 
 import com.github.malavv.brewru.onto.Brew;
 import com.github.malavv.brewru.onto.KBConcept;
+import com.github.malavv.brewru.onto.Resolver;
+import com.github.malavv.brewru.unit.Quantity;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -56,6 +58,19 @@ public abstract class Equipment extends KBConcept {
 
     public boolean isMultipleOf() {
       return isMultipleOf;
+    }
+
+    public Double getThermalInertia() {
+      return getMass().magnitude * getSpecificHeatOfMaterial();
+    }
+
+    public Quantity getMass() {
+      Logger.getLogger("Equipment").warning("Unimplemented for real vessel");
+      return new Quantity(13.6078, Unit.from(Brew.kg).get());
+    }
+    public double getSpecificHeatOfMaterial() {
+      Logger.getLogger("Equipment").warning("Unimplemented for real vessel");
+      return 500;
     }
   }
 

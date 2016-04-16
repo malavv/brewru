@@ -4,7 +4,7 @@ import com.github.malavv.brewru.knowledge.Equipment;
 import com.github.malavv.brewru.knowledge.Ingredient;
 import com.github.malavv.brewru.unit.Quantity;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -17,11 +17,11 @@ public interface Reactor {
 
   Reactor addition(final Ingredient ingredient, final Quantity qty, final Quantity temp) throws Reactor.Exception;
 
-  Double[][] getData();
+  List<double[]> getData();
 
-  double getTemperature();
-  double getPh();
-  double getVolume();
+  Quantity getTemperature(int atMinute);
+  double getPh(int atMinute);
+  Quantity getVolume(int atMinute);
 
   class Exception extends java.lang.Exception {
     public Exception(String message) { super(message); }

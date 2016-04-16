@@ -49,7 +49,7 @@ public class ComputingApiTest {
 
   @Test
   public void testSimplestRecipe() throws Exception {
-    Reactor reactor = new BasicReactor(kettle65);
+    Reactor reactor = new BasicReactor(kettle65, new Quantity(22, celcius));
     assertEquals(reactor.getVessel(), kettle65);
   }
 
@@ -59,7 +59,7 @@ public class ComputingApiTest {
     Resource distilledWater = Resolver.fromShort("brewru:distilledWater").get();
 
     // Actions
-    Reactor reactor = new BasicReactor(kettle65);
+    Reactor reactor = new BasicReactor(kettle65, new Quantity(22, celcius));
     reactor.addition(Ingredient.from(tapWater).get(), new Quantity(23, litre), new Quantity(22, celcius));
 
     // Testing
@@ -67,12 +67,12 @@ public class ComputingApiTest {
     assertTrue(reactor.getSubstanceIdx(Substance.from(distilledWater).get()).isPresent(), "Must have distilled water as one of the substance");
     assertEquals(reactor.getLengthInMin(), 1, "Must have at least 1 min, since the addition is 1 min");
 
-    Double molesOfWater = reactor.getData()[0][reactor.getSubstanceIdx(Substance.from(distilledWater).get()).get()];
+    Double molesOfWater = reactor.getData().get(0)[reactor.getSubstanceIdx(Substance.from(distilledWater).get()).get()];
 
-    assertEquals(molesOfWater, 1273.83, 0.2, "Quantity of water added");
-    assertEquals(reactor.getTemperature(), 295, 0.01, "Temperature of water after addition");
-    assertEquals(reactor.getPh(), 7.5, 0.1, "PH of the reactor after water addition");
-    assertEquals(reactor.getVolume(), 23, 0.1, "Volume of the reactor");
+    assertEquals(molesOfWater, 1274, 0.5, "Quantity of distilled water added");
+    assertEquals(reactor.getTemperature(0).magnitude, 295.15, 0.01, "Temperature of water after addition");
+    assertEquals(reactor.getPh(0), 7.0, 0.1, "PH of the reactor after water addition");
+    assertEquals(reactor.getVolume(0).magnitude, 0.023, 0.0005, "Volume of the reactor");
   }
 
   @Test

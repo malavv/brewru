@@ -23,6 +23,8 @@ public final class Brew {
   public static final Resource temperature = resource("thermodynamicTemperature");
   public static final Resource mass = resource("mass");
   public static final Resource kg = resource("kilogram");
+  public static final Resource kelvin = resource("kelvin");
+  public static final Resource cubicMetre = resource("cubicMetre");
 
   // Properties
   public static final Property hasVolumeInL = property("hasVolumeInL");

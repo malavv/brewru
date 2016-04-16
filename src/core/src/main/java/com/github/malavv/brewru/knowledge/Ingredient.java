@@ -57,7 +57,7 @@ public class Ingredient extends KBConcept {
   }
 
   public double getMolalityOfComponent(Substance component) {
-    Logger.getLogger("Ingredient").warning("UNIMPLEMENTED");
+    Logger.getLogger("Ingredient").warning("IMPLEMENTED for tapwater only");
     if (getRef().equals("brewru:tapwater")) {
       if (component.getRef().equals("brewru:distilledWater")) {
         return 1 / molarMassOfWaterInKgPerMole;

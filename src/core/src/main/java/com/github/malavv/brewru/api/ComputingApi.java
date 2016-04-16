@@ -57,7 +57,7 @@ public class ComputingApi {
     // Handle reactor sequentially first.
     ReactorJson raw = rawRecipe.getReactors().get(0);
 
-    Reactor reactor = new BasicReactor(resolveVessel(getEquipment(raw.getEquipment())));
+    Reactor reactor = new BasicReactor(resolveVessel(getEquipment(raw.getVessel())), resolveQuantity(raw.getVesselTemp()).get());
 
     // Steps
     for (StepJson rawStep: raw.getSteps())
