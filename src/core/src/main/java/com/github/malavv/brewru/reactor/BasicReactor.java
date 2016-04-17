@@ -32,16 +32,14 @@ public class BasicReactor implements Reactor {
     volumeInM3 = new ArrayList<>();
 
     temperatureInK.add(temp.toBase().magnitude);
-    ph.add(7.0);
+    ph.add(Double.NaN);
     volumeInM3.add(0.0);
   }
 
   @Override public Equipment.Vessel getVessel() { return vessel; }
   @Override public Stream<Substance> getSubstances() { return substancesToIdx.keySet().stream(); }
-  @Override public Optional<Integer> getSubstanceIdx(Substance substance) {
-    return Optional.ofNullable(substancesToIdx.get(substance));
-  }
-  @Override public int getLengthInMin() { return obs.size(); }
+  @Override public Optional<Integer> getSubstanceIdx(Substance substance) { return Optional.ofNullable(substancesToIdx.get(substance)); }
+  @Override public int getNumOfMinutes() { return obs.size(); }
   @Override
   public Reactor addition(final Ingredient ingredient, Quantity qty, Quantity temp) throws Reactor.Exception {
     if (ingredient == null || qty == null || temp == null)

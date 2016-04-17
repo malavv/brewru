@@ -17,7 +17,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -61,6 +60,12 @@ public class ComputingApiTest {
   public void testSimplestRecipe() throws Exception {
     Reactor reactor = new BasicReactor(kettle65, celsius22);
     assertEquals(reactor.getVessel(), kettle65);
+    assertEquals(reactor.getSubstances().count(), 0);
+    assertEquals(reactor.getNumOfMinutes(), 0);
+    assertEquals(reactor.getData().size(), 0);
+    assertTrue(Quantity.epsilonEquals(reactor.getTemperature(0), celsius22, 0.2), "Temperature is not equal");
+    assertEquals(reactor.getPh(0), Double.NaN);
+    assertEquals(reactor.getVolume(0).magnitude, 0.0, 0.01);
   }
 
   @Test
@@ -72,7 +77,7 @@ public class ComputingApiTest {
     // Testing
     assertTrue(reactor.getSubstances().count() > 0, "Must contain a substance");
     assertTrue(reactor.getSubstanceIdx(distilledWater).isPresent(), "Must have distilled water as one of the substance");
-    assertEquals(reactor.getLengthInMin(), 1, "Must have at least 1 min, since the addition is 1 min");
+    assertEquals(reactor.getNumOfMinutes(), 1, "Must have at least 1 min, since the addition is 1 min");
 
     Double molesOfWater = reactor.getData().get(0)[reactor.getSubstanceIdx(distilledWater).get()];
 

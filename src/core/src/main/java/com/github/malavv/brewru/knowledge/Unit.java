@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public class Unit extends KBConcept {
-
   public static class PhysicalQuantity extends KBConcept {
     public PhysicalQuantity(Resource ref) { super(ref); }
     public static PhysicalQuantity byRef(Resource ref) { return new PhysicalQuantity(ref); }
@@ -41,6 +40,7 @@ public class Unit extends KBConcept {
   public Unit getBaseUnit() { return baseUnit; }
   public PhysicalQuantity getPhysicalQuantity() { return physicalQuantity; }
   public UnitSystem getSystem() { return system; }
+  public boolean isBaseUnit() { return baseUnit == null; }
 
   private Unit(final Model model, Resource ref) {
     super(ref);

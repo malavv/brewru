@@ -15,6 +15,11 @@ public class Quantity {
   }
 
   public Quantity toBase() {
-    return new Quantity(unit.getMultiplier() * magnitude + unit.getOffset(), unit.getBaseUnit());
+    return unit.isBaseUnit()
+        ? this : new Quantity(unit.getMultiplier() * magnitude + unit.getOffset(), unit.getBaseUnit());
+  }
+
+  public static boolean epsilonEquals(Quantity lhs, Quantity rhs, double eps) {
+    return Math.abs(lhs.toBase().magnitude - rhs.toBase().magnitude) < eps;
   }
 }
