@@ -71,7 +71,7 @@ public class ComputingApiTest {
   @Test
   public void testOnlyWaterRecipe() throws Exception {
     // Actions
-    Reactor reactor = new BasicReactor(kettle65, celsius22);
+    Reactor reactor = new BasicReactor(kettle65, new Quantity(10, celsius));
     reactor.addition(tapWater, litre22, celsius22);
 
     // Testing
@@ -82,9 +82,9 @@ public class ComputingApiTest {
     Double molesOfWater = reactor.getData().get(0)[reactor.getSubstanceIdx(distilledWater).get()];
 
     assertEquals(molesOfWater, 1274, 0.5, "Quantity of distilled water added");
-    assertEquals(reactor.getTemperature(0).magnitude, 295.15, 0.01, "Temperature of water after addition");
-    assertEquals(reactor.getPh(0), 7.0, 0.1, "PH of the reactor after water addition");
-    assertEquals(reactor.getVolume(0).magnitude, 0.023, 0.0005, "Volume of the reactor");
+    assertEquals(reactor.getTemperature(1).magnitude, 294.356, 0.01, "Temperature of water after addition");
+    assertEquals(reactor.getPh(1), 7.5, "PH of the reactor after water addition");
+    assertEquals(reactor.getVolume(1).magnitude, 0.023, 0.0005, "Volume of the reactor");
   }
 
   @Test
