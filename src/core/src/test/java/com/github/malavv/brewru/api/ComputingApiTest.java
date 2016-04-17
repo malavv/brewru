@@ -22,7 +22,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -33,7 +32,11 @@ public class ComputingApiTest {
 
   private Equipment.Vessel kettle65;
   private Unit litre;
-  private Unit celcius;
+  private Unit celsius;
+  private Ingredient tapWater;
+  private Quantity celsius22;
+  private Quantity litre22;
+  private Substance distilledWater;
 
   @BeforeMethod
   public void setUp() throws Exception {
@@ -41,33 +44,37 @@ public class ComputingApiTest {
         .registerTypeAdapter(StepJson.class, new StepJson.Adapter())
         .create();
     BrewruServer.init();
+
     kb = BrewruServer.getKB();
     litre = Unit.from(Resolver.fromShort("brewru:litre").get()).get();
-    celcius = Unit.from(Resolver.fromShort("brewru:celsius").get()).get();
+    celsius = Unit.from(Resolver.fromShort("brewru:celsius").get()).get();
+    tapWater = Ingredient.from(Resolver.fromShort("brewru:tapwater").get()).get();
     kettle65 = (Equipment.Vessel) Equipment.fromKB(Resolver.fromShort("brewru:kettle_6.5").get(), kb, Equipment.Type.Vessel).get();
+
+    celsius22 = new Quantity(22, celsius);
+    litre22 = new Quantity(23, litre);
+
+    distilledWater = Substance.from(Resolver.fromShort("brewru:distilledWater").get()).get();
   }
 
   @Test
   public void testSimplestRecipe() throws Exception {
-    Reactor reactor = new BasicReactor(kettle65, new Quantity(22, celcius));
+    Reactor reactor = new BasicReactor(kettle65, celsius22);
     assertEquals(reactor.getVessel(), kettle65);
   }
 
   @Test
   public void testOnlyWaterRecipe() throws Exception {
-    Resource tapWater = Resolver.fromShort("brewru:tapwater").get();
-    Resource distilledWater = Resolver.fromShort("brewru:distilledWater").get();
-
     // Actions
-    Reactor reactor = new BasicReactor(kettle65, new Quantity(22, celcius));
-    reactor.addition(Ingredient.from(tapWater).get(), new Quantity(23, litre), new Quantity(22, celcius));
+    Reactor reactor = new BasicReactor(kettle65, celsius22);
+    reactor.addition(tapWater, litre22, celsius22);
 
     // Testing
     assertTrue(reactor.getSubstances().count() > 0, "Must contain a substance");
-    assertTrue(reactor.getSubstanceIdx(Substance.from(distilledWater).get()).isPresent(), "Must have distilled water as one of the substance");
+    assertTrue(reactor.getSubstanceIdx(distilledWater).isPresent(), "Must have distilled water as one of the substance");
     assertEquals(reactor.getLengthInMin(), 1, "Must have at least 1 min, since the addition is 1 min");
 
-    Double molesOfWater = reactor.getData().get(0)[reactor.getSubstanceIdx(Substance.from(distilledWater).get()).get()];
+    Double molesOfWater = reactor.getData().get(0)[reactor.getSubstanceIdx(distilledWater).get()];
 
     assertEquals(molesOfWater, 1274, 0.5, "Quantity of distilled water added");
     assertEquals(reactor.getTemperature(0).magnitude, 295.15, 0.01, "Temperature of water after addition");
