@@ -2,6 +2,7 @@ package com.github.malavv.brewru.reactor;
 
 import com.github.malavv.brewru.knowledge.Equipment;
 import com.github.malavv.brewru.knowledge.Ingredient;
+import com.github.malavv.brewru.knowledge.Kettle;
 import com.github.malavv.brewru.knowledge.Unit;
 import com.github.malavv.brewru.onto.Brew;
 import com.github.malavv.brewru.unit.Quantity;
@@ -39,7 +40,9 @@ public class BasicReactor implements Reactor {
     temperatureInK.add(temp.toBase().magnitude);
     ph.add(Double.NaN);
     volumeInM3.add(0.0);
-    themalInertias.add(vessel.getThermalInertia());
+
+    if (vessel instanceof Kettle)
+      themalInertias.add(((Kettle)vessel).getThermalInertia());
 
     kelvin = Unit.from(Brew.kelvin).get();
     cubicMetre = Unit.from(Brew.cubicMetre).get();

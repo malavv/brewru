@@ -147,9 +147,23 @@
 
 
 
+###  https://github.com/malavv/brewru#massInKg
+
+:massInKg rdf:type owl:DatatypeProperty .
+
+
+
 ###  https://github.com/malavv/brewru#ofProportion
 
 :ofProportion rdf:type owl:DatatypeProperty .
+
+
+
+###  https://github.com/malavv/brewru#specificHeatOfMaterial
+
+:specificHeatOfMaterial rdf:type owl:DatatypeProperty ;
+                        
+                        rdfs:subPropertyOf owl:topDataProperty .
 
 
 
@@ -370,9 +384,9 @@
 :celsius rdf:type owl:NamedIndividual ,
                   :unit ;
          
-         :unitOffset "273.15"^^xsd:double ;
-         
          :unitMultiplier "1.0"^^xsd:double ;
+         
+         :unitOffset "273.15"^^xsd:double ;
          
          :unitSymbol "°C" ;
          
@@ -543,7 +557,11 @@
             
             rdfs:label "6.5 gal Kettle"@en ;
             
+            :massInKg "13.6078"^^xsd:double ;
+            
             :hasVolumeInL "24.6052"^^xsd:double ;
+            
+            :specificHeatOfMaterial "500.0"^^xsd:double ;
             
             :holdsPressure "false"^^xsd:boolean .
 

@@ -48,7 +48,7 @@ public class ComputingApiTest {
     litre = Unit.from(Resolver.fromShort("brewru:litre").get()).get();
     celsius = Unit.from(Resolver.fromShort("brewru:celsius").get()).get();
     tapWater = Ingredient.from(Resolver.fromShort("brewru:tapwater").get()).get();
-    kettle65 = (Equipment.Vessel) Equipment.fromKB(Resolver.fromShort("brewru:kettle_6.5").get(), kb, Equipment.Type.Vessel).get();
+    kettle65 = (Equipment.Vessel) Equipment.fromKB(Resolver.fromShort("brewru:kettle_6.5").get(), kb).get();
 
     celsius22 = new Quantity(22, celsius);
     litre22 = new Quantity(23, litre);

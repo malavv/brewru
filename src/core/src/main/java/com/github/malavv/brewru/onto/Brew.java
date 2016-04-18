@@ -42,6 +42,8 @@ public final class Brew {
   public static final Property containsSubstance = property("containsSubstance");
   public static final Property ofSubstance = property("ofSubstance");
   public static final Property ofProportion = property("ofProportion");
+  public static final Property massInKg = property("massInKg");
+  public static final Property specificHeatOfMaterial = property("specificHeatOfMaterial");
 
   // Internal
   private static Resource resource(String local) { return ResourceFactory.createResource(ns + local); }

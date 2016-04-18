@@ -2,7 +2,6 @@ package com.github.malavv.brewru.knowledge;
 
 import com.github.malavv.brewru.onto.Brew;
 import com.github.malavv.brewru.onto.KBConcept;
-import com.github.malavv.brewru.onto.Resolver;
 import com.github.malavv.brewru.unit.Quantity;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -27,19 +26,12 @@ public abstract class Equipment extends KBConcept {
     super(ref);
   }
 
-  public static class Kettle extends Vessel {
-    private Kettle(Resource ref, Model model) {
-      super(ref, model);
-      this.type = Type.Kettle;
-    }
-  }
-
   public static class Vessel extends Equipment {
     private double volumeInL;
     private boolean holdsPressure;
     private boolean isMultipleOf;
 
-    private Vessel(Resource ref, Model model) {
+    public Vessel(Resource ref, Model model) {
       super(ref);
       this.type = Type.Vessel;
       volumeInL = ref.getProperty(Brew.hasVolumeInL).getDouble();
@@ -59,19 +51,6 @@ public abstract class Equipment extends KBConcept {
     public boolean isMultipleOf() {
       return isMultipleOf;
     }
-
-    public Double getThermalInertia() {
-      return getMass().magnitude * getSpecificHeatOfMaterial();
-    }
-
-    public Quantity getMass() {
-      Logger.getLogger("Equipment").warning("Unimplemented for real vessel");
-      return new Quantity(13.6078, Unit.from(Brew.kg).get());
-    }
-    public double getSpecificHeatOfMaterial() {
-      Logger.getLogger("Equipment").warning("Unimplemented for real vessel");
-      return 500;
-    }
   }
 
   public static Collection<Equipment> getAll(final Model model) {
@@ -79,15 +58,15 @@ public abstract class Equipment extends KBConcept {
       Stream.concat(
         model.listStatements(null, RDF.type, Brew.kettle)
              .mapWith(Statement::getSubject)
-             .mapWith(equip -> Equipment.fromKB(equip, model, Type.Kettle)).toList().stream(),
+             .mapWith(equip -> Equipment.fromKB(equip, model)).toList().stream(),
         model.listStatements(null, RDF.type, Brew.vessel)
              .mapWith(Statement::getSubject)
-             .mapWith(equip -> Equipment.fromKB(equip, model, Type.Vessel)).toList().stream())
+             .mapWith(equip -> Equipment.fromKB(equip, model)).toList().stream())
           .filter(Optional::isPresent).map(Optional::get)
           .collect(Collectors.toList());
   }
 
-  public static Optional<Equipment> fromKB(final Resource equipment, final Model kb, final Type type) {
+  public static Optional<Equipment> fromKB(final Resource equipment, final Model kb) {
     if (equipment == null) {
       Logger.getLogger("Equipment").warning("null equipment provided");
       return Optional.empty();
@@ -97,13 +76,11 @@ public abstract class Equipment extends KBConcept {
       return Optional.empty();
     }
 
-    switch (type) {
-      case Kettle:
-        return Optional.of(new Kettle(equipment, kb));
-      case Vessel:
-        return Optional.of(new Vessel(equipment, kb));
-      default:
-        return Optional.empty();
-    }
+    Resource type = equipment.getPropertyResourceValue(RDF.type);
+    if (type.equals(Brew.kettle))
+      return Optional.of(new Kettle(equipment, kb));
+    else if (type.equals(Brew.vessel))
+      return Optional.of(new Vessel(equipment, kb));
+    else return Optional.empty();
   }
 }

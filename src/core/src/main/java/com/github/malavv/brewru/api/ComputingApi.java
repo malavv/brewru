@@ -36,7 +36,7 @@ public class ComputingApi {
 
   private static Optional<Equipment> getEquipment(final String shortForm) {
     return Resolver.fromShort(shortForm)
-        .flatMap(e -> Equipment.fromKB(e, BrewruServer.getKB(), Equipment.Type.Kettle));
+        .flatMap(e -> Equipment.fromKB(e, BrewruServer.getKB()));
   }
 
   public static JsonElement computeRecipe(SocketApi.Pkg pkg) {
