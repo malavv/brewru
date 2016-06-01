@@ -12,8 +12,6 @@ $git shortlog -sne
 ```
 
 ## The Latest Version
-**Current Version :** 0.2.7
-
 The project is still in a sub-1.0 release cycle. It is not feature complete. 
 
 ## Documentation
